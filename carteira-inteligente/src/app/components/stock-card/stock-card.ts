@@ -13,8 +13,9 @@ import { Stock } from '../../models/stock.model';
         <div class="yield-badge" [class]="yieldClass">
           {{ stock.dividendYield > 0 ? (stock.dividendYield | number:'1.1-1') + '% a.a.' : '—' }}
         </div>
+        <span class="nota-badge" [class]="notaClass" *ngIf="stock.nota > 0">★ {{ stock.nota }}/10</span>
       </div>
-      <div class="stock-name">{{ stock.name !== stock.ticker ? stock.name : '—' }}</div>
+      <div class="stock-name" [title]="stock.name !== stock.ticker ? stock.name : ''">{{ displayName }}</div>
       <div class="stock-sector">{{ stock.sector }}</div>
       <div class="card-footer">
         <div class="price">
@@ -32,12 +33,14 @@ import { Stock } from '../../models/stock.model';
     </div>
   `,
   styles: [`
+    :host { display: block; }
     .stock-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 16px;
       cursor: pointer;
+      display: flex; flex-direction: column; height: 100%;
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
       &:hover {
         transform: translateY(-2px);
@@ -46,7 +49,8 @@ import { Stock } from '../../models/stock.model';
       }
     }
     .card-header {
-      display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 10px; gap: 4px;
     }
     .ticker-badge {
       font-size: 15px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 10px; border-radius: 6px;
@@ -65,7 +69,13 @@ import { Stock } from '../../models/stock.model';
     }
     .stock-name { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .stock-sector { font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; }
-    .card-footer { display: flex; justify-content: space-between; gap: 8px; }
+    .nota-badge {
+      font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 20px;
+      &.nota-high { background: rgba(104,211,145,0.2); color: #68d391; }
+      &.nota-mid  { background: rgba(246,173,85,0.2);  color: #f6ad55; }
+      &.nota-low  { background: rgba(252,129,74,0.2);  color: #fc814a; }
+    }
+    .card-footer { display: flex; justify-content: space-between; gap: 8px; margin-top: auto; }
     .price, .change { display: flex; flex-direction: column; gap: 2px; }
     .label { font-size: 11px; color: var(--text-secondary); }
     .value { font-size: 13px; font-weight: 600; color: var(--text-primary); }
@@ -89,5 +99,16 @@ export class StockCardComponent {
     if (this.stock.dividendYield >= 9) return 'yield-high';
     if (this.stock.dividendYield >= 6) return 'yield-mid';
     return 'yield-low';
+  }
+
+  get displayName(): string {
+    const name = this.stock.name !== this.stock.ticker ? this.stock.name : '—';
+    return name.length > 20 ? name.slice(0, 20) + '…' : name;
+  }
+
+  get notaClass(): string {
+    if (this.stock.nota >= 8) return 'nota-high';
+    if (this.stock.nota >= 5) return 'nota-mid';
+    return 'nota-low';
   }
 }

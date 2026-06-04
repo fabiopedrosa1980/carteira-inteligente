@@ -71,6 +71,11 @@ function generateDividends(ticker: string): DividendRecord[] {
 
 const INITIAL_TICKERS = ['BBAS3','BBSE3','PETR4','ITUB3','BRAP4','CMIG4','CPFE3','CSMG3','ISAE4','CXSE3'];
 
+function calcNota(dy: number): number {
+  if (dy <= 0) return 0;
+  return Math.max(1, Math.min(10, Math.round(dy)));
+}
+
 function buildInitialStocks(): Stock[] {
   return INITIAL_TICKERS.map(ticker => ({
     ticker,
@@ -79,6 +84,7 @@ function buildInitialStocks(): Stock[] {
     price: 0,
     changePercent: 0,
     dividendYield: 0,
+    nota: 0,
     dividends: generateDividends(ticker),
   }));
 }
@@ -111,6 +117,7 @@ export class StockDataService {
             price: q.price || stock.price,
             changePercent: q.changePercent,
             dividendYield: q.dividendYield || stock.dividendYield,
+            nota: calcNota(q.dividendYield || stock.dividendYield),
           };
         })
       );

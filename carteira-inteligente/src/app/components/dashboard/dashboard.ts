@@ -6,7 +6,7 @@ import { DividendCalendarComponent } from '../dividend-calendar/dividend-calenda
 import { BestMonthComponent } from '../best-month/best-month';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
 
-type SortField = 'name' | 'sector' | 'dy' | 'default';
+type SortField = 'name' | 'sector' | 'dy' | 'nota' | 'default';
 
 @Component({
   selector: 'app-dashboard',
@@ -219,7 +219,7 @@ type SortField = 'name' | 'sector' | 'dy' | 'default';
 
     .stocks-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(5, 1fr);
       gap: 14px; margin-bottom: 32px;
     }
 
@@ -281,6 +281,7 @@ export class DashboardComponent {
     { label: 'Nome', field: 'name' },
     { label: 'Setor', field: 'sector' },
     { label: 'DY', field: 'dy' },
+    { label: 'Nota', field: 'nota' },
   ];
 
   setSort(field: SortField) {
@@ -288,7 +289,7 @@ export class DashboardComponent {
       this.sortAsc.update(v => !v);
     } else {
       this.sortField.set(field);
-      this.sortAsc.set(field === 'dy' ? false : true);
+      this.sortAsc.set(field === 'dy' || field === 'nota' ? false : true);
     }
   }
 
@@ -304,6 +305,7 @@ export class DashboardComponent {
       if (field === 'name') cmp = a.name.localeCompare(b.name, 'pt-BR');
       else if (field === 'sector') cmp = a.sector.localeCompare(b.sector, 'pt-BR');
       else if (field === 'dy') cmp = a.dividendYield - b.dividendYield;
+      else if (field === 'nota') cmp = a.nota - b.nota;
       return asc ? cmp : -cmp;
     });
   });

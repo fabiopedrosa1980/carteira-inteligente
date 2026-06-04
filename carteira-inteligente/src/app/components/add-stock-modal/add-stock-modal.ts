@@ -354,13 +354,15 @@ export class AddStockModalComponent implements OnDestroy {
       }
     }
 
+    const dy = this.form.dividendYield ?? 0;
     const stock: Stock = {
       ticker: this.form.ticker,
       name: this.form.name,
       sector: this.form.sector || 'Outro',
       price: this.form.price!,
       changePercent: this.changePercent ?? 0,
-      dividendYield: this.form.dividendYield ?? 0,
+      dividendYield: dy,
+      nota: dy > 0 ? Math.max(1, Math.min(10, Math.round(dy))) : 0,
       dividends,
     };
 

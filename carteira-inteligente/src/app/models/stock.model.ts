@@ -14,6 +14,7 @@ export interface Stock {
   price: number;
   changePercent: number;
   dividendYield: number;
+  nota: number;
   dividends: DividendRecord[];
 }
 

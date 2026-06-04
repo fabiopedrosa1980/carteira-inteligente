@@ -1,9 +1,94 @@
 const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
+const swaggerUi = require('swagger-ui-express');
 
 const app = express();
 app.use(cors());
+
+const swaggerSpec = {
+  openapi: '3.0.0',
+  info: {
+    title: 'Carteira Inteligente — Proxy API',
+    version: '1.0.0',
+    description: 'Proxy que agrega dados de cotações da B3 via Yahoo Finance e Status Invest.',
+  },
+  servers: [{ url: 'http://localhost:3001', description: 'Local' }],
+  components: {
+    schemas: {
+      StockQuote: {
+        type: 'object',
+        properties: {
+          ticker:        { type: 'string',  example: 'BBAS3' },
+          name:          { type: 'string',  example: 'Banco do Brasil S.A.' },
+          price:         { type: 'number',  example: 19.53 },
+          changePercent: { type: 'number',  example: -1.81 },
+          prevClose:     { type: 'number',  example: 19.89 },
+          dividendYield: { type: 'number',  example: 2.82 },
+          sector:        { type: 'string',  example: 'Bancário' },
+          found:         { type: 'boolean', example: true },
+        },
+      },
+      HealthResponse: {
+        type: 'object',
+        properties: {
+          status: { type: 'string', example: 'ok' },
+          time:   { type: 'string', format: 'date-time' },
+        },
+      },
+    },
+  },
+  paths: {
+    '/api/quotes': {
+      get: {
+        summary: 'Cotações em lote',
+        description: 'Retorna cotações para uma lista de tickers separados por vírgula.',
+        parameters: [{
+          name: 'tickers', in: 'query', required: true,
+          schema: { type: 'string', example: 'BBAS3,BBSE3,PETR4' },
+          description: 'Tickers separados por vírgula',
+        }],
+        responses: {
+          200: {
+            description: 'Lista de cotações',
+            content: { 'application/json': { schema: { type: 'array', items: { $ref: '#/components/schemas/StockQuote' } } } },
+          },
+        },
+      },
+    },
+    '/api/quote/{ticker}': {
+      get: {
+        summary: 'Cotação individual',
+        description: 'Retorna a cotação de um único ticker.',
+        parameters: [{
+          name: 'ticker', in: 'path', required: true,
+          schema: { type: 'string', example: 'BBAS3' },
+          description: 'Código do ticker (ex: BBAS3)',
+        }],
+        responses: {
+          200: {
+            description: 'Cotação do ticker',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/StockQuote' } } },
+          },
+        },
+      },
+    },
+    '/health': {
+      get: {
+        summary: 'Health check',
+        description: 'Verifica se o servidor está no ar.',
+        responses: {
+          200: {
+            description: 'Servidor operacional',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/HealthResponse' } } },
+          },
+        },
+      },
+    },
+  },
+};
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const SECTOR_MAP = {
   'Financial Services': 'Bancário',

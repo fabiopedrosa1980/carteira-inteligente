@@ -1,0 +1,45 @@
+<div class="calendar-section">
+  <h2 class="section-title">
+    <span class="icon">📅</span>
+    Calendário Mensal de Dividendos
+  </h2>
+  <p class="section-subtitle">Pagamentos mensais de dividendos por ano</p>
+
+  <div class="year-selector">
+    <button *ngFor="let y of years" [class.active]="y === selectedYear" (click)="selectYear(y)">{{ y }}</button>
+  </div>
+
+  <div class="calendar-grid">
+    <div *ngFor="let summary of summaries; let i = index"
+         class="month-card"
+         [class.has-dividends]="summary.tickers.length > 0"
+         [class.top-month]="isTopMonth(summary)">
+      <div class="month-header">
+        <div class="month-name-row">
+          <span class="month-name">{{ summary.monthName }}</span>
+          <span class="top-badge" *ngIf="isTopMonth(summary)">🏆 Top mês</span>
+        </div>
+        <span class="month-count" *ngIf="summary.tickers.length > 0">
+          {{ summary.tickers.length }} ações
+        </span>
+      </div>
+
+      <div class="tickers-list" *ngIf="summary.tickers.length > 0">
+        <span *ngFor="let t of summary.tickers" class="ticker-chip">{{ t }}</span>
+      </div>
+      <div class="no-dividends" *ngIf="summary.tickers.length === 0">Sem pagamentos</div>
+
+      <div class="month-stats" *ngIf="summary.tickers.length > 0">
+        <div class="stat">
+          <span class="stat-label">Total médio</span>
+          <span class="stat-value">R$ {{ summary.totalDividends | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Yield médio</span>
+          <span class="stat-value accent">{{ summary.avgYield | number:'1.2-2' }}%</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,7 +1,7 @@
 <div class="overlay" (click)="onOverlayClick($event)">
   <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-header">
-      <h2>Adicionar Ação</h2>
+      <h2>Adicionar Lançamentos</h2>
       <button class="close-btn" (click)="close.emit()">✕</button>
     </div>
 
@@ -76,30 +76,13 @@
         </div>
       </div>
 
-      <!-- Dividendos mensais -->
-      <div class="form-section">
-        <h3>Padrão Mensal de Dividendos</h3>
-        <p class="hint">Selecione os meses em que a ação costuma pagar e informe o valor médio por cota.</p>
-        <div class="dividend-grid">
-          <div *ngFor="let entry of dividendEntries" class="div-entry" [class.active]="entry.enabled">
-            <label class="div-checkbox">
-              <input type="checkbox" [(ngModel)]="entry.enabled" />
-              <span class="month-label">{{ MONTHS[entry.month - 1] }}</span>
-            </label>
-            <input *ngIf="entry.enabled" [(ngModel)]="entry.value"
-                   type="number" min="0" step="0.0001"
-                   placeholder="R$" class="div-input" />
-          </div>
-        </div>
-      </div>
-
       <div class="form-error" *ngIf="globalError">{{ globalError }}</div>
     </div>
 
     <div class="modal-footer">
       <button class="btn-cancel" (click)="close.emit()">Cancelar</button>
       <button class="btn-save" (click)="save()" [disabled]="saving() || fetching()">
-        {{ saving() ? 'Salvando...' : '+ Adicionar Ação' }}
+        {{ saving() ? 'Salvando...' : '+ Adicionar Lançamentos' }}
       </button>
     </div>
   </div>

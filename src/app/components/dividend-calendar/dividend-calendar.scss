@@ -4,6 +4,7 @@
   margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
 }
 .section-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+
 .year-selector {
   display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
   button {
@@ -11,14 +12,16 @@
     background: var(--card-bg); color: var(--text-secondary);
     cursor: pointer; font-size: 13px; transition: all 0.2s;
     &:hover { border-color: var(--accent); color: var(--accent); }
-    &.active { background: var(--accent); color: #0d1117; border-color: var(--accent); font-weight: 600; }
+    &.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
   }
 }
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 12px;
 }
+
 .month-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -27,26 +30,61 @@
   min-height: 120px;
   position: relative;
   transition: border-color 0.2s;
-  &.has-dividends { border-color: rgba(99,179,237,0.25); }
+
+  &.has-dividends { border-color: rgba(99,179,237,0.3); }
   &.top-month { border-color: rgba(246,173,85,0.5); background: rgba(246,173,85,0.04); }
 }
+
 .month-header {
   display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
 }
 .month-name-row { display: flex; align-items: center; gap: 6px; }
 .month-name { font-size: 14px; font-weight: 700; color: var(--text-primary); }
-.month-count { font-size: 11px; background: rgba(99,179,237,0.15); color: #63b3ed; padding: 2px 7px; border-radius: 10px; }
+
+.month-count {
+  font-size: 11px; padding: 2px 7px; border-radius: 10px;
+  background: rgba(99,179,237,0.15); color: #63b3ed;
+}
+
 .tickers-list { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
 .ticker-chip {
-  font-size: 10px; font-weight: 600; padding: 2px 6px;
-  background: rgba(99,179,237,0.1); color: #63b3ed; border-radius: 4px;
+  font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px;
+  background: rgba(99,179,237,0.1); color: #63b3ed;
 }
+
 .no-dividends { font-size: 12px; color: var(--text-secondary); font-style: italic; margin-bottom: 10px; }
+
 .month-stats { display: flex; gap: 12px; }
 .stat { display: flex; flex-direction: column; gap: 1px; }
 .stat-label { font-size: 10px; color: var(--text-secondary); }
-.stat-value { font-size: 13px; font-weight: 600; color: var(--text-primary); &.accent { color: #68d391; } }
+.stat-value {
+  font-size: 13px; font-weight: 600; color: var(--text-primary);
+  &.accent { color: #68d391; }
+}
+
 .top-badge {
   font-size: 10px; background: rgba(246,173,85,0.2); color: #f6ad55;
   padding: 2px 6px; border-radius: 4px;
+}
+
+/* Light theme overrides */
+:host-context(body.light-theme) {
+  .month-card {
+    &.has-dividends { border-color: rgba(26,127,75,0.35); }
+    &.top-month { border-color: rgba(180,100,20,0.4); background: rgba(255,200,100,0.06); }
+  }
+
+  .month-count {
+    background: rgba(26,127,75,0.12); color: #1a7f4b;
+  }
+
+  .ticker-chip {
+    background: rgba(26,127,75,0.1); color: #1a7f4b;
+  }
+
+  .stat-value.accent { color: #1a7f4b; }
+
+  .top-badge {
+    background: rgba(180,100,20,0.12); color: #b45c0a;
+  }
 }

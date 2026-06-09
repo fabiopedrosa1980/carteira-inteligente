@@ -13,7 +13,7 @@ Aplicação web para acompanhamento de dividendos de ações da B3. Exibe cotaç
 ## Estrutura do projeto
 
 ```
-carteira-inteligente/   # Frontend Angular
+src/                    # Frontend Angular
 proxy/                  # Proxy Node.js (evita CORS nas APIs externas)
 ```
 
@@ -37,7 +37,6 @@ O proxy sobe em `http://localhost:3001`.
 ### 2. Frontend Angular
 
 ```bash
-cd carteira-inteligente
 npm install
 ng serve
 ```

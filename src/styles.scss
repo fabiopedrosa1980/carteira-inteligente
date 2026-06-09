@@ -8,6 +8,34 @@
   --accent: #63b3ed;
   --text-primary: #e6edf3;
   --text-secondary: #7d8590;
+
+  /* Semantic color tokens */
+  --color-pos: #68d391;
+  --color-neg: #fc8181;
+  --color-warning: #f6ad55;
+  --btn-accent-text: #0d1117;
+  --btn-accent-hover: #90cdf4;
+  --shadow-hover: rgba(99,179,237,0.15);
+  --input-bg: #0d1117;
+}
+
+body.light-theme {
+  --bg: #f6f8fa;
+  --header-bg: #ffffff;
+  --card-bg: #ffffff;
+  --border: #d0d7de;
+  --accent: #1a7f4b;
+  --text-primary: #1f2328;
+  --text-secondary: #656d76;
+
+  /* Semantic color tokens */
+  --color-pos: #1a7f4b;
+  --color-neg: #cf222e;
+  --color-warning: #b45c0a;
+  --btn-accent-text: #ffffff;
+  --btn-accent-hover: #1f9d5e;
+  --shadow-hover: rgba(26,127,75,0.15);
+  --input-bg: #f6f8fa;
 }
 
 html, body {

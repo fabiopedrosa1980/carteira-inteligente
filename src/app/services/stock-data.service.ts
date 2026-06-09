@@ -1,6 +1,8 @@
 import { Injectable, signal } from '@angular/core';
+import { forkJoin, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { Stock, DividendRecord, MonthSummary, BestMonthAnalysis } from '../models/stock.model';
-import { BackendApiService } from './backend-api.service';
+import { BackendApiService, ApiDividend } from './backend-api.service';
 
 const MONTH_NAMES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 const FULL_MONTH_NAMES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
@@ -18,17 +20,31 @@ export class StockDataService {
   }
 
   private fetchPortfolioStocks(): void {
-    this.api.getStocks().subscribe({
-      next: apiStocks => {
-        this._stocks.set(apiStocks.map(s => ({
+    this.api.getStocks().pipe(
+      switchMap(apiStocks => {
+        if (apiStocks.length === 0) return of({ apiStocks, allDividends: [] as ApiDividend[][] });
+        return forkJoin(apiStocks.map(s => this.api.getStockDividends(s.id))).pipe(
+          map(allDividends => ({ apiStocks, allDividends }))
+        );
+      })
+    ).subscribe({
+      next: ({ apiStocks, allDividends }) => {
+        this._stocks.set(apiStocks.map((s, i) => ({
           ticker: s.ticker,
           name: s.name || s.ticker,
           sector: s.sector || 'Other',
           price: s.current_price ?? 0,
           changePercent: s.daily_change ?? 0,
-          dividendYield: s.dividend_yield ?? 0,
+          dividendYield: s.dy ?? 0,
           nota: s.score ?? 0,
-          dividends: [],
+          dividends: (allDividends[i] ?? []).map(d => ({
+            year: d.year,
+            month: d.month,
+            value: d.amount,
+            type: d.type as DividendRecord['type'],
+            exDate: d.ex_date,
+            payDate: d.pay_date,
+          })),
         })));
         this._loading.set(false);
       },

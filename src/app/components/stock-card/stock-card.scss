@@ -1,4 +1,5 @@
 :host { display: block; }
+
 .stock-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -10,40 +11,58 @@
   &:hover {
     transform: translateY(-2px);
     border-color: var(--accent);
-    box-shadow: 0 4px 20px rgba(99,179,237,0.15);
+    box-shadow: 0 4px 20px var(--shadow-hover);
   }
 }
+
 .card-header {
   display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 10px; gap: 4px;
 }
+
 .ticker-badge {
   font-size: 15px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 10px; border-radius: 6px;
-  &.sector-bancario { background: rgba(99,179,237,0.15); color: #63b3ed; }
-  &.sector-seguros { background: rgba(154,230,180,0.15); color: #9ae6b4; }
-  &.sector-petroleo { background: rgba(252,129,74,0.15); color: #fc814a; }
-  &.sector-mineracao { background: rgba(246,173,85,0.15); color: #f6ad55; }
-  &.sector-energia { background: rgba(183,148,246,0.15); color: #b794f6; }
-  &.sector-saneamento { background: rgba(129,230,217,0.15); color: #81e6d9; }
+  &.sector-bancario   { background: rgba(99,179,237,0.15);  color: #63b3ed; }
+  &.sector-seguros    { background: rgba(154,230,180,0.15); color: #48b67a; }
+  &.sector-petroleo   { background: rgba(252,129,74,0.15);  color: #e07040; }
+  &.sector-mineracao  { background: rgba(246,173,85,0.15);  color: #d48f30; }
+  &.sector-energia    { background: rgba(183,148,246,0.15); color: #9f7ae0; }
+  &.sector-saneamento { background: rgba(129,230,217,0.15); color: #3ab5a8; }
 }
+
 .yield-badge {
   font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 20px;
-  &.yield-high { background: rgba(154,230,180,0.2); color: #68d391; }
-  &.yield-mid { background: rgba(246,173,85,0.2); color: #f6ad55; }
-  &.yield-low { background: rgba(160,174,192,0.2); color: #a0aec0; }
+  &.yield-high { background: rgba(104,211,145,0.15); color: var(--color-pos); }
+  &.yield-mid  { background: rgba(246,173,85,0.15);  color: var(--color-warning); }
+  &.yield-low  { background: rgba(160,174,192,0.15); color: var(--text-secondary); }
 }
-.stock-name { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.stock-name   { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .stock-sector { font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; }
+
 .nota-badge {
   font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 20px;
-  &.nota-high { background: rgba(104,211,145,0.2); color: #68d391; }
-  &.nota-mid  { background: rgba(246,173,85,0.2);  color: #f6ad55; }
-  &.nota-low  { background: rgba(252,129,74,0.2);  color: #fc814a; }
+  &.nota-high { background: rgba(104,211,145,0.15); color: var(--color-pos); }
+  &.nota-mid  { background: rgba(246,173,85,0.15);  color: var(--color-warning); }
+  &.nota-low  { background: rgba(252,129,74,0.15);  color: var(--color-neg); }
 }
+
 .card-footer { display: flex; justify-content: space-between; gap: 8px; margin-top: auto; }
 .price, .change { display: flex; flex-direction: column; gap: 2px; }
 .label { font-size: 11px; color: var(--text-secondary); }
 .value { font-size: 13px; font-weight: 600; color: var(--text-primary); }
 .value.loading { color: var(--text-secondary); }
-.value.pos { color: #68d391; }
-.value.neg { color: #fc8181; }
+.value.pos { color: var(--color-pos); }
+.value.neg { color: var(--color-neg); }
+
+/* Light theme: sector badges with more contrast */
+:host-context(body.light-theme) {
+  .ticker-badge {
+    &.sector-bancario   { background: rgba(9,105,218,0.1);  color: #0550ae; }
+    &.sector-seguros    { background: rgba(26,127,75,0.1);  color: #116329; }
+    &.sector-petroleo   { background: rgba(207,34,46,0.1);  color: #a40e26; }
+    &.sector-mineracao  { background: rgba(180,100,20,0.1); color: #7d4e00; }
+    &.sector-energia    { background: rgba(130,80,200,0.1); color: #6639ba; }
+    &.sector-saneamento { background: rgba(23,130,121,0.1); color: #0e7872; }
+  }
+}

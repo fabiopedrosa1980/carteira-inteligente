@@ -12,8 +12,9 @@
 .logo-text strong { color: var(--accent); }
 .header-subtitle { font-size: 13px; color: var(--text-secondary); }
 
-.header-right { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.header-stats { display: flex; gap: 12px; flex-wrap: wrap; }
+.portfolio-stats {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;
+}
 .stat-pill {
   display: flex; flex-direction: column; align-items: center;
   background: var(--card-bg); border: 1px solid var(--border);
@@ -24,23 +25,25 @@
 .sp-value.accent { color: var(--accent); }
 .sp-value.green { color: #68d391; }
 
-.btn-add {
-  background: var(--accent); border: none; color: #0d1117;
-  padding: 10px 18px; border-radius: 10px; cursor: pointer;
-  font-size: 13px; font-weight: 700; white-space: nowrap;
-  transition: background 0.2s;
-  &:hover { background: #90cdf4; }
+.btn-theme {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 12px; cursor: pointer;
+  font-size: 18px; line-height: 1; transition: all 0.2s;
+  &:hover { border-color: var(--accent); background: var(--bg); }
 }
 
+/* Portfolio stats pills */
+
 .tab-nav {
-  display: flex; gap: 4px; padding: 16px 32px;
+  display: flex; gap: 4px; padding: 0 32px;
   border-bottom: 1px solid var(--border); background: var(--header-bg);
   button {
-    padding: 8px 18px; border-radius: 8px; border: none;
+    padding: 14px 18px; border: none; border-bottom: 2px solid transparent;
     background: transparent; color: var(--text-secondary);
     cursor: pointer; font-size: 14px; font-weight: 500; transition: all 0.2s;
-    &:hover { background: var(--card-bg); color: var(--text-primary); }
-    &.active { background: var(--accent); color: #0d1117; font-weight: 600; }
+    margin-bottom: -1px;
+    &:hover { color: var(--text-primary); }
+    &.active { color: var(--text-primary); border-bottom-color: var(--text-primary); font-weight: 600; }
   }
 }
 
@@ -126,9 +129,3 @@
 .sc-icon { font-size: 24px; }
 .sc-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 2px; }
 .sc-value { font-size: 15px; font-weight: 700; color: var(--text-primary); }
-
-.dashboard-footer {
-  text-align: center; padding: 20px 32px;
-  border-top: 1px solid var(--border);
-  font-size: 12px; color: var(--text-secondary);
-}

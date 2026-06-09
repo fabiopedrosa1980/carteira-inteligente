@@ -19,7 +19,7 @@ export class DividendCalendarComponent implements OnInit {
   constructor(private api: BackendApiService) {}
 
   ngOnInit(): void {
-    this.loadCalendar(this.selectedYear);
+    this.selectYear(this.selectedYear);
   }
 
   selectYear(year: number): void {

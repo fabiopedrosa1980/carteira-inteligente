@@ -10,7 +10,18 @@ export interface ApiStock {
   score: number;
   current_price: number;
   daily_change: number;
-  dividend_yield: number;
+  dy: number;
+}
+
+export interface ApiDividend {
+  id: number;
+  stock_id: number;
+  amount: number;
+  month: number;
+  year: number;
+  type: string;
+  ex_date: string;
+  pay_date: string;
 }
 
 export interface ApiMonthSummary {
@@ -31,6 +42,12 @@ export class BackendApiService {
   getStocks(): Observable<ApiStock[]> {
     return this.http
       .get<ApiStock[]>(`${this.baseUrl}/stocks`)
+      .pipe(catchError(() => of([])));
+  }
+
+  getStockDividends(id: number): Observable<ApiDividend[]> {
+    return this.http
+      .get<ApiDividend[]>(`${this.baseUrl}/stocks/${id}/dividends`)
       .pipe(catchError(() => of([])));
   }
 

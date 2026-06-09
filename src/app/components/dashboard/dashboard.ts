@@ -4,19 +4,30 @@ import { StockDataService } from '../../services/stock-data.service';
 import { StockCardComponent } from '../stock-card/stock-card';
 import { DividendCalendarComponent } from '../dividend-calendar/dividend-calendar';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
+import { MeusAtivosComponent } from '../meus-ativos/meus-ativos';
 
 type SortField = 'name' | 'sector' | 'dy' | 'nota' | 'price' | 'default';
+
+const THEME_KEY = 'ci-theme';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, StockCardComponent, DividendCalendarComponent, AddStockModalComponent],
+  imports: [CommonModule, StockCardComponent, DividendCalendarComponent, AddStockModalComponent, MeusAtivosComponent],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
 })
 export class DashboardComponent {
   showModal = false;
-  activeTab = 'portfolio';
+  activeTab = 'meus-ativos';
+  isDark = signal(localStorage.getItem(THEME_KEY) !== 'light');
+
+  toggleTheme() {
+    this.isDark.update(v => !v);
+    const next = this.isDark();
+    document.body.classList.toggle('light-theme', !next);
+    localStorage.setItem(THEME_KEY, next ? 'dark' : 'light');
+  }
 
   sortField = signal<SortField>('default');
   sortAsc = signal(true);
@@ -74,13 +85,15 @@ export class DashboardComponent {
   });
 
   tabs = [
-    { id: 'portfolio', label: 'Portfólio', icon: '💼' },
-    { id: 'calendar', label: 'Calendário', icon: '📅' },
+    { id: 'meus-ativos', label: 'Meus Ativos', icon: '📊' },
+    { id: 'portfolio', label: 'Minhas Ações', icon: '💼' },
+    { id: 'calendar', label: 'Dividendos', icon: '📅' },
   ];
 
   loading: Signal<boolean> = signal(true);
 
   constructor(readonly svc: StockDataService) {
     this.loading = svc.loading;
+    document.body.classList.toggle('light-theme', !this.isDark());
   }
 }

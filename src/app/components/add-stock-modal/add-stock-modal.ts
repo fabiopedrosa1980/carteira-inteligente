@@ -4,12 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { Subject, debounceTime, switchMap, distinctUntilChanged, takeUntil } from 'rxjs';
 import { StockDataService } from '../../services/stock-data.service';
 import { StockApiService } from '../../services/stock-api.service';
-import { Stock, DividendRecord } from '../../models/stock.model';
+import { Stock } from '../../models/stock.model';
 
 const SECTORS = ['Bancário','Seguros','Petróleo & Gás','Mineração','Energia Elétrica','Saneamento','Telecomunicações','Varejo','Agronegócio','Imobiliário','Saúde','Outro'];
-const MONTHS = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-
-interface DividendEntry { month: number; value: string; enabled: boolean; }
 
 @Component({
   selector: 'app-add-stock-modal',
@@ -22,7 +19,6 @@ export class AddStockModalComponent implements OnDestroy {
   @Output() close = new EventEmitter<void>();
   @Output() added = new EventEmitter<Stock>();
 
-  readonly MONTHS = MONTHS;
   sectors = SECTORS;
   saving = signal(false);
   fetching = signal(false);
@@ -41,10 +37,6 @@ export class AddStockModalComponent implements OnDestroy {
     dividendYield: null as number | null,
   };
   errors: { ticker?: string; name?: string; price?: string; dy?: string } = {};
-
-  dividendEntries: DividendEntry[] = MONTHS.map((_, i) => ({
-    month: i + 1, value: '', enabled: false,
-  }));
 
   private ticker$ = new Subject<string>();
   private destroy$ = new Subject<void>();
@@ -80,6 +72,7 @@ export class AddStockModalComponent implements OnDestroy {
 
       if (quote.name) { this.form.name = quote.name; this.autoFilled.name = true; }
       if (quote.price) { this.form.price = quote.price; this.autoFilled.price = true; }
+      if (quote.dividendYield) { this.form.dividendYield = quote.dividendYield; }
       if (quote.sector) {
         const matched = SECTORS.find(s =>
           s.toLowerCase().includes(quote.sector.toLowerCase()) ||
@@ -120,29 +113,9 @@ export class AddStockModalComponent implements OnDestroy {
     if (!this.form.price || this.form.price <= 0) this.errors.price = 'Preço inválido';
     if (this.form.dividendYield !== null && this.form.dividendYield < 0) this.errors.dy = 'Yield inválido';
 
-    const activeDividends = this.dividendEntries.filter(e => e.enabled);
-    if (activeDividends.length === 0) {
-      this.globalError = 'Informe pelo menos um mês com pagamento de dividendos.';
-    }
-
     if (Object.keys(this.errors).length > 0 || this.globalError) return;
 
     this.saving.set(true);
-    const dividends: DividendRecord[] = [];
-    for (const year of [2021, 2022, 2023, 2024, 2025]) {
-      for (const entry of activeDividends) {
-        const base = parseFloat(entry.value) || 0;
-        if (base <= 0) continue;
-        const variation = 0.9 + Math.random() * 0.2;
-        dividends.push({
-          year, month: entry.month,
-          value: parseFloat((base * variation).toFixed(4)),
-          type: 'dividendo',
-          exDate: `${year}-${String(entry.month).padStart(2,'0')}-15`,
-          payDate: `${year}-${String(entry.month).padStart(2,'0')}-20`,
-        });
-      }
-    }
 
     const dy = this.form.dividendYield ?? 0;
     const stock: Stock = {
@@ -153,7 +126,7 @@ export class AddStockModalComponent implements OnDestroy {
       changePercent: this.changePercent ?? 0,
       dividendYield: dy,
       nota: dy > 0 ? Math.max(1, Math.min(10, Math.round(dy))) : 0,
-      dividends,
+      dividends: [],
     };
 
     this.svc.addStock(stock);

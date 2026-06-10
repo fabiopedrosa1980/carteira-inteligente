@@ -61,24 +61,6 @@
       </div>
       <div class="stocks-grid">
         <app-stock-card *ngFor="let stock of sortedStocks()" [stock]="stock"></app-stock-card>
-        <div class="add-card" (click)="showModal = true">
-          <div class="add-card-header">
-            <div class="add-ticker-badge">+ Nova</div>
-            <div class="add-yield-badge">0,0% a.a.</div>
-          </div>
-          <div class="add-card-name">Adicionar Lançamentos</div>
-          <div class="add-card-sector">Clique para cadastrar</div>
-          <div class="add-card-footer">
-            <div class="add-stat">
-              <span class="label">Preço</span>
-              <span class="value">R$ —</span>
-            </div>
-            <div class="add-stat">
-              <span class="label">Pagamentos</span>
-              <span class="value">—</span>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="summary-cards">

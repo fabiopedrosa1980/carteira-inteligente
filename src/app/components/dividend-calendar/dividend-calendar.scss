@@ -1,4 +1,7 @@
-.calendar-section { margin-bottom: 40px; }
+.calendar-section {
+  margin-bottom: 40px;
+  @media (max-width: 480px) { margin-bottom: 24px; }
+}
 .section-title {
   font-size: 20px; font-weight: 700; color: var(--text-primary);
   margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
@@ -20,6 +23,13 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 12px;
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  @media (max-width: 360px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .month-card {

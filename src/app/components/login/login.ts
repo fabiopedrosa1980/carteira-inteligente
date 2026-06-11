@@ -49,6 +49,7 @@ export class LoginComponent implements AfterViewInit {
       this.loading.set(true);
       this.error.set(null);
       const payload = this.auth.parseJwt(response.credential);
+      this.auth.setToken(response.credential);
       this.auth.setUser({
         name: payload.name,
         email: payload.email,

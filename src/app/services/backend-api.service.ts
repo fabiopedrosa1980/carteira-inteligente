@@ -87,4 +87,19 @@ export class BackendApiService {
   deleteTransaction(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/transactions/${id}`);
   }
+
+  getAcoes(): Observable<ApiAcaoItem[]> {
+    return this.http
+      .get<ApiAcaoItem[]>(`${this.baseUrl}/transactions/acoes`)
+      .pipe(catchError(() => of([])));
+  }
+}
+
+export interface ApiAcaoItem {
+  ticker: string;
+  name: string;
+  total_quantity: number;
+  avg_price: number;
+  current_price: number;
+  change_percent: number;
 }

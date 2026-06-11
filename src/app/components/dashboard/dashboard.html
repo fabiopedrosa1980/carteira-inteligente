@@ -27,21 +27,24 @@
       <div class="portfolio-stats">
         <div class="stat-pill">
           <span class="sp-label">Ações</span>
-          <span class="sp-value">{{ stocks().length }}</span>
+          <span class="sp-value">{{ acoes().length }}</span>
         </div>
         <div class="stat-pill">
-          <span class="sp-label">Yield Médio</span>
-          <span class="sp-value accent">{{ avgYield() | number:'1.1-1' }}%</span>
+          <span class="sp-label">Maior Alta</span>
+          <span class="sp-value accent">
+            {{ maxChange() >= 0 ? '+' : '' }}{{ maxChange() | number:'1.2-2' }}%
+          </span>
         </div>
         <div class="stat-pill">
-          <span class="sp-label">Maior Yield</span>
-          <span class="sp-value green">{{ maxYield() | number:'1.1-1' }}%</span>
+          <span class="sp-label">Destaque</span>
+          <span class="sp-value green">{{ topChangeStock()?.ticker ?? '—' }}</span>
         </div>
       </div>
+
       <div class="section-header">
         <div>
           <h2 class="section-title"><span class="icon">💼</span> Minhas Ações</h2>
-          <p class="section-subtitle">Ações selecionadas com histórico consistente de dividendos</p>
+          <p class="section-subtitle">Suas posições em ações com cotação em tempo real</p>
         </div>
         <div class="sort-controls">
           <span class="sort-label">Ordenar por</span>
@@ -55,29 +58,19 @@
           </button>
         </div>
       </div>
-      <div class="loading-bar" *ngIf="loading()">
+
+      <div class="loading-bar" *ngIf="acoesLoading()">
         <div class="loading-bar-fill"></div>
         <span>Buscando cotações em tempo real…</span>
       </div>
-      <div class="stocks-grid">
-        <app-stock-card *ngFor="let stock of sortedStocks()" [stock]="stock"></app-stock-card>
+
+      <div class="empty-portfolio" *ngIf="!acoesLoading() && acoes().length === 0">
+        <span class="empty-icon">📭</span>
+        <p>Nenhuma ação encontrada. Adicione lançamentos do tipo <strong>Ações</strong> na aba Meus Ativos.</p>
       </div>
 
-      <div class="summary-cards">
-        <div class="summary-card">
-          <div class="sc-icon">💰</div>
-          <div class="sc-content">
-            <div class="sc-label">Maior Dividend Yield</div>
-            <div class="sc-value">{{ topYieldStock()?.ticker }} · {{ topYieldStock()?.dividendYield | number:'1.1-1' }}%</div>
-          </div>
-        </div>
-        <div class="summary-card">
-          <div class="sc-icon">🏢</div>
-          <div class="sc-content">
-            <div class="sc-label">Setor com mais ações</div>
-            <div class="sc-value">{{ topSector() }}</div>
-          </div>
-        </div>
+      <div class="stocks-grid" *ngIf="!acoesLoading() && acoes().length > 0">
+        <app-stock-card *ngFor="let stock of sortedStocks()" [stock]="stock"></app-stock-card>
       </div>
     </div>
 

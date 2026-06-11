@@ -1,10 +1,12 @@
-import { Component, computed, signal, Signal } from '@angular/core';
+import { Component, computed, signal, Signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StockDataService } from '../../services/stock-data.service';
+import { BackendApiService, ApiAcaoItem } from '../../services/backend-api.service';
 import { StockCardComponent } from '../stock-card/stock-card';
 import { DividendCalendarComponent } from '../dividend-calendar/dividend-calendar';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
 import { MeusAtivosComponent } from '../meus-ativos/meus-ativos';
+import { Stock } from '../../models/stock.model';
 
 type SortField = 'name' | 'sector' | 'dy' | 'nota' | 'price' | 'default';
 
@@ -18,9 +20,14 @@ const THEME_KEY = 'ci-theme';
   styleUrls: ['./dashboard.scss'],
 })
 export class DashboardComponent {
+  private readonly api = inject(BackendApiService);
+
   showModal = false;
   activeTab = 'meus-ativos';
   isDark = signal(localStorage.getItem(THEME_KEY) !== 'light');
+
+  readonly acoes = signal<Stock[]>([]);
+  readonly acoesLoading = signal(true);
 
   toggleTheme() {
     this.isDark.update(v => !v);
@@ -34,10 +41,8 @@ export class DashboardComponent {
 
   sortOptions: { label: string; field: SortField }[] = [
     { label: 'Nome', field: 'name' },
-    { label: 'Setor', field: 'sector' },
-    { label: 'DY', field: 'dy' },
-    { label: 'Nota', field: 'nota' },
     { label: 'Preço', field: 'price' },
+    { label: 'Variação', field: 'dy' },
   ];
 
   setSort(field: SortField) {
@@ -49,10 +54,8 @@ export class DashboardComponent {
     }
   }
 
-  stocks = computed(() => this.svc.stocks());
-
   sortedStocks = computed(() => {
-    const list = [...this.stocks()];
+    const list = [...this.acoes()];
     const field = this.sortField();
     const asc = this.sortAsc();
     if (field === 'default') return list;
@@ -60,28 +63,24 @@ export class DashboardComponent {
       let cmp = 0;
       if (field === 'name') cmp = a.name.localeCompare(b.name, 'pt-BR');
       else if (field === 'sector') cmp = a.sector.localeCompare(b.sector, 'pt-BR');
-      else if (field === 'dy') cmp = a.dividendYield - b.dividendYield;
+      else if (field === 'dy') cmp = a.changePercent - b.changePercent;
       else if (field === 'nota') cmp = a.nota - b.nota;
       else if (field === 'price') cmp = a.price - b.price;
       return asc ? cmp : -cmp;
     });
   });
 
-  avgYield = computed(() =>
-    this.stocks().reduce((s, st) => s + st.dividendYield, 0) / (this.stocks().length || 1)
+  totalValue = computed(() =>
+    this.acoes().reduce((s, st) => s + st.price * (st.nota || 0), 0)
   );
-  maxYield = computed(() =>
-    Math.max(...this.stocks().map(s => s.dividendYield))
+
+  maxChange = computed(() =>
+    this.acoes().length ? Math.max(...this.acoes().map(s => s.changePercent)) : 0
   );
-  topYieldStock = computed(() => {
-    const max = this.maxYield();
-    return this.stocks().find(s => s.dividendYield === max);
-  });
-  topSector = computed(() => {
-    const counts: Record<string, number> = {};
-    for (const s of this.stocks()) counts[s.sector] = (counts[s.sector] ?? 0) + 1;
-    const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
-    return top ? `${top[0]} (${top[1]} ações)` : '-';
+
+  topChangeStock = computed(() => {
+    const max = this.maxChange();
+    return this.acoes().find(s => s.changePercent === max);
   });
 
   tabs = [
@@ -95,5 +94,26 @@ export class DashboardComponent {
   constructor(readonly svc: StockDataService) {
     this.loading = svc.loading;
     document.body.classList.toggle('light-theme', !this.isDark());
+    this.loadAcoes();
+  }
+
+  loadAcoes(): void {
+    this.acoesLoading.set(true);
+    this.api.getAcoes().subscribe({
+      next: (items: ApiAcaoItem[]) => {
+        this.acoes.set(items.map(item => ({
+          ticker: item.ticker,
+          name: item.name || item.ticker,
+          sector: 'Ações',
+          price: item.current_price,
+          changePercent: item.change_percent,
+          dividendYield: 0,
+          nota: item.total_quantity,
+          dividends: [],
+        })));
+        this.acoesLoading.set(false);
+      },
+      error: () => this.acoesLoading.set(false),
+    });
   }
 }

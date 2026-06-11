@@ -1,0 +1,95 @@
+<div class="login-page">
+
+  <!-- Background layers -->
+  <div class="grid-bg"></div>
+  <div class="orb orb--gold"></div>
+  <div class="orb orb--blue"></div>
+
+  <!-- Floating B3 tickers -->
+  <div class="ticker" style="left: 8%; top: 18%; animation-delay: 0s">BBAS3 +1.4%</div>
+  <div class="ticker ticker--neg" style="left: 72%; top: 12%; animation-delay: 3.5s">PETR4 −0.8%</div>
+  <div class="ticker" style="left: 82%; top: 55%; animation-delay: 7s">ITUB3 +2.1%</div>
+  <div class="ticker" style="left: 4%; top: 65%; animation-delay: 2s">CMIG4 +0.5%</div>
+  <div class="ticker ticker--neg" style="left: 55%; top: 78%; animation-delay: 5s">CSMG3 −0.3%</div>
+  <div class="ticker" style="left: 30%; top: 88%; animation-delay: 9s">BBSE3 +3.2%</div>
+
+  <!-- Chart silhouette -->
+  <svg class="chart-silhouette" viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="chartLine" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#C9A84C" stop-opacity="0"/>
+        <stop offset="30%" stop-color="#C9A84C" stop-opacity="1"/>
+        <stop offset="70%" stop-color="#C9A84C" stop-opacity="1"/>
+        <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="chartFill" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <polygon
+      points="0,380 80,340 160,360 240,290 320,310 400,240 480,270 560,190 640,220 720,160 800,185 880,115 960,135 1040,75 1120,95 1200,50 1320,68 1440,32 1440,400 0,400"
+      fill="url(#chartFill)"
+    />
+    <polyline
+      points="0,380 80,340 160,360 240,290 320,310 400,240 480,270 560,190 640,220 720,160 800,185 880,115 960,135 1040,75 1120,95 1200,50 1320,68 1440,32"
+      fill="none"
+      stroke="url(#chartLine)"
+      stroke-width="1.5"
+    />
+  </svg>
+
+  <!-- Login card -->
+  <div class="login-card">
+    <div class="card-accent"></div>
+
+    <!-- Brand -->
+    <header class="brand">
+      <div class="brand-icon" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="5" y="30" width="8" height="13" fill="#C9A84C" rx="1" opacity="0.5"/>
+          <rect x="20" y="20" width="8" height="23" fill="#C9A84C" rx="1" opacity="0.75"/>
+          <rect x="35" y="8" width="8" height="35" fill="#C9A84C" rx="1"/>
+          <path d="M9 26 L24 16 L39 6" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+          <circle cx="39" cy="6" r="2.5" fill="#C9A84C" opacity="0.7"/>
+        </svg>
+      </div>
+      <h1 class="brand-name">Carteira <em>Inteligente</em></h1>
+      <p class="brand-tagline">Dividendos · B3 · Ibovespa</p>
+    </header>
+
+    <!-- Separator -->
+    <div class="separator" role="separator">
+      <span></span>
+      <span>acesso seguro</span>
+      <span></span>
+    </div>
+
+    <!-- Sign-in -->
+    <div class="signin-section">
+      <div #googleBtnContainer class="google-btn-container"></div>
+
+      @if (loading()) {
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <span>Autenticando...</span>
+        </div>
+      }
+
+      @if (error()) {
+        <div class="error-state" role="alert">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+          </svg>
+          {{ error() }}
+        </div>
+      }
+    </div>
+
+    <!-- Footer -->
+    <footer class="card-footer">
+      <p class="footer-text">Dados via Yahoo Finance &amp; Status Invest</p>
+    </footer>
+  </div>
+
+</div>

@@ -8,13 +8,3 @@ export interface Transaction {
   quantity: number;
   price: number;
 }
-
-export interface PortfolioItem {
-  ticker: string;
-  assetType: AssetType;
-  totalQuantity: number;
-  avgPrice: number;
-  currentPrice: number;
-  changePercent: number;
-  dividendYield: number;
-}

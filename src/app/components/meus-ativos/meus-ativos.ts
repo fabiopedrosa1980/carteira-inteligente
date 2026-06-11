@@ -1,8 +1,8 @@
-import { Component, computed, signal, inject } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../../services/transaction.service';
 import { AddTransactionModalComponent } from '../add-transaction-modal/add-transaction-modal';
-import { AssetType, PortfolioItem } from '../../models/transaction.model';
+import { AssetType } from '../../models/transaction.model';
 
 @Component({
   selector: 'app-meus-ativos',
@@ -12,12 +12,7 @@ import { AssetType, PortfolioItem } from '../../models/transaction.model';
   styleUrls: ['./meus-ativos.scss'],
 })
 export class MeusAtivosComponent {
-  private readonly svc = inject(TransactionService);
-
   showModal = false;
-
-  readonly portfolio = this.svc.portfolio;
-  readonly loading = this.svc.portfolioLoading;
 
   sections: { id: AssetType; label: string; icon: string }[] = [
     { id: 'Acoes', label: 'Ações', icon: '📈' },
@@ -28,31 +23,23 @@ export class MeusAtivosComponent {
   collapsed = signal<Set<AssetType>>(new Set());
 
   sectionData = computed(() => {
-    const all = this.portfolio();
+    const all = this.svc.transactions();
     return {
-      Acoes: all.filter(p => p.assetType === 'Acoes'),
-      FIIs:  all.filter(p => p.assetType === 'FIIs'),
-      ETFs:  all.filter(p => p.assetType === 'ETFs'),
+      Acoes: all.filter(t => t.assetType === 'Acoes'),
+      FIIs: all.filter(t => t.assetType === 'FIIs'),
+      ETFs: all.filter(t => t.assetType === 'ETFs'),
     };
   });
 
-  totalCurrentValue = computed(() =>
-    this.portfolio().reduce((sum, p) => sum + p.totalQuantity * p.currentPrice, 0)
+  totalAll = computed(() =>
+    this.svc.transactions().reduce((sum, t) => sum + t.quantity * t.price, 0)
   );
 
-  totalFor(type: AssetType): number {
-    return (this.sectionData()[type] ?? []).reduce((s, p) => s + p.totalQuantity * p.currentPrice, 0);
-  }
-
-  plPercent(item: PortfolioItem): number {
-    if (item.avgPrice === 0) return 0;
-    return ((item.currentPrice - item.avgPrice) / item.avgPrice) * 100;
-  }
-
-  toggle(id: AssetType): void {
+  toggle(id: AssetType) {
     this.collapsed.update(set => {
       const next = new Set(set);
-      if (next.has(id)) next.delete(id); else next.add(id);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   }
@@ -61,7 +48,13 @@ export class MeusAtivosComponent {
     return this.collapsed().has(id);
   }
 
-  onModalClose(): void {
-    this.showModal = false;
+  totalFor(type: AssetType): number {
+    return (this.sectionData()[type] ?? []).reduce((s, t) => s + t.quantity * t.price, 0);
+  }
+
+  constructor(readonly svc: TransactionService) {}
+
+  remove(id: number) {
+    this.svc.remove(id);
   }
 }

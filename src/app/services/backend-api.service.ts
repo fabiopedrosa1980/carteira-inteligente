@@ -87,17 +87,4 @@ export class BackendApiService {
   deleteTransaction(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/transactions/${id}`);
   }
-
-  getPortfolio(): Observable<ApiPortfolioItem[]> {
-    return this.http
-      .get<ApiPortfolioItem[]>(`${this.baseUrl}/transactions/portfolio`)
-      .pipe(catchError(() => of([])));
-  }
-}
-
-export interface ApiPortfolioItem {
-  ticker: string;
-  asset_type: 'Acoes' | 'FIIs' | 'ETFs';
-  total_quantity: number;
-  avg_price: number;
 }

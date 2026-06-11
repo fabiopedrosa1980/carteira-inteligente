@@ -5,8 +5,8 @@
     <div class="ma-header-left">
       <h2 class="ma-title"><span class="ma-title-icon">📊</span> Meus Ativos</h2>
       <p class="ma-subtitle">
-        {{ portfolio().length }} ativo{{ portfolio().length !== 1 ? 's' : '' }}
-        · Valor atual: {{ totalCurrentValue() | currency:'BRL':'symbol':'1.2-2' }}
+        {{ svc.transactions().length }} lançamento{{ svc.transactions().length !== 1 ? 's' : '' }}
+        · Total: {{ totalAll() | currency:'BRL':'symbol':'1.2-2' }}
       </p>
     </div>
     <button class="btn-add-transaction" (click)="showModal = true">
@@ -14,15 +14,8 @@
     </button>
   </div>
 
-  <!-- Loading -->
-  <div class="loading-state" *ngIf="loading()">
-    <span class="loading-dot"></span>
-    <span class="loading-dot"></span>
-    <span class="loading-dot"></span>
-  </div>
-
   <!-- Accordion sections -->
-  <div class="sections-list" *ngIf="!loading()">
+  <div class="sections-list">
     <div class="accordion" *ngFor="let sec of sections">
 
       <button class="accordion-header" (click)="toggle(sec.id)">
@@ -47,34 +40,30 @@
           <!-- Empty state -->
           <div class="empty-state" *ngIf="sectionData()[sec.id].length === 0">
             <span class="empty-icon">📭</span>
-            <span class="empty-text">Nenhum ativo em {{ sec.label }}</span>
+            <span class="empty-text">Nenhum lançamento em {{ sec.label }}</span>
             <button class="btn-add-inline" (click)="showModal = true">+ Adicionar</button>
           </div>
 
-          <!-- Portfolio table -->
-          <div class="portfolio-table" *ngIf="sectionData()[sec.id].length > 0">
+          <!-- Table -->
+          <div class="transactions-table" *ngIf="sectionData()[sec.id].length > 0">
             <div class="table-header">
               <span>Ativo</span>
+              <span>Data</span>
               <span class="align-right">Qtd.</span>
-              <span class="align-right">PM</span>
-              <span class="align-right">Cotação</span>
-              <span class="align-right">Rentab.</span>
-              <span class="align-right">Valor Total</span>
+              <span class="align-right">Preço Unit.</span>
+              <span class="align-right">Total</span>
+              <span></span>
             </div>
-            <div class="table-row" *ngFor="let item of sectionData()[sec.id]">
+            <div class="table-row" *ngFor="let t of sectionData()[sec.id]">
               <span class="ticker-cell">
-                <span class="ticker-badge">{{ item.ticker }}</span>
+                <span class="ticker-badge">{{ t.ticker }}</span>
               </span>
-              <span class="qty-cell align-right">{{ item.totalQuantity | number:'1.0-0' }}</span>
-              <span class="pm-cell align-right">{{ item.avgPrice | currency:'BRL':'symbol':'1.2-2' }}</span>
-              <span class="price-cell align-right">{{ item.currentPrice | currency:'BRL':'symbol':'1.2-2' }}</span>
-              <span class="pl-cell align-right"
-                    [class.positive]="plPercent(item) >= 0"
-                    [class.negative]="plPercent(item) < 0">
-                {{ plPercent(item) >= 0 ? '+' : '' }}{{ plPercent(item) | number:'1.2-2' }}%
-              </span>
-              <span class="total-cell align-right">
-                {{ item.totalQuantity * item.currentPrice | currency:'BRL':'symbol':'1.2-2' }}
+              <span class="date-cell">{{ t.date | date:'dd/MM/yyyy' }}</span>
+              <span class="qty-cell align-right">{{ t.quantity | number:'1.0-0' }}</span>
+              <span class="price-cell align-right">{{ t.price | currency:'BRL':'symbol':'1.2-2' }}</span>
+              <span class="total-cell align-right">{{ t.quantity * t.price | currency:'BRL':'symbol':'1.2-2' }}</span>
+              <span class="action-cell">
+                <button class="btn-remove" (click)="remove(t.id)" title="Remover">✕</button>
               </span>
             </div>
           </div>
@@ -87,4 +76,4 @@
 
 </div>
 
-<app-add-transaction-modal *ngIf="showModal" (close)="onModalClose()"></app-add-transaction-modal>
+<app-add-transaction-modal *ngIf="showModal" (close)="showModal = false"></app-add-transaction-modal>

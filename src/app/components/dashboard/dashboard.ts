@@ -108,7 +108,7 @@ export class DashboardComponent {
           price: item.current_price,
           changePercent: item.change_percent,
           dividendYield: 0,
-          nota: item.total_quantity,
+          nota: Math.min(Math.round(item.total_quantity), 10),
           dividends: [],
         })));
         this.acoesLoading.set(false);

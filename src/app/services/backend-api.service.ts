@@ -102,5 +102,4 @@ export interface ApiAcaoItem {
   avg_price: number;
   current_price: number;
   change_percent: number;
-  dividend_yield: number;
 }

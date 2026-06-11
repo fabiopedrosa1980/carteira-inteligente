@@ -107,7 +107,7 @@ export class DashboardComponent {
           sector:        'Ações',
           price:         item.current_price,
           changePercent: item.change_percent,
-          dividendYield: item.dividend_yield,
+          dividendYield: 0,
           nota:          item.total_quantity,
           dividends:     [],
         })));

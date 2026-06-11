@@ -16,7 +16,7 @@ export class AuthService {
   readonly isAuthenticated = computed(() => this._user() !== null);
 
   // Substitua pelo Client ID do Google Cloud Console
-  readonly clientId = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+  readonly clientId = '217072116416-ippggfugojfj5fiqk6oe0oiujjueak3m.apps.googleusercontent.com';
 
   setUser(user: GoogleUser): void {
     this._user.set(user);

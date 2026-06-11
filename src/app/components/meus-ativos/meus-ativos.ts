@@ -54,7 +54,7 @@ export class MeusAtivosComponent {
 
   constructor(readonly svc: TransactionService) {}
 
-  remove(id: string) {
+  remove(id: number) {
     this.svc.remove(id);
   }
 }

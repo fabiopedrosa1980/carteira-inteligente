@@ -59,14 +59,18 @@ export class AddTransactionModalComponent {
     if (Object.keys(this.errors).length > 0) return;
 
     this.saving.set(true);
-    this.svc.add({
-      assetType: this.form.assetType as AssetType,
-      ticker: this.form.ticker.toUpperCase().trim(),
-      date: this.form.date,
-      quantity: this.form.quantity!,
-      price: this.form.price!,
-    });
-    this.saving.set(false);
-    this.close.emit();
+    this.svc.add(
+      {
+        assetType: this.form.assetType as AssetType,
+        ticker: this.form.ticker.toUpperCase().trim(),
+        date: this.form.date,
+        quantity: this.form.quantity!,
+        price: this.form.price!,
+      },
+      () => {
+        this.saving.set(false);
+        this.close.emit();
+      }
+    );
   }
 }

@@ -1,18 +1,63 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { Transaction, AssetType } from '../models/transaction.model';
+import { BackendApiService } from './backend-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
+  private readonly api = inject(BackendApiService);
+
   private _transactions = signal<Transaction[]>([]);
   readonly transactions = this._transactions.asReadonly();
+  readonly loading = signal(false);
 
-  add(t: Omit<Transaction, 'id'>) {
-    const id = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    this._transactions.update(list => [...list, { ...t, id }]);
+  constructor() {
+    this.loadAll();
   }
 
-  remove(id: string) {
-    this._transactions.update(list => list.filter(t => t.id !== id));
+  private loadAll(): void {
+    this.loading.set(true);
+    this.api.getTransactions().subscribe({
+      next: list => {
+        this._transactions.set(list.map(t => ({
+          id: t.id,
+          assetType: t.asset_type as AssetType,
+          ticker: t.ticker,
+          date: t.date.split('T')[0],
+          quantity: t.quantity,
+          price: t.price,
+        })));
+        this.loading.set(false);
+      },
+      error: () => this.loading.set(false),
+    });
+  }
+
+  add(t: Omit<Transaction, 'id'>, onDone?: () => void): void {
+    this.api.createTransaction({
+      ticker: t.ticker,
+      asset_type: t.assetType,
+      quantity: t.quantity,
+      price: t.price,
+      date: t.date,
+    }).subscribe({
+      next: created => {
+        this._transactions.update(list => [...list, {
+          id: created.id,
+          assetType: created.asset_type as AssetType,
+          ticker: created.ticker,
+          date: created.date.split('T')[0],
+          quantity: created.quantity,
+          price: created.price,
+        }]);
+        onDone?.();
+      },
+    });
+  }
+
+  remove(id: number): void {
+    this.api.deleteTransaction(id).subscribe({
+      next: () => this._transactions.update(list => list.filter(t => t.id !== id)),
+    });
   }
 
   byType(type: AssetType): Transaction[] {

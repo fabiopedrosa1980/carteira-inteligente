@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Output, signal } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 import { TransactionService } from '../../services/transaction.service';
+import { StockApiService } from '../../services/stock-api.service';
 import { AssetType } from '../../models/transaction.model';
 
 @Component({
@@ -11,8 +14,13 @@ import { AssetType } from '../../models/transaction.model';
   templateUrl: './add-transaction-modal.html',
   styleUrls: ['./add-transaction-modal.scss'],
 })
-export class AddTransactionModalComponent {
+export class AddTransactionModalComponent implements OnInit, OnDestroy {
   @Output() close = new EventEmitter<void>();
+
+  private readonly svc = inject(TransactionService);
+  private readonly stockApi = inject(StockApiService);
+  private readonly tickerInput$ = new Subject<string>();
+  private tickerSub?: Subscription;
 
   assetTypes: { id: AssetType; label: string }[] = [
     { id: 'Acoes', label: 'Ações' },
@@ -21,6 +29,9 @@ export class AddTransactionModalComponent {
   ];
 
   saving = signal(false);
+  quoteLoading = signal(false);
+  quoteName = signal('');
+  quoteNotFound = signal(false);
 
   form = {
     assetType: '' as AssetType | '',
@@ -32,7 +43,33 @@ export class AddTransactionModalComponent {
 
   errors: { assetType?: string; ticker?: string; date?: string; quantity?: string; price?: string } = {};
 
-  constructor(private svc: TransactionService) {}
+  ngOnInit(): void {
+    this.tickerSub = this.tickerInput$.pipe(
+      debounceTime(600),
+      distinctUntilChanged(),
+      filter(t => t.length >= 3),
+      switchMap(ticker => {
+        this.quoteLoading.set(true);
+        this.quoteName.set('');
+        this.quoteNotFound.set(false);
+        return this.stockApi.getQuote(ticker);
+      })
+    ).subscribe(quote => {
+      this.quoteLoading.set(false);
+      if (quote.found && quote.price > 0) {
+        this.form.price = quote.price;
+        this.quoteName.set(quote.name || quote.ticker);
+        this.quoteNotFound.set(false);
+      } else {
+        this.quoteNotFound.set(true);
+        this.quoteName.set('');
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.tickerSub?.unsubscribe();
+  }
 
   get total(): number {
     return (this.form.quantity ?? 0) * (this.form.price ?? 0);
@@ -45,6 +82,11 @@ export class AddTransactionModalComponent {
   onTickerChange(value: string) {
     this.form.ticker = value.toUpperCase();
     delete this.errors.ticker;
+    this.quoteName.set('');
+    this.quoteNotFound.set(false);
+    if (value.length >= 3) {
+      this.tickerInput$.next(value.toUpperCase());
+    }
   }
 
   save() {

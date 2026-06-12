@@ -24,15 +24,20 @@
       <!-- Ativo (ticker) -->
       <div class="form-group">
         <label class="form-label">Ativo <span class="required">*</span></label>
-        <input type="text"
-               class="form-input"
-               [class.error]="errors.ticker"
-               placeholder="Ex: VALE3, MXRF11, BOVA11"
-               [ngModel]="form.ticker"
-               (ngModelChange)="onTickerChange($event)"
-               maxlength="10"
-               autocomplete="off" />
+        <div class="ticker-wrapper">
+          <input type="text"
+                 class="form-input"
+                 [class.error]="errors.ticker"
+                 placeholder="Ex: VALE3, MXRF11, BOVA11"
+                 [ngModel]="form.ticker"
+                 (ngModelChange)="onTickerChange($event)"
+                 maxlength="10"
+                 autocomplete="off" />
+          <span class="ticker-spinner" *ngIf="quoteLoading()"></span>
+        </div>
         <span class="field-error" *ngIf="errors.ticker">{{ errors.ticker }}</span>
+        <span class="quote-hint found" *ngIf="quoteName()">{{ quoteName() }}</span>
+        <span class="quote-hint not-found" *ngIf="quoteNotFound()">Ativo não encontrado</span>
       </div>
 
       <!-- Data da Transação -->

@@ -196,28 +196,58 @@ const HEADERS = {
   'Accept-Language': 'pt-BR,pt;q=0.9',
 };
 
-async function fetchYahoo(ticker) {
-  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}.SA?interval=1d&range=1d`;
+async function fetchBrapi(ticker) {
+  const url = `https://brapi.dev/api/quote/${ticker}`;
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0' },
-      timeout: 10000,
+      headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'application/json' },
+      timeout: 8000,
     });
     const json = await res.json();
-    const meta = json?.chart?.result?.[0]?.meta;
-    if (!meta) return null;
-    const prev = meta.chartPreviousClose || meta.regularMarketPrice;
-    const changePercent = prev ? ((meta.regularMarketPrice - prev) / prev) * 100 : 0;
+    const r = json?.results?.[0];
+    if (!r || !r.regularMarketPrice) return null;
+    const prev = r.regularMarketPreviousClose || r.regularMarketPrice;
     return {
-      name: meta.longName || meta.shortName || ticker,
-      price: meta.regularMarketPrice,
-      changePercent,
+      name: r.longName || r.shortName || ticker,
+      price: r.regularMarketPrice,
+      changePercent: r.regularMarketChangePercent ?? 0,
       prevClose: prev,
     };
   } catch (e) {
-    console.error(`Yahoo error for ${ticker}:`, e.message);
+    console.error(`Brapi error for ${ticker}:`, e.message);
     return null;
   }
+}
+
+async function fetchYahoo(ticker) {
+  const hosts = ['query2', 'query1'];
+  for (const host of hosts) {
+    const url = `https://${host}.finance.yahoo.com/v8/finance/chart/${ticker}.SA?interval=1d&range=1d`;
+    try {
+      const res = await fetch(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36',
+          'Accept': '*/*',
+          'Accept-Language': 'pt-BR,pt;q=0.9',
+        },
+        timeout: 10000,
+      });
+      const json = await res.json();
+      const meta = json?.chart?.result?.[0]?.meta;
+      if (!meta || !meta.regularMarketPrice) continue;
+      const prev = meta.chartPreviousClose || meta.regularMarketPrice;
+      const changePercent = prev ? ((meta.regularMarketPrice - prev) / prev) * 100 : 0;
+      return {
+        name: meta.longName || meta.shortName || ticker,
+        price: meta.regularMarketPrice,
+        changePercent,
+        prevClose: prev,
+      };
+    } catch (e) {
+      console.error(`Yahoo ${host} error for ${ticker}:`, e.message);
+    }
+  }
+  return null;
 }
 
 async function fetchStatusInvest(ticker) {
@@ -245,35 +275,40 @@ async function fetchStatusInvest(ticker) {
   }
 }
 
+async function resolveQuote(ticker) {
+  const [brapi, si] = await Promise.all([
+    fetchBrapi(ticker),
+    fetchStatusInvest(ticker),
+  ]);
+
+  // brapi como primário, yahoo como fallback quando brapi falha
+  const quote = brapi ?? await fetchYahoo(ticker);
+
+  const rawSector = si?.sector || '';
+  const sector = SECTOR_MAP[rawSector] || DEFAULT_SECTORS[ticker] || rawSector || 'Outro';
+
+  return {
+    ticker,
+    name: quote?.name || ticker,
+    price: quote?.price ?? si?.price ?? 0,
+    changePercent: quote?.changePercent ?? 0,
+    prevClose: quote?.prevClose ?? 0,
+    dividendYield: si?.dy ?? 0,
+    sector,
+    found: !!(quote?.price || si?.price),
+  };
+}
+
 app.get('/api/quotes', async (req, res) => {
   const tickers = (req.query.tickers || '').split(',').map(t => t.trim().toUpperCase()).filter(Boolean);
   if (!tickers.length) return res.json([]);
 
-  const results = await Promise.allSettled(
-    tickers.map(async ticker => {
-      const [yahoo, si] = await Promise.all([
-        fetchYahoo(ticker),
-        fetchStatusInvest(ticker),
-      ]);
-
-      const rawSector = si?.sector || '';
-      const sector = SECTOR_MAP[rawSector] || DEFAULT_SECTORS[ticker] || rawSector || 'Outro';
-
-      return {
-        ticker,
-        name: yahoo?.name || ticker,
-        price: yahoo?.price ?? si?.price ?? 0,
-        changePercent: yahoo?.changePercent ?? 0,
-        prevClose: yahoo?.prevClose ?? 0,
-        dividendYield: si?.dy ?? 0,
-        sector,
-        found: !!(yahoo?.price || si?.price),
-      };
-    })
-  );
+  const results = await Promise.allSettled(tickers.map(resolveQuote));
 
   const quotes = results.map((r, i) =>
-    r.status === 'fulfilled' ? r.value : { ticker: tickers[i], name: tickers[i], price: 0, changePercent: 0, prevClose: 0, dividendYield: 0, sector: DEFAULT_SECTORS[tickers[i]] || 'Outro', found: false }
+    r.status === 'fulfilled'
+      ? r.value
+      : { ticker: tickers[i], name: tickers[i], price: 0, changePercent: 0, prevClose: 0, dividendYield: 0, sector: DEFAULT_SECTORS[tickers[i]] || 'Outro', found: false }
   );
 
   res.json(quotes);
@@ -281,19 +316,7 @@ app.get('/api/quotes', async (req, res) => {
 
 app.get('/api/quote/:ticker', async (req, res) => {
   const ticker = req.params.ticker.toUpperCase();
-  const [yahoo, si] = await Promise.all([fetchYahoo(ticker), fetchStatusInvest(ticker)]);
-  const rawSector = si?.sector || '';
-  const sector = SECTOR_MAP[rawSector] || DEFAULT_SECTORS[ticker] || rawSector || 'Outro';
-  res.json({
-    ticker,
-    name: yahoo?.name || ticker,
-    price: yahoo?.price ?? si?.price ?? 0,
-    changePercent: yahoo?.changePercent ?? 0,
-    prevClose: yahoo?.prevClose ?? 0,
-    dividendYield: si?.dy ?? 0,
-    sector,
-    found: !!(yahoo?.price),
-  });
+  res.json(await resolveQuote(ticker));
 });
 
 app.get('/health', (_, res) => res.json({ status: 'ok', time: new Date().toISOString() }));

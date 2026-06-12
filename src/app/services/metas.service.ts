@@ -1,54 +1,71 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Meta } from '../models/meta.model';
-import { ApiAcaoItem } from './backend-api.service';
+import { ApiAcaoItem, BackendApiService } from './backend-api.service';
 import { StockDataService } from './stock-data.service';
-
-const STORAGE_KEY = 'ci-metas';
 
 @Injectable({ providedIn: 'root' })
 export class MetasService {
+  private readonly api = inject(BackendApiService);
   private readonly stockData = inject(StockDataService);
 
-  private readonly _metas = signal<Meta[]>(this.load());
+  private readonly _metas = signal<Meta[]>([]);
+  private readonly _loading = signal(true);
+
   readonly getMetas = this._metas.asReadonly();
+  readonly loading = this._loading.asReadonly();
 
-  private load(): Meta[] {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as Meta[]) : [];
-    } catch {
-      return [];
-    }
-  }
-
-  private persist(): void {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(this._metas()));
-  }
-
-  getMetasList(): Meta[] {
-    return this._metas();
+  constructor() {
+    this.api.getGoals().subscribe({
+      next: goals => {
+        this._metas.set(goals.map(g => ({
+          id: g.id,
+          name: g.name,
+          description: g.description,
+          targetValue: g.targetValue,
+          type: g.type as Meta['type'],
+          ticker: g.ticker,
+          createdAt: g.createdAt,
+        })));
+        this._loading.set(false);
+      },
+      error: () => this._loading.set(false),
+    });
   }
 
   addMeta(meta: Omit<Meta, 'id' | 'createdAt'>): void {
-    const novo: Meta = {
-      ...meta,
-      id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-    };
-    this._metas.update(list => [...list, novo]);
-    this.persist();
+    this.api.createGoal(meta).subscribe(created => {
+      this._metas.update(list => [...list, {
+        id: created.id,
+        name: created.name,
+        description: created.description,
+        targetValue: created.targetValue,
+        type: created.type as Meta['type'],
+        ticker: created.ticker,
+        createdAt: created.createdAt,
+      }]);
+    });
   }
 
   updateMeta(id: string, changes: Partial<Meta>): void {
-    this._metas.update(list =>
-      list.map(m => (m.id === id ? { ...m, ...changes, id: m.id, createdAt: m.createdAt } : m))
-    );
-    this.persist();
+    const current = this._metas().find(m => m.id === id);
+    if (!current) return;
+    const payload = { ...current, ...changes };
+    this.api.updateGoal(id, payload).subscribe(updated => {
+      this._metas.update(list => list.map(m => m.id === id ? {
+        ...m,
+        name: updated.name,
+        description: updated.description,
+        targetValue: updated.targetValue,
+        type: updated.type as Meta['type'],
+        ticker: updated.ticker,
+      } : m));
+    });
   }
 
   deleteMeta(id: string): void {
-    this._metas.update(list => list.filter(m => m.id !== id));
-    this.persist();
+    this.api.deleteGoal(id).subscribe(() => {
+      this._metas.update(list => list.filter(m => m.id !== id));
+    });
   }
 
   getCurrentValue(meta: Meta, acoes: ApiAcaoItem[]): number {

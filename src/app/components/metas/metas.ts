@@ -20,7 +20,7 @@ export class MetasComponent implements OnInit {
 
   readonly metas = this.metasService.getMetas;
   readonly acoes = signal<ApiAcaoItem[]>([]);
-  readonly loading = signal(true);
+  readonly loading = this.metasService.loading;
 
   showForm = signal(false);
   editingId = signal<string | null>(null);
@@ -40,11 +40,8 @@ export class MetasComponent implements OnInit {
 
   ngOnInit(): void {
     this.api.getAcoes().subscribe({
-      next: items => {
-        this.acoes.set(items);
-        this.loading.set(false);
-      },
-      error: () => this.loading.set(false),
+      next: items => this.acoes.set(items),
+      error: () => {},
     });
   }
 

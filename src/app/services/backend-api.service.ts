@@ -93,6 +93,22 @@ export class BackendApiService {
       .get<ApiAcaoItem[]>(`${this.baseUrl}/transactions/acoes`)
       .pipe(catchError(() => of([])));
   }
+
+  getGoals(): Observable<ApiGoal[]> {
+    return this.http.get<ApiGoal[]>(`${this.baseUrl}/goals`).pipe(catchError(() => of([])));
+  }
+
+  createGoal(data: Omit<ApiGoal, 'id' | 'createdAt'>): Observable<ApiGoal> {
+    return this.http.post<ApiGoal>(`${this.baseUrl}/goals`, data);
+  }
+
+  updateGoal(id: string, data: Partial<ApiGoal>): Observable<ApiGoal> {
+    return this.http.put<ApiGoal>(`${this.baseUrl}/goals/${id}`, data);
+  }
+
+  deleteGoal(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/goals/${id}`);
+  }
 }
 
 export interface ApiAcaoItem {
@@ -102,4 +118,14 @@ export interface ApiAcaoItem {
   avg_price: number;
   current_price: number;
   change_percent: number;
+}
+
+export interface ApiGoal {
+  id: string;
+  name: string;
+  description: string;
+  targetValue: number;
+  type: 'patrimonio' | 'renda_mensal' | 'preco_medio';
+  ticker?: string;
+  createdAt: string;
 }

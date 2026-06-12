@@ -29,6 +29,7 @@ export class MetasComponent implements OnInit {
   formDescription = signal('');
   formType = signal<MetaType>('patrimonio');
   formTargetValue = signal(0);
+  formTargetValueDisplay = signal('R$ 0,00');
   formTicker = signal('');
 
   readonly typeOptions: { value: MetaType; label: string; icon: string }[] = [
@@ -72,6 +73,16 @@ export class MetasComponent implements OnInit {
     return 'low';
   }
 
+  onTargetValueInput(raw: string): void {
+    const digits = raw.replace(/\D/g, '');
+    const cents = parseInt(digits || '0', 10);
+    const value = cents / 100;
+    this.formTargetValue.set(value);
+    this.formTargetValueDisplay.set(
+      value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+    );
+  }
+
   openForm(meta?: Meta): void {
     if (meta) {
       this.editingId.set(meta.id);
@@ -79,6 +90,9 @@ export class MetasComponent implements OnInit {
       this.formDescription.set(meta.description);
       this.formType.set(meta.type);
       this.formTargetValue.set(meta.targetValue);
+      this.formTargetValueDisplay.set(
+        meta.targetValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+      );
       this.formTicker.set(meta.ticker ?? '');
     } else {
       this.editingId.set(null);
@@ -86,6 +100,7 @@ export class MetasComponent implements OnInit {
       this.formDescription.set('');
       this.formType.set('patrimonio');
       this.formTargetValue.set(0);
+      this.formTargetValueDisplay.set('R$ 0,00');
       this.formTicker.set('');
     }
     this.showForm.set(true);

@@ -34,9 +34,10 @@
       </label>
 
       <label class="field">
-        <span class="field-label">Valor Alvo (R$)</span>
-        <input type="number" min="0" step="0.01"
-               [ngModel]="formTargetValue()" (ngModelChange)="formTargetValue.set($event)" />
+        <span class="field-label">Valor Alvo</span>
+        <input type="text" inputmode="numeric"
+               [value]="formTargetValueDisplay()"
+               (input)="onTargetValueInput($any($event.target).value)" />
       </label>
 
       <label class="field" *ngIf="formType() === 'preco_medio'">

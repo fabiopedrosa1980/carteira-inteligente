@@ -15,7 +15,7 @@ export interface StockQuote {
 
 @Injectable({ providedIn: 'root' })
 export class StockApiService {
-  private readonly proxyUrl = '/api';
+  private readonly proxyUrl = 'https://carteira-inteligente-api.onrender.com/api/v1';
 
   constructor(private http: HttpClient) {}
 

@@ -36,6 +36,18 @@ const swaggerSpec = {
           time:   { type: 'string', format: 'date-time' },
         },
       },
+      Goal: {
+        type: 'object',
+        properties: {
+          id:          { type: 'string',  example: '1718100000000' },
+          name:        { type: 'string',  example: 'Renda de R$ 5.000/mês' },
+          description: { type: 'string',  example: 'Atingir renda passiva mensal de 5 mil' },
+          targetValue: { type: 'number',  example: 5000 },
+          type:        { type: 'string',  enum: ['patrimonio', 'renda_mensal', 'preco_medio'], example: 'renda_mensal' },
+          ticker:      { type: 'string',  example: 'BBAS3' },
+          createdAt:   { type: 'string',  format: 'date-time' },
+        },
+      },
     },
   },
   paths: {
@@ -82,6 +94,66 @@ const swaggerSpec = {
             description: 'Servidor operacional',
             content: { 'application/json': { schema: { $ref: '#/components/schemas/HealthResponse' } } },
           },
+        },
+      },
+    },
+    '/api/v1/goals': {
+      get: {
+        summary: 'Listar metas',
+        description: 'Retorna todas as metas cadastradas.',
+        responses: {
+          200: {
+            description: 'Lista de metas',
+            content: { 'application/json': { schema: { type: 'array', items: { $ref: '#/components/schemas/Goal' } } } },
+          },
+        },
+      },
+      post: {
+        summary: 'Criar meta',
+        description: 'Cria uma nova meta.',
+        requestBody: {
+          required: true,
+          content: { 'application/json': { schema: { $ref: '#/components/schemas/Goal' } } },
+        },
+        responses: {
+          201: {
+            description: 'Meta criada',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/Goal' } } },
+          },
+        },
+      },
+    },
+    '/api/v1/goals/{id}': {
+      put: {
+        summary: 'Atualizar meta',
+        description: 'Atualiza uma meta existente.',
+        parameters: [{
+          name: 'id', in: 'path', required: true,
+          schema: { type: 'string' },
+          description: 'ID da meta',
+        }],
+        requestBody: {
+          required: true,
+          content: { 'application/json': { schema: { $ref: '#/components/schemas/Goal' } } },
+        },
+        responses: {
+          200: {
+            description: 'Meta atualizada',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/Goal' } } },
+          },
+          404: { description: 'Meta não encontrada' },
+        },
+      },
+      delete: {
+        summary: 'Remover meta',
+        description: 'Remove uma meta pelo ID.',
+        parameters: [{
+          name: 'id', in: 'path', required: true,
+          schema: { type: 'string' },
+          description: 'ID da meta',
+        }],
+        responses: {
+          204: { description: 'Meta removida' },
         },
       },
     },
@@ -225,6 +297,45 @@ app.get('/api/quote/:ticker', async (req, res) => {
 });
 
 app.get('/health', (_, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
+
+const fs = require('fs');
+const path = require('path');
+const GOALS_FILE = path.join(__dirname, 'goals.json');
+
+function readGoals() {
+  if (!fs.existsSync(GOALS_FILE)) return [];
+  return JSON.parse(fs.readFileSync(GOALS_FILE, 'utf8'));
+}
+function writeGoals(goals) {
+  fs.writeFileSync(GOALS_FILE, JSON.stringify(goals, null, 2));
+}
+
+app.get('/api/v1/goals', (req, res) => {
+  res.json(readGoals());
+});
+
+app.post('/api/v1/goals', express.json(), (req, res) => {
+  const goals = readGoals();
+  const goal = { ...req.body, id: Date.now().toString(), createdAt: new Date().toISOString() };
+  goals.push(goal);
+  writeGoals(goals);
+  res.status(201).json(goal);
+});
+
+app.put('/api/v1/goals/:id', express.json(), (req, res) => {
+  const goals = readGoals();
+  const idx = goals.findIndex(g => g.id === req.params.id);
+  if (idx === -1) return res.status(404).json({ error: 'Not found' });
+  goals[idx] = { ...goals[idx], ...req.body };
+  writeGoals(goals);
+  res.json(goals[idx]);
+});
+
+app.delete('/api/v1/goals/:id', (req, res) => {
+  const goals = readGoals().filter(g => g.id !== req.params.id);
+  writeGoals(goals);
+  res.status(204).end();
+});
 
 const PORT = 3001;
 app.listen(PORT, () => console.log(`Proxy rodando em http://localhost:${PORT}`));

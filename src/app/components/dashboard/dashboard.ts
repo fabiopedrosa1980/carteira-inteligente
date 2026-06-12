@@ -7,6 +7,7 @@ import { StockCardComponent } from '../stock-card/stock-card';
 import { DividendCalendarComponent } from '../dividend-calendar/dividend-calendar';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
 import { MeusAtivosComponent } from '../meus-ativos/meus-ativos';
+import { MetasComponent } from '../metas/metas';
 import { Stock } from '../../models/stock.model';
 
 type SortField = 'name' | 'price' | 'change' | 'default';
@@ -16,7 +17,7 @@ const THEME_KEY = 'ci-theme';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, StockCardComponent, DividendCalendarComponent, AddStockModalComponent, MeusAtivosComponent],
+  imports: [CommonModule, StockCardComponent, DividendCalendarComponent, AddStockModalComponent, MeusAtivosComponent, MetasComponent],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
 })
@@ -80,6 +81,7 @@ export class DashboardComponent {
     { id: 'meus-ativos', label: 'Meus Ativos',   icon: '📊' },
     { id: 'portfolio',   label: 'Minhas Ações',   icon: '💼' },
     { id: 'calendar',    label: 'Dividendos',      icon: '📅' },
+    { id: 'metas',       label: 'Metas',           icon: '🎯' },
   ];
 
   loading: Signal<boolean> = signal(true);

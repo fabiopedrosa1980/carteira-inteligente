@@ -78,6 +78,10 @@
       <app-dividend-calendar></app-dividend-calendar>
     </div>
 
+    <div *ngIf="activeTab === 'metas'">
+      <app-metas [isDark]="isDark()"></app-metas>
+    </div>
+
   </main>
 
 </div>

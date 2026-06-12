@@ -1,0 +1,109 @@
+<div class="metas">
+  <div class="metas-header">
+    <div>
+      <h2 class="metas-title"><span class="icon">🎯</span> Minhas Metas</h2>
+      <p class="metas-subtitle">Acompanhe o progresso dos seus objetivos de investimento</p>
+    </div>
+    <button class="btn-nova" (click)="openForm()" *ngIf="!showForm()">+ Nova Meta</button>
+  </div>
+
+  <!-- Formulário inline -->
+  <div class="meta-form" *ngIf="showForm()">
+    <h3 class="form-title">{{ editingId() ? 'Editar Meta' : 'Nova Meta' }}</h3>
+
+    <div class="form-grid">
+      <label class="field">
+        <span class="field-label">Nome</span>
+        <input type="text" [ngModel]="formName()" (ngModelChange)="formName.set($event)"
+               placeholder="Ex: Atingir R$ 100 mil" />
+      </label>
+
+      <label class="field">
+        <span class="field-label">Tipo</span>
+        <select [ngModel]="formType()" (ngModelChange)="formType.set($event)">
+          <option *ngFor="let opt of typeOptions" [value]="opt.value">
+            {{ opt.icon }} {{ opt.label }}
+          </option>
+        </select>
+      </label>
+
+      <label class="field field-full">
+        <span class="field-label">Descrição</span>
+        <input type="text" [ngModel]="formDescription()" (ngModelChange)="formDescription.set($event)"
+               placeholder="Descrição opcional" />
+      </label>
+
+      <label class="field">
+        <span class="field-label">Valor Alvo (R$)</span>
+        <input type="number" min="0" step="0.01"
+               [ngModel]="formTargetValue()" (ngModelChange)="formTargetValue.set($event)" />
+      </label>
+
+      <label class="field" *ngIf="formType() === 'preco_medio'">
+        <span class="field-label">Ticker</span>
+        <input type="text" [ngModel]="formTicker()" (ngModelChange)="formTicker.set($event)"
+               placeholder="Ex: PETR4" />
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-cancel" (click)="closeForm()">Cancelar</button>
+      <button class="btn-save" (click)="saveMeta()" [disabled]="!formName().trim()">
+        {{ editingId() ? 'Salvar alterações' : 'Criar meta' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-bar" *ngIf="loading()">
+    <div class="loading-bar-fill"></div>
+    <span>Carregando dados da carteira…</span>
+  </div>
+
+  <!-- Estado vazio -->
+  <div class="empty-state" *ngIf="!loading() && metas().length === 0 && !showForm()">
+    <span class="empty-icon">🎯</span>
+    <h3>Nenhuma meta cadastrada</h3>
+    <p>Defina objetivos de patrimônio, renda mensal ou preço médio e acompanhe seu progresso.</p>
+    <button class="btn-nova" (click)="openForm()">+ Criar primeira meta</button>
+  </div>
+
+  <!-- Lista de metas -->
+  <div class="metas-grid" *ngIf="!loading() && metas().length > 0">
+    <div class="meta-card" *ngFor="let meta of metas()">
+      <div class="meta-card-top">
+        <div class="meta-icon">{{ iconFor(meta.type) }}</div>
+        <div class="meta-info">
+          <h3 class="meta-name">{{ meta.name }}</h3>
+          <p class="meta-desc" *ngIf="meta.description">{{ meta.description }}</p>
+          <span class="meta-type-tag">
+            {{ labelFor(meta.type) }}<ng-container *ngIf="meta.ticker"> · {{ meta.ticker }}</ng-container>
+          </span>
+        </div>
+        <div class="meta-actions">
+          <button class="icon-btn" title="Editar" (click)="openForm(meta)">✏️</button>
+          <button class="icon-btn danger" title="Excluir" (click)="deleteMeta(meta.id)">🗑️</button>
+        </div>
+      </div>
+
+      <div class="meta-values">
+        <span class="cur-value">{{ getCurrentValue(meta) | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+        <span class="sep">de</span>
+        <span class="target-value">{{ meta.targetValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+      </div>
+
+      <div class="progress-track">
+        <div class="progress-fill" [class.high]="progressClass(meta) === 'high'"
+             [class.mid]="progressClass(meta) === 'mid'"
+             [class.low]="progressClass(meta) === 'low'"
+             [style.width.%]="getProgress(meta)"></div>
+      </div>
+
+      <div class="progress-label" [class.high]="progressClass(meta) === 'high'"
+           [class.mid]="progressClass(meta) === 'mid'"
+           [class.low]="progressClass(meta) === 'low'">
+        {{ getProgress(meta) | number:'1.0-1' }}% concluído
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,11 +27,6 @@
         </select>
       </label>
 
-      <label class="field field-full">
-        <span class="field-label">Descrição</span>
-        <input type="text" [ngModel]="formDescription()" (ngModelChange)="formDescription.set($event)"
-               placeholder="Descrição opcional" />
-      </label>
 
       <label class="field">
         <span class="field-label">Valor Alvo</span>
@@ -76,7 +71,7 @@
         <div class="meta-icon">{{ iconFor(meta.type) }}</div>
         <div class="meta-info">
           <h3 class="meta-name">{{ meta.name }}</h3>
-          <p class="meta-desc" *ngIf="meta.description">{{ meta.description }}</p>
+
           <span class="meta-type-tag">
             {{ labelFor(meta.type) }}<ng-container *ngIf="meta.ticker"> · {{ meta.ticker }}</ng-container>
           </span>

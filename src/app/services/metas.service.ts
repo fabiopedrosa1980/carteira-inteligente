@@ -20,7 +20,7 @@ export class MetasService {
         this._metas.set(goals.map(g => ({
           id: g.id,
           name: g.name,
-          description: g.description,
+
           targetValue: g.targetValue,
           type: g.type as Meta['type'],
           ticker: g.ticker,
@@ -37,7 +37,7 @@ export class MetasService {
       this._metas.update(list => [...list, {
         id: created.id,
         name: created.name,
-        description: created.description,
+
         targetValue: created.targetValue,
         type: created.type as Meta['type'],
         ticker: created.ticker,
@@ -54,7 +54,7 @@ export class MetasService {
       this._metas.update(list => list.map(m => m.id === id ? {
         ...m,
         name: updated.name,
-        description: updated.description,
+
         targetValue: updated.targetValue,
         type: updated.type as Meta['type'],
         ticker: updated.ticker,

@@ -26,7 +26,7 @@ export class MetasComponent implements OnInit {
   editingId = signal<string | null>(null);
 
   formName = signal('');
-  formDescription = signal('');
+
   formType = signal<MetaType>('patrimonio');
   formTargetValue = signal(0);
   formTargetValueDisplay = signal('R$ 0,00');
@@ -84,7 +84,7 @@ export class MetasComponent implements OnInit {
     if (meta) {
       this.editingId.set(meta.id);
       this.formName.set(meta.name);
-      this.formDescription.set(meta.description);
+
       this.formType.set(meta.type);
       this.formTargetValue.set(meta.targetValue);
       this.formTargetValueDisplay.set(
@@ -94,7 +94,7 @@ export class MetasComponent implements OnInit {
     } else {
       this.editingId.set(null);
       this.formName.set('');
-      this.formDescription.set('');
+
       this.formType.set('patrimonio');
       this.formTargetValue.set(0);
       this.formTargetValueDisplay.set('R$ 0,00');
@@ -115,7 +115,7 @@ export class MetasComponent implements OnInit {
     const type = this.formType();
     const payload = {
       name,
-      description: this.formDescription().trim(),
+
       targetValue: Number(this.formTargetValue()) || 0,
       type,
       ticker: type === 'preco_medio' ? this.formTicker().trim().toUpperCase() : undefined,

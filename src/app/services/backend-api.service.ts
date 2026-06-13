@@ -123,9 +123,10 @@ export interface ApiAcaoItem {
 export interface ApiGoal {
   id: string;
   name: string;
-
   targetValue: number;
   type: 'patrimonio' | 'renda_mensal' | 'preco_medio';
   ticker?: string;
   createdAt: string;
+  currentValue?: number;
+  progressPercent?: number;
 }

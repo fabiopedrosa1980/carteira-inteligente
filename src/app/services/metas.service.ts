@@ -1,12 +1,10 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Meta } from '../models/meta.model';
-import { ApiAcaoItem, BackendApiService } from './backend-api.service';
-import { StockDataService } from './stock-data.service';
+import { BackendApiService } from './backend-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class MetasService {
   private readonly api = inject(BackendApiService);
-  private readonly stockData = inject(StockDataService);
 
   private readonly _metas = signal<Meta[]>([]);
   private readonly _loading = signal(true);
@@ -15,16 +13,22 @@ export class MetasService {
   readonly loading = this._loading.asReadonly();
 
   constructor() {
+    this.load();
+  }
+
+  load(): void {
+    this._loading.set(true);
     this.api.getGoals().subscribe({
       next: goals => {
         this._metas.set(goals.map(g => ({
           id: g.id,
           name: g.name,
-
           targetValue: g.targetValue,
           type: g.type as Meta['type'],
           ticker: g.ticker,
           createdAt: g.createdAt,
+          currentValue: g.currentValue,
+          progressPercent: g.progressPercent,
         })));
         this._loading.set(false);
       },
@@ -33,16 +37,8 @@ export class MetasService {
   }
 
   addMeta(meta: Omit<Meta, 'id' | 'createdAt'>): void {
-    this.api.createGoal(meta).subscribe(created => {
-      this._metas.update(list => [...list, {
-        id: created.id,
-        name: created.name,
-
-        targetValue: created.targetValue,
-        type: created.type as Meta['type'],
-        ticker: created.ticker,
-        createdAt: created.createdAt,
-      }]);
+    this.api.createGoal(meta).subscribe(() => {
+      this.load();
     });
   }
 
@@ -50,15 +46,8 @@ export class MetasService {
     const current = this._metas().find(m => m.id === id);
     if (!current) return;
     const payload = { ...current, ...changes };
-    this.api.updateGoal(id, payload).subscribe(updated => {
-      this._metas.update(list => list.map(m => m.id === id ? {
-        ...m,
-        name: updated.name,
-
-        targetValue: updated.targetValue,
-        type: updated.type as Meta['type'],
-        ticker: updated.ticker,
-      } : m));
+    this.api.updateGoal(id, payload).subscribe(() => {
+      this.load();
     });
   }
 
@@ -66,29 +55,5 @@ export class MetasService {
     this.api.deleteGoal(id).subscribe(() => {
       this._metas.update(list => list.filter(m => m.id !== id));
     });
-  }
-
-  getCurrentValue(meta: Meta, acoes: ApiAcaoItem[]): number {
-    switch (meta.type) {
-      case 'patrimonio':
-        return acoes.reduce((sum, a) => sum + a.total_quantity * a.current_price, 0);
-
-      case 'renda_mensal': {
-        const stocks = this.stockData.getStocks();
-        return acoes.reduce((sum, a) => {
-          const stock = stocks.find(s => s.ticker === a.ticker);
-          const dy = stock?.dividendYield ?? 0;
-          return sum + (a.total_quantity * a.current_price * dy) / 100 / 12;
-        }, 0);
-      }
-
-      case 'preco_medio': {
-        const item = acoes.find(a => a.ticker === meta.ticker);
-        return item ? item.avg_price : 0;
-      }
-
-      default:
-        return 0;
-    }
   }
 }

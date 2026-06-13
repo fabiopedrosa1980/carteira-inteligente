@@ -1,8 +1,7 @@
-import { Component, Input, OnInit, inject, signal } from '@angular/core';
+import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MetasService } from '../../services/metas.service';
-import { BackendApiService, ApiAcaoItem } from '../../services/backend-api.service';
 import { Meta, MetaType } from '../../models/meta.model';
 
 @Component({
@@ -12,21 +11,18 @@ import { Meta, MetaType } from '../../models/meta.model';
   templateUrl: './metas.html',
   styleUrls: ['./metas.scss'],
 })
-export class MetasComponent implements OnInit {
+export class MetasComponent {
   private readonly metasService = inject(MetasService);
-  private readonly api = inject(BackendApiService);
 
   @Input() isDark = true;
 
   readonly metas = this.metasService.getMetas;
-  readonly acoes = signal<ApiAcaoItem[]>([]);
   readonly loading = this.metasService.loading;
 
   showForm = signal(false);
   editingId = signal<string | null>(null);
 
   formName = signal('');
-
   formType = signal<MetaType>('patrimonio');
   formTargetValue = signal(0);
   formTargetValueDisplay = signal('R$ 0,00');
@@ -38,13 +34,6 @@ export class MetasComponent implements OnInit {
     { value: 'preco_medio', label: 'Preço Médio', icon: '📊' },
   ];
 
-  ngOnInit(): void {
-    this.api.getAcoes().subscribe({
-      next: items => this.acoes.set(items),
-      error: () => {},
-    });
-  }
-
   iconFor(type: MetaType): string {
     return this.typeOptions.find(o => o.value === type)?.icon ?? '🎯';
   }
@@ -54,13 +43,11 @@ export class MetasComponent implements OnInit {
   }
 
   getCurrentValue(meta: Meta): number {
-    return this.metasService.getCurrentValue(meta, this.acoes());
+    return meta.currentValue ?? 0;
   }
 
   getProgress(meta: Meta): number {
-    if (meta.targetValue <= 0) return 0;
-    const pct = (this.getCurrentValue(meta) / meta.targetValue) * 100;
-    return Math.min(100, Math.max(0, pct));
+    return meta.progressPercent ?? 0;
   }
 
   progressClass(meta: Meta): string {

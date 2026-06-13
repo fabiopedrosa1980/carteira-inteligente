@@ -4,7 +4,7 @@
     <div class="yield-badge" [class]="yieldClass">
       {{ stock.dividendYield > 0 ? (stock.dividendYield | number:'1.1-1') + '% a.a.' : '—' }}
     </div>
-    <span class="nota-badge" [class]="notaClass" *ngIf="stock.nota > 0">★ {{ stock.nota }}/10</span>
+    <span class="nota-badge" [class]="notaClass" *ngIf="stock.nota > 0">★ {{ stock.nota | number:'1.0-1' }}/10</span>
   </div>
   <div class="stock-name" [title]="stock.name !== stock.ticker ? stock.name : ''">{{ displayName }}</div>
   <div class="stock-sector">{{ stock.sector }}</div>

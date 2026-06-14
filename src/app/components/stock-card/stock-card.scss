@@ -2,181 +2,207 @@
   display: block;
 }
 
+/* Tabular monospace for financial figures — column-aligned, terminal feel. */
+$mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', monospace;
+
 .stock-card {
+  position: relative;
+  overflow: hidden;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 14px;
+  padding: 16px 18px 14px 20px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   height: 100%;
   transition:
-    transform 0.2s,
-    border-color 0.2s,
-    box-shadow 0.2s;
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     border-color: var(--accent);
-    box-shadow: 0 4px 20px var(--shadow-hover);
+    box-shadow: 0 8px 28px var(--shadow-hover);
+
+    .perf-bar {
+      width: 5px;
+    }
   }
 }
 
-.card-header {
+/* Left performance accent — green when the day is up, red when down. */
+.perf-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--border);
+  transition:
+    width 0.22s ease,
+    background 0.22s ease;
+}
+.is-up .perf-bar {
+  background: var(--color-pos);
+  box-shadow: 0 0 14px -2px var(--color-pos);
+}
+.is-down .perf-bar {
+  background: var(--color-neg);
+  box-shadow: 0 0 14px -2px var(--color-neg);
+}
+
+/* ---------- Top row: identity + daily change ---------- */
+.card-top {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  gap: 4px;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
-.ticker-badge {
-  font-size: 12px;
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ticker {
+  font-family: $mono;
+  font-size: 17px;
   font-weight: 700;
-  letter-spacing: 0.5px;
-  padding: 4px 8px;
-  border-radius: 20px;
-  &.sector-bancario {
-    background: rgba(99, 179, 237, 0.15);
-    color: #63b3ed;
-  }
-  &.sector-seguros {
-    background: rgba(154, 230, 180, 0.15);
-    color: #48b67a;
-  }
-  &.sector-petroleo {
-    background: rgba(252, 129, 74, 0.15);
-    color: #e07040;
-  }
-  &.sector-mineracao {
-    background: rgba(246, 173, 85, 0.15);
-    color: #d48f30;
-  }
-  &.sector-energia {
-    background: rgba(183, 148, 246, 0.15);
-    color: #9f7ae0;
-  }
-  &.sector-saneamento {
-    background: rgba(129, 230, 217, 0.15);
-    color: #3ab5a8;
-  }
-}
-
-.yield-badge {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 20px;
-  &.yield-high {
-    background: rgba(104, 211, 145, 0.15);
-    color: var(--color-pos);
-  }
-  &.yield-mid {
-    background: rgba(246, 173, 85, 0.15);
-    color: var(--color-warning);
-  }
-  &.yield-low {
-    background: rgba(160, 174, 192, 0.15);
-    color: var(--text-secondary);
-  }
-}
-
-.stock-name {
-  font-size: 14px;
-  font-weight: 600;
+  letter-spacing: 0.6px;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  line-height: 1.1;
+}
+
+.company {
+  font-size: 12px;
+  color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 100%;
 }
-.stock-meta {
+
+.change-pill {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: $mono;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  padding: 4px 9px;
+  border-radius: 8px;
+  white-space: nowrap;
+
+  .arrow {
+    font-size: 9px;
+    line-height: 1;
+  }
+
+  &.pos {
+    color: var(--color-pos);
+    background: color-mix(in srgb, var(--color-pos) 14%, transparent);
+  }
+  &.neg {
+    color: var(--color-neg);
+    background: color-mix(in srgb, var(--color-neg) 14%, transparent);
+  }
+}
+
+/* ---------- Hero price ---------- */
+.price-row {
+  margin-bottom: 16px;
+}
+
+.price {
+  font-family: $mono;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  line-height: 1;
+
+  .currency {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-right: 4px;
+  }
+
+  &.loading {
+    color: var(--text-secondary);
+    letter-spacing: 0;
+  }
+}
+
+/* ---------- Bottom stat strip ---------- */
+.stat-strip {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
 }
-.stock-sector {
-  font-size: 12px;
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--text-secondary);
 }
 
-.nota-badge {
-  font-size: 12px;
+.stat-value {
+  font-family: $mono;
+  font-size: 13px;
   font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 20px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+
+  &.yield-high,
   &.nota-high {
-    background: rgba(104, 211, 145, 0.15);
     color: var(--color-pos);
   }
+  &.yield-mid,
   &.nota-mid {
-    background: rgba(246, 173, 85, 0.15);
     color: var(--color-warning);
   }
+  &.yield-low {
+    color: var(--text-secondary);
+  }
   &.nota-low {
-    background: rgba(252, 129, 74, 0.15);
     color: var(--color-neg);
   }
 }
 
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: auto;
-}
-.price,
-.change {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.label {
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-.value {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-.value.loading {
-  color: var(--text-secondary);
-}
-.value.pos {
-  color: var(--color-pos);
-}
-.value.neg {
-  color: var(--color-neg);
+.stat-sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 2px 0;
+  background: var(--border);
 }
 
-/* Light theme: sector badges with more contrast */
-:host-context(body.light-theme) {
-  .ticker-badge {
-    &.sector-bancario {
-      background: rgba(9, 105, 218, 0.1);
-      color: #0550ae;
-    }
-    &.sector-seguros {
-      background: rgba(26, 127, 75, 0.1);
-      color: #116329;
-    }
-    &.sector-petroleo {
-      background: rgba(207, 34, 46, 0.1);
-      color: #a40e26;
-    }
-    &.sector-mineracao {
-      background: rgba(180, 100, 20, 0.1);
-      color: #7d4e00;
-    }
-    &.sector-energia {
-      background: rgba(130, 80, 200, 0.1);
-      color: #6639ba;
-    }
-    &.sector-saneamento {
-      background: rgba(23, 130, 121, 0.1);
-      color: #0e7872;
-    }
-  }
+.sector-tag {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 3px 9px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  white-space: nowrap;
 }

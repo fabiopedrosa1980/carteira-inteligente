@@ -7,18 +7,10 @@ import { Stock } from '../../models/stock.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './stock-card.html',
-  styleUrls: ['./stock-card.scss']
+  styleUrls: ['./stock-card.scss'],
 })
 export class StockCardComponent {
   @Input() stock!: Stock;
-
-  get sectorClass(): string {
-    const map: Record<string, string> = {
-      'Bancário': 'bancario', 'Seguros': 'seguros', 'Petróleo & Gás': 'petroleo',
-      'Mineração': 'mineracao', 'Energia Elétrica': 'energia', 'Saneamento': 'saneamento',
-    };
-    return map[this.stock.sector] ?? 'bancario';
-  }
 
   get yieldClass(): string {
     if (this.stock.dividendYield >= 9) return 'yield-high';

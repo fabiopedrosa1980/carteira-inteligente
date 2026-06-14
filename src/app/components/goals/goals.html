@@ -14,15 +14,22 @@
     <div class="form-grid">
       <label class="field">
         <span class="field-label">Nome</span>
-        <input type="text" [ngModel]="formName()" (ngModelChange)="formName.set($event)"
-               placeholder="Ex: Atingir R$ 100 mil" />
+        <input
+          type="text"
+          [ngModel]="formName()"
+          (ngModelChange)="formName.set($event)"
+          placeholder="Ex: Atingir R$ 100 mil"
+        />
       </label>
 
       <label class="field">
         <span class="field-label">Valor Alvo</span>
-        <input type="text" inputmode="numeric"
-               [value]="formTargetValueDisplay()"
-               (input)="onTargetValueInput($any($event.target).value)" />
+        <input
+          type="text"
+          inputmode="numeric"
+          [value]="formTargetValueDisplay()"
+          (input)="onTargetValueInput($any($event.target).value)"
+        />
       </label>
     </div>
 
@@ -70,21 +77,30 @@
       <tbody>
         <tr *ngFor="let meta of metas()">
           <td>
-            <span class="meta-name-cell"><span class="meta-icon">🎯</span> {{ meta.name }}</span>
+            <span class="meta-name-cell" [title]="meta.name"
+              ><span class="meta-icon">🎯</span> {{ truncateName(meta.name) }}</span
+            >
           </td>
-          <td class="align-right">{{ getCurrentValue(meta) | currency:'BRL':'symbol':'1.2-2' }}</td>
-          <td class="align-right">{{ meta.targetValue | currency:'BRL':'symbol':'1.2-2' }}</td>
           <td class="align-right">
-            <span class="progress-pct" [class.high]="progressClass(meta) === 'high'"
-                  [class.mid]="progressClass(meta) === 'mid'"
-                  [class.low]="progressClass(meta) === 'low'">
-              {{ getProgress(meta) | number:'1.0-1' }}%
+            {{ getCurrentValue(meta) | currency: 'BRL' : 'symbol' : '1.2-2' }}
+          </td>
+          <td class="align-right">{{ meta.targetValue | currency: 'BRL' : 'symbol' : '1.2-2' }}</td>
+          <td class="align-right">
+            <span
+              class="progress-pct"
+              [class.high]="progressClass(meta) === 'high'"
+              [class.mid]="progressClass(meta) === 'mid'"
+              [class.low]="progressClass(meta) === 'low'"
+            >
+              {{ getProgress(meta) | number: '1.0-1' }}%
             </span>
           </td>
           <td class="align-right">
             <div class="meta-actions">
               <button class="icon-btn" title="Editar" (click)="openForm(meta)">✏️</button>
-              <button class="icon-btn danger" title="Excluir" (click)="deleteMeta(meta.id)">🗑️</button>
+              <button class="icon-btn danger" title="Excluir" (click)="deleteMeta(meta.id)">
+                🗑️
+              </button>
             </div>
           </td>
         </tr>

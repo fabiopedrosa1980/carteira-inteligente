@@ -26,10 +26,6 @@ export class GoalsComponent {
   formTargetValue = signal(0);
   formTargetValueDisplay = signal('R$ 0,00');
 
-  truncateName(name: string): string {
-    return name.length > 15 ? name.slice(0, 15) + '…' : name;
-  }
-
   getCurrentValue(meta: Meta): number {
     return meta.currentValue ?? 0;
   }

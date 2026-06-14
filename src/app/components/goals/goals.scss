@@ -21,7 +21,9 @@
   align-items: center;
   gap: 8px;
 
-  .icon { font-size: 22px; }
+  .icon {
+    font-size: 22px;
+  }
 }
 
 .metas-subtitle {
@@ -42,7 +44,9 @@
   transition: background 0.15s;
   white-space: nowrap;
 
-  &:hover { background: var(--btn-accent-hover); }
+  &:hover {
+    background: var(--btn-accent-hover);
+  }
 }
 
 /* ---------- Formulário ---------- */
@@ -71,7 +75,9 @@
   flex-direction: column;
   gap: 6px;
 
-  &.field-full { grid-column: 1 / -1; }
+  &.field-full {
+    grid-column: 1 / -1;
+  }
 }
 
 .field-label {
@@ -91,7 +97,9 @@
   outline: none;
   transition: border-color 0.15s;
 
-  &:focus { border-color: var(--accent); }
+  &:focus {
+    border-color: var(--accent);
+  }
 }
 
 .form-actions {
@@ -111,7 +119,10 @@
   cursor: pointer;
   transition: all 0.15s;
 
-  &:hover { border-color: var(--accent); color: var(--accent); }
+  &:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
 }
 
 .btn-save {
@@ -125,8 +136,13 @@
   cursor: pointer;
   transition: background 0.15s;
 
-  &:hover:not(:disabled) { background: var(--btn-accent-hover); }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    background: var(--btn-accent-hover);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 /* ---------- Loading ---------- */
@@ -146,7 +162,8 @@
 
 .loading-bar-fill {
   position: absolute;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   height: 2px;
   width: 40%;
   background: var(--accent);
@@ -154,8 +171,12 @@
 }
 
 @keyframes loading-slide {
-  0%   { left: -40%; }
-  100% { left: 100%; }
+  0% {
+    left: -40%;
+  }
+  100% {
+    left: 100%;
+  }
 }
 
 /* ---------- Estado vazio ---------- */
@@ -170,7 +191,9 @@
   border: 1px dashed var(--border);
   border-radius: 14px;
 
-  .empty-icon { font-size: 42px; }
+  .empty-icon {
+    font-size: 42px;
+  }
 
   h3 {
     margin: 8px 0 0;
@@ -193,7 +216,9 @@
   border: 1px solid var(--border);
   border-radius: 14px;
 
-  @media (max-width: 480px) { overflow-x: hidden; }
+  @media (max-width: 480px) {
+    overflow-x: hidden;
+  }
 }
 
 .metas-table {
@@ -202,11 +227,21 @@
   table-layout: fixed;
   font-size: 14px;
 
-  .col-nome      { width: 30%; }
-  .col-atual     { width: 18%; }
-  .col-alvo      { width: 18%; }
-  .col-progresso { width: 24%; }
-  .col-acoes     { width: 10%; }
+  .col-nome {
+    width: 30%;
+  }
+  .col-atual {
+    width: 18%;
+  }
+  .col-alvo {
+    width: 18%;
+  }
+  .col-progresso {
+    width: 24%;
+  }
+  .col-acoes {
+    width: 10%;
+  }
 
   th {
     text-align: left;
@@ -227,35 +262,55 @@
     vertical-align: middle;
   }
 
-  tr:last-child td { border-bottom: none; }
-  tbody tr:hover td { background: var(--row-hover, rgba(255, 255, 255, 0.03)); }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tbody tr:hover td {
+    background: var(--row-hover, rgba(255, 255, 255, 0.03));
+  }
 
   th.align-right,
-  td.align-right { text-align: right; }
+  td.align-right {
+    text-align: right;
+  }
 
   @media (max-width: 480px) {
     font-size: 13px;
 
-    th { padding: 10px 8px; font-size: 11px; }
-    td { padding: 10px 8px; }
+    th {
+      padding: 10px 8px;
+      font-size: 11px;
+    }
+    td {
+      padding: 10px 8px;
+    }
 
     // Oculta a coluna "Valor Alvo" (3ª) para caber sem scroll
     col:nth-child(3),
     th:nth-child(3),
-    td:nth-child(3) { display: none; }
+    td:nth-child(3) {
+      display: none;
+    }
   }
 }
 
 .meta-name-cell {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 700;
   color: var(--text-primary);
+  max-width: 100%;
+  min-width: 0;
+}
+
+// Nome completo quando cabe; abrevia com reticências apenas quando a coluna
+// é estreita (telas mobile), graças ao table-layout: fixed da tabela.
+.meta-name-text {
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
 }
 
 .meta-icon {
@@ -279,8 +334,12 @@
   border-radius: 6px;
   transition: background 0.15s;
 
-  &:hover { background: var(--input-bg); }
-  &.danger:hover { background: rgba(252, 129, 129, 0.15); }
+  &:hover {
+    background: var(--input-bg);
+  }
+  &.danger:hover {
+    background: rgba(252, 129, 129, 0.15);
+  }
 }
 
 /* ---------- Barra de progresso ---------- */
@@ -289,11 +348,19 @@
   font-weight: 800;
   color: var(--text-primary, #e2e8f0);
 
-  &.high { color: var(--color-pos, #4ade80); }
-  &.mid  { color: var(--color-warning, #facc15); }
-  &.low  { color: var(--color-neg, #f87171); }
+  &.high {
+    color: var(--color-pos, #4ade80);
+  }
+  &.mid {
+    color: var(--color-warning, #facc15);
+  }
+  &.low {
+    color: var(--color-neg, #f87171);
+  }
 }
 
 @media (max-width: 560px) {
-  .form-grid { grid-template-columns: 1fr; }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }

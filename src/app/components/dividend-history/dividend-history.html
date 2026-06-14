@@ -1,0 +1,55 @@
+<div class="dh-section">
+  <h3 class="dh-title">
+    <span class="dh-icon">📋</span>
+    Histórico de Dividendos
+  </h3>
+
+  <!-- Stock selector -->
+  <div class="dh-selector" *ngIf="portfolioStocks.length > 0">
+    <label class="dh-label">Ativo</label>
+    <select class="dh-select" (change)="selectStock(+$any($event.target).value)">
+      <option *ngFor="let s of portfolioStocks" [value]="s.id">{{ s.ticker }}</option>
+    </select>
+  </div>
+
+  <div *ngIf="portfolioStocks.length === 0" class="dh-empty">
+    <span>Nenhum ativo cadastrado no portfólio.</span>
+  </div>
+
+  <!-- Loading -->
+  <div class="dh-loading" *ngIf="loading()">Carregando dividendos…</div>
+
+  <!-- Empty state -->
+  <div class="dh-empty" *ngIf="!loading() && selectedStockId() !== null && dividends().length === 0">
+    <span>Nenhum dividendo encontrado para este ativo.</span>
+  </div>
+
+  <!-- Table -->
+  <div class="dh-table-wrap" *ngIf="!loading() && pageItems().length > 0">
+    <table class="dh-table">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Data Com</th>
+          <th>Data de Pagamento</th>
+          <th class="align-right">Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of pageItems()">
+          <td><span class="badge" [ngClass]="typeClass(d.type)">{{ typeLabel(d.type) }}</span></td>
+          <td>{{ d.ex_date ? (d.ex_date | date:'dd/MM/yyyy') : '—' }}</td>
+          <td>{{ d.pay_date ? (d.pay_date | date:'dd/MM/yyyy') : '—' }}</td>
+          <td class="align-right">{{ d.amount | currency:'BRL':'symbol':'1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="dh-pagination" *ngIf="showPagination()">
+      <button class="pag-btn" (click)="prevPage()" [disabled]="page() === 0">‹ Anterior</button>
+      <span class="pag-info">{{ page() + 1 }} / {{ totalPages() }}</span>
+      <button class="pag-btn" (click)="nextPage()" [disabled]="page() === totalPages() - 1">Próxima ›</button>
+    </div>
+  </div>
+</div>

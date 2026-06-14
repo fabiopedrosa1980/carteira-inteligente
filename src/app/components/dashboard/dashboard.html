@@ -76,6 +76,7 @@
 
     <div *ngIf="activeTab === 'calendar'">
       <app-dividend-calendar></app-dividend-calendar>
+      <app-dividend-history [portfolioStocks]="portfolioStocks()"></app-dividend-history>
     </div>
 
     <div *ngIf="activeTab === 'metas'">

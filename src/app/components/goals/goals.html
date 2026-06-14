@@ -19,26 +19,10 @@
       </label>
 
       <label class="field">
-        <span class="field-label">Tipo</span>
-        <select [ngModel]="formType()" (ngModelChange)="formType.set($event)">
-          <option *ngFor="let opt of typeOptions" [value]="opt.value">
-            {{ opt.icon }} {{ opt.label }}
-          </option>
-        </select>
-      </label>
-
-
-      <label class="field">
         <span class="field-label">Valor Alvo</span>
         <input type="text" inputmode="numeric"
                [value]="formTargetValueDisplay()"
                (input)="onTargetValueInput($any($event.target).value)" />
-      </label>
-
-      <label class="field" *ngIf="formType() === 'preco_medio'">
-        <span class="field-label">Ticker</span>
-        <input type="text" [ngModel]="formTicker()" (ngModelChange)="formTicker.set($event)"
-               placeholder="Ex: PETR4" />
       </label>
     </div>
 
@@ -60,7 +44,7 @@
   <div class="empty-state" *ngIf="!loading() && metas().length === 0 && !showForm()">
     <span class="empty-icon">🎯</span>
     <h3>Nenhuma meta cadastrada</h3>
-    <p>Defina objetivos de patrimônio, renda mensal ou preço médio e acompanhe seu progresso.</p>
+    <p>Defina um valor alvo de patrimônio e acompanhe seu progresso.</p>
     <button class="btn-nova" (click)="openForm()">+ Criar primeira meta</button>
   </div>
 
@@ -68,13 +52,9 @@
   <div class="metas-grid" *ngIf="!loading() && metas().length > 0">
     <div class="meta-card" *ngFor="let meta of metas()">
       <div class="meta-card-top">
-        <div class="meta-icon">{{ iconFor(meta.type) }}</div>
+        <div class="meta-icon">🎯</div>
         <div class="meta-info">
           <h3 class="meta-name">{{ meta.name }}</h3>
-
-          <span class="meta-type-tag">
-            {{ labelFor(meta.type) }}<ng-container *ngIf="meta.ticker"> · {{ meta.ticker }}</ng-container>
-          </span>
         </div>
         <div class="meta-actions">
           <button class="icon-btn" title="Editar" (click)="openForm(meta)">✏️</button>

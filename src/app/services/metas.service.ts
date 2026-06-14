@@ -24,8 +24,6 @@ export class MetasService {
           id: g.id,
           name: g.name,
           targetValue: g.targetValue,
-          type: g.type as Meta['type'],
-          ticker: g.ticker,
           createdAt: g.createdAt,
           currentValue: g.currentValue,
           progressPercent: g.progressPercent,

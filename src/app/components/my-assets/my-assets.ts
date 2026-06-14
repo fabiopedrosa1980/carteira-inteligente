@@ -16,6 +16,7 @@ type SortField = 'ticker' | 'date' | 'quantity' | 'price' | 'total';
 export class MyAssetsComponent {
   showModal = false;
   editing = signal<Transaction | null>(null);
+  presetType = signal<AssetType | null>(null);
 
   sections: { id: AssetType; label: string; icon: string }[] = [
     { id: 'Acoes', label: 'Ações', icon: '📈' },
@@ -96,19 +97,22 @@ export class MyAssetsComponent {
 
   constructor(readonly svc: TransactionService) {}
 
-  openAdd() {
+  openAdd(type?: AssetType) {
     this.editing.set(null);
+    this.presetType.set(type ?? null);
     this.showModal = true;
   }
 
   edit(t: Transaction) {
     this.editing.set(t);
+    this.presetType.set(null);
     this.showModal = true;
   }
 
   closeModal() {
     this.showModal = false;
     this.editing.set(null);
+    this.presetType.set(null);
   }
 
   remove(id: number) {

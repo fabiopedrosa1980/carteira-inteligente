@@ -36,7 +36,7 @@
           <div class="empty-state" *ngIf="sectionData()[sec.id].length === 0">
             <span class="empty-icon">📭</span>
             <span class="empty-text">Nenhum lançamento em {{ sec.label }}</span>
-            <button class="btn-add-inline" (click)="openAdd()">+ Adicionar</button>
+            <button class="btn-add-inline" (click)="openAdd(sec.id)">+ Adicionar</button>
           </div>
 
           <!-- Table -->
@@ -111,6 +111,12 @@
                 <button class="btn-remove" (click)="remove(t.id)" title="Remover">✕</button>
               </span>
             </div>
+
+            <div class="table-footer">
+              <button class="btn-add-inline" (click)="openAdd(sec.id)">
+                + Adicionar em {{ sec.label }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -121,5 +127,6 @@
 <app-add-transaction-modal
   *ngIf="showModal"
   [transaction]="editing()"
+  [defaultAssetType]="presetType()"
   (close)="closeModal()"
 ></app-add-transaction-modal>

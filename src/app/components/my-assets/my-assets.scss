@@ -168,6 +168,15 @@
   }
 }
 
+.table-footer {
+  display: flex;
+  justify-content: center;
+  padding: 12px 20px;
+  @media (max-width: 600px) {
+    padding: 10px 12px;
+  }
+}
+
 /* Table — colunas de tamanho igual (5 colunas de dados + ações) */
 .table-header {
   display: grid;

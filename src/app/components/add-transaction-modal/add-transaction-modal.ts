@@ -25,6 +25,7 @@ import { AssetType, Transaction } from '../../models/transaction.model';
 })
 export class AddTransactionModalComponent implements OnInit, OnDestroy {
   @Input() transaction: Transaction | null = null;
+  @Input() defaultAssetType: AssetType | null = null;
   @Output() close = new EventEmitter<void>();
 
   get isEdit(): boolean {
@@ -71,6 +72,9 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
       this.form.date = this.transaction.date;
       this.form.quantity = this.transaction.quantity;
       this.form.price = this.transaction.price;
+    } else if (this.defaultAssetType) {
+      // Modo adição a partir de uma seção: categoria já selecionada.
+      this.form.assetType = this.defaultAssetType;
     }
 
     this.tickerSub = this.tickerInput$

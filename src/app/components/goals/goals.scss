@@ -228,19 +228,19 @@
   font-size: 14px;
 
   .col-nome {
-    width: 30%;
+    width: 28%;
   }
   .col-atual {
-    width: 18%;
+    width: 20%;
   }
   .col-alvo {
-    width: 18%;
+    width: 20%;
   }
   .col-progresso {
-    width: 24%;
+    width: 16%;
   }
   .col-acoes {
-    width: 10%;
+    width: 16%;
   }
 
   th {
@@ -290,6 +290,20 @@
     th:nth-child(3),
     td:nth-child(3) {
       display: none;
+    }
+
+    // Reproporciona as 4 colunas visíveis para preencher 100% da largura
+    .col-nome {
+      width: 34%;
+    }
+    .col-atual {
+      width: 26%;
+    }
+    .col-progresso {
+      width: 20%;
+    }
+    .col-acoes {
+      width: 20%;
     }
   }
 }

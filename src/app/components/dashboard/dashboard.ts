@@ -4,7 +4,6 @@ import { StockDataService } from '../../services/stock-data.service';
 import { BackendApiService, ApiAcaoItem } from '../../services/backend-api.service';
 import { AuthService } from '../../services/auth.service';
 import { StockCardComponent } from '../stock-card/stock-card';
-import { DividendCalendarComponent } from '../dividend-calendar/dividend-calendar';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
 import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
@@ -18,7 +17,7 @@ const THEME_KEY = 'ci-theme';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, StockCardComponent, DividendCalendarComponent, AddStockModalComponent, MyAssetsComponent, GoalsComponent, DividendHistoryComponent],
+  imports: [CommonModule, StockCardComponent, AddStockModalComponent, MyAssetsComponent, GoalsComponent, DividendHistoryComponent],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
 })

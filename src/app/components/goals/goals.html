@@ -68,18 +68,21 @@
         <span class="target-value">{{ meta.targetValue | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
       </div>
 
-      <div class="progress-track">
-        <div class="progress-fill" [class.high]="progressClass(meta) === 'high'"
-             [class.mid]="progressClass(meta) === 'mid'"
-             [class.low]="progressClass(meta) === 'low'"
-             [style.width.%]="getProgress(meta)"></div>
+      <div class="meta-progress">
+        <div class="progress-track">
+          <div class="progress-fill" [class.high]="progressClass(meta) === 'high'"
+               [class.mid]="progressClass(meta) === 'mid'"
+               [class.low]="progressClass(meta) === 'low'"
+               [style.width.%]="getProgress(meta)"></div>
+        </div>
+        <span class="progress-pct" [class.high]="progressClass(meta) === 'high'"
+              [class.mid]="progressClass(meta) === 'mid'"
+              [class.low]="progressClass(meta) === 'low'">
+          {{ getProgress(meta) | number:'1.0-1' }}%
+        </span>
       </div>
 
-      <div class="progress-label" [class.high]="progressClass(meta) === 'high'"
-           [class.mid]="progressClass(meta) === 'mid'"
-           [class.low]="progressClass(meta) === 'low'">
-        {{ getProgress(meta) | number:'1.0-1' }}% concluído
-      </div>
+      <div class="progress-caption">{{ getProgress(meta) | number:'1.0-1' }}% concluído</div>
     </div>
   </div>
 </div>

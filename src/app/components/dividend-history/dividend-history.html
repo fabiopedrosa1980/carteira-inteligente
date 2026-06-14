@@ -7,6 +7,12 @@
   <!-- Carregando posições -->
   <div class="dh-loading" *ngIf="loadingPositions()">Carregando ativos…</div>
 
+  <!-- Erro ao importar dividendos -->
+  <div class="dh-error" *ngIf="error()">
+    <span class="dh-error-icon">⚠️</span>
+    <span>Falha ao importar os dividendos.</span>
+  </div>
+
   <ng-container *ngIf="!loadingPositions()">
 
     <!-- Banner de processamento -->
@@ -32,12 +38,12 @@
     <div class="dh-loading" *ngIf="loading()">Carregando dividendos…</div>
 
     <!-- Estado vazio após seleção -->
-    <div class="dh-empty" *ngIf="!loading() && selectedStockId() !== null && filteredDividends().length === 0">
+    <div class="dh-empty" *ngIf="!loading() && !error() && selectedStockId() !== null && filteredDividends().length === 0">
       <span>Nenhum dividendo encontrado para este ativo no período selecionado.</span>
     </div>
 
     <!-- Tabela -->
-    <div class="dh-table-wrap" *ngIf="!loading() && pageItems().length > 0">
+    <div class="dh-table-wrap" *ngIf="!loading() && !error() && pageItems().length > 0">
       <table class="dh-table">
         <colgroup>
           <col class="col-tipo" />

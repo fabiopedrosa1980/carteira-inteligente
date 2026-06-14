@@ -33,6 +33,22 @@
 
 .dh-processing-icon { font-size: 1rem; }
 
+.dh-error {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.88rem;
+  color: #f87171;
+  font-weight: 500;
+}
+
+.dh-error-icon { font-size: 1rem; }
+
 .dh-selector {
   display: flex;
   align-items: center;

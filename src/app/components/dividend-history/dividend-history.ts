@@ -20,6 +20,7 @@ export class DividendHistoryComponent implements OnInit {
   readonly selectedStockId = signal<number | null>(null);
   readonly dividends = signal<ApiDividend[]>([]);
   readonly loading = signal(false);
+  readonly error = signal(false);
   readonly page = signal(0);
   readonly selectedYear = signal<number>(new Date().getFullYear());
 
@@ -67,7 +68,10 @@ export class DividendHistoryComponent implements OnInit {
         const first = items.find(p => p.stock_id > 0);
         if (first) this.selectStock(first.stock_id);
       },
-      error: () => this.loadingPositions.set(false),
+      error: () => {
+        this.loadingPositions.set(false);
+        this.error.set(true);
+      },
     });
   }
 
@@ -75,6 +79,7 @@ export class DividendHistoryComponent implements OnInit {
     this.selectedStockId.set(stockId);
     this.page.set(0);
     this.loading.set(true);
+    this.error.set(false);
     this.api.getStockDividends(stockId).subscribe({
       next: items => {
         this.dividends.set([...items].sort((a, b) =>
@@ -85,6 +90,7 @@ export class DividendHistoryComponent implements OnInit {
       error: () => {
         this.dividends.set([]);
         this.loading.set(false);
+        this.error.set(true);
       },
     });
   }

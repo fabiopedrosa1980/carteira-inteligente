@@ -11,7 +11,7 @@ const FULL_MONTH_NAMES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
 export class StockDataService {
   private readonly _stocks = signal<Stock[]>([]);
   private readonly _loading = signal(true);
-  private readonly _portfolioRefs = signal<{ id: number; ticker: string }[]>([]);
+  private readonly _portfolioRefs = signal<{ id: number; ticker: string; historyReady: boolean }[]>([]);
 
   readonly stocks = this._stocks.asReadonly();
   readonly loading = this._loading.asReadonly();
@@ -31,7 +31,7 @@ export class StockDataService {
       })
     ).subscribe({
       next: ({ apiStocks, allDividends }) => {
-        this._portfolioRefs.set(apiStocks.map(s => ({ id: s.id, ticker: s.ticker })));
+        this._portfolioRefs.set(apiStocks.map(s => ({ id: s.id, ticker: s.ticker, historyReady: s.history_ready ?? false })));
         this._stocks.set(apiStocks.map((s, i) => ({
           ticker: s.ticker,
           name: s.name || s.ticker,

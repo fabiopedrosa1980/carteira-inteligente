@@ -4,11 +4,22 @@
     Histórico de Dividendos
   </h3>
 
-  <!-- Stock selector -->
+  <!-- Processing banner -->
+  <div class="dh-processing-banner" *ngIf="anyProcessing()">
+    <span class="dh-processing-icon">⏳</span>
+    <span>Histórico de dividendos da sua carteira está em processamento.</span>
+  </div>
+
+  <!-- Selectors row -->
   <div class="dh-selector" *ngIf="portfolioStocks.length > 0">
     <label class="dh-label">Ativo</label>
     <select class="dh-select" (change)="selectStock(+$any($event.target).value)">
       <option *ngFor="let s of portfolioStocks" [value]="s.id">{{ s.ticker }}</option>
+    </select>
+
+    <label class="dh-label">Ano</label>
+    <select class="dh-select" (change)="selectYear(+$any($event.target).value)" [value]="selectedYear()">
+      <option *ngFor="let y of availableYears()" [value]="y">{{ y }}</option>
     </select>
   </div>
 
@@ -20,8 +31,8 @@
   <div class="dh-loading" *ngIf="loading()">Carregando dividendos…</div>
 
   <!-- Empty state -->
-  <div class="dh-empty" *ngIf="!loading() && selectedStockId() !== null && dividends().length === 0">
-    <span>Nenhum dividendo encontrado para este ativo.</span>
+  <div class="dh-empty" *ngIf="!loading() && selectedStockId() !== null && filteredDividends().length === 0">
+    <span>Nenhum dividendo encontrado para este ativo no período selecionado.</span>
   </div>
 
   <!-- Table -->

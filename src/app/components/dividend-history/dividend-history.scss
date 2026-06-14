@@ -18,6 +18,21 @@
 
 .dh-icon { font-size: 1.1rem; }
 
+.dh-processing-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(234, 179, 8, 0.12);
+  border: 1px solid rgba(234, 179, 8, 0.35);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.88rem;
+  color: #fbbf24;
+}
+
+.dh-processing-icon { font-size: 1rem; }
+
 .dh-selector {
   display: flex;
   align-items: center;

@@ -12,7 +12,7 @@ const PAGE_SIZE = 10;
   styleUrls: ['./dividend-history.scss'],
 })
 export class DividendHistoryComponent implements OnChanges {
-  @Input() portfolioStocks: { id: number; ticker: string }[] = [];
+  @Input() portfolioStocks: { id: number; ticker: string; historyReady: boolean }[] = [];
 
   private readonly api = inject(BackendApiService);
 
@@ -20,12 +20,38 @@ export class DividendHistoryComponent implements OnChanges {
   readonly dividends = signal<ApiDividend[]>([]);
   readonly loading = signal(false);
   readonly page = signal(0);
+  readonly selectedYear = signal<number>(new Date().getFullYear());
 
-  readonly totalPages = computed(() => Math.ceil(this.dividends().length / PAGE_SIZE));
-  readonly pageItems = computed(() =>
-    this.dividends().slice(this.page() * PAGE_SIZE, (this.page() + 1) * PAGE_SIZE)
+  readonly currentMonth = computed(() => new Date().getMonth() + 1);
+
+  readonly availableYears = computed(() => {
+    const currentYear = new Date().getFullYear();
+    return Array.from({ length: 5 }, (_, i) => currentYear - 4 + i);
+  });
+
+  readonly anyProcessing = computed(() =>
+    this.portfolioStocks.length > 0 && this.portfolioStocks.some(s => !s.historyReady)
   );
-  readonly showPagination = computed(() => this.dividends().length > PAGE_SIZE);
+
+  readonly filteredDividends = computed(() => {
+    const year = this.selectedYear();
+    const month = this.currentMonth();
+    return this.dividends().filter(d => {
+      const y = d.year ?? new Date(d.pay_date).getFullYear();
+      if (y !== year) return false;
+      if (y === new Date().getFullYear()) {
+        const m = d.month ?? new Date(d.pay_date).getMonth() + 1;
+        return m <= month;
+      }
+      return true;
+    });
+  });
+
+  readonly totalPages = computed(() => Math.ceil(this.filteredDividends().length / PAGE_SIZE));
+  readonly pageItems = computed(() =>
+    this.filteredDividends().slice(this.page() * PAGE_SIZE, (this.page() + 1) * PAGE_SIZE)
+  );
+  readonly showPagination = computed(() => this.filteredDividends().length > PAGE_SIZE);
 
   ngOnChanges(): void {
     if (this.portfolioStocks.length > 0 && this.selectedStockId() === null) {
@@ -49,6 +75,11 @@ export class DividendHistoryComponent implements OnChanges {
         this.loading.set(false);
       },
     });
+  }
+
+  selectYear(year: number): void {
+    this.selectedYear.set(year);
+    this.page.set(0);
   }
 
   prevPage(): void {

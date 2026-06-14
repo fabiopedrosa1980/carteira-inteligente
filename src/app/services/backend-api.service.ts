@@ -21,6 +21,7 @@ export interface ApiStock {
   current_price: number;
   daily_change: number;
   dy: number;
+  history_ready: boolean;
 }
 
 export interface ApiDividend {
@@ -120,6 +121,7 @@ export interface ApiAcaoItem {
   change_percent: number;
   dividend_yield: number;
   nota: number;
+  history_ready: boolean;
 }
 
 export interface ApiGoal {

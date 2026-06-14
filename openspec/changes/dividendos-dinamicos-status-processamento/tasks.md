@@ -46,5 +46,5 @@
 ## 8. Frontend — Build e deploy
 
 - [x] 8.1 Executar `npx ng build` e corrigir eventuais erros de tipo
-- [ ] 8.2 Commit e push no repositório `carteira-inteligente`: `feat: banner de processamento e filtro de anos dinamicos no historico de dividendos`
+- [x] 8.2 Commit e push no repositório `carteira-inteligente`: `feat: banner de processamento e filtro de anos dinamicos no historico de dividendos`
 - [ ] 8.3 Testar visualmente: cadastrar novo ativo, verificar que o banner aparece e desaparece após o scraping concluir, verificar seletor de ano e filtro por mês corrente

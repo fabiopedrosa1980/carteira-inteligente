@@ -71,7 +71,14 @@
 .dh-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
   font-size: 0.9rem;
+
+  // Larguras proporcionais das colunas (somam 100%)
+  .col-tipo      { width: 16%; }
+  .col-data-com  { width: 26%; }
+  .col-pagamento { width: 30%; }
+  .col-valor     { width: 28%; }
 
   th {
     text-align: left;
@@ -87,12 +94,15 @@
     color: var(--text-primary, #e2e8f0);
     border-bottom: 1px solid var(--border-light, #2a2a3e);
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: var(--row-hover, rgba(255,255,255,0.03)); }
 
-  .align-right {
+  th.align-right,
+  td.align-right {
     text-align: right;
   }
 }

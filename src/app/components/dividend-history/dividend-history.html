@@ -39,6 +39,12 @@
     <!-- Tabela -->
     <div class="dh-table-wrap" *ngIf="!loading() && pageItems().length > 0">
       <table class="dh-table">
+        <colgroup>
+          <col class="col-tipo" />
+          <col class="col-data-com" />
+          <col class="col-pagamento" />
+          <col class="col-valor" />
+        </colgroup>
         <thead>
           <tr>
             <th>Tipo</th>

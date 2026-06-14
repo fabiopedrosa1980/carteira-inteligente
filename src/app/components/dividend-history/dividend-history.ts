@@ -22,9 +22,8 @@ export class DividendHistoryComponent implements OnInit {
   readonly loading = signal(false);
   readonly error = signal(false);
   readonly page = signal(0);
-  readonly selectedYear = signal<number>(new Date().getFullYear());
-
-  readonly currentMonth = computed(() => new Date().getMonth() + 1);
+  // null = todos os anos (padrão)
+  readonly selectedYear = signal<number | null>(null);
 
   readonly availableYears = computed(() => {
     const currentYear = new Date().getFullYear();
@@ -42,15 +41,10 @@ export class DividendHistoryComponent implements OnInit {
 
   readonly filteredDividends = computed(() => {
     const year = this.selectedYear();
-    const month = this.currentMonth();
+    if (year === null) return this.dividends();
     return this.dividends().filter(d => {
       const y = d.year ?? new Date(d.pay_date).getFullYear();
-      if (y !== year) return false;
-      if (y === new Date().getFullYear()) {
-        const m = d.month ?? new Date(d.pay_date).getMonth() + 1;
-        return m <= month;
-      }
-      return true;
+      return y === year;
     });
   });
 
@@ -95,7 +89,7 @@ export class DividendHistoryComponent implements OnInit {
     });
   }
 
-  selectYear(year: number): void {
+  selectYear(year: number | null): void {
     this.selectedYear.set(year);
     this.page.set(0);
   }

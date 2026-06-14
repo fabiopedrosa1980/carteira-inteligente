@@ -53,7 +53,34 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.dh-years {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-bottom: 1.25rem;
+}
+
+.dh-year-chip {
+  background: var(--input-bg, #2a2a3e);
+  color: var(--text-secondary, #94a3b8);
+  border: 1px solid var(--border-color, #444);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  &:hover { border-color: var(--accent, #6366f1); }
+
+  &.active {
+    background: var(--accent, #6366f1);
+    border-color: var(--accent, #6366f1);
+    color: #fff;
+  }
 }
 
 .dh-label {
@@ -90,11 +117,11 @@
   table-layout: fixed;
   font-size: 0.9rem;
 
-  // Larguras proporcionais das colunas (somam 100%)
-  .col-tipo      { width: 16%; }
-  .col-data-com  { width: 26%; }
-  .col-pagamento { width: 30%; }
-  .col-valor     { width: 28%; }
+  // Colunas com largura igual (25% cada)
+  .col-tipo      { width: 25%; }
+  .col-data-com  { width: 25%; }
+  .col-pagamento { width: 25%; }
+  .col-valor     { width: 25%; }
 
   th {
     text-align: left;

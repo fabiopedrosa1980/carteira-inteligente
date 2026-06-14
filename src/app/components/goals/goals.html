@@ -68,10 +68,10 @@
       <thead>
         <tr>
           <th>Meta</th>
-          <th class="align-right">Valor Atual</th>
-          <th class="align-right">Valor Alvo</th>
-          <th class="align-right">Progresso</th>
-          <th class="align-right">Operação</th>
+          <th>Valor Atual</th>
+          <th>Valor Alvo</th>
+          <th>Progresso</th>
+          <th>Operação</th>
         </tr>
       </thead>
       <tbody>
@@ -82,11 +82,11 @@
               <span class="meta-name-text">{{ meta.name }}</span>
             </span>
           </td>
-          <td class="align-right">
+          <td>
             {{ getCurrentValue(meta) | currency: 'BRL' : 'symbol' : '1.2-2' }}
           </td>
-          <td class="align-right">{{ meta.targetValue | currency: 'BRL' : 'symbol' : '1.2-2' }}</td>
-          <td class="align-right">
+          <td>{{ meta.targetValue | currency: 'BRL' : 'symbol' : '1.2-2' }}</td>
+          <td>
             <span
               class="progress-pct"
               [class.high]="progressClass(meta) === 'high'"
@@ -96,7 +96,7 @@
               {{ getProgress(meta) | number: '1.0-1' }}%
             </span>
           </td>
-          <td class="align-right">
+          <td>
             <div class="meta-actions">
               <button class="icon-btn" title="Editar" (click)="openForm(meta)">✏️</button>
               <button class="icon-btn danger" title="Excluir" (click)="deleteMeta(meta.id)">

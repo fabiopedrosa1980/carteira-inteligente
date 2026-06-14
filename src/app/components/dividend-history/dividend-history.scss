@@ -111,6 +111,14 @@
 
 .dh-table-wrap { overflow-x: auto; }
 
+// Alterna rótulos longo/curto dos cabeçalhos conforme a largura.
+.th-short { display: none; }
+@media (max-width: 480px) {
+  .th-full { display: none; }
+  .th-short { display: inline; }
+  .dh-table-wrap { overflow-x: hidden; }
+}
+
 .dh-table {
   width: 100%;
   border-collapse: collapse;
@@ -147,6 +155,13 @@
   th.align-right,
   td.align-right {
     text-align: right;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.78rem;
+
+    th { padding: 0.5rem 0.35rem; }
+    td { padding: 0.5rem 0.35rem; }
   }
 }
 

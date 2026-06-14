@@ -192,6 +192,8 @@
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 14px;
+
+  @media (max-width: 480px) { overflow-x: hidden; }
 }
 
 .metas-table {
@@ -230,6 +232,18 @@
 
   th.align-right,
   td.align-right { text-align: right; }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+
+    th { padding: 10px 8px; font-size: 11px; }
+    td { padding: 10px 8px; }
+
+    // Oculta a coluna "Valor Alvo" (3ª) para caber sem scroll
+    col:nth-child(3),
+    th:nth-child(3),
+    td:nth-child(3) { display: none; }
+  }
 }
 
 .meta-name-cell {

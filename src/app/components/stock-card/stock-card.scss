@@ -206,3 +206,48 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   border-radius: 20px;
   white-space: nowrap;
 }
+
+/* ---------- Mobile: compact and wrap so nothing overflows ---------- */
+@media (max-width: 640px) {
+  .stock-card {
+    padding: 14px 14px 12px 16px;
+    border-radius: 12px;
+  }
+
+  .card-top {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .ticker {
+    font-size: 15px;
+  }
+  .company {
+    font-size: 11px;
+  }
+
+  .change-pill {
+    margin-left: auto;
+    font-size: 11px;
+    padding: 3px 7px;
+  }
+
+  .price {
+    font-size: 22px;
+
+    .currency {
+      font-size: 12px;
+    }
+  }
+  .price-row {
+    margin-bottom: 12px;
+  }
+
+  .stat-strip {
+    flex-wrap: wrap;
+    gap: 12px;
+    row-gap: 8px;
+    padding-top: 10px;
+  }
+}

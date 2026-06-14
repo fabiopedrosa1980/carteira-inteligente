@@ -35,7 +35,7 @@
   font-weight: 700;
   letter-spacing: 0.5px;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: 20px;
   &.sector-bancario {
     background: rgba(99, 179, 237, 0.15);
     color: #63b3ed;
@@ -85,15 +85,20 @@
   font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 2px;
+  margin-bottom: 8px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.stock-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
 .stock-sector {
   font-size: 12px;
   color: var(--text-secondary);
-  margin-bottom: 14px;
 }
 
 .nota-badge {

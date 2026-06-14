@@ -1,9 +1,6 @@
 <div class="stock-card">
   <div class="card-header">
     <div class="ticker-badge" [class]="'sector-' + sectorClass">{{ stock.ticker }}</div>
-    <div class="yield-badge" [class]="yieldClass">
-      {{ stock.dividendYield > 0 ? (stock.dividendYield | number: '1.1-1') + '% a.a.' : '—' }}
-    </div>
     <span class="nota-badge" [class]="notaClass" *ngIf="stock.nota > 0"
       >★ {{ stock.nota | number: '1.0-1' }}/10</span
     >
@@ -11,8 +8,13 @@
   <div class="stock-name" [title]="stock.name !== stock.ticker ? stock.name : ''">
     {{ displayName }}
   </div>
-  <div class="stock-sector" *ngIf="stock.sector && stock.sector !== 'Ações'">
-    {{ stock.sector }}
+  <div class="stock-meta">
+    <span class="yield-badge" [class]="yieldClass">
+      {{ stock.dividendYield > 0 ? (stock.dividendYield | number: '1.1-1') + '% a.a.' : '—' }}
+    </span>
+    <span class="stock-sector" *ngIf="stock.sector && stock.sector !== 'Ações'">
+      {{ stock.sector }}
+    </span>
   </div>
   <div class="card-footer">
     <div class="price">

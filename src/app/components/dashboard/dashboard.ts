@@ -2,7 +2,6 @@ import { Component, computed, signal, Signal, inject, effect, untracked } from '
 import { CommonModule } from '@angular/common';
 import { StockDataService } from '../../services/stock-data.service';
 import { BackendApiService, ApiAcaoItem } from '../../services/backend-api.service';
-import { StockApiService } from '../../services/stock-api.service';
 import { AuthService } from '../../services/auth.service';
 import { StockCardComponent } from '../stock-card/stock-card';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
@@ -11,7 +10,7 @@ import { GoalsComponent } from '../goals/goals';
 import { DividendHistoryComponent } from '../dividend-history/dividend-history';
 import { Stock } from '../../models/stock.model';
 
-type SortField = 'name' | 'price' | 'change' | 'default';
+type SortField = 'name' | 'price' | 'change' | 'dy' | 'nota' | 'default';
 
 const THEME_KEY = 'ci-theme';
 
@@ -31,7 +30,6 @@ const THEME_KEY = 'ci-theme';
 })
 export class DashboardComponent {
   private readonly api = inject(BackendApiService);
-  private readonly stockApi = inject(StockApiService);
   private readonly auth = inject(AuthService);
 
   showModal = false;
@@ -54,6 +52,8 @@ export class DashboardComponent {
     { label: 'Nome', field: 'name' },
     { label: 'Preço', field: 'price' },
     { label: 'Variação', field: 'change' },
+    { label: 'DY', field: 'dy' },
+    { label: 'Nota', field: 'nota' },
   ];
 
   setSort(field: SortField) {
@@ -61,7 +61,8 @@ export class DashboardComponent {
       this.sortAsc.update((v) => !v);
     } else {
       this.sortField.set(field);
-      this.sortAsc.set(field !== 'change');
+      // Métricas onde "maior é melhor" iniciam em ordem decrescente
+      this.sortAsc.set(!['change', 'dy', 'nota'].includes(field));
     }
   }
 
@@ -75,6 +76,8 @@ export class DashboardComponent {
       if (field === 'name') cmp = a.name.localeCompare(b.name, 'pt-BR');
       else if (field === 'price') cmp = a.price - b.price;
       else if (field === 'change') cmp = a.changePercent - b.changePercent;
+      else if (field === 'dy') cmp = a.dividendYield - b.dividendYield;
+      else if (field === 'nota') cmp = a.nota - b.nota;
       return asc ? cmp : -cmp;
     });
   });
@@ -110,35 +113,19 @@ export class DashboardComponent {
     this.acoesLoading.set(true);
     this.api.getAcoes().subscribe({
       next: (items: ApiAcaoItem[]) => {
-        const stocks: Stock[] = items.map((item) => ({
-          ticker: item.ticker,
-          name: item.name || item.ticker,
-          sector: 'Ações',
-          price: item.current_price,
-          changePercent: item.change_percent,
-          dividendYield: item.dividend_yield,
-          nota: item.nota,
-          dividends: [],
-        }));
-        this.acoes.set(stocks);
+        this.acoes.set(
+          items.map((item) => ({
+            ticker: item.ticker,
+            name: item.name || item.ticker,
+            sector: 'Ações',
+            price: item.current_price,
+            changePercent: item.change_percent,
+            dividendYield: item.dividend_yield,
+            nota: item.nota,
+            dividends: [],
+          })),
+        );
         this.acoesLoading.set(false);
-
-        // Enriquecimento: sobrescreve a variação diária com a cotação real-time
-        // (base Yahoo Finance), que está alinhada ao Investidor10/Finance.
-        // O campo change_percent de /transactions/acoes está divergente.
-        const tickers = stocks.map((s) => s.ticker);
-        if (tickers.length === 0) return;
-        this.stockApi.getBulkQuotes(tickers).subscribe((quotes) => {
-          const byTicker = new Map(
-            quotes.filter((q) => q.found).map((q) => [q.ticker.toUpperCase(), q]),
-          );
-          this.acoes.set(
-            this.acoes().map((s) => {
-              const quote = byTicker.get(s.ticker.toUpperCase());
-              return quote ? { ...s, changePercent: quote.changePercent } : s;
-            }),
-          );
-        });
       },
       error: () => this.acoesLoading.set(false),
     });

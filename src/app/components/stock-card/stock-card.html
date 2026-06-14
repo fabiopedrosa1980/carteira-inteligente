@@ -2,22 +2,32 @@
   <div class="card-header">
     <div class="ticker-badge" [class]="'sector-' + sectorClass">{{ stock.ticker }}</div>
     <div class="yield-badge" [class]="yieldClass">
-      {{ stock.dividendYield > 0 ? (stock.dividendYield | number:'1.1-1') + '% a.a.' : '—' }}
+      {{ stock.dividendYield > 0 ? (stock.dividendYield | number: '1.1-1') + '% a.a.' : '—' }}
     </div>
-    <span class="nota-badge" [class]="notaClass" *ngIf="stock.nota > 0">★ {{ stock.nota | number:'1.0-1' }}/10</span>
+    <span class="nota-badge" [class]="notaClass" *ngIf="stock.nota > 0"
+      >★ {{ stock.nota | number: '1.0-1' }}/10</span
+    >
   </div>
-  <div class="stock-name" [title]="stock.name !== stock.ticker ? stock.name : ''">{{ displayName }}</div>
-  <div class="stock-sector">{{ stock.sector }}</div>
+  <div class="stock-name" [title]="stock.name !== stock.ticker ? stock.name : ''">
+    {{ displayName }}
+  </div>
+  <div class="stock-sector" *ngIf="stock.sector && stock.sector !== 'Ações'">
+    {{ stock.sector }}
+  </div>
   <div class="card-footer">
     <div class="price">
       <span class="label">Preço</span>
-      <span class="value" *ngIf="stock.price > 0">R$ {{ stock.price | number:'1.2-2' }}</span>
+      <span class="value" *ngIf="stock.price > 0">R$ {{ stock.price | number: '1.2-2' }}</span>
       <span class="value loading" *ngIf="stock.price === 0">—</span>
     </div>
     <div class="change" *ngIf="stock.price > 0">
       <span class="label">Hoje</span>
-      <span class="value" [class.pos]="stock.changePercent >= 0" [class.neg]="stock.changePercent < 0">
-        {{ stock.changePercent >= 0 ? '+' : '' }}{{ stock.changePercent | number:'1.2-2' }}%
+      <span
+        class="value"
+        [class.pos]="stock.changePercent >= 0"
+        [class.neg]="stock.changePercent < 0"
+      >
+        {{ stock.changePercent >= 0 ? '+' : '' }}{{ stock.changePercent | number: '1.2-2' }}%
       </span>
     </div>
   </div>

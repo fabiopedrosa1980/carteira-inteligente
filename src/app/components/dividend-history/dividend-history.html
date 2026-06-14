@@ -4,63 +4,66 @@
     Histórico de Dividendos
   </h3>
 
-  <!-- Processing banner -->
-  <div class="dh-processing-banner" *ngIf="anyProcessing()">
-    <span class="dh-processing-icon">⏳</span>
-    <span>Histórico de dividendos da sua carteira está em processamento.</span>
-  </div>
+  <!-- Carregando posições -->
+  <div class="dh-loading" *ngIf="loadingPositions()">Carregando ativos…</div>
 
-  <!-- Selectors row -->
-  <div class="dh-selector" *ngIf="portfolioStocks().length > 0">
-    <label class="dh-label">Ativo</label>
-    <select class="dh-select" (change)="selectStock(+$any($event.target).value)">
-      <option *ngFor="let s of portfolioStocks()" [value]="s.id">{{ s.ticker }}</option>
-    </select>
+  <ng-container *ngIf="!loadingPositions()">
 
-    <label class="dh-label">Ano</label>
-    <select class="dh-select" (change)="selectYear(+$any($event.target).value)" [value]="selectedYear()">
-      <option *ngFor="let y of availableYears()" [value]="y">{{ y }}</option>
-    </select>
-  </div>
-
-  <div *ngIf="portfolioStocks().length === 0" class="dh-empty">
-    <span>Nenhum ativo cadastrado no portfólio.</span>
-  </div>
-
-  <!-- Loading -->
-  <div class="dh-loading" *ngIf="loading()">Carregando dividendos…</div>
-
-  <!-- Empty state -->
-  <div class="dh-empty" *ngIf="!loading() && selectedStockId() !== null && filteredDividends().length === 0">
-    <span>Nenhum dividendo encontrado para este ativo no período selecionado.</span>
-  </div>
-
-  <!-- Table -->
-  <div class="dh-table-wrap" *ngIf="!loading() && pageItems().length > 0">
-    <table class="dh-table">
-      <thead>
-        <tr>
-          <th>Tipo</th>
-          <th>Data Com</th>
-          <th>Data de Pagamento</th>
-          <th class="align-right">Valor</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let d of pageItems()">
-          <td><span class="badge" [ngClass]="typeClass(d.type)">{{ typeLabel(d.type) }}</span></td>
-          <td>{{ d.ex_date ? (d.ex_date | date:'dd/MM/yyyy') : '—' }}</td>
-          <td>{{ d.pay_date ? (d.pay_date | date:'dd/MM/yyyy') : '—' }}</td>
-          <td class="align-right">{{ d.amount | currency:'BRL':'symbol':'1.2-2' }}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Pagination -->
-    <div class="dh-pagination" *ngIf="showPagination()">
-      <button class="pag-btn" (click)="prevPage()" [disabled]="page() === 0">‹ Anterior</button>
-      <span class="pag-info">{{ page() + 1 }} / {{ totalPages() }}</span>
-      <button class="pag-btn" (click)="nextPage()" [disabled]="page() === totalPages() - 1">Próxima ›</button>
+    <!-- Banner de processamento -->
+    <div class="dh-processing-banner" *ngIf="anyProcessing()">
+      <span class="dh-processing-icon">⏳</span>
+      <span>Histórico de dividendos da sua carteira está em processamento.</span>
     </div>
-  </div>
+
+    <!-- Seletores -->
+    <div class="dh-selector" *ngIf="visiblePositions().length > 0">
+      <label class="dh-label">Ativo</label>
+      <select class="dh-select" (change)="selectStock(+$any($event.target).value)">
+        <option *ngFor="let p of visiblePositions()" [value]="p.stock_id">{{ p.ticker }}</option>
+      </select>
+
+      <label class="dh-label">Ano</label>
+      <select class="dh-select" (change)="selectYear(+$any($event.target).value)" [value]="selectedYear()">
+        <option *ngFor="let y of availableYears()" [value]="y">{{ y }}</option>
+      </select>
+    </div>
+
+    <!-- Carregando dividendos -->
+    <div class="dh-loading" *ngIf="loading()">Carregando dividendos…</div>
+
+    <!-- Estado vazio após seleção -->
+    <div class="dh-empty" *ngIf="!loading() && selectedStockId() !== null && filteredDividends().length === 0">
+      <span>Nenhum dividendo encontrado para este ativo no período selecionado.</span>
+    </div>
+
+    <!-- Tabela -->
+    <div class="dh-table-wrap" *ngIf="!loading() && pageItems().length > 0">
+      <table class="dh-table">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Data Com</th>
+            <th>Data de Pagamento</th>
+            <th class="align-right">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of pageItems()">
+            <td><span class="badge" [ngClass]="typeClass(d.type)">{{ typeLabel(d.type) }}</span></td>
+            <td>{{ d.ex_date ? (d.ex_date | date:'dd/MM/yyyy') : '—' }}</td>
+            <td>{{ d.pay_date ? (d.pay_date | date:'dd/MM/yyyy') : '—' }}</td>
+            <td class="align-right">{{ d.amount | currency:'BRL':'symbol':'1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Paginação -->
+      <div class="dh-pagination" *ngIf="showPagination()">
+        <button class="pag-btn" (click)="prevPage()" [disabled]="page() === 0">‹ Anterior</button>
+        <span class="pag-info">{{ page() + 1 }} / {{ totalPages() }}</span>
+        <button class="pag-btn" (click)="nextPage()" [disabled]="page() === totalPages() - 1">Próxima ›</button>
+      </div>
+    </div>
+
+  </ng-container>
 </div>

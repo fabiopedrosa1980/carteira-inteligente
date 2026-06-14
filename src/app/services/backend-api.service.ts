@@ -122,6 +122,7 @@ export interface ApiAcaoItem {
   dividend_yield: number;
   nota: number;
   history_ready: boolean;
+  stock_id: number;
 }
 
 export interface ApiGoal {

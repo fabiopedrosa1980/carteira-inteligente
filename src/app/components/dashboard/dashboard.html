@@ -75,7 +75,11 @@
     </div>
 
     <div *ngIf="activeTab === 'calendar'">
-      <app-dividend-history></app-dividend-history>
+      <app-dividend-history *ngIf="acoes().length > 0"></app-dividend-history>
+      <div class="empty-portfolio" *ngIf="acoes().length === 0 && !acoesLoading()">
+        <span class="empty-icon">📭</span>
+        <p>Cadastre ativos na aba <strong>Meus Ativos</strong> para ver o histórico de dividendos.</p>
+      </div>
     </div>
 
     <div *ngIf="activeTab === 'metas'">

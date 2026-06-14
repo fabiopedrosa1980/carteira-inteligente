@@ -1,7 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BackendApiService, ApiDividend } from '../../services/backend-api.service';
-import { StockDataService } from '../../services/stock-data.service';
+import { BackendApiService, ApiDividend, ApiAcaoItem } from '../../services/backend-api.service';
 
 const PAGE_SIZE = 10;
 
@@ -14,9 +13,9 @@ const PAGE_SIZE = 10;
 })
 export class DividendHistoryComponent implements OnInit {
   private readonly api = inject(BackendApiService);
-  private readonly stockData = inject(StockDataService);
 
-  readonly portfolioStocks = this.stockData.portfolioRefs;
+  readonly positions = signal<ApiAcaoItem[]>([]);
+  readonly loadingPositions = signal(true);
 
   readonly selectedStockId = signal<number | null>(null);
   readonly dividends = signal<ApiDividend[]>([]);
@@ -31,10 +30,14 @@ export class DividendHistoryComponent implements OnInit {
     return Array.from({ length: 5 }, (_, i) => currentYear - 4 + i);
   });
 
-  readonly anyProcessing = computed(() => {
-    const stocks = this.portfolioStocks();
-    return stocks.length > 0 && stocks.some(s => !s.historyReady);
-  });
+  // Somente posições com stock_id válido aparecem no combo
+  readonly visiblePositions = computed(() =>
+    this.positions().filter(p => p.stock_id > 0)
+  );
+
+  readonly anyProcessing = computed(() =>
+    this.visiblePositions().some(p => !p.history_ready)
+  );
 
   readonly filteredDividends = computed(() => {
     const year = this.selectedYear();
@@ -57,17 +60,22 @@ export class DividendHistoryComponent implements OnInit {
   readonly showPagination = computed(() => this.filteredDividends().length > PAGE_SIZE);
 
   ngOnInit(): void {
-    const stocks = this.portfolioStocks();
-    if (stocks.length > 0 && this.selectedStockId() === null) {
-      this.selectStock(stocks[0].id);
-    }
+    this.api.getAcoes().subscribe({
+      next: items => {
+        this.positions.set(items);
+        this.loadingPositions.set(false);
+        const first = items.find(p => p.stock_id > 0);
+        if (first) this.selectStock(first.stock_id);
+      },
+      error: () => this.loadingPositions.set(false),
+    });
   }
 
-  selectStock(id: number): void {
-    this.selectedStockId.set(id);
+  selectStock(stockId: number): void {
+    this.selectedStockId.set(stockId);
     this.page.set(0);
     this.loading.set(true);
-    this.api.getStockDividends(id).subscribe({
+    this.api.getStockDividends(stockId).subscribe({
       next: items => {
         this.dividends.set([...items].sort((a, b) =>
           (b.pay_date ?? '').localeCompare(a.pay_date ?? '')

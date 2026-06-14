@@ -260,9 +260,6 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-  }
 }
 
 .add-card {

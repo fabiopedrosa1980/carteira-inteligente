@@ -53,11 +53,10 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   box-shadow: 0 0 14px -2px var(--color-neg);
 }
 
-/* ---------- Top row: identity + daily change ---------- */
+/* ---------- Top row: identity ---------- */
 .card-top {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
   gap: 10px;
   margin-bottom: 14px;
 }
@@ -85,34 +84,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
-}
-
-.change-pill {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-family: $mono;
-  font-size: 12px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  padding: 4px 9px;
-  border-radius: 8px;
-  white-space: nowrap;
-
-  .arrow {
-    font-size: 9px;
-    line-height: 1;
-  }
-
-  &.pos {
-    color: var(--color-pos);
-    background: color-mix(in srgb, var(--color-pos) 14%, transparent);
-  }
-  &.neg {
-    color: var(--color-neg);
-    background: color-mix(in srgb, var(--color-neg) 14%, transparent);
-  }
 }
 
 /* ---------- Hero price ---------- */
@@ -173,6 +144,23 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   font-variant-numeric: tabular-nums;
   color: var(--text-primary);
 
+  &.change {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+
+    .arrow {
+      font-size: 8px;
+      line-height: 1;
+    }
+    &.pos {
+      color: var(--color-pos);
+    }
+    &.neg {
+      color: var(--color-neg);
+    }
+  }
+
   &.yield-high,
   &.nota-high {
     color: var(--color-pos);
@@ -227,12 +215,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
     font-size: 11px;
   }
 
-  .change-pill {
-    margin-left: auto;
-    font-size: 11px;
-    padding: 3px 7px;
-  }
-
   .price {
     font-size: 22px;
 
@@ -246,8 +228,15 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 
   .stat-strip {
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
     row-gap: 8px;
     padding-top: 10px;
+  }
+
+  // Em telas estreitas o setor e os divisores ocupam espaço precioso;
+  // priorizamos Hoje / DY / Nota, que reflui sem estourar o card.
+  .stat-sep,
+  .sector-tag {
+    display: none;
   }
 }

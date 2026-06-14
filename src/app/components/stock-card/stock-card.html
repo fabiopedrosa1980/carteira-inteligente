@@ -12,16 +12,6 @@
         {{ displayName }}
       </span>
     </div>
-
-    <span
-      class="change-pill"
-      *ngIf="stock.price > 0"
-      [class.pos]="stock.changePercent >= 0"
-      [class.neg]="stock.changePercent < 0"
-    >
-      <span class="arrow">{{ stock.changePercent >= 0 ? '▲' : '▼' }}</span>
-      {{ stock.changePercent >= 0 ? '+' : '' }}{{ stock.changePercent | number: '1.2-2' }}%
-    </span>
   </div>
 
   <div class="price-row">
@@ -32,6 +22,20 @@
   </div>
 
   <div class="stat-strip">
+    <div class="stat" *ngIf="stock.price > 0">
+      <span class="stat-label">Hoje</span>
+      <span
+        class="stat-value change"
+        [class.pos]="stock.changePercent >= 0"
+        [class.neg]="stock.changePercent < 0"
+      >
+        <span class="arrow">{{ stock.changePercent >= 0 ? '▲' : '▼' }}</span>
+        {{ stock.changePercent >= 0 ? '+' : '' }}{{ stock.changePercent | number: '1.2-2' }}%
+      </span>
+    </div>
+
+    <span class="stat-sep" *ngIf="stock.price > 0" aria-hidden="true"></span>
+
     <div class="stat">
       <span class="stat-label">DY</span>
       <span class="stat-value" [class]="yieldClass">

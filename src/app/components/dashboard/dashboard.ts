@@ -6,8 +6,8 @@ import { AuthService } from '../../services/auth.service';
 import { StockCardComponent } from '../stock-card/stock-card';
 import { DividendCalendarComponent } from '../dividend-calendar/dividend-calendar';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
-import { MeusAtivosComponent } from '../meus-ativos/meus-ativos';
-import { MetasComponent } from '../metas/metas';
+import { MyAssetsComponent } from '../my-assets/my-assets';
+import { GoalsComponent } from '../goals/goals';
 import { DividendHistoryComponent } from '../dividend-history/dividend-history';
 import { Stock } from '../../models/stock.model';
 
@@ -18,7 +18,7 @@ const THEME_KEY = 'ci-theme';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, StockCardComponent, DividendCalendarComponent, AddStockModalComponent, MeusAtivosComponent, MetasComponent, DividendHistoryComponent],
+  imports: [CommonModule, StockCardComponent, DividendCalendarComponent, AddStockModalComponent, MyAssetsComponent, GoalsComponent, DividendHistoryComponent],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
 })
@@ -86,7 +86,6 @@ export class DashboardComponent {
   ];
 
   loading: Signal<boolean> = signal(true);
-  readonly portfolioStocks = computed(() => this.svc.portfolioRefs());
 
   constructor(readonly svc: StockDataService) {
     this.loading = svc.loading;

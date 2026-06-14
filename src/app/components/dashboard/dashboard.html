@@ -20,7 +20,7 @@
 
   <main class="content">
     <div *ngIf="activeTab === 'meus-ativos'">
-      <app-meus-ativos></app-meus-ativos>
+      <app-my-assets></app-my-assets>
     </div>
 
     <div *ngIf="activeTab === 'portfolio'">
@@ -76,11 +76,11 @@
 
     <div *ngIf="activeTab === 'calendar'">
       <app-dividend-calendar></app-dividend-calendar>
-      <app-dividend-history [portfolioStocks]="portfolioStocks()"></app-dividend-history>
+      <app-dividend-history></app-dividend-history>
     </div>
 
     <div *ngIf="activeTab === 'metas'">
-      <app-metas [isDark]="isDark()"></app-metas>
+      <app-goals [isDark]="isDark()"></app-goals>
     </div>
 
   </main>

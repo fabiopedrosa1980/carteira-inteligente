@@ -11,10 +11,10 @@
   </div>
 
   <!-- Selectors row -->
-  <div class="dh-selector" *ngIf="portfolioStocks.length > 0">
+  <div class="dh-selector" *ngIf="portfolioStocks().length > 0">
     <label class="dh-label">Ativo</label>
     <select class="dh-select" (change)="selectStock(+$any($event.target).value)">
-      <option *ngFor="let s of portfolioStocks" [value]="s.id">{{ s.ticker }}</option>
+      <option *ngFor="let s of portfolioStocks()" [value]="s.id">{{ s.ticker }}</option>
     </select>
 
     <label class="dh-label">Ano</label>
@@ -23,7 +23,7 @@
     </select>
   </div>
 
-  <div *ngIf="portfolioStocks.length === 0" class="dh-empty">
+  <div *ngIf="portfolioStocks().length === 0" class="dh-empty">
     <span>Nenhum ativo cadastrado no portfólio.</span>
   </div>
 

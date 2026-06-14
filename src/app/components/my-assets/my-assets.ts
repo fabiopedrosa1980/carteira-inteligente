@@ -5,13 +5,13 @@ import { AddTransactionModalComponent } from '../add-transaction-modal/add-trans
 import { AssetType } from '../../models/transaction.model';
 
 @Component({
-  selector: 'app-meus-ativos',
+  selector: 'app-my-assets',
   standalone: true,
   imports: [CommonModule, AddTransactionModalComponent],
-  templateUrl: './meus-ativos.html',
-  styleUrls: ['./meus-ativos.scss'],
+  templateUrl: './my-assets.html',
+  styleUrls: ['./my-assets.scss'],
 })
-export class MeusAtivosComponent {
+export class MyAssetsComponent {
   showModal = false;
 
   sections: { id: AssetType; label: string; icon: string }[] = [

@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BackendApiService, ApiDividend } from '../../services/backend-api.service';
+import { StockDataService } from '../../services/stock-data.service';
 
 const PAGE_SIZE = 10;
 
@@ -11,10 +12,11 @@ const PAGE_SIZE = 10;
   templateUrl: './dividend-history.html',
   styleUrls: ['./dividend-history.scss'],
 })
-export class DividendHistoryComponent implements OnChanges {
-  @Input() portfolioStocks: { id: number; ticker: string; historyReady: boolean }[] = [];
-
+export class DividendHistoryComponent implements OnInit {
   private readonly api = inject(BackendApiService);
+  private readonly stockData = inject(StockDataService);
+
+  readonly portfolioStocks = this.stockData.portfolioRefs;
 
   readonly selectedStockId = signal<number | null>(null);
   readonly dividends = signal<ApiDividend[]>([]);
@@ -29,9 +31,10 @@ export class DividendHistoryComponent implements OnChanges {
     return Array.from({ length: 5 }, (_, i) => currentYear - 4 + i);
   });
 
-  readonly anyProcessing = computed(() =>
-    this.portfolioStocks.length > 0 && this.portfolioStocks.some(s => !s.historyReady)
-  );
+  readonly anyProcessing = computed(() => {
+    const stocks = this.portfolioStocks();
+    return stocks.length > 0 && stocks.some(s => !s.historyReady);
+  });
 
   readonly filteredDividends = computed(() => {
     const year = this.selectedYear();
@@ -53,9 +56,10 @@ export class DividendHistoryComponent implements OnChanges {
   );
   readonly showPagination = computed(() => this.filteredDividends().length > PAGE_SIZE);
 
-  ngOnChanges(): void {
-    if (this.portfolioStocks.length > 0 && this.selectedStockId() === null) {
-      this.selectStock(this.portfolioStocks[0].id);
+  ngOnInit(): void {
+    const stocks = this.portfolioStocks();
+    if (stocks.length > 0 && this.selectedStockId() === null) {
+      this.selectStock(stocks[0].id);
     }
   }
 
@@ -92,9 +96,7 @@ export class DividendHistoryComponent implements OnChanges {
 
   typeLabel(type: string): string {
     if (!type) return 'Dividendo';
-    const t = type.toLowerCase();
-    if (t === 'jcp') return 'JCP';
-    return 'Dividendo';
+    return type.toLowerCase() === 'jcp' ? 'JCP' : 'Dividendo';
   }
 
   typeClass(type: string): string {

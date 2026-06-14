@@ -5,13 +5,13 @@ import { MetasService } from '../../services/metas.service';
 import { Meta, MetaType } from '../../models/meta.model';
 
 @Component({
-  selector: 'app-metas',
+  selector: 'app-goals',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './metas.html',
-  styleUrls: ['./metas.scss'],
+  templateUrl: './goals.html',
+  styleUrls: ['./goals.scss'],
 })
-export class MetasComponent {
+export class GoalsComponent {
   private readonly metasService = inject(MetasService);
 
   @Input() isDark = true;

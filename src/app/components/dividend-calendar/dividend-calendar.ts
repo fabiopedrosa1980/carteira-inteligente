@@ -12,11 +12,15 @@ import { MonthSummary } from '../../models/stock.model';
 })
 export class DividendCalendarComponent implements OnInit {
   summaries: MonthSummary[] = [];
-  years = [2021, 2022, 2023, 2024, 2025];
-  selectedYear = 2025;
+  readonly years: number[];
+  selectedYear: number;
   bestScore = 0;
 
-  constructor(private api: BackendApiService) {}
+  constructor(private api: BackendApiService) {
+    const currentYear = new Date().getFullYear();
+    this.years = Array.from({ length: 5 }, (_, i) => currentYear - 4 + i);
+    this.selectedYear = currentYear;
+  }
 
   ngOnInit(): void {
     this.selectYear(this.selectedYear);

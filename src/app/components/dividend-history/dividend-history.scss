@@ -16,7 +16,9 @@
   gap: 0.5rem;
 }
 
-.dh-icon { font-size: 1.1rem; }
+.dh-icon {
+  font-size: 1.1rem;
+}
 
 .dh-processing-banner {
   display: flex;
@@ -31,7 +33,9 @@
   color: #fbbf24;
 }
 
-.dh-processing-icon { font-size: 1rem; }
+.dh-processing-icon {
+  font-size: 1rem;
+}
 
 .dh-error {
   display: flex;
@@ -47,7 +51,9 @@
   font-weight: 500;
 }
 
-.dh-error-icon { font-size: 1rem; }
+.dh-error-icon {
+  font-size: 1rem;
+}
 
 .dh-selector {
   display: flex;
@@ -72,9 +78,14 @@
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
 
-  &:hover { border-color: var(--accent, #6366f1); }
+  &:hover {
+    border-color: var(--accent, #6366f1);
+  }
 
   &.active {
     background: var(--accent, #6366f1);
@@ -99,7 +110,9 @@
   cursor: pointer;
   outline: none;
 
-  &:focus { border-color: var(--accent, #6366f1); }
+  &:focus {
+    border-color: var(--accent, #6366f1);
+  }
 }
 
 .dh-loading,
@@ -109,14 +122,24 @@
   padding: 1rem 0;
 }
 
-.dh-table-wrap { overflow-x: auto; }
+.dh-table-wrap {
+  overflow-x: auto;
+}
 
 // Alterna rótulos longo/curto dos cabeçalhos conforme a largura.
-.th-short { display: none; }
+.th-short {
+  display: none;
+}
 @media (max-width: 480px) {
-  .th-full { display: none; }
-  .th-short { display: inline; }
-  .dh-table-wrap { overflow-x: hidden; }
+  .th-full {
+    display: none;
+  }
+  .th-short {
+    display: inline;
+  }
+  .dh-table-wrap {
+    overflow-x: hidden;
+  }
 }
 
 .dh-table {
@@ -125,11 +148,20 @@
   table-layout: fixed;
   font-size: 0.9rem;
 
-  // Colunas com largura igual (25% cada)
-  .col-tipo      { width: 25%; }
-  .col-data-com  { width: 25%; }
-  .col-pagamento { width: 25%; }
-  .col-valor     { width: 25%; }
+  // "Tipo" com largura fixa (o badge ocupa tamanho padrão); as demais
+  // colunas dividem o espaço restante proporcionalmente à largura da tela.
+  .col-tipo {
+    width: 132px;
+  }
+  .col-data-com {
+    width: auto;
+  }
+  .col-pagamento {
+    width: auto;
+  }
+  .col-valor {
+    width: auto;
+  }
 
   th {
     text-align: left;
@@ -149,29 +181,45 @@
     text-overflow: ellipsis;
   }
 
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--row-hover, rgba(255,255,255,0.03)); }
-
-  th.align-right,
-  td.align-right {
-    text-align: right;
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tr:hover td {
+    background: var(--row-hover, rgba(255, 255, 255, 0.03));
   }
 
   @media (max-width: 480px) {
     font-size: 0.78rem;
 
-    th { padding: 0.5rem 0.35rem; }
-    td { padding: 0.5rem 0.35rem; }
+    .col-tipo {
+      width: 92px;
+    }
+
+    th {
+      padding: 0.5rem 0.35rem;
+    }
+    td {
+      padding: 0.5rem 0.35rem;
+    }
   }
 }
 
 .badge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
   padding: 0.2rem 0.55rem;
   border-radius: 6px;
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+
+  @media (max-width: 480px) {
+    width: 72px;
+    font-size: 0.7rem;
+    padding: 0.2rem 0.3rem;
+  }
 
   &.badge-jcp {
     background: rgba(234, 179, 8, 0.2);
@@ -206,8 +254,14 @@
   cursor: pointer;
   transition: background 0.15s;
 
-  &:hover:not(:disabled) { background: var(--accent, #6366f1); border-color: var(--accent, #6366f1); }
-  &:disabled { opacity: 0.4; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    background: var(--accent, #6366f1);
+    border-color: var(--accent, #6366f1);
+  }
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 }
 
 .pag-info {

@@ -63,7 +63,7 @@
                 }}</span>
               </span>
               <span
-                class="th-sort align-right"
+                class="th-sort"
                 [class.active]="sortField() === 'quantity'"
                 (click)="setSort('quantity')"
               >
@@ -73,7 +73,7 @@
                 }}</span>
               </span>
               <span
-                class="th-sort align-right"
+                class="th-sort"
                 [class.active]="sortField() === 'price'"
                 (click)="setSort('price')"
               >
@@ -83,7 +83,7 @@
                 }}</span>
               </span>
               <span
-                class="th-sort align-right"
+                class="th-sort"
                 [class.active]="sortField() === 'total'"
                 (click)="setSort('total')"
               >
@@ -99,11 +99,9 @@
                 <span class="ticker-badge">{{ t.ticker }}</span>
               </span>
               <span class="date-cell">{{ t.date | date: 'dd/MM/yyyy' }}</span>
-              <span class="qty-cell align-right">{{ t.quantity | number: '1.0-0' }}</span>
-              <span class="price-cell align-right">{{
-                t.price | currency: 'BRL' : 'symbol' : '1.2-2'
-              }}</span>
-              <span class="total-cell align-right">{{
+              <span class="qty-cell">{{ t.quantity | number: '1.0-0' }}</span>
+              <span class="price-cell">{{ t.price | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
+              <span class="total-cell">{{
                 t.quantity * t.price | currency: 'BRL' : 'symbol' : '1.2-2'
               }}</span>
               <span class="action-cell">

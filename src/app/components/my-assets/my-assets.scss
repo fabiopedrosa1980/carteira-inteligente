@@ -168,10 +168,10 @@
   }
 }
 
-/* Table */
+/* Table — colunas de tamanho igual (5 colunas de dados + ações) */
 .table-header {
   display: grid;
-  grid-template-columns: 110px 1fr 80px 1fr 1fr 36px;
+  grid-template-columns: repeat(5, 1fr) 72px;
   padding: 9px 20px;
   background: rgba(128, 128, 128, 0.05);
   border-bottom: 1px solid var(--border);
@@ -182,7 +182,7 @@
   letter-spacing: 0.5px;
 
   @media (max-width: 600px) {
-    grid-template-columns: 72px 64px 40px 1fr 28px;
+    grid-template-columns: repeat(4, 1fr) 56px;
     padding: 8px 12px;
     > span:nth-child(4) {
       display: none;
@@ -191,7 +191,7 @@
 }
 .table-row {
   display: grid;
-  grid-template-columns: 110px 1fr 80px 1fr 1fr 36px;
+  grid-template-columns: repeat(5, 1fr) 72px;
   padding: 12px 20px;
   border-bottom: 1px solid var(--border);
   font-size: 13px;
@@ -206,7 +206,7 @@
   }
 
   @media (max-width: 600px) {
-    grid-template-columns: 72px 64px 40px 1fr 28px;
+    grid-template-columns: repeat(4, 1fr) 56px;
     padding: 10px 12px;
     font-size: 12px;
   }
@@ -269,20 +269,26 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 2px;
 }
+.btn-edit,
 .btn-remove {
   background: none;
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
-  font-size: 11px;
+  font-size: 12px;
   padding: 4px 6px;
   border-radius: 4px;
   transition: all 0.15s;
   font-family: inherit;
   line-height: 1;
-  &:hover {
-    background: rgba(207, 34, 46, 0.1);
-    color: var(--color-neg);
-  }
+}
+.btn-edit:hover {
+  background: rgba(99, 179, 237, 0.12);
+  color: var(--accent);
+}
+.btn-remove:hover {
+  background: rgba(207, 34, 46, 0.1);
+  color: var(--color-neg);
 }

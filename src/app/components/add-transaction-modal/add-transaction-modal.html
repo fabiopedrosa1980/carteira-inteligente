@@ -1,20 +1,22 @@
 <div class="overlay" (click)="onOverlayClick($event)">
   <div class="modal" role="dialog" aria-modal="true">
-
     <div class="modal-header">
       <div class="modal-title-group">
         <span class="modal-icon">📋</span>
-        <h2>Adicionar Lançamento</h2>
+        <h2>{{ isEdit ? 'Editar Lançamento' : 'Adicionar Lançamento' }}</h2>
       </div>
       <button class="close-btn" (click)="close.emit()">✕</button>
     </div>
 
     <div class="modal-body">
-
       <!-- Tipo de Ativo -->
       <div class="form-group">
         <label class="form-label">Tipo de Ativo</label>
-        <select class="form-input form-select" [(ngModel)]="form.assetType" [class.error]="errors.assetType">
+        <select
+          class="form-input form-select"
+          [(ngModel)]="form.assetType"
+          [class.error]="errors.assetType"
+        >
           <option value="">Selecione...</option>
           <option *ngFor="let t of assetTypes" [value]="t.id">{{ t.label }}</option>
         </select>
@@ -25,14 +27,17 @@
       <div class="form-group">
         <label class="form-label">Ativo <span class="required">*</span></label>
         <div class="ticker-wrapper">
-          <input type="text"
-                 class="form-input"
-                 [class.error]="errors.ticker"
-                 placeholder="Ex: VALE3, MXRF11, BOVA11"
-                 [ngModel]="form.ticker"
-                 (ngModelChange)="onTickerChange($event)"
-                 maxlength="10"
-                 autocomplete="off" />
+          <input
+            type="text"
+            class="form-input"
+            [class.error]="errors.ticker"
+            placeholder="Ex: VALE3, MXRF11, BOVA11"
+            [ngModel]="form.ticker"
+            (ngModelChange)="onTickerChange($event)"
+            maxlength="10"
+            autocomplete="off"
+            [disabled]="isEdit"
+          />
           <span class="ticker-spinner" *ngIf="quoteLoading()"></span>
         </div>
         <span class="field-error" *ngIf="errors.ticker">{{ errors.ticker }}</span>
@@ -43,10 +48,12 @@
       <!-- Data da Transação -->
       <div class="form-group">
         <label class="form-label">Data da Transação <span class="required">*</span></label>
-        <input type="date"
-               class="form-input date-input"
-               [class.error]="errors.date"
-               [(ngModel)]="form.date" />
+        <input
+          type="date"
+          class="form-input date-input"
+          [class.error]="errors.date"
+          [(ngModel)]="form.date"
+        />
         <span class="field-error" *ngIf="errors.date">{{ errors.date }}</span>
       </div>
 
@@ -54,24 +61,28 @@
       <div class="form-row-2">
         <div class="form-group">
           <label class="form-label">Quantidade <span class="required">*</span></label>
-          <input type="number"
-                 class="form-input"
-                 [class.error]="errors.quantity"
-                 placeholder="0"
-                 [(ngModel)]="form.quantity"
-                 min="1"
-                 step="1" />
+          <input
+            type="number"
+            class="form-input"
+            [class.error]="errors.quantity"
+            placeholder="0"
+            [(ngModel)]="form.quantity"
+            min="1"
+            step="1"
+          />
           <span class="field-error" *ngIf="errors.quantity">{{ errors.quantity }}</span>
         </div>
         <div class="form-group">
           <label class="form-label">Preço Unit. (R$) <span class="required">*</span></label>
-          <input type="number"
-                 class="form-input"
-                 [class.error]="errors.price"
-                 placeholder="0,00"
-                 [(ngModel)]="form.price"
-                 min="0.01"
-                 step="0.01" />
+          <input
+            type="number"
+            class="form-input"
+            [class.error]="errors.price"
+            placeholder="0,00"
+            [(ngModel)]="form.price"
+            min="0.01"
+            step="0.01"
+          />
           <span class="field-error" *ngIf="errors.price">{{ errors.price }}</span>
         </div>
       </div>
@@ -79,17 +90,15 @@
       <!-- Total preview -->
       <div class="total-preview" *ngIf="total > 0">
         <span class="tp-label">Total estimado</span>
-        <span class="tp-value">{{ total | currency:'BRL':'symbol':'1.2-2' }}</span>
+        <span class="tp-value">{{ total | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
       </div>
-
     </div>
 
     <div class="modal-footer">
       <button class="btn-cancel" (click)="close.emit()">Cancelar</button>
       <button class="btn-save" (click)="save()" [disabled]="saving()">
-        {{ saving() ? 'Salvando...' : '✓ Salvar Lançamento' }}
+        {{ saving() ? 'Salvando...' : isEdit ? '✓ Salvar Alterações' : '✓ Salvar Lançamento' }}
       </button>
     </div>
-
   </div>
 </div>

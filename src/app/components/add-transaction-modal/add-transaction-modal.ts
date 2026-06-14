@@ -1,11 +1,20 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output, inject, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  inject,
+  signal,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 import { TransactionService } from '../../services/transaction.service';
 import { StockApiService } from '../../services/stock-api.service';
-import { AssetType } from '../../models/transaction.model';
+import { AssetType, Transaction } from '../../models/transaction.model';
 
 @Component({
   selector: 'app-add-transaction-modal',
@@ -15,7 +24,12 @@ import { AssetType } from '../../models/transaction.model';
   styleUrls: ['./add-transaction-modal.scss'],
 })
 export class AddTransactionModalComponent implements OnInit, OnDestroy {
+  @Input() transaction: Transaction | null = null;
   @Output() close = new EventEmitter<void>();
+
+  get isEdit(): boolean {
+    return this.transaction !== null;
+  }
 
   private readonly svc = inject(TransactionService);
   private readonly stockApi = inject(StockApiService);
@@ -41,30 +55,47 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     price: null as number | null,
   };
 
-  errors: { assetType?: string; ticker?: string; date?: string; quantity?: string; price?: string } = {};
+  errors: {
+    assetType?: string;
+    ticker?: string;
+    date?: string;
+    quantity?: string;
+    price?: string;
+  } = {};
 
   ngOnInit(): void {
-    this.tickerSub = this.tickerInput$.pipe(
-      debounceTime(600),
-      distinctUntilChanged(),
-      filter(t => t.length >= 3),
-      switchMap(ticker => {
-        this.quoteLoading.set(true);
-        this.quoteName.set('');
-        this.quoteNotFound.set(false);
-        return this.stockApi.getQuote(ticker);
-      })
-    ).subscribe(quote => {
-      this.quoteLoading.set(false);
-      if (quote.found && quote.price > 0) {
-        this.form.price = quote.price;
-        this.quoteName.set(quote.name || quote.ticker);
-        this.quoteNotFound.set(false);
-      } else {
-        this.quoteNotFound.set(true);
-        this.quoteName.set('');
-      }
-    });
+    if (this.transaction) {
+      // Modo edição: pré-carrega os dados; o ticker fica travado.
+      this.form.assetType = this.transaction.assetType;
+      this.form.ticker = this.transaction.ticker;
+      this.form.date = this.transaction.date;
+      this.form.quantity = this.transaction.quantity;
+      this.form.price = this.transaction.price;
+    }
+
+    this.tickerSub = this.tickerInput$
+      .pipe(
+        debounceTime(600),
+        distinctUntilChanged(),
+        filter((t) => t.length >= 3),
+        switchMap((ticker) => {
+          this.quoteLoading.set(true);
+          this.quoteName.set('');
+          this.quoteNotFound.set(false);
+          return this.stockApi.getQuote(ticker);
+        }),
+      )
+      .subscribe((quote) => {
+        this.quoteLoading.set(false);
+        if (quote.found && quote.price > 0) {
+          this.form.price = quote.price;
+          this.quoteName.set(quote.name || quote.ticker);
+          this.quoteNotFound.set(false);
+        } else {
+          this.quoteNotFound.set(true);
+          this.quoteName.set('');
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -95,24 +126,30 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     if (!this.form.assetType) this.errors.assetType = 'Selecione o tipo de ativo';
     if (!this.form.ticker.trim()) this.errors.ticker = 'Ativo obrigatório';
     if (!this.form.date) this.errors.date = 'Data obrigatória';
-    if (!this.form.quantity || this.form.quantity <= 0) this.errors.quantity = 'Quantidade inválida';
+    if (!this.form.quantity || this.form.quantity <= 0)
+      this.errors.quantity = 'Quantidade inválida';
     if (!this.form.price || this.form.price <= 0) this.errors.price = 'Preço inválido';
 
     if (Object.keys(this.errors).length > 0) return;
 
+    const payload = {
+      assetType: this.form.assetType as AssetType,
+      ticker: this.form.ticker.toUpperCase().trim(),
+      date: this.form.date,
+      quantity: this.form.quantity!,
+      price: this.form.price!,
+    };
+
     this.saving.set(true);
-    this.svc.add(
-      {
-        assetType: this.form.assetType as AssetType,
-        ticker: this.form.ticker.toUpperCase().trim(),
-        date: this.form.date,
-        quantity: this.form.quantity!,
-        price: this.form.price!,
-      },
-      () => {
-        this.saving.set(false);
-        this.close.emit();
-      }
-    );
+    const onDone = () => {
+      this.saving.set(false);
+      this.close.emit();
+    };
+
+    if (this.transaction) {
+      this.svc.update(this.transaction.id, payload, onDone);
+    } else {
+      this.svc.add(payload, onDone);
+    }
   }
 }

@@ -51,9 +51,7 @@ export class BackendApiService {
   constructor(private http: HttpClient) {}
 
   getStocks(): Observable<ApiStock[]> {
-    return this.http
-      .get<ApiStock[]>(`${this.baseUrl}/stocks`)
-      .pipe(catchError(() => of([])));
+    return this.http.get<ApiStock[]>(`${this.baseUrl}/stocks`).pipe(catchError(() => of([])));
   }
 
   getStockDividends(id: number): Observable<ApiDividend[]> {
@@ -83,6 +81,18 @@ export class BackendApiService {
     date: string;
   }): Observable<ApiTransaction> {
     return this.http.post<ApiTransaction>(`${this.baseUrl}/transactions`, data);
+  }
+
+  updateTransaction(
+    id: number,
+    data: {
+      asset_type: string;
+      quantity: number;
+      price: number;
+      date: string;
+    },
+  ): Observable<ApiTransaction> {
+    return this.http.put<ApiTransaction>(`${this.baseUrl}/transactions/${id}`, data);
   }
 
   deleteTransaction(id: number): Observable<void> {

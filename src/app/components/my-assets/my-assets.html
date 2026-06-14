@@ -8,7 +8,7 @@
         Total: {{ totalAll() | currency: 'BRL' : 'symbol' : '1.2-2' }}
       </p>
     </div>
-    <button class="btn-add-transaction" (click)="showModal = true">+ Adicionar Lançamento</button>
+    <button class="btn-add-transaction" (click)="openAdd()">+ Adicionar Lançamento</button>
   </div>
 
   <!-- Accordion sections -->
@@ -36,7 +36,7 @@
           <div class="empty-state" *ngIf="sectionData()[sec.id].length === 0">
             <span class="empty-icon">📭</span>
             <span class="empty-text">Nenhum lançamento em {{ sec.label }}</span>
-            <button class="btn-add-inline" (click)="showModal = true">+ Adicionar</button>
+            <button class="btn-add-inline" (click)="openAdd()">+ Adicionar</button>
           </div>
 
           <!-- Table -->
@@ -107,6 +107,7 @@
                 t.quantity * t.price | currency: 'BRL' : 'symbol' : '1.2-2'
               }}</span>
               <span class="action-cell">
+                <button class="btn-edit" (click)="edit(t)" title="Editar">✎</button>
                 <button class="btn-remove" (click)="remove(t.id)" title="Remover">✕</button>
               </span>
             </div>
@@ -119,5 +120,6 @@
 
 <app-add-transaction-modal
   *ngIf="showModal"
-  (close)="showModal = false"
+  [transaction]="editing()"
+  (close)="closeModal()"
 ></app-add-transaction-modal>

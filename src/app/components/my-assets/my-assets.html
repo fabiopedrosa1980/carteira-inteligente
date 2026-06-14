@@ -1,23 +1,19 @@
 <div class="meus-ativos">
-
   <!-- Header -->
   <div class="ma-header">
     <div class="ma-header-left">
       <h2 class="ma-title"><span class="ma-title-icon">📊</span> Meus Ativos</h2>
       <p class="ma-subtitle">
-        {{ svc.transactions().length }} lançamento{{ svc.transactions().length !== 1 ? 's' : '' }}
-        · Total: {{ totalAll() | currency:'BRL':'symbol':'1.2-2' }}
+        {{ svc.transactions().length }} lançamento{{ svc.transactions().length !== 1 ? 's' : '' }} ·
+        Total: {{ totalAll() | currency: 'BRL' : 'symbol' : '1.2-2' }}
       </p>
     </div>
-    <button class="btn-add-transaction" (click)="showModal = true">
-      + Adicionar Lançamento
-    </button>
+    <button class="btn-add-transaction" (click)="showModal = true">+ Adicionar Lançamento</button>
   </div>
 
   <!-- Accordion sections -->
   <div class="sections-list">
     <div class="accordion" *ngFor="let sec of sections">
-
       <button class="accordion-header" (click)="toggle(sec.id)">
         <div class="ah-left">
           <span class="sec-icon">{{ sec.icon }}</span>
@@ -28,7 +24,7 @@
         </div>
         <div class="ah-right">
           <span class="sec-total" *ngIf="totalFor(sec.id) > 0">
-            {{ totalFor(sec.id) | currency:'BRL':'symbol':'1.2-2' }}
+            {{ totalFor(sec.id) | currency: 'BRL' : 'symbol' : '1.2-2' }}
           </span>
           <span class="chevron" [class.collapsed]="isCollapsed(sec.id)">›</span>
         </div>
@@ -36,7 +32,6 @@
 
       <div class="accordion-body" [class.collapsed]="isCollapsed(sec.id)">
         <div class="accordion-inner">
-
           <!-- Empty state -->
           <div class="empty-state" *ngIf="sectionData()[sec.id].length === 0">
             <span class="empty-icon">📭</span>
@@ -47,33 +42,82 @@
           <!-- Table -->
           <div class="transactions-table" *ngIf="sectionData()[sec.id].length > 0">
             <div class="table-header">
-              <span>Ativo</span>
-              <span>Data</span>
-              <span class="align-right">Qtd.</span>
-              <span class="align-right">Preço Unit.</span>
-              <span class="align-right">Total</span>
+              <span
+                class="th-sort"
+                [class.active]="sortField() === 'ticker'"
+                (click)="setSort('ticker')"
+              >
+                Ativo
+                <span class="sort-ind" *ngIf="sortField() === 'ticker'">{{
+                  sortAsc() ? '↑' : '↓'
+                }}</span>
+              </span>
+              <span
+                class="th-sort"
+                [class.active]="sortField() === 'date'"
+                (click)="setSort('date')"
+              >
+                Data
+                <span class="sort-ind" *ngIf="sortField() === 'date'">{{
+                  sortAsc() ? '↑' : '↓'
+                }}</span>
+              </span>
+              <span
+                class="th-sort align-right"
+                [class.active]="sortField() === 'quantity'"
+                (click)="setSort('quantity')"
+              >
+                Qtd.
+                <span class="sort-ind" *ngIf="sortField() === 'quantity'">{{
+                  sortAsc() ? '↑' : '↓'
+                }}</span>
+              </span>
+              <span
+                class="th-sort align-right"
+                [class.active]="sortField() === 'price'"
+                (click)="setSort('price')"
+              >
+                Preço Unit.
+                <span class="sort-ind" *ngIf="sortField() === 'price'">{{
+                  sortAsc() ? '↑' : '↓'
+                }}</span>
+              </span>
+              <span
+                class="th-sort align-right"
+                [class.active]="sortField() === 'total'"
+                (click)="setSort('total')"
+              >
+                Total
+                <span class="sort-ind" *ngIf="sortField() === 'total'">{{
+                  sortAsc() ? '↑' : '↓'
+                }}</span>
+              </span>
               <span></span>
             </div>
             <div class="table-row" *ngFor="let t of sectionData()[sec.id]">
               <span class="ticker-cell">
                 <span class="ticker-badge">{{ t.ticker }}</span>
               </span>
-              <span class="date-cell">{{ t.date | date:'dd/MM/yyyy' }}</span>
-              <span class="qty-cell align-right">{{ t.quantity | number:'1.0-0' }}</span>
-              <span class="price-cell align-right">{{ t.price | currency:'BRL':'symbol':'1.2-2' }}</span>
-              <span class="total-cell align-right">{{ t.quantity * t.price | currency:'BRL':'symbol':'1.2-2' }}</span>
+              <span class="date-cell">{{ t.date | date: 'dd/MM/yyyy' }}</span>
+              <span class="qty-cell align-right">{{ t.quantity | number: '1.0-0' }}</span>
+              <span class="price-cell align-right">{{
+                t.price | currency: 'BRL' : 'symbol' : '1.2-2'
+              }}</span>
+              <span class="total-cell align-right">{{
+                t.quantity * t.price | currency: 'BRL' : 'symbol' : '1.2-2'
+              }}</span>
               <span class="action-cell">
                 <button class="btn-remove" (click)="remove(t.id)" title="Remover">✕</button>
               </span>
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
   </div>
-
 </div>
 
-<app-add-transaction-modal *ngIf="showModal" (close)="showModal = false"></app-add-transaction-modal>
+<app-add-transaction-modal
+  *ngIf="showModal"
+  (close)="showModal = false"
+></app-add-transaction-modal>

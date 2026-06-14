@@ -45,4 +45,4 @@
 
 - [x] 7.1 `npx ng build` sem erros de tipo
 - [ ] 7.2 Testar visualmente: selecionar um ativo que tenha dividendos importados, verificar tabela, paginação, badges e formatação
-- [ ] 7.3 Commit e push no repo `carteira-inteligente`: `feat: tabela paginada de historico de dividendos por ativo`
+- [x] 7.3 Commit e push no repo `carteira-inteligente`: `feat: tabela paginada de historico de dividendos por ativo`

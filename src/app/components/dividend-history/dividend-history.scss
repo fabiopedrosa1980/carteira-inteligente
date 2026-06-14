@@ -148,19 +148,18 @@
   table-layout: fixed;
   font-size: 0.9rem;
 
-  // "Tipo" com largura fixa (o badge ocupa tamanho padrão); as demais
-  // colunas dividem o espaço restante proporcionalmente à largura da tela.
+  // Colunas com a mesma largura (25% cada).
   .col-tipo {
-    width: 132px;
+    width: 25%;
   }
   .col-data-com {
-    width: auto;
+    width: 25%;
   }
   .col-pagamento {
-    width: auto;
+    width: 25%;
   }
   .col-valor {
-    width: auto;
+    width: 25%;
   }
 
   th {
@@ -190,10 +189,6 @@
 
   @media (max-width: 480px) {
     font-size: 0.78rem;
-
-    .col-tipo {
-      width: 92px;
-    }
 
     th {
       padding: 0.5rem 0.35rem;

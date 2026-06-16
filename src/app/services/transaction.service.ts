@@ -29,6 +29,11 @@ export class TransactionService {
     this.loadAll();
   }
 
+  /** Recarrega os lançamentos a partir da API. Chamado ao entrar na tela. */
+  reload(): void {
+    this.loadAll();
+  }
+
   private loadAll(): void {
     this.loading.set(true);
     this.api.getTransactions().subscribe({

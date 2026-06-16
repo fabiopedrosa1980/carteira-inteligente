@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { StockDataService } from '../../services/stock-data.service';
 import { BackendApiService, ApiAcaoItem } from '../../services/backend-api.service';
 import { AuthService } from '../../services/auth.service';
+import { TransactionService } from '../../services/transaction.service';
+import { MetasService } from '../../services/metas.service';
 import { StockCardComponent } from '../stock-card/stock-card';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
 import { MyAssetsComponent } from '../my-assets/my-assets';
@@ -31,9 +33,37 @@ const THEME_KEY = 'ci-theme';
 export class DashboardComponent {
   private readonly api = inject(BackendApiService);
   private readonly auth = inject(AuthService);
+  private readonly transactionSvc = inject(TransactionService);
+  private readonly metasSvc = inject(MetasService);
 
   showModal = false;
   activeTab = 'meus-ativos';
+
+  // Troca de aba: sempre recarrega da API os dados da tela selecionada,
+  // garantindo que o usuário veja informações atualizadas a cada navegação.
+  setActiveTab(id: string): void {
+    this.activeTab = id;
+    this.refreshActiveTab();
+  }
+
+  private refreshActiveTab(): void {
+    switch (this.activeTab) {
+      case 'meus-ativos':
+        this.transactionSvc.reload();
+        break;
+      case 'portfolio':
+        this.loadAcoes();
+        break;
+      case 'calendar':
+        // Garante que a lista de ações exista para o histórico de dividendos;
+        // o próprio DividendHistoryComponent recarrega ao ser recriado.
+        this.loadAcoes();
+        break;
+      case 'metas':
+        this.metasSvc.load();
+        break;
+    }
+  }
   isDark = signal(localStorage.getItem(THEME_KEY) !== 'light');
 
   readonly acoes = signal<Stock[]>([]);

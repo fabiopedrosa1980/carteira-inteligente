@@ -7,13 +7,21 @@
       </div>
       <p class="header-subtitle">Análise de dividendos · Ações do Ibovespa</p>
     </div>
-    <button class="btn-theme" (click)="toggleTheme()" [title]="isDark() ? 'Ativar tema claro' : 'Ativar tema escuro'">
+    <button
+      class="btn-theme"
+      (click)="toggleTheme()"
+      [title]="isDark() ? 'Ativar tema claro' : 'Ativar tema escuro'"
+    >
       {{ isDark() ? '☀️' : '🌙' }}
     </button>
   </header>
 
   <nav class="tab-nav">
-    <button *ngFor="let tab of tabs" [class.active]="activeTab === tab.id" (click)="activeTab = tab.id">
+    <button
+      *ngFor="let tab of tabs"
+      [class.active]="activeTab === tab.id"
+      (click)="setActiveTab(tab.id)"
+    >
       {{ tab.icon }} {{ tab.label }}
     </button>
   </nav>
@@ -32,7 +40,7 @@
         <div class="stat-pill">
           <span class="sp-label">Maior Alta</span>
           <span class="sp-value accent">
-            {{ maxChange() >= 0 ? '+' : '' }}{{ maxChange() | number:'1.2-2' }}%
+            {{ maxChange() >= 0 ? '+' : '' }}{{ maxChange() | number: '1.2-2' }}%
           </span>
         </div>
         <div class="stat-pill">
@@ -48,9 +56,11 @@
         </div>
         <div class="sort-controls">
           <span class="sort-label">Ordenar por</span>
-          <button *ngFor="let opt of sortOptions"
-                  [class.active]="sortField() === opt.field"
-                  (click)="setSort(opt.field)">
+          <button
+            *ngFor="let opt of sortOptions"
+            [class.active]="sortField() === opt.field"
+            (click)="setSort(opt.field)"
+          >
             {{ opt.label }}
             <span class="sort-arrow" *ngIf="sortField() === opt.field">
               {{ sortAsc() ? '↑' : '↓' }}
@@ -66,7 +76,10 @@
 
       <div class="empty-portfolio" *ngIf="!acoesLoading() && acoes().length === 0">
         <span class="empty-icon">📭</span>
-        <p>Nenhuma ação encontrada. Adicione lançamentos do tipo <strong>Ações</strong> na aba Meus Ativos.</p>
+        <p>
+          Nenhuma ação encontrada. Adicione lançamentos do tipo <strong>Ações</strong> na aba Meus
+          Ativos.
+        </p>
       </div>
 
       <div class="stocks-grid" *ngIf="!acoesLoading() && acoes().length > 0">
@@ -78,16 +91,16 @@
       <app-dividend-history *ngIf="acoes().length > 0"></app-dividend-history>
       <div class="empty-portfolio" *ngIf="acoes().length === 0 && !acoesLoading()">
         <span class="empty-icon">📭</span>
-        <p>Cadastre ativos na aba <strong>Meus Ativos</strong> para ver o histórico de dividendos.</p>
+        <p>
+          Cadastre ativos na aba <strong>Meus Ativos</strong> para ver o histórico de dividendos.
+        </p>
       </div>
     </div>
 
     <div *ngIf="activeTab === 'metas'">
       <app-goals [isDark]="isDark()"></app-goals>
     </div>
-
   </main>
-
 </div>
 
 <app-add-stock-modal *ngIf="showModal" (close)="showModal = false"></app-add-stock-modal>

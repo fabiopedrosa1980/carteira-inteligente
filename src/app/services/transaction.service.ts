@@ -10,6 +10,21 @@ export class TransactionService {
   readonly transactions = this._transactions.asReadonly();
   readonly loading = signal(false);
 
+  /** Mensagem de resultado da última ação, para feedback na tela de Meus Ativos. */
+  readonly feedback = signal<string | null>(null);
+  private feedbackTimer?: ReturnType<typeof setTimeout>;
+
+  private setFeedback(message: string): void {
+    this.feedback.set(message);
+    clearTimeout(this.feedbackTimer);
+    this.feedbackTimer = setTimeout(() => this.feedback.set(null), 6000);
+  }
+
+  clearFeedback(): void {
+    clearTimeout(this.feedbackTimer);
+    this.feedback.set(null);
+  }
+
   constructor() {
     this.loadAll();
   }
@@ -56,6 +71,7 @@ export class TransactionService {
               price: created.price,
             },
           ]);
+          this.setFeedback(created.message ?? `Lançamento de ${created.ticker} registrado.`);
           onDone?.();
         },
       });
@@ -70,7 +86,7 @@ export class TransactionService {
         date: t.date,
       })
       .subscribe({
-        next: () => {
+        next: (updated) => {
           this._transactions.update((list) =>
             list.map((item) =>
               item.id === id
@@ -84,6 +100,7 @@ export class TransactionService {
                 : item,
             ),
           );
+          this.setFeedback(updated.message ?? 'Lançamento atualizado com sucesso.');
           onDone?.();
         },
       });
@@ -91,7 +108,10 @@ export class TransactionService {
 
   remove(id: number): void {
     this.api.deleteTransaction(id).subscribe({
-      next: () => this._transactions.update((list) => list.filter((t) => t.id !== id)),
+      next: () => {
+        this._transactions.update((list) => list.filter((t) => t.id !== id));
+        this.setFeedback('Lançamento excluído.');
+      },
     });
   }
 

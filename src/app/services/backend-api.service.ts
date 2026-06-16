@@ -10,6 +10,7 @@ export interface ApiTransaction {
   price: number;
   date: string;
   created_at: string;
+  message?: string;
 }
 
 export interface ApiStock {
@@ -133,6 +134,7 @@ export interface ApiAcaoItem {
   nota: number;
   history_ready: boolean;
   stock_id: number;
+  transaction_count: number;
 }
 
 export interface ApiGoal {
@@ -142,4 +144,5 @@ export interface ApiGoal {
   createdAt: string;
   currentValue?: number;
   progressPercent?: number;
+  message?: string;
 }

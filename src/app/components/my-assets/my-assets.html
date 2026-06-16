@@ -11,6 +11,13 @@
     <button class="btn-add-transaction" (click)="openAdd()">+ Adicionar Lançamento</button>
   </div>
 
+  <!-- Feedback do resultado da ação -->
+  <div class="ma-feedback" *ngIf="svc.feedback() as msg" role="status">
+    <span class="ma-feedback-icon">✓</span>
+    <span class="ma-feedback-text">{{ msg }}</span>
+    <button class="ma-feedback-close" (click)="svc.clearFeedback()" aria-label="Fechar">×</button>
+  </div>
+
   <!-- Accordion sections -->
   <div class="sections-list">
     <div class="accordion" *ngFor="let sec of sections">

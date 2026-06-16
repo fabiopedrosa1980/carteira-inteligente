@@ -18,10 +18,28 @@ export class MyAssetsComponent {
   editing = signal<Transaction | null>(null);
   presetType = signal<AssetType | null>(null);
 
-  sections: { id: AssetType; label: string; short: string; icon: string }[] = [
-    { id: 'Acoes', label: 'Lançamentos de Ações', short: 'Ações', icon: '📈' },
-    { id: 'FIIs', label: 'Lançamentos de FIIs', short: 'FIIs', icon: '🏢' },
-    { id: 'ETFs', label: 'Lançamentos de ETFs', short: 'ETFs', icon: '🌐' },
+  sections: { id: AssetType; label: string; short: string; hint: string; icon: string }[] = [
+    {
+      id: 'Acoes',
+      label: 'Lançamentos de Ações',
+      short: 'Ações',
+      hint: 'Ações de empresas negociadas na bolsa (ex.: PETR4, VALE3)',
+      icon: '📈',
+    },
+    {
+      id: 'FIIs',
+      label: 'Lançamentos de FIIs',
+      short: 'FIIs',
+      hint: 'Fundos de Investimento Imobiliário (ex.: MXRF11, HGLG11)',
+      icon: '🏢',
+    },
+    {
+      id: 'ETFs',
+      label: 'Lançamentos de ETFs',
+      short: 'ETFs',
+      hint: 'Fundos de índice negociados em bolsa (ex.: BOVA11, IVVB11)',
+      icon: '🌐',
+    },
   ];
 
   collapsed = signal<Set<AssetType>>(new Set());

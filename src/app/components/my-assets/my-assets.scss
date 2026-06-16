@@ -127,10 +127,26 @@
 .sec-icon {
   font-size: 18px;
 }
+.sec-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+.sec-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .sec-label {
   font-size: 15px;
   font-weight: 700;
   color: var(--text-primary);
+}
+.sec-hint {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
 }
 .sec-count {
   background: rgba(99, 179, 237, 0.15);

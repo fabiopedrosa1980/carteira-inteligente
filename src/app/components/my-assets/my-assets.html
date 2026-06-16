@@ -42,7 +42,7 @@
           <!-- Empty state -->
           <div class="empty-state" *ngIf="sectionData()[sec.id].length === 0">
             <span class="empty-icon">📭</span>
-            <span class="empty-text">Nenhum lançamento em {{ sec.label }}</span>
+            <span class="empty-text">Nenhum lançamento em {{ sec.short }}</span>
             <button class="btn-add-inline" (click)="openAdd(sec.id)">+ Adicionar</button>
           </div>
 
@@ -119,7 +119,7 @@
 
             <div class="table-footer">
               <button class="btn-add-inline" (click)="openAdd(sec.id)">
-                + Adicionar em {{ sec.label }}
+                + Adicionar em {{ sec.short }}
               </button>
             </div>
           </div>

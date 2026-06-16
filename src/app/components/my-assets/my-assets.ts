@@ -18,10 +18,10 @@ export class MyAssetsComponent {
   editing = signal<Transaction | null>(null);
   presetType = signal<AssetType | null>(null);
 
-  sections: { id: AssetType; label: string; icon: string }[] = [
-    { id: 'Acoes', label: 'Ações', icon: '📈' },
-    { id: 'FIIs', label: 'FIIs', icon: '🏢' },
-    { id: 'ETFs', label: 'ETFs', icon: '🌐' },
+  sections: { id: AssetType; label: string; short: string; icon: string }[] = [
+    { id: 'Acoes', label: 'Lançamentos de Ações', short: 'Ações', icon: '📈' },
+    { id: 'FIIs', label: 'Lançamentos de FIIs', short: 'FIIs', icon: '🏢' },
+    { id: 'ETFs', label: 'Lançamentos de ETFs', short: 'ETFs', icon: '🌐' },
   ];
 
   collapsed = signal<Set<AssetType>>(new Set());

@@ -1,0 +1,47 @@
+<div class="ds-section">
+  <h3 class="ds-title">
+    <span class="ds-icon">{{ icon() }}</span>
+    {{ title() }}
+  </h3>
+  <p class="ds-subtitle">{{ subtitle() }}</p>
+
+  <div class="ds-loading" *ngIf="loading()">Calculando…</div>
+
+  <div class="ds-error" *ngIf="error() && !loading()">
+    <span class="ds-error-icon">⚠️</span>
+    <span>Não foi possível calcular os valores.</span>
+  </div>
+
+  <ng-container *ngIf="!loading() && !error()">
+    <!-- Total geral -->
+    <div class="ds-total-card">
+      <span class="ds-total-label">{{
+        mode === 'received' ? 'Total recebido' : 'Total projetado'
+      }}</span>
+      <span class="ds-total-value">{{ total() | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
+    </div>
+
+    <!-- Vazio -->
+    <div class="ds-empty" *ngIf="rows().length === 0">Nenhum ativo com proventos para exibir.</div>
+
+    <!-- Detalhamento por ativo -->
+    <div class="ds-table-wrap" *ngIf="rows().length > 0">
+      <table class="ds-table">
+        <thead>
+          <tr>
+            <th class="col-ativo">Ativo</th>
+            <th class="col-cotas">Cotas</th>
+            <th class="col-valor">{{ mode === 'received' ? 'Recebido' : 'Projetado' }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows()">
+            <td class="col-ativo">{{ row.ticker }}</td>
+            <td class="col-cotas">{{ row.shares | number: '1.0-0' }}</td>
+            <td class="col-valor">{{ row.value | currency: 'BRL' : 'symbol' : '1.2-2' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>

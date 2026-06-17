@@ -1,0 +1,50 @@
+.dv-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.dv-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--input-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    border-color: var(--accent);
+  }
+
+  &.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--btn-accent-text);
+  }
+}
+
+.dv-tab-icon {
+  font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+  .dv-tab-label {
+    display: none;
+  }
+  .dv-tab {
+    padding: 0.45rem 0.7rem;
+  }
+  .dv-tab-icon {
+    font-size: 1.1rem;
+  }
+}

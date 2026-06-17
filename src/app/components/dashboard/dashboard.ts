@@ -9,7 +9,7 @@ import { StockCardComponent } from '../stock-card/stock-card';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
 import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
-import { DividendHistoryComponent } from '../dividend-history/dividend-history';
+import { DividendsComponent } from '../dividends/dividends';
 import { Stock } from '../../models/stock.model';
 
 type SortField = 'name' | 'price' | 'change' | 'dy' | 'nota' | 'default';
@@ -25,7 +25,7 @@ const THEME_KEY = 'ci-theme';
     AddStockModalComponent,
     MyAssetsComponent,
     GoalsComponent,
-    DividendHistoryComponent,
+    DividendsComponent,
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],

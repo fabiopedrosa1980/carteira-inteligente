@@ -61,43 +61,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   margin-bottom: 14px;
 }
 
-/* ---------- Bottom row: nota ---------- */
-.card-bottom {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 12px;
-}
-
-.nota-badge {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  padding: 4px 10px;
-  border-radius: 9px;
-  font-weight: 800;
-  font-size: 15px;
-  line-height: 1;
-  background: color-mix(in srgb, currentColor 14%, transparent);
-  border: 1px solid color-mix(in srgb, currentColor 35%, transparent);
-
-  &.nota-high {
-    color: var(--color-pos);
-  }
-  &.nota-mid {
-    color: var(--color-warning);
-  }
-  &.nota-low {
-    color: var(--color-neg);
-  }
-}
-.nota-star {
-  font-size: 12px;
-}
-.nota-value {
-  font-variant-numeric: tabular-nums;
-}
-
 .identity {
   display: flex;
   flex-direction: column;

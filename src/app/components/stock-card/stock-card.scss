@@ -61,8 +61,14 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   margin-bottom: 14px;
 }
 
+/* ---------- Bottom row: nota ---------- */
+.card-bottom {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
 .nota-badge {
-  margin-left: auto;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;

@@ -12,11 +12,6 @@
         {{ displayName }}
       </span>
     </div>
-
-    <span class="nota-badge" [class]="notaClass" *ngIf="stock.nota > 0" title="Nota">
-      <span class="nota-star">★</span>
-      <span class="nota-value">{{ stock.nota | number: '1.0-1' }}</span>
-    </span>
   </div>
 
   <div class="price-row">
@@ -50,6 +45,13 @@
 
     <span class="sector-tag" *ngIf="stock.sector && stock.sector !== 'Ações'">
       {{ stock.sector }}
+    </span>
+  </div>
+
+  <div class="card-bottom" *ngIf="stock.nota > 0">
+    <span class="nota-badge" [class]="notaClass" title="Nota">
+      <span class="nota-star">★</span>
+      <span class="nota-value">{{ stock.nota | number: '1.0-1' }}</span>
     </span>
   </div>
 </div>

@@ -20,7 +20,7 @@ export class StockCardComponent {
 
   get displayName(): string {
     const name = this.stock.name !== this.stock.ticker ? this.stock.name : '—';
-    return name.length > 20 ? name.slice(0, 20) + '…' : name;
+    return name.length > 40 ? name.slice(0, 40) + '…' : name;
   }
 
   get notaClass(): string {

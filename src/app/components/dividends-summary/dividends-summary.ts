@@ -67,9 +67,7 @@ export class DividendsSummaryComponent implements OnInit {
     return this.expanded().has(ticker);
   }
 
-  readonly title = computed(() =>
-    this.mode === 'received' ? 'Dividendos Recebidos' : 'Dividendos Projetados',
-  );
+  readonly title = computed(() => (this.mode === 'received' ? 'Recebidos' : 'Projetados'));
   readonly icon = computed(() => (this.mode === 'received' ? '💰' : '📈'));
   readonly subtitle = computed(() =>
     this.mode === 'received'

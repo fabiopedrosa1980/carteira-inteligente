@@ -32,37 +32,6 @@
     </div>
 
     <div *ngIf="activeTab === 'portfolio'">
-      <div class="portfolio-stats">
-        <div class="stat-pill">
-          <span class="sp-label">Ações</span>
-          <span class="sp-value">{{ acoes().length }}</span>
-        </div>
-        <div class="stat-pill">
-          <span class="sp-label">Maior Alta</span>
-          <span class="sp-value accent">
-            {{ maxChange() >= 0 ? '+' : '' }}{{ maxChange() | number: '1.2-2' }}%
-          </span>
-        </div>
-        <div class="stat-pill">
-          <span class="sp-label">Maior Baixa</span>
-          <span class="sp-value" [class.neg]="minChange() < 0">
-            {{ minChange() >= 0 ? '+' : '' }}{{ minChange() | number: '1.2-2' }}%
-          </span>
-        </div>
-        <div class="stat-pill">
-          <span class="sp-label">Destaque</span>
-          <span class="sp-value green">{{ topChangeStock()?.ticker ?? '—' }}</span>
-        </div>
-        <div class="stat-pill">
-          <span class="sp-label">Maior Nota</span>
-          <span class="sp-value green" *ngIf="maxNota() > 0">
-            {{ maxNota() | number: '1.0-1' }}
-            <span class="sp-sub">{{ topNotaStock()?.ticker }}</span>
-          </span>
-          <span class="sp-value" *ngIf="maxNota() === 0">—</span>
-        </div>
-      </div>
-
       <div class="section-header">
         <div>
           <h2 class="page-title"><span class="page-title-icon">💼</span> Minhas Ações</h2>

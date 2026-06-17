@@ -112,20 +112,6 @@ export class DashboardComponent {
     });
   });
 
-  maxChange = computed(() =>
-    this.acoes().length ? Math.max(...this.acoes().map((s) => s.changePercent)) : 0,
-  );
-  topChangeStock = computed(() => this.acoes().find((s) => s.changePercent === this.maxChange()));
-
-  minChange = computed(() =>
-    this.acoes().length ? Math.min(...this.acoes().map((s) => s.changePercent)) : 0,
-  );
-
-  maxNota = computed(() =>
-    this.acoes().length ? Math.max(...this.acoes().map((s) => s.nota)) : 0,
-  );
-  topNotaStock = computed(() => this.acoes().find((s) => s.nota === this.maxNota()));
-
   tabs = [
     { id: 'meus-ativos', label: 'Meus Ativos', icon: '📊' },
     { id: 'portfolio', label: 'Minhas Ações', icon: '💼' },

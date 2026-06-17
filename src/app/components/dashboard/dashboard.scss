@@ -41,51 +41,6 @@
   color: var(--text-secondary);
 }
 
-.portfolio-stats {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-  @media (max-width: 480px) {
-    gap: 8px;
-  }
-}
-.stat-pill {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 16px;
-  min-width: 80px;
-}
-.sp-label {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin-bottom: 2px;
-}
-.sp-value {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-.sp-value.accent {
-  color: var(--accent);
-}
-.sp-value.green {
-  color: #68d391;
-}
-.sp-value.neg {
-  color: var(--color-neg);
-}
-.sp-sub {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  margin-left: 4px;
-}
-
 .btn-theme {
   background: var(--card-bg);
   border: 1px solid var(--border);

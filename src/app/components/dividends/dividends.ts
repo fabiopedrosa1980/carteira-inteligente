@@ -16,9 +16,9 @@ export class DividendsComponent {
   activeTab = signal<DividendsTab>('historico');
 
   tabs: { id: DividendsTab; label: string; icon: string }[] = [
-    { id: 'historico', label: 'Histórico de Dividendos', icon: '📋' },
-    { id: 'recebidos', label: 'Dividendos Recebidos', icon: '💰' },
-    { id: 'projetados', label: 'Dividendos Projetados', icon: '📈' },
+    { id: 'historico', label: 'Histórico', icon: '📋' },
+    { id: 'recebidos', label: 'Recebidos', icon: '💰' },
+    { id: 'projetados', label: 'Projetados', icon: '📈' },
   ];
 
   setTab(id: DividendsTab): void {

@@ -1,0 +1,5 @@
+<div class="toast" *ngIf="message() as msg" role="status">
+  <span class="toast-icon">✓</span>
+  <span class="toast-text">{{ msg }}</span>
+  <button class="toast-close" (click)="dismiss()" aria-label="Fechar">×</button>
+</div>

@@ -18,11 +18,6 @@ export class GoalsComponent {
 
   readonly metas = this.metasService.getMetas;
   readonly loading = this.metasService.loading;
-  readonly feedback = this.metasService.feedback;
-
-  clearFeedback(): void {
-    this.metasService.clearFeedback();
-  }
 
   showForm = signal(false);
   editingId = signal<string | null>(null);

@@ -74,7 +74,7 @@ export class DividendsSummaryComponent implements OnInit {
   readonly subtitle = computed(() =>
     this.mode === 'received'
       ? `Proventos de ${this.currentYear} já pagos (até a data de hoje), considerando lançamentos até a data-com.`
-      : `Proventos por vir em ${this.currentYear} (data-com após hoje), pelas cotas atuais.`,
+      : `Proventos a receber em ${this.currentYear} (pagamento a partir de hoje), pelas cotas atuais.`,
   );
 
   private readonly currentYear = new Date().getFullYear();
@@ -192,14 +192,15 @@ export class DividendsSummaryComponent implements OnInit {
     return this.toMonthList(byMonth);
   }
 
-  // Projetados: proventos do ano corrente ainda por vir (data-com após hoje),
-  // por mês, soma amount × total de cotas atuais.
+  // Projetados: proventos do ano corrente ainda a receber (data de pagamento de
+  // hoje em diante), por mês, soma amount × total de cotas atuais.
+  // Complementa Recebidos (pay_date < hoje) sem lacuna nem sobreposição.
   private computeProjected(dividends: ApiDividend[], currentShares: number): MonthValue[] {
     const byMonth = new Map<number, number>();
     for (const d of dividends) {
       if (this.yearOf(d) !== this.currentYear) continue;
-      // Só conta o que ainda vem: data-com (ex_date) existente e após hoje.
-      if (!d.ex_date || d.ex_date <= this.todayStr) continue;
+      // Só conta o que ainda será pago: pay_date existente e >= hoje.
+      if (!d.pay_date || d.pay_date < this.todayStr) continue;
       const month = this.monthOf(d);
       byMonth.set(month, (byMonth.get(month) ?? 0) + d.amount * currentShares);
     }

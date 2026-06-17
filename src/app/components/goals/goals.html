@@ -7,13 +7,6 @@
     <button class="btn-nova" (click)="openForm()" *ngIf="!showForm()">+ Nova Meta</button>
   </div>
 
-  <!-- Feedback do resultado da ação -->
-  <div class="metas-feedback" *ngIf="feedback() as msg" role="status">
-    <span class="metas-feedback-icon">✓</span>
-    <span class="metas-feedback-text">{{ msg }}</span>
-    <button class="metas-feedback-close" (click)="clearFeedback()" aria-label="Fechar">×</button>
-  </div>
-
   <!-- Formulário inline -->
   <div class="meta-form" *ngIf="showForm()">
     <h3 class="form-title">{{ editingId() ? 'Editar Meta' : 'Nova Meta' }}</h3>

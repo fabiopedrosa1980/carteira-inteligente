@@ -1,29 +1,16 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { Transaction, AssetType } from '../models/transaction.model';
 import { BackendApiService } from './backend-api.service';
+import { NotificationService } from './notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
   private readonly api = inject(BackendApiService);
+  private readonly notifications = inject(NotificationService);
 
   private _transactions = signal<Transaction[]>([]);
   readonly transactions = this._transactions.asReadonly();
   readonly loading = signal(false);
-
-  /** Mensagem de resultado da última ação, para feedback na tela de Meus Ativos. */
-  readonly feedback = signal<string | null>(null);
-  private feedbackTimer?: ReturnType<typeof setTimeout>;
-
-  private setFeedback(message: string): void {
-    this.feedback.set(message);
-    clearTimeout(this.feedbackTimer);
-    this.feedbackTimer = setTimeout(() => this.feedback.set(null), 6000);
-  }
-
-  clearFeedback(): void {
-    clearTimeout(this.feedbackTimer);
-    this.feedback.set(null);
-  }
 
   constructor() {
     this.loadAll();
@@ -76,7 +63,7 @@ export class TransactionService {
               price: created.price,
             },
           ]);
-          this.setFeedback(created.message ?? `Lançamento de ${created.ticker} registrado.`);
+          this.notifications.show(created.message ?? `Lançamento de ${created.ticker} registrado.`);
           onDone?.();
         },
       });
@@ -105,7 +92,7 @@ export class TransactionService {
                 : item,
             ),
           );
-          this.setFeedback(updated.message ?? 'Lançamento atualizado com sucesso.');
+          this.notifications.show(updated.message ?? 'Lançamento atualizado com sucesso.');
           onDone?.();
         },
       });
@@ -115,7 +102,7 @@ export class TransactionService {
     this.api.deleteTransaction(id).subscribe({
       next: () => {
         this._transactions.update((list) => list.filter((t) => t.id !== id));
-        this.setFeedback('Lançamento excluído.');
+        this.notifications.show('Lançamento excluído.');
       },
     });
   }

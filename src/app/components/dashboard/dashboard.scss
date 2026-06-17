@@ -41,6 +41,12 @@
   color: var(--text-secondary);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .btn-theme {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -56,7 +62,23 @@
   }
 }
 
-/* Portfolio stats pills */
+.btn-logout {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-secondary);
+  font-family: inherit;
+  transition: all 0.2s;
+  &:hover {
+    border-color: var(--color-neg);
+    color: var(--color-neg);
+  }
+}
 
 .tab-nav {
   display: flex;

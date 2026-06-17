@@ -20,11 +20,27 @@ export class LoginComponent implements AfterViewInit {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
+  // O script do Google Sign-In é carregado de forma assíncrona (index.html),
+  // então `google` pode ainda não existir quando este hook roda. Em vez de errar
+  // de imediato, tentamos novamente por um período limitado antes de desistir.
+  private static readonly MAX_INIT_ATTEMPTS = 25;
+  private static readonly INIT_RETRY_MS = 200;
+
   ngAfterViewInit(): void {
+    this.initGoogleSignIn(0);
+  }
+
+  private initGoogleSignIn(attempt: number): void {
     if (typeof google === 'undefined') {
-      this.error.set('Google Sign-In não disponível. Verifique sua conexão.');
+      if (attempt >= LoginComponent.MAX_INIT_ATTEMPTS) {
+        this.error.set('Google Sign-In não disponível. Verifique sua conexão.');
+        return;
+      }
+      setTimeout(() => this.initGoogleSignIn(attempt + 1), LoginComponent.INIT_RETRY_MS);
       return;
     }
+
+    this.error.set(null);
 
     google.accounts.id.initialize({
       client_id: this.auth.clientId,

@@ -1,5 +1,6 @@
 import { Component, computed, signal, Signal, inject, effect, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { StockDataService } from '../../services/stock-data.service';
 import { BackendApiService, ApiAcaoItem } from '../../services/backend-api.service';
 import { AuthService } from '../../services/auth.service';
@@ -33,8 +34,14 @@ const THEME_KEY = 'ci-theme';
 export class DashboardComponent {
   private readonly api = inject(BackendApiService);
   private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
   private readonly transactionSvc = inject(TransactionService);
   private readonly metasSvc = inject(MetasService);
+
+  logout(): void {
+    this.auth.signOut();
+    this.router.navigate(['/login']);
+  }
 
   showModal = false;
   activeTab = 'meus-ativos';

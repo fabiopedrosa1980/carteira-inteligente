@@ -20,7 +20,7 @@ export class MyAssetsComponent {
   presetType = signal<AssetType | null>(null);
 
   sections: { id: AssetType; label: string; short: string; icon: string }[] = [
-    { id: 'Acoes', label: 'Lançamentos de Ações', short: 'Ações', icon: '📈' },
+    { id: 'Acoes', label: 'Lançamentos de Ações', short: 'Ações', icon: '' },
     { id: 'FIIs', label: 'Lançamentos de FIIs', short: 'FIIs', icon: '🏢' },
     { id: 'ETFs', label: 'Lançamentos de ETFs', short: 'ETFs', icon: '🌐' },
   ];

@@ -16,7 +16,7 @@
     <div class="accordion" *ngFor="let sec of sections">
       <button class="accordion-header" (click)="toggle(sec.id)">
         <div class="ah-left">
-          <span class="sec-icon">{{ sec.icon }}</span>
+          <span class="sec-icon" *ngIf="sec.icon">{{ sec.icon }}</span>
           <span class="sec-label">{{ sec.label }}</span>
           <span class="sec-count" *ngIf="sectionData()[sec.id].length > 0">
             {{ sectionData()[sec.id].length }}

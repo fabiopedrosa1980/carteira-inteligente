@@ -73,11 +73,22 @@ export class DividendsSummaryComponent implements OnInit {
   readonly icon = computed(() => (this.mode === 'received' ? '💰' : '📈'));
   readonly subtitle = computed(() =>
     this.mode === 'received'
-      ? `Proventos do ano de ${this.currentYear}, considerando lançamentos até a data-com.`
-      : `Projeção com base nos proventos por cota de ${this.currentYear - 1}.`,
+      ? `Proventos de ${this.currentYear} já pagos (até a data de hoje), considerando lançamentos até a data-com.`
+      : `Proventos por vir em ${this.currentYear} (data-com após hoje), pelas cotas atuais.`,
   );
 
   private readonly currentYear = new Date().getFullYear();
+
+  // Data de hoje em horário local (YYYY-MM-DD), evitando o deslocamento de fuso
+  // do toISOString() (UTC).
+  private readonly todayStr = this.localDateStr(new Date());
+
+  private localDateStr(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
 
   ngOnInit(): void {
     this.api.getAcoes().subscribe({
@@ -157,7 +168,8 @@ export class DividendsSummaryComponent implements OnInit {
   }
 
   // Recebidos: por mês do ano atual, soma amount × cotas elegíveis
-  // (lançamentos cuja data é <= data-com do provento).
+  // (lançamentos cuja data é <= data-com), considerando apenas proventos já
+  // pagos (data de pagamento anterior a hoje).
   private computeReceived(
     dividends: ApiDividend[],
     txOfTicker: { quantity: number; date: string }[],
@@ -165,6 +177,8 @@ export class DividendsSummaryComponent implements OnInit {
     const byMonth = new Map<number, number>();
     for (const d of dividends) {
       if (this.yearOf(d) !== this.currentYear) continue;
+      // Só conta o que já foi pago: pay_date existente e anterior a hoje.
+      if (!d.pay_date || d.pay_date >= this.todayStr) continue;
 
       const comDate = d.ex_date || d.pay_date || '';
       const eligibleShares = txOfTicker.reduce((sum, t) => {
@@ -178,12 +192,14 @@ export class DividendsSummaryComponent implements OnInit {
     return this.toMonthList(byMonth);
   }
 
-  // Projetados: por mês do ano anterior, soma amount × total de cotas atuais.
+  // Projetados: proventos do ano corrente ainda por vir (data-com após hoje),
+  // por mês, soma amount × total de cotas atuais.
   private computeProjected(dividends: ApiDividend[], currentShares: number): MonthValue[] {
-    const prevYear = this.currentYear - 1;
     const byMonth = new Map<number, number>();
     for (const d of dividends) {
-      if (this.yearOf(d) !== prevYear) continue;
+      if (this.yearOf(d) !== this.currentYear) continue;
+      // Só conta o que ainda vem: data-com (ex_date) existente e após hoje.
+      if (!d.ex_date || d.ex_date <= this.todayStr) continue;
       const month = this.monthOf(d);
       byMonth.set(month, (byMonth.get(month) ?? 0) + d.amount * currentShares);
     }

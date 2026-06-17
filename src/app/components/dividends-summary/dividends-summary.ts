@@ -139,8 +139,11 @@ export class DividendsSummaryComponent implements OnInit {
       return { ticker, shares: pos.total_quantity, value, months };
     });
 
+    // Lista apenas ativos com valor maior que zero (Recebidos e Projetados).
+    const filtered = rows.filter((r) => r.value > 0);
+
     // Maiores valores primeiro.
-    return rows.sort((a, b) => b.value - a.value);
+    return filtered.sort((a, b) => b.value - a.value);
   }
 
   // Resolve o mês (1-12) de um provento: usa o campo `month`, com fallback para

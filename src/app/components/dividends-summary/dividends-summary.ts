@@ -68,7 +68,6 @@ export class DividendsSummaryComponent implements OnInit {
   }
 
   readonly title = computed(() => (this.mode === 'received' ? 'Recebidos' : 'Projetados'));
-  readonly icon = computed(() => (this.mode === 'received' ? '💰' : '📈'));
   readonly subtitle = computed(() =>
     this.mode === 'received'
       ? `Proventos de ${this.currentYear} já pagos (até a data de hoje).`

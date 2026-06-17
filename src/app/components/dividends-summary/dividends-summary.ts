@@ -74,7 +74,7 @@ export class DividendsSummaryComponent implements OnInit {
   readonly subtitle = computed(() =>
     this.mode === 'received'
       ? `Proventos de ${this.currentYear} já pagos (até a data de hoje).`
-      : `Proventos a receber em ${this.currentYear} (pagamento a partir de hoje), pelas cotas atuais.`,
+      : `Proventos a receber em ${this.currentYear} de empresas que já divulgaram os próximos pagamentos.`,
   );
 
   private readonly currentYear = new Date().getFullYear();

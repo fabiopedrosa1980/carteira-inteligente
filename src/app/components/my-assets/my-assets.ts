@@ -1,6 +1,7 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../../services/transaction.service';
+import { ConfirmService } from '../../services/confirm.service';
 import { AddTransactionModalComponent } from '../add-transaction-modal/add-transaction-modal';
 import { AssetType, Transaction } from '../../models/transaction.model';
 
@@ -115,7 +116,13 @@ export class MyAssetsComponent {
     this.presetType.set(null);
   }
 
-  remove(id: number) {
-    this.svc.remove(id);
+  private readonly confirmService = inject(ConfirmService);
+
+  remove(t: Transaction) {
+    this.confirmService
+      .confirm({ message: `Deseja realmente excluir o lançamento de ${t.ticker}?` })
+      .then((ok) => {
+        if (ok) this.svc.remove(t.id);
+      });
   }
 }

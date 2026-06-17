@@ -1,0 +1,20 @@
+<div class="overlay" *ngIf="state() as s" (click)="onOverlayClick($event)">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <span class="modal-icon">⚠️</span>
+        <h2>{{ s.title }}</h2>
+      </div>
+      <button class="close-btn" (click)="cancel()" aria-label="Fechar">×</button>
+    </div>
+
+    <div class="modal-body">
+      <p class="confirm-message">{{ s.message }}</p>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="cancel()">{{ s.cancelLabel }}</button>
+      <button class="btn-danger" (click)="accept()">{{ s.confirmLabel }}</button>
+    </div>
+  </div>
+</div>

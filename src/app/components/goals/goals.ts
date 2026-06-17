@@ -2,6 +2,7 @@ import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MetasService } from '../../services/metas.service';
+import { ConfirmService } from '../../services/confirm.service';
 import { Meta } from '../../models/meta.model';
 
 @Component({
@@ -13,6 +14,7 @@ import { Meta } from '../../models/meta.model';
 })
 export class GoalsComponent {
   private readonly metasService = inject(MetasService);
+  private readonly confirmService = inject(ConfirmService);
 
   @Input() isDark = true;
 
@@ -92,8 +94,8 @@ export class GoalsComponent {
   }
 
   deleteMeta(id: string): void {
-    if (confirm('Deseja realmente excluir esta meta?')) {
-      this.metasService.deleteMeta(id);
-    }
+    this.confirmService.confirm({ message: 'Deseja realmente excluir esta meta?' }).then((ok) => {
+      if (ok) this.metasService.deleteMeta(id);
+    });
   }
 }

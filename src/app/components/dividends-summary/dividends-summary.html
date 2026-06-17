@@ -45,7 +45,7 @@
           <span class="col-cotas">{{ row.shares | number: '1.0-0' }}</span>
           <span class="col-valor">{{ row.value | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
           <span class="col-chevron" *ngIf="row.months.length > 0">
-            {{ isExpanded(row.ticker) ? '▾' : '▸' }}
+            <span class="chevron" [class.expanded]="isExpanded(row.ticker)">›</span>
           </span>
           <span class="col-chevron" *ngIf="row.months.length === 0"></span>
         </button>

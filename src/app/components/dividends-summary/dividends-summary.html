@@ -24,24 +24,39 @@
     <!-- Vazio -->
     <div class="ds-empty" *ngIf="rows().length === 0">Nenhum ativo com proventos para exibir.</div>
 
-    <!-- Detalhamento por ativo -->
-    <div class="ds-table-wrap" *ngIf="rows().length > 0">
-      <table class="ds-table">
-        <thead>
-          <tr>
-            <th class="col-ativo">Ativo</th>
-            <th class="col-cotas">Cotas</th>
-            <th class="col-valor">{{ mode === 'received' ? 'Recebido' : 'Projetado' }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of rows()">
-            <td class="col-ativo">{{ row.ticker }}</td>
-            <td class="col-cotas">{{ row.shares | number: '1.0-0' }}</td>
-            <td class="col-valor">{{ row.value | currency: 'BRL' : 'symbol' : '1.2-2' }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- Detalhamento por ativo (acordeão) -->
+    <div class="ds-list" *ngIf="rows().length > 0">
+      <div class="ds-row-head ds-header-labels">
+        <span class="col-ativo">Ativo</span>
+        <span class="col-cotas">Cotas</span>
+        <span class="col-valor">{{ mode === 'received' ? 'Recebido' : 'Projetado' }}</span>
+        <span class="col-chevron"></span>
+      </div>
+
+      <div class="ds-item" *ngFor="let row of rows()">
+        <button
+          type="button"
+          class="ds-row-head"
+          [class.expanded]="isExpanded(row.ticker)"
+          (click)="toggle(row.ticker)"
+          [disabled]="row.months.length === 0"
+        >
+          <span class="col-ativo">{{ row.ticker }}</span>
+          <span class="col-cotas">{{ row.shares | number: '1.0-0' }}</span>
+          <span class="col-valor">{{ row.value | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
+          <span class="col-chevron" *ngIf="row.months.length > 0">
+            {{ isExpanded(row.ticker) ? '▾' : '▸' }}
+          </span>
+          <span class="col-chevron" *ngIf="row.months.length === 0"></span>
+        </button>
+
+        <div class="ds-months" *ngIf="isExpanded(row.ticker)">
+          <div class="ds-month-row" *ngFor="let m of row.months">
+            <span class="ds-month-label">{{ m.label }}</span>
+            <span class="ds-month-value">{{ m.value | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </ng-container>
 </div>

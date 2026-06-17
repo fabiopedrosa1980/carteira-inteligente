@@ -76,65 +76,101 @@
   color: var(--accent);
 }
 
-.ds-table-wrap {
-  overflow-x: auto;
+.ds-list {
+  font-size: 0.9rem;
 }
 
-.ds-table {
+// Grade compartilhada entre o cabeçalho e as linhas de ativo.
+.ds-row-head {
+  display: grid;
+  grid-template-columns: 1fr 5rem 7rem 1.5rem;
+  align-items: center;
+  gap: 0.5rem;
   width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-  font-size: 0.9rem;
-
-  .col-ativo {
-    width: 40%;
-  }
-  .col-cotas {
-    width: 25%;
-  }
-  .col-valor {
-    width: 35%;
-  }
-
-  th {
-    text-align: left;
-    padding: 0.6rem 0.75rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-  }
-
-  td {
-    padding: 0.6rem 0.75rem;
-    color: var(--text-primary);
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  padding: 0.6rem 0.75rem;
+  text-align: left;
 
   .col-cotas,
   .col-valor {
     text-align: right;
   }
-  th.col-cotas,
-  th.col-valor {
-    text-align: right;
+  .col-chevron {
+    text-align: center;
+    color: var(--text-secondary);
   }
+}
 
-  tr:last-child td {
+.ds-header-labels {
+  color: var(--text-secondary);
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+
+.ds-item {
+  border-bottom: 1px solid var(--border);
+
+  &:last-child {
     border-bottom: none;
   }
-  tr:hover td {
+}
+
+button.ds-row-head {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: inherit;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) {
     background: rgba(255, 255, 255, 0.03);
   }
+  &:disabled {
+    cursor: default;
+  }
+  .col-ativo {
+    font-weight: 600;
+  }
+  .col-valor {
+    color: var(--accent);
+    font-weight: 600;
+  }
+}
 
-  @media (max-width: 480px) {
+.ds-months {
+  padding: 0.25rem 0.75rem 0.6rem 1.5rem;
+}
+
+.ds-month-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  margin-bottom: 0.25rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.ds-month-label {
+  color: var(--text-secondary);
+}
+
+.ds-month-value {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .ds-row-head {
+    grid-template-columns: 1fr 3.5rem 5.5rem 1.25rem;
+    padding: 0.5rem 0.4rem;
+    gap: 0.35rem;
     font-size: 0.8rem;
-    th,
-    td {
-      padding: 0.5rem 0.4rem;
-    }
   }
 }

@@ -39,8 +39,8 @@ export class MetasService {
   }
 
   addMeta(meta: Omit<Meta, 'id' | 'createdAt'>): void {
-    this.api.createGoal(meta).subscribe((created) => {
-      this.notifications.show(created.message ?? `Meta "${created.name}" criada com sucesso.`);
+    this.api.createGoal(meta).subscribe(() => {
+      this.notifications.show('Meta criada com sucesso');
       this.load();
     });
   }
@@ -49,8 +49,8 @@ export class MetasService {
     const current = this._metas().find((m) => m.id === id);
     if (!current) return;
     const payload = { ...current, ...changes };
-    this.api.updateGoal(id, payload).subscribe((updated) => {
-      this.notifications.show(updated.message ?? `Meta "${updated.name}" atualizada com sucesso.`);
+    this.api.updateGoal(id, payload).subscribe(() => {
+      this.notifications.show('Meta atualizada com sucesso');
       this.load();
     });
   }
@@ -58,7 +58,7 @@ export class MetasService {
   deleteMeta(id: string): void {
     this.api.deleteGoal(id).subscribe(() => {
       this._metas.update((list) => list.filter((m) => m.id !== id));
-      this.notifications.show('Meta excluída.');
+      this.notifications.show('Meta removida com sucesso');
     });
   }
 }

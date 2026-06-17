@@ -63,7 +63,7 @@ export class TransactionService {
               price: created.price,
             },
           ]);
-          this.notifications.show(created.message ?? `Lançamento de ${created.ticker} registrado.`);
+          this.notifications.show(`${created.ticker} adicionado com sucesso`);
           onDone?.();
         },
       });
@@ -78,7 +78,7 @@ export class TransactionService {
         date: t.date,
       })
       .subscribe({
-        next: (updated) => {
+        next: () => {
           this._transactions.update((list) =>
             list.map((item) =>
               item.id === id
@@ -92,17 +92,18 @@ export class TransactionService {
                 : item,
             ),
           );
-          this.notifications.show(updated.message ?? 'Lançamento atualizado com sucesso.');
+          this.notifications.show(`${t.ticker} atualizado com sucesso`);
           onDone?.();
         },
       });
   }
 
   remove(id: number): void {
+    const ticker = this._transactions().find((t) => t.id === id)?.ticker ?? 'Lançamento';
     this.api.deleteTransaction(id).subscribe({
       next: () => {
         this._transactions.update((list) => list.filter((t) => t.id !== id));
-        this.notifications.show('Lançamento excluído.');
+        this.notifications.show(`${ticker} removido com sucesso`);
       },
     });
   }

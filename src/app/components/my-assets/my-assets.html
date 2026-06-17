@@ -24,15 +24,10 @@
       <button class="accordion-header" (click)="toggle(sec.id)">
         <div class="ah-left">
           <span class="sec-icon">{{ sec.icon }}</span>
-          <div class="sec-titles">
-            <div class="sec-label-row">
-              <span class="sec-label">{{ sec.label }}</span>
-              <span class="sec-count" *ngIf="sectionData()[sec.id].length > 0">
-                {{ sectionData()[sec.id].length }}
-              </span>
-            </div>
-            <span class="sec-hint">{{ sec.hint }}</span>
-          </div>
+          <span class="sec-label">{{ sec.label }}</span>
+          <span class="sec-count" *ngIf="sectionData()[sec.id].length > 0">
+            {{ sectionData()[sec.id].length }}
+          </span>
         </div>
         <div class="ah-right">
           <span class="sec-total" *ngIf="totalFor(sec.id) > 0">

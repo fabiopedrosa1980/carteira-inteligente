@@ -197,7 +197,7 @@
   }
   &.active {
     border-color: var(--accent);
-    background: rgba(99, 179, 237, 0.12);
+    background: rgba(26, 127, 75, 0.12);
     color: var(--accent);
     font-weight: 600;
   }
@@ -276,7 +276,7 @@
   &:hover {
     transform: translateY(-2px);
     border-color: var(--accent);
-    box-shadow: 0 4px 20px rgba(99, 179, 237, 0.15);
+    box-shadow: 0 4px 20px rgba(26, 127, 75, 0.15);
     opacity: 1;
   }
 }
@@ -291,8 +291,8 @@
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 6px;
-  background: rgba(99, 179, 237, 0.1);
-  color: #63b3ed;
+  background: rgba(26, 127, 75, 0.1);
+  color: var(--accent);
   letter-spacing: 0.5px;
 }
 .add-yield-badge {

@@ -44,15 +44,29 @@
           </span>
         </div>
         <div class="stat-pill">
+          <span class="sp-label">Maior Baixa</span>
+          <span class="sp-value" [class.neg]="minChange() < 0">
+            {{ minChange() >= 0 ? '+' : '' }}{{ minChange() | number: '1.2-2' }}%
+          </span>
+        </div>
+        <div class="stat-pill">
           <span class="sp-label">Destaque</span>
           <span class="sp-value green">{{ topChangeStock()?.ticker ?? '—' }}</span>
+        </div>
+        <div class="stat-pill">
+          <span class="sp-label">Maior Nota</span>
+          <span class="sp-value green" *ngIf="maxNota() > 0">
+            {{ maxNota() | number: '1.0-1' }}
+            <span class="sp-sub">{{ topNotaStock()?.ticker }}</span>
+          </span>
+          <span class="sp-value" *ngIf="maxNota() === 0">—</span>
         </div>
       </div>
 
       <div class="section-header">
         <div>
-          <h2 class="section-title"><span class="icon">💼</span> Minhas Ações</h2>
-          <p class="section-subtitle">Suas posições em ações com cotação em tempo real</p>
+          <h2 class="page-title"><span class="page-title-icon">💼</span> Minhas Ações</h2>
+          <p class="page-subtitle">Suas posições em ações com cotação em tempo real</p>
         </div>
         <div class="sort-controls">
           <span class="sort-label">Ordenar por</span>

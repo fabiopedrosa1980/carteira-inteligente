@@ -1,9 +1,9 @@
 <div class="meus-ativos">
   <!-- Header -->
-  <div class="ma-header">
+  <div class="page-header">
     <div class="ma-header-left">
-      <h2 class="ma-title"><span class="ma-title-icon">📊</span> Meus Ativos</h2>
-      <p class="ma-subtitle">
+      <h2 class="page-title"><span class="page-title-icon">📊</span> Meus Ativos</h2>
+      <p class="page-subtitle">
         {{ svc.transactions().length }} lançamento{{ svc.transactions().length !== 1 ? 's' : '' }} ·
         Total: {{ totalAll() | currency: 'BRL' : 'symbol' : '1.2-2' }}
       </p>

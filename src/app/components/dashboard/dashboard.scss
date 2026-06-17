@@ -76,6 +76,15 @@
 .sp-value.green {
   color: #68d391;
 }
+.sp-value.neg {
+  color: var(--color-neg);
+}
+.sp-sub {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-left: 4px;
+}
 
 .btn-theme {
   background: var(--card-bg);
@@ -205,20 +214,6 @@
 .sort-arrow {
   font-size: 11px;
 }
-.section-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.section-subtitle {
-  font-size: 13px;
-  color: var(--text-secondary);
-}
-
 .loading-bar {
   display: flex;
   align-items: center;

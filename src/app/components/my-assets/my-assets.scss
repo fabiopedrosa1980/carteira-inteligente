@@ -2,33 +2,6 @@
   padding: 0;
 }
 
-.ma-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 24px;
-  @media (max-width: 600px) {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-.ma-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 4px;
-}
-.ma-subtitle {
-  font-size: 13px;
-  color: var(--text-secondary);
-  margin: 0;
-}
-
 .btn-add-transaction {
   background: var(--accent);
   border: none;

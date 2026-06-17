@@ -38,13 +38,11 @@
 }
 
 @media (max-width: 480px) {
-  .dv-tab-label {
-    display: none;
-  }
   .dv-tab {
-    padding: 0.45rem 0.7rem;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.8rem;
   }
   .dv-tab-icon {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 }

@@ -121,7 +121,7 @@
 /* Botão único de adicionar, centralizado ao final do acordeão */
 .add-row {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 14px 20px;
   @media (max-width: 600px) {
     padding: 12px;

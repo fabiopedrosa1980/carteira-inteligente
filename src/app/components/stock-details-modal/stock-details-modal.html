@@ -4,18 +4,15 @@
   </div>
 
   <div class="details-panel">
-    <div class="details-header">
+    <!-- Cabeçalho: identidade + preço/variação -->
+    <header class="details-header">
       <div class="title-group">
         <span class="d-ticker">{{ stock.ticker }}</span>
         <span class="d-name" *ngIf="stock.name && stock.name !== stock.ticker">{{
           stock.name
         }}</span>
       </div>
-    </div>
-
-    <div class="details-body">
-      <!-- Preço e variação -->
-      <div class="price-block">
+      <div class="price-group">
         <span class="d-price"
           ><span class="currency">R$</span>{{ stock.price | number: '1.2-2' }}</span
         >
@@ -28,43 +25,49 @@
           {{ stock.changePercent >= 0 ? '+' : '' }}{{ stock.changePercent | number: '1.2-2' }}%
         </span>
       </div>
+    </header>
 
-      <!-- Métricas principais -->
-      <div class="metrics-grid">
-        <div class="metric">
-          <span class="m-label">DY</span>
-          <span class="m-value">{{
+    <div class="details-body">
+      <!-- Resumo da posição -->
+      <div class="summary-row">
+        <div class="summary-item">
+          <span class="s-label">Dividend Yield</span>
+          <span class="s-value">{{
             stock.dividendYield > 0 ? (stock.dividendYield | number: '1.1-1') + '%' : '—'
           }}</span>
         </div>
-        <div class="metric">
-          <span class="m-label">Nota</span>
-          <span class="m-value">{{ stock.nota > 0 ? (stock.nota | number: '1.0-1') : '—' }}</span>
+        <div class="summary-item">
+          <span class="s-label">Nota</span>
+          <span class="s-value">{{ stock.nota > 0 ? (stock.nota | number: '1.0-1') : '—' }}</span>
         </div>
-        <div class="metric">
-          <span class="m-label">Setor</span>
-          <span class="m-value">{{ stock.sector || '—' }}</span>
+        <div class="summary-item">
+          <span class="s-label">Setor</span>
+          <span class="s-value">{{ stock.sector || '—' }}</span>
         </div>
-        <div class="metric" *ngIf="stock.quantity">
-          <span class="m-label">Cotas</span>
-          <span class="m-value">{{ stock.quantity | number: '1.0-0' }}</span>
+        <div class="summary-item" *ngIf="stock.quantity">
+          <span class="s-label">Cotas</span>
+          <span class="s-value">{{ stock.quantity | number: '1.0-0' }}</span>
         </div>
-        <div class="metric" *ngIf="stock.avgPrice">
-          <span class="m-label">Preço médio</span>
-          <span class="m-value">{{ stock.avgPrice | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
+        <div class="summary-item" *ngIf="stock.avgPrice">
+          <span class="s-label">Preço médio</span>
+          <span class="s-value">{{ stock.avgPrice | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
         </div>
       </div>
 
       <!-- Indicadores fundamentalistas (Investidor10) -->
-      <div class="section" *ngIf="hasIndicators">
+      <section class="section" *ngIf="hasIndicators">
         <h3 class="section-title">Indicadores fundamentalistas</h3>
-        <div class="metrics-grid">
-          <div class="metric" *ngFor="let ind of stock.indicators">
-            <span class="m-label">{{ ind.label }}</span>
-            <span class="m-value">{{ ind.value }}</span>
+        <div class="indicators-grid">
+          <div class="indicator" *ngFor="let ind of stock.indicators">
+            <span class="i-label">{{ ind.label }}</span>
+            <span class="i-value">{{ ind.value }}</span>
           </div>
         </div>
-      </div>
+      </section>
+
+      <p class="no-indicators" *ngIf="!hasIndicators">
+        Indicadores fundamentalistas ainda não disponíveis para este ativo.
+      </p>
     </div>
   </div>
 </div>

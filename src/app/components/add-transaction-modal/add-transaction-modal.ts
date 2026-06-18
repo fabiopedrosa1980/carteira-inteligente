@@ -32,11 +32,13 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     return this.transaction !== null;
   }
 
-  // Ticker inválido enquanto vazio, em busca ou não encontrado. Em edição o
-  // ticker é fixo, então não bloqueia o Salvar.
+  // Ticker inválido enquanto incompleto (<3), em busca, ou explicitamente não
+  // encontrado pela cotação. Não exige o nome resolvido — assim um ticker válido
+  // não fica bloqueado por cotação lenta/sem nome. Em edição o ticker é fixo.
   get isTickerInvalid(): boolean {
     if (this.isEdit) return false;
-    return this.quoteLoading() || this.quoteNotFound() || !this.quoteName();
+    if ((this.form.ticker || '').trim().length < 3) return true;
+    return this.quoteLoading() || this.quoteNotFound();
   }
 
   private readonly svc = inject(TransactionService);

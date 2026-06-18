@@ -5,7 +5,7 @@ No modal de lançamento, é possível salvar mesmo quando o ticker informado nã
 ## What Changes
 
 - No modal "Adicionar/Editar Lançamento", **desabilitar o botão Salvar quando o ticker for inválido** (não encontrado, ainda carregando ou vazio). Em modo edição, o ticker é fixo e não bloqueia.
-- Alinhar o **botão "Adicionar" dos acordeões à esquerda** (em vez de centralizado).
+- Alinhar o **botão "Adicionar" dos acordeões à direita**.
 
 ## Capabilities
 

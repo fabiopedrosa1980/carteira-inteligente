@@ -13,8 +13,8 @@ No modal de lançamento (modo adição), o botão Salvar SHALL ficar desabilitad
 - **THEN** o botão Salvar fica desabilitado
 
 #### Scenario: Ticker válido
-- **WHEN** o ticker é resolvido com sucesso (cotação encontrada)
-- **THEN** o botão Salvar é habilitado (sujeito às demais validações)
+- **WHEN** o ticker tem 3+ caracteres, não está em busca e não foi sinalizado como não encontrado
+- **THEN** o botão Salvar é habilitado (sujeito às demais validações), mesmo que a cotação não tenha resolvido nome/preço
 
 #### Scenario: Edição não bloqueia
 - **WHEN** o modal está em modo edição (ticker fixo)

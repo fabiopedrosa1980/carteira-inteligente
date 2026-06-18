@@ -43,6 +43,45 @@
   gap: 8px;
 }
 
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  max-width: 200px;
+}
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  &.fallback {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: var(--btn-accent-text);
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+  }
+}
+.user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
 .btn-theme {
   background: var(--card-bg);
   border: 1px solid var(--border);

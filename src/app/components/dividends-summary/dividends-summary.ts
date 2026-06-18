@@ -83,8 +83,10 @@ export class DividendsSummaryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getAcoes().subscribe({
-      next: (positions) => {
+    // Inclui ações e FIIs nos proventos (Recebidos/Projetados).
+    forkJoin([this.api.getAcoes(), this.api.getFiis()]).subscribe({
+      next: ([acoes, fiis]) => {
+        const positions = [...acoes, ...fiis];
         const visible = positions.filter((p) => p.stock_id > 0);
         if (visible.length === 0) {
           this.rows.set([]);

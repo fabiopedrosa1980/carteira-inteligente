@@ -106,6 +106,14 @@ export class BackendApiService {
       .pipe(catchError(() => of([])));
   }
 
+  // Posições de FIIs (proventos = rendimentos). Defensivo: lista vazia se o
+  // endpoint ainda não existir no backend.
+  getFiis(): Observable<ApiAcaoItem[]> {
+    return this.http
+      .get<ApiAcaoItem[]>(`${this.baseUrl}/transactions/fiis`)
+      .pipe(catchError(() => of([])));
+  }
+
   getGoals(): Observable<ApiGoal[]> {
     return this.http.get<ApiGoal[]>(`${this.baseUrl}/goals`).pipe(catchError(() => of([])));
   }
@@ -135,6 +143,14 @@ export interface ApiAcaoItem {
   history_ready: boolean;
   stock_id: number;
   transaction_count: number;
+  // Indicadores fundamentais (Status Invest), quando o backend os fornecer.
+  indicators?: {
+    pl?: number;
+    pvp?: number;
+    dy?: number;
+    roe?: number;
+    payout?: number;
+  };
 }
 
 export interface ApiGoal {

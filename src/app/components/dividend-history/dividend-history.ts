@@ -1,5 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiDividend, ApiAcaoItem } from '../../services/backend-api.service';
 
 const PAGE_SIZE = 10;
@@ -52,8 +53,10 @@ export class DividendHistoryComponent implements OnInit {
   readonly showPagination = computed(() => this.filteredDividends().length > PAGE_SIZE);
 
   ngOnInit(): void {
-    this.api.getAcoes().subscribe({
-      next: (items) => {
+    // Inclui ações e FIIs no histórico de proventos.
+    forkJoin([this.api.getAcoes(), this.api.getFiis()]).subscribe({
+      next: ([acoes, fiis]) => {
+        const items = [...acoes, ...fiis];
         this.positions.set(items);
         this.loadingPositions.set(false);
         const first = items.find((p) => p.stock_id > 0);

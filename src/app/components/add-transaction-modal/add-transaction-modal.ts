@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 import { TransactionService } from '../../services/transaction.service';
-import { StockApiService } from '../../services/stock-api.service';
+import { StockApiService, TickerSuggestion } from '../../services/stock-api.service';
 import { AssetType, Transaction } from '../../models/transaction.model';
 
 @Component({
@@ -36,6 +36,10 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
   private readonly stockApi = inject(StockApiService);
   private readonly tickerInput$ = new Subject<string>();
   private tickerSub?: Subscription;
+  private readonly searchInput$ = new Subject<string>();
+  private searchSub?: Subscription;
+
+  suggestions = signal<TickerSuggestion[]>([]);
 
   assetTypes: { id: AssetType; label: string }[] = [
     { id: 'Acoes', label: 'Ações' },
@@ -100,10 +104,21 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
           this.quoteName.set('');
         }
       });
+
+    // Fluxo de sugestões (autocomplete): busca enquanto digita ≥3 letras.
+    this.searchSub = this.searchInput$
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        filter((t) => t.length >= 3),
+        switchMap((q) => this.stockApi.searchTickers(q)),
+      )
+      .subscribe((list) => this.suggestions.set(list));
   }
 
   ngOnDestroy(): void {
     this.tickerSub?.unsubscribe();
+    this.searchSub?.unsubscribe();
   }
 
   get total(): number {
@@ -121,7 +136,17 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     this.quoteNotFound.set(false);
     if (value.length >= 3) {
       this.tickerInput$.next(value.toUpperCase());
+      this.searchInput$.next(value.toUpperCase());
+    } else {
+      this.suggestions.set([]);
     }
+  }
+
+  selectSuggestion(s: TickerSuggestion) {
+    this.suggestions.set([]);
+    this.onTickerChange(s.ticker);
+    // Resolve nome/cotação imediatamente para o ticker escolhido.
+    this.tickerInput$.next(s.ticker.toUpperCase());
   }
 
   save() {

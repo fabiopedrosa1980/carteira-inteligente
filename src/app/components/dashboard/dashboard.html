@@ -7,6 +7,17 @@
       </div>
     </div>
     <div class="header-actions">
+      <div class="user-chip" *ngIf="user() as u" [title]="u.email">
+        <img
+          class="user-avatar"
+          *ngIf="u.picture"
+          [src]="u.picture"
+          [alt]="u.name"
+          referrerpolicy="no-referrer"
+        />
+        <span class="user-avatar fallback" *ngIf="!u.picture">{{ u.name.charAt(0) }}</span>
+        <span class="user-name">{{ u.name }}</span>
+      </div>
       <button
         class="btn-theme"
         (click)="toggleTheme()"
@@ -77,7 +88,11 @@
       </div>
 
       <div class="stocks-grid" *ngIf="!acoesLoading() && acoes().length > 0">
-        <app-stock-card *ngFor="let stock of sortedStocks()" [stock]="stock"></app-stock-card>
+        <app-stock-card
+          *ngFor="let stock of sortedStocks()"
+          [stock]="stock"
+          (select)="selectedStock.set($event)"
+        ></app-stock-card>
       </div>
     </div>
 
@@ -98,3 +113,9 @@
 </div>
 
 <app-add-stock-modal *ngIf="showModal" (close)="showModal = false"></app-add-stock-modal>
+
+<app-stock-details-modal
+  *ngIf="selectedStock()"
+  [stock]="selectedStock()!"
+  (close)="selectedStock.set(null)"
+></app-stock-details-modal>

@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { TransactionService } from '../../services/transaction.service';
 import { MetasService } from '../../services/metas.service';
 import { StockCardComponent } from '../stock-card/stock-card';
+import { StockDetailsModalComponent } from '../stock-details-modal/stock-details-modal';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
 import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
@@ -23,6 +24,7 @@ const THEME_KEY = 'ci-theme';
   imports: [
     CommonModule,
     StockCardComponent,
+    StockDetailsModalComponent,
     AddStockModalComponent,
     MyAssetsComponent,
     GoalsComponent,
@@ -37,6 +39,9 @@ export class DashboardComponent {
   private readonly router = inject(Router);
   private readonly transactionSvc = inject(TransactionService);
   private readonly metasSvc = inject(MetasService);
+
+  // Usuário autenticado para identificação no header.
+  readonly user = this.auth.user;
 
   logout(): void {
     this.auth.signOut();
@@ -75,6 +80,7 @@ export class DashboardComponent {
 
   readonly acoes = signal<Stock[]>([]);
   readonly acoesLoading = signal(false);
+  readonly selectedStock = signal<Stock | null>(null);
 
   toggleTheme() {
     this.isDark.update((v) => !v);
@@ -155,6 +161,10 @@ export class DashboardComponent {
             dividendYield: item.dividend_yield,
             nota: item.nota,
             dividends: [],
+            stockId: item.stock_id,
+            quantity: item.total_quantity,
+            avgPrice: item.avg_price,
+            indicators: item.indicators,
           })),
         );
         this.acoesLoading.set(false);

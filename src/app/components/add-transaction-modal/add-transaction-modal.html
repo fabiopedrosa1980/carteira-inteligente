@@ -39,6 +39,12 @@
             [disabled]="isEdit"
           />
           <span class="ticker-spinner" *ngIf="quoteLoading()"></span>
+          <ul class="ticker-suggestions" *ngIf="suggestions().length > 0 && !isEdit">
+            <li *ngFor="let s of suggestions()" (click)="selectSuggestion(s)">
+              <span class="sug-ticker">{{ s.ticker }}</span>
+              <span class="sug-name">{{ s.name }}</span>
+            </li>
+          </ul>
         </div>
         <span class="field-error" *ngIf="errors.ticker">{{ errors.ticker }}</span>
         <span class="quote-hint found" *ngIf="quoteName()">{{ quoteName() }}</span>

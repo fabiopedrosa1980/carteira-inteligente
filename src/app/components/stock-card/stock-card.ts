@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stock } from '../../models/stock.model';
 
@@ -11,6 +11,7 @@ import { Stock } from '../../models/stock.model';
 })
 export class StockCardComponent {
   @Input() stock!: Stock;
+  @Output() select = new EventEmitter<Stock>();
 
   get yieldClass(): string {
     if (this.stock.dividendYield >= 9) return 'yield-high';

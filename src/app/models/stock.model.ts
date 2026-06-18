@@ -7,6 +7,14 @@ export interface DividendRecord {
   payDate: string;
 }
 
+export interface StockIndicators {
+  pl?: number;
+  pvp?: number;
+  dy?: number;
+  roe?: number;
+  payout?: number;
+}
+
 export interface Stock {
   ticker: string;
   name: string;
@@ -16,6 +24,10 @@ export interface Stock {
   dividendYield: number;
   nota: number;
   dividends: DividendRecord[];
+  stockId?: number;
+  quantity?: number;
+  avgPrice?: number;
+  indicators?: StockIndicators;
 }
 
 export interface MonthSummary {

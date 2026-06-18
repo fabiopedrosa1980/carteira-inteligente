@@ -2,6 +2,7 @@
   class="stock-card"
   [class.is-up]="stock.price > 0 && stock.changePercent >= 0"
   [class.is-down]="stock.price > 0 && stock.changePercent < 0"
+  (click)="select.emit(stock)"
 >
   <span class="perf-bar" aria-hidden="true"></span>
 

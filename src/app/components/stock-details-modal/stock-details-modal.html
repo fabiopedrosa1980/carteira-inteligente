@@ -1,0 +1,105 @@
+<div class="overlay" (click)="onOverlayClick($event)">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="title-group">
+        <span class="d-ticker">{{ stock.ticker }}</span>
+        <span class="d-name" *ngIf="stock.name && stock.name !== stock.ticker">{{
+          stock.name
+        }}</span>
+      </div>
+      <button class="close-btn" (click)="close.emit()" aria-label="Fechar">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Preço e variação -->
+      <div class="price-block">
+        <span class="d-price"
+          ><span class="currency">R$</span>{{ stock.price | number: '1.2-2' }}</span
+        >
+        <span
+          class="d-change"
+          [class.pos]="stock.changePercent >= 0"
+          [class.neg]="stock.changePercent < 0"
+        >
+          {{ stock.changePercent >= 0 ? '▲' : '▼' }}
+          {{ stock.changePercent >= 0 ? '+' : '' }}{{ stock.changePercent | number: '1.2-2' }}%
+        </span>
+      </div>
+
+      <!-- Métricas principais -->
+      <div class="metrics-grid">
+        <div class="metric">
+          <span class="m-label">DY</span>
+          <span class="m-value">{{
+            stock.dividendYield > 0 ? (stock.dividendYield | number: '1.1-1') + '%' : '—'
+          }}</span>
+        </div>
+        <div class="metric">
+          <span class="m-label">Nota</span>
+          <span class="m-value">{{ stock.nota > 0 ? (stock.nota | number: '1.0-1') : '—' }}</span>
+        </div>
+        <div class="metric">
+          <span class="m-label">Setor</span>
+          <span class="m-value">{{ stock.sector || '—' }}</span>
+        </div>
+        <div class="metric" *ngIf="stock.quantity">
+          <span class="m-label">Cotas</span>
+          <span class="m-value">{{ stock.quantity | number: '1.0-0' }}</span>
+        </div>
+        <div class="metric" *ngIf="stock.avgPrice">
+          <span class="m-label">Preço médio</span>
+          <span class="m-value">{{ stock.avgPrice | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
+        </div>
+      </div>
+
+      <!-- Indicadores (Status Invest) -->
+      <div class="section" *ngIf="hasIndicators">
+        <h3 class="section-title">Indicadores</h3>
+        <div class="metrics-grid">
+          <div class="metric" *ngIf="stock.indicators?.pl !== undefined">
+            <span class="m-label">P/L</span>
+            <span class="m-value">{{ stock.indicators!.pl | number: '1.2-2' }}</span>
+          </div>
+          <div class="metric" *ngIf="stock.indicators?.pvp !== undefined">
+            <span class="m-label">P/VP</span>
+            <span class="m-value">{{ stock.indicators!.pvp | number: '1.2-2' }}</span>
+          </div>
+          <div class="metric" *ngIf="stock.indicators?.dy !== undefined">
+            <span class="m-label">DY (SI)</span>
+            <span class="m-value">{{ stock.indicators!.dy | number: '1.1-2' }}%</span>
+          </div>
+          <div class="metric" *ngIf="stock.indicators?.roe !== undefined">
+            <span class="m-label">ROE</span>
+            <span class="m-value">{{ stock.indicators!.roe | number: '1.1-2' }}%</span>
+          </div>
+          <div class="metric" *ngIf="stock.indicators?.payout !== undefined">
+            <span class="m-label">Payout</span>
+            <span class="m-value">{{ stock.indicators!.payout | number: '1.1-2' }}%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Histórico de dividendos -->
+      <div class="section">
+        <h3 class="section-title">Histórico de dividendos</h3>
+        <div class="d-loading" *ngIf="loadingDividends()">Carregando…</div>
+        <div class="d-empty" *ngIf="!loadingDividends() && dividends().length === 0">
+          Sem dividendos no histórico.
+        </div>
+        <ul class="div-list" *ngIf="!loadingDividends() && dividends().length > 0">
+          <li *ngFor="let d of dividends().slice(0, 12)">
+            <span class="dl-date">{{ d.month | number: '2.0-0' }}/{{ d.year }}</span>
+            <span class="dl-type" [class.jcp]="(d.type || '').toLowerCase() === 'jcp'">{{
+              typeLabel(d.type)
+            }}</span>
+            <span class="dl-amount">{{ d.amount | currency: 'BRL' : 'symbol' : '1.2-4' }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-close" (click)="close.emit()">Fechar</button>
+    </div>
+  </div>
+</div>

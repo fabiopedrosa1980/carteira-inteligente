@@ -31,8 +31,13 @@
       <!-- Indicadores fundamentalistas (Investidor10) -->
       <section class="section" *ngIf="hasIndicators">
         <h3 class="section-title">Indicadores fundamentalistas</h3>
+        <p class="section-hint">Em destaque, os indicadores mais usados na análise de ativos.</p>
         <div class="indicators-grid">
-          <div class="indicator" *ngFor="let ind of stock.indicators">
+          <div
+            class="indicator"
+            [class.key]="isKeyIndicator(ind.label)"
+            *ngFor="let ind of stock.indicators"
+          >
             <span class="i-label">{{ ind.label }}</span>
             <span class="i-value">{{ formatValue(ind.value) }}</span>
           </div>

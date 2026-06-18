@@ -13,8 +13,38 @@ export class StockDetailsModalComponent {
   @Input({ required: true }) stock!: Stock;
   @Output() close = new EventEmitter<void>();
 
+  // Indicadores mais usados pelo mercado para análise de ativos — destacados na tela.
+  private static readonly KEY_INDICATORS = new Set([
+    'pl',
+    'pvp',
+    'dy',
+    'dividendyield',
+    'roe',
+    'roic',
+    'margemliquida',
+    'dividaliquida/ebitda',
+    'dividaliquidaebitda',
+    'ev/ebitda',
+    'evebitda',
+    'lpa',
+    'vpa',
+  ]);
+
   get hasIndicators(): boolean {
     return !!this.stock.indicators && this.stock.indicators.length > 0;
+  }
+
+  // Normaliza o rótulo (minúsculas, sem acentos/espaços/pontos) para comparação.
+  private normLabel(label: string): string {
+    return (label ?? '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[\s.]/g, '');
+  }
+
+  isKeyIndicator(label: string): boolean {
+    return StockDetailsModalComponent.KEY_INDICATORS.has(this.normLabel(label));
   }
 
   get hasCompanyInfo(): boolean {

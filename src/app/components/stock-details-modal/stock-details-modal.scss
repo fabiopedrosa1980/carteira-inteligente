@@ -128,7 +128,12 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   font-size: 20px;
   font-weight: 700;
   color: var(--text-primary);
+  margin: 0 0 4px;
+}
+.section-hint {
   margin: 0 0 14px;
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 
 /* Indicadores: 4 cards por linha (responsivo). minmax(0,1fr) evita estouro. */
@@ -138,6 +143,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   gap: 10px;
 }
 .indicator {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -146,6 +152,15 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   background: rgba(128, 128, 128, 0.05);
   border: 1px solid var(--border);
   border-radius: 10px;
+}
+/* Indicadores mais usados pelo mercado para análise — destacados. */
+.indicator.key {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+
+  .i-label {
+    color: var(--accent);
+  }
 }
 .i-label {
   font-size: 11px;

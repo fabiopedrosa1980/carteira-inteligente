@@ -42,8 +42,4 @@ export class StockDetailsModalComponent implements OnInit {
     if (t === 'rendimento') return 'Rendimento';
     return 'Dividendo';
   }
-
-  onOverlayClick(e: MouseEvent): void {
-    if ((e.target as HTMLElement).classList.contains('overlay')) this.close.emit();
-  }
 }

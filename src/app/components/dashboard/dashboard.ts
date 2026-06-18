@@ -55,6 +55,7 @@ export class DashboardComponent {
   // garantindo que o usuário veja informações atualizadas a cada navegação.
   setActiveTab(id: string): void {
     this.activeTab = id;
+    this.selectedStock.set(null);
     this.refreshActiveTab();
   }
 

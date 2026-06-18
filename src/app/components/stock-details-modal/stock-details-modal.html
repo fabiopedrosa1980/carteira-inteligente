@@ -1,16 +1,19 @@
-<div class="overlay" (click)="onOverlayClick($event)">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-header">
+<div class="stock-details">
+  <div class="details-topbar">
+    <button class="btn-back" (click)="close.emit()" aria-label="Voltar">← Voltar</button>
+  </div>
+
+  <div class="details-panel">
+    <div class="details-header">
       <div class="title-group">
         <span class="d-ticker">{{ stock.ticker }}</span>
         <span class="d-name" *ngIf="stock.name && stock.name !== stock.ticker">{{
           stock.name
         }}</span>
       </div>
-      <button class="close-btn" (click)="close.emit()" aria-label="Fechar">✕</button>
     </div>
 
-    <div class="modal-body">
+    <div class="details-body">
       <!-- Preço e variação -->
       <div class="price-block">
         <span class="d-price"
@@ -96,10 +99,6 @@
           </li>
         </ul>
       </div>
-    </div>
-
-    <div class="modal-footer">
-      <button class="btn-close" (click)="close.emit()">Fechar</button>
     </div>
   </div>
 </div>

@@ -55,45 +55,55 @@
     </div>
 
     <div *ngIf="activeTab === 'portfolio'">
-      <div class="section-header">
-        <div>
-          <h2 class="page-title">Minhas Ações</h2>
+      <!-- Lista de ações -->
+      <ng-container *ngIf="!selectedStock()">
+        <div class="section-header">
+          <div>
+            <h2 class="page-title">Minhas Ações</h2>
+          </div>
+          <div class="sort-controls">
+            <span class="sort-label">Ordenar por</span>
+            <button
+              *ngFor="let opt of sortOptions"
+              [class.active]="sortField() === opt.field"
+              (click)="setSort(opt.field)"
+            >
+              {{ opt.label }}
+              <span class="sort-arrow" *ngIf="sortField() === opt.field">
+                {{ sortAsc() ? '↑' : '↓' }}
+              </span>
+            </button>
+          </div>
         </div>
-        <div class="sort-controls">
-          <span class="sort-label">Ordenar por</span>
-          <button
-            *ngFor="let opt of sortOptions"
-            [class.active]="sortField() === opt.field"
-            (click)="setSort(opt.field)"
-          >
-            {{ opt.label }}
-            <span class="sort-arrow" *ngIf="sortField() === opt.field">
-              {{ sortAsc() ? '↑' : '↓' }}
-            </span>
-          </button>
+
+        <div class="loading-bar" *ngIf="acoesLoading()">
+          <div class="loading-bar-fill"></div>
+          <span>Buscando cotações em tempo real…</span>
         </div>
-      </div>
 
-      <div class="loading-bar" *ngIf="acoesLoading()">
-        <div class="loading-bar-fill"></div>
-        <span>Buscando cotações em tempo real…</span>
-      </div>
+        <div class="empty-portfolio" *ngIf="!acoesLoading() && acoes().length === 0">
+          <span class="empty-icon">📭</span>
+          <p>
+            Nenhuma ação encontrada. Adicione lançamentos do tipo <strong>Ações</strong> na aba Meus
+            Ativos.
+          </p>
+        </div>
 
-      <div class="empty-portfolio" *ngIf="!acoesLoading() && acoes().length === 0">
-        <span class="empty-icon">📭</span>
-        <p>
-          Nenhuma ação encontrada. Adicione lançamentos do tipo <strong>Ações</strong> na aba Meus
-          Ativos.
-        </p>
-      </div>
+        <div class="stocks-grid" *ngIf="!acoesLoading() && acoes().length > 0">
+          <app-stock-card
+            *ngFor="let stock of sortedStocks()"
+            [stock]="stock"
+            (select)="selectedStock.set($event)"
+          ></app-stock-card>
+        </div>
+      </ng-container>
 
-      <div class="stocks-grid" *ngIf="!acoesLoading() && acoes().length > 0">
-        <app-stock-card
-          *ngFor="let stock of sortedStocks()"
-          [stock]="stock"
-          (select)="selectedStock.set($event)"
-        ></app-stock-card>
-      </div>
+      <!-- Detalhe da ação em tela cheia -->
+      <app-stock-details-modal
+        *ngIf="selectedStock() as s"
+        [stock]="s"
+        (close)="selectedStock.set(null)"
+      ></app-stock-details-modal>
     </div>
 
     <div *ngIf="activeTab === 'calendar'">
@@ -113,9 +123,3 @@
 </div>
 
 <app-add-stock-modal *ngIf="showModal" (close)="showModal = false"></app-add-stock-modal>
-
-<app-stock-details-modal
-  *ngIf="selectedStock()"
-  [stock]="selectedStock()!"
-  (close)="selectedStock.set(null)"
-></app-stock-details-modal>

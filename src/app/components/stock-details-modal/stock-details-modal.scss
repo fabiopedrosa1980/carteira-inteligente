@@ -116,19 +116,19 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   padding: 22px 24px 26px;
 }
 
-/* ---------- Indicadores ---------- */
+/* ---------- Seções ---------- */
 .section {
   margin-top: 0;
 }
+.section + .section {
+  margin-top: 28px;
+}
+/* Header das seções no mesmo padrão dos títulos de página da app (.page-title). */
 .section-title {
-  font-size: 12px;
+  font-size: 20px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin: 0 0 14px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
 }
 
 /* Indicadores: 4 cards por linha (responsivo). minmax(0,1fr) evita estouro. */
@@ -168,9 +168,8 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   font-weight: 700;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  // Permite quebrar valores largos (ex.: "R$ 528,46 Bilhões") sem cortar.
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 900px) {
@@ -188,43 +187,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   margin-top: 22px;
   font-size: 13px;
   color: var(--text-secondary);
-}
-
-/* Informações sobre a empresa — valores mais largos: 2 colunas, rótulo/valor lado a lado */
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-.info-item {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  min-width: 0;
-  padding: 12px 14px;
-  background: rgba(128, 128, 128, 0.05);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.info-label {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.25;
-}
-.info-value {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-  white-space: nowrap;
-}
-
-@media (max-width: 600px) {
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 600px) {

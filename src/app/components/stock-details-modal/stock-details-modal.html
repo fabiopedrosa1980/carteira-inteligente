@@ -46,10 +46,10 @@
       <!-- Informações sobre a empresa (Investidor10) -->
       <section class="section" *ngIf="hasCompanyInfo">
         <h3 class="section-title">Informações sobre a empresa</h3>
-        <div class="info-grid">
-          <div class="info-item" *ngFor="let info of stock.companyInfo">
-            <span class="info-label">{{ info.label }}</span>
-            <span class="info-value">{{ info.value }}</span>
+        <div class="indicators-grid">
+          <div class="indicator" *ngFor="let info of stock.companyInfo">
+            <span class="i-label">{{ info.label }}</span>
+            <span class="i-value">{{ info.value }}</span>
           </div>
         </div>
       </section>

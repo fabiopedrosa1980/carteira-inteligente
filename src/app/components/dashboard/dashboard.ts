@@ -166,6 +166,7 @@ export class DashboardComponent {
             quantity: item.total_quantity,
             avgPrice: item.avg_price,
             indicators: item.indicators,
+            companyInfo: item.company_info,
           })),
         );
         this.acoesLoading.set(false);

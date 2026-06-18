@@ -145,6 +145,8 @@ export interface ApiAcaoItem {
   transaction_count: number;
   // Indicadores fundamentalistas (Investidor10) como lista rótulo/valor.
   indicators?: { label: string; value: string }[];
+  // Informações sobre a empresa (Investidor10) como lista rótulo/valor.
+  company_info?: { label: string; value: string }[];
 }
 
 export interface ApiGoal {

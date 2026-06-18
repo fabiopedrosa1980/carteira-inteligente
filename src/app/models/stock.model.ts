@@ -25,6 +25,7 @@ export interface Stock {
   quantity?: number;
   avgPrice?: number;
   indicators?: IndicatorItem[];
+  companyInfo?: IndicatorItem[];
 }
 
 export interface MonthSummary {

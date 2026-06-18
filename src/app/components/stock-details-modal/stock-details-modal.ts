@@ -17,6 +17,10 @@ export class StockDetailsModalComponent {
     return !!this.stock.indicators && this.stock.indicators.length > 0;
   }
 
+  get hasCompanyInfo(): boolean {
+    return !!this.stock.companyInfo && this.stock.companyInfo.length > 0;
+  }
+
   // Arredonda valores numéricos (formato BR, com sufixo opcional como "%") para
   // no máximo 2 casas decimais. Valores não numéricos são devolvidos intactos.
   formatValue(value: string): string {

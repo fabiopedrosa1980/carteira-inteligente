@@ -190,6 +190,43 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   color: var(--text-secondary);
 }
 
+/* Informações sobre a empresa — valores mais largos: 2 colunas, rótulo/valor lado a lado */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.info-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px 14px;
+  background: rgba(128, 128, 128, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.info-label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.25;
+}
+.info-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 600px) {
   .details-header {
     padding: 18px 16px;

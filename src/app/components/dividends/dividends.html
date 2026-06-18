@@ -49,3 +49,7 @@
   mode="projected"
   [assetType]="assetType()"
 ></app-dividends-summary>
+<app-dividends-radar
+  *ngIf="activeTab() === 'radar'"
+  [assetType]="assetType()"
+></app-dividends-radar>

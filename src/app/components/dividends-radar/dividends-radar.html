@@ -1,0 +1,19 @@
+<div class="radar-section">
+  <h3 class="radar-title">Radar de proventos · {{ year }}</h3>
+  <p class="radar-hint">
+    Tickers da carteira com data-com em cada mês no ano anterior — útil para comprar antes da
+    próxima data-com.
+  </p>
+
+  <div class="radar-loading" *ngIf="loading()">Calculando…</div>
+
+  <div class="radar-grid" *ngIf="!loading()">
+    <div class="radar-card" *ngFor="let m of months()">
+      <span class="rc-month">{{ m.label }}</span>
+      <div class="rc-tickers" *ngIf="m.tickers.length > 0">
+        <span class="ticker-chip" *ngFor="let t of m.tickers">{{ t }}</span>
+      </div>
+      <span class="rc-empty" *ngIf="m.tickers.length === 0">—</span>
+    </div>
+  </div>
+</div>

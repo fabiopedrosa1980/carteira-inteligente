@@ -2,14 +2,20 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DividendHistoryComponent } from '../dividend-history/dividend-history';
 import { DividendsSummaryComponent } from '../dividends-summary/dividends-summary';
+import { DividendsRadarComponent } from '../dividends-radar/dividends-radar';
 
-type DividendsTab = 'historico' | 'recebidos' | 'projetados';
+type DividendsTab = 'historico' | 'recebidos' | 'projetados' | 'radar';
 type AssetClass = 'Acoes' | 'FIIs';
 
 @Component({
   selector: 'app-dividends',
   standalone: true,
-  imports: [CommonModule, DividendHistoryComponent, DividendsSummaryComponent],
+  imports: [
+    CommonModule,
+    DividendHistoryComponent,
+    DividendsSummaryComponent,
+    DividendsRadarComponent,
+  ],
   templateUrl: './dividends.html',
   styleUrls: ['./dividends.scss'],
 })
@@ -33,6 +39,12 @@ export class DividendsComponent {
       id: 'projetados',
       label: 'Projetados',
       iconPath: 'M3 17l6-6 4 4 7-8M21 7v5M21 7h-5',
+    },
+    {
+      id: 'radar',
+      label: 'Radar',
+      iconPath:
+        'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM12 12l7-7',
     },
   ];
 

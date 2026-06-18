@@ -1,6 +1,5 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, Input, OnChanges, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiDividend, ApiAcaoItem } from '../../services/backend-api.service';
 
 const PAGE_SIZE = 10;
@@ -12,7 +11,9 @@ const PAGE_SIZE = 10;
   templateUrl: './dividend-history.html',
   styleUrls: ['./dividend-history.scss'],
 })
-export class DividendHistoryComponent implements OnInit {
+export class DividendHistoryComponent implements OnChanges {
+  @Input() assetType: 'Acoes' | 'FIIs' = 'Acoes';
+
   private readonly api = inject(BackendApiService);
 
   readonly positions = signal<ApiAcaoItem[]>([]);
@@ -52,11 +53,21 @@ export class DividendHistoryComponent implements OnInit {
   );
   readonly showPagination = computed(() => this.filteredDividends().length > PAGE_SIZE);
 
-  ngOnInit(): void {
-    // Inclui ações e FIIs no histórico de proventos.
-    forkJoin([this.api.getAcoes(), this.api.getFiis()]).subscribe({
-      next: ([acoes, fiis]) => {
-        const items = [...acoes, ...fiis];
+  ngOnChanges(): void {
+    this.load();
+  }
+
+  private load(): void {
+    // Carrega apenas a classe selecionada (Ações ou FIIs).
+    this.loadingPositions.set(true);
+    this.error.set(false);
+    this.positions.set([]);
+    this.dividends.set([]);
+    this.selectedStockId.set(null);
+
+    const source = this.assetType === 'FIIs' ? this.api.getFiis() : this.api.getAcoes();
+    source.subscribe({
+      next: (items) => {
         this.positions.set(items);
         this.loadingPositions.set(false);
         const first = items.find((p) => p.stock_id > 0);

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, Input, OnChanges, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiAcaoItem, ApiDividend } from '../../services/backend-api.service';
@@ -41,8 +41,9 @@ const MONTH_LABELS = [
   templateUrl: './dividends-summary.html',
   styleUrls: ['./dividends-summary.scss'],
 })
-export class DividendsSummaryComponent implements OnInit {
+export class DividendsSummaryComponent implements OnChanges {
   @Input({ required: true }) mode!: SummaryMode;
+  @Input() assetType: 'Acoes' | 'FIIs' = 'Acoes';
 
   private readonly api = inject(BackendApiService);
   private readonly txService = inject(TransactionService);
@@ -82,11 +83,20 @@ export class DividendsSummaryComponent implements OnInit {
     return `${y}-${m}-${day}`;
   }
 
-  ngOnInit(): void {
-    // Inclui ações e FIIs nos proventos (Recebidos/Projetados).
-    forkJoin([this.api.getAcoes(), this.api.getFiis()]).subscribe({
-      next: ([acoes, fiis]) => {
-        const positions = [...acoes, ...fiis];
+  ngOnChanges(): void {
+    this.load();
+  }
+
+  private load(): void {
+    // Carrega apenas a classe selecionada (Ações ou FIIs).
+    this.loading.set(true);
+    this.error.set(false);
+    this.rows.set([]);
+    this.expanded.set(new Set());
+
+    const source = this.assetType === 'FIIs' ? this.api.getFiis() : this.api.getAcoes();
+    source.subscribe({
+      next: (positions) => {
         const visible = positions.filter((p) => p.stock_id > 0);
         if (visible.length === 0) {
           this.rows.set([]);

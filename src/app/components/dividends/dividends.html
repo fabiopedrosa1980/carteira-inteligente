@@ -4,6 +4,17 @@
   </div>
 </div>
 
+<div class="dv-asset-toggle" role="tablist">
+  <button
+    *ngFor="let ac of assetClasses"
+    class="dv-asset-btn"
+    [class.active]="assetType() === ac.id"
+    (click)="setAssetType(ac.id)"
+  >
+    {{ ac.label }}
+  </button>
+</div>
+
 <div class="dv-tabs">
   <button
     *ngFor="let tab of tabs"
@@ -16,9 +27,17 @@
   </button>
 </div>
 
-<app-dividend-history *ngIf="activeTab() === 'historico'"></app-dividend-history>
-<app-dividends-summary *ngIf="activeTab() === 'recebidos'" mode="received"></app-dividends-summary>
+<app-dividend-history
+  *ngIf="activeTab() === 'historico'"
+  [assetType]="assetType()"
+></app-dividend-history>
+<app-dividends-summary
+  *ngIf="activeTab() === 'recebidos'"
+  mode="received"
+  [assetType]="assetType()"
+></app-dividends-summary>
 <app-dividends-summary
   *ngIf="activeTab() === 'projetados'"
   mode="projected"
+  [assetType]="assetType()"
 ></app-dividends-summary>

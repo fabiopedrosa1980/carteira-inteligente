@@ -171,7 +171,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 .indicator {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   min-width: 0;
   padding: 12px 14px;
   background: rgba(128, 128, 128, 0.05);
@@ -184,10 +184,15 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-secondary);
-  line-height: 1.2;
-  white-space: nowrap;
+  line-height: 1.25;
+  // Rótulos fundamentalistas podem ser longos; quebram em até 2 linhas sem cortar.
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+  // Reserva 2 linhas para alinhar os valores entre cards de rótulos curtos/longos.
+  min-height: calc(2 * 1.25em);
 }
 .i-value {
   font-size: 15px;

@@ -137,7 +137,12 @@
             </div>
           </div>
 
-          <!-- Botão único de adicionar, centralizado ao final -->
+          <!-- Estado vazio: mensagem -->
+          <p class="empty-msg" *ngIf="sectionData()[sec.id].length === 0">
+            Nenhum lançamento cadastrado
+          </p>
+
+          <!-- Botão único de adicionar, ao final -->
           <div class="add-row">
             <button class="btn-add-inline" (click)="openAdd(sec.id)">
               <svg class="btn-plus" viewBox="0 0 24 24" fill="none" aria-hidden="true">

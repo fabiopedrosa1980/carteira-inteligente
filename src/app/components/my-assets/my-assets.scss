@@ -118,7 +118,15 @@
   }
 }
 
-/* Botão único de adicionar, centralizado ao final do acordeão */
+/* Mensagem de estado vazio */
+.empty-msg {
+  margin: 0;
+  padding: 16px 20px 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* Botão único de adicionar, ao final do acordeão */
 .add-row {
   display: flex;
   justify-content: flex-end;

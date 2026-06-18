@@ -36,10 +36,6 @@
 .logo-text strong {
   color: var(--accent);
 }
-.header-subtitle {
-  font-size: 13px;
-  color: var(--text-secondary);
-}
 
 .header-actions {
   display: flex;
@@ -63,16 +59,16 @@
 }
 
 .btn-logout {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 8px 14px;
+  padding: 8px 10px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
   line-height: 1;
   color: var(--text-secondary);
-  font-family: inherit;
   transition: all 0.2s;
   &:hover {
     border-color: var(--color-neg);

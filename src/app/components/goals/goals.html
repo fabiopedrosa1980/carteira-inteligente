@@ -2,7 +2,6 @@
   <div class="metas-header">
     <div>
       <h2 class="page-title">Minhas Metas</h2>
-      <p class="page-subtitle">Acompanhe o progresso dos seus objetivos de investimento</p>
     </div>
     <button class="btn-nova" (click)="openForm()" *ngIf="!showForm()">+ Nova Meta</button>
   </div>
@@ -78,7 +77,6 @@
         <tr *ngFor="let meta of metas()">
           <td>
             <span class="meta-name-cell" [title]="meta.name">
-              <span class="meta-icon">🎯</span>
               <span class="meta-name-text">{{ meta.name }}</span>
             </span>
           </td>

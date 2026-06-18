@@ -23,7 +23,7 @@ export class LoginComponent implements AfterViewInit {
   // O script do Google Sign-In é carregado de forma assíncrona (index.html),
   // então `google` pode ainda não existir quando este hook roda. Em vez de errar
   // de imediato, tentamos novamente por um período limitado antes de desistir.
-  private static readonly MAX_INIT_ATTEMPTS = 25;
+  private static readonly MAX_INIT_ATTEMPTS = 3;
   private static readonly INIT_RETRY_MS = 200;
 
   ngAfterViewInit(): void {

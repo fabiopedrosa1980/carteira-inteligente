@@ -225,6 +225,21 @@
   }
 }
 
+// Tema light: cores escuras/saturadas para os badges destacarem sobre o fundo claro.
+body.light-theme {
+  .badge-jcp {
+    background: rgba(180, 92, 10, 0.12);
+    color: #b45c0a;
+    border-color: rgba(180, 92, 10, 0.45);
+  }
+
+  .badge-dividendo {
+    background: rgba(26, 127, 75, 0.12);
+    color: #1a7f4b;
+    border-color: rgba(26, 127, 75, 0.45);
+  }
+}
+
 .dh-pagination {
   display: flex;
   align-items: center;

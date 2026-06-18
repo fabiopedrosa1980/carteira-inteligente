@@ -120,8 +120,8 @@ export class DashboardComponent {
   });
 
   tabs = [
-    { id: 'meus-ativos', label: 'Meus Ativos', icon: '📊' },
-    { id: 'portfolio', label: 'Minhas Ações', icon: '💼' },
+    { id: 'meus-ativos', label: 'Meus Ativos', icon: '💼' },
+    { id: 'portfolio', label: 'Minhas Ações', icon: '📈' },
     { id: 'calendar', label: 'Dividendos', icon: '📅' },
     { id: 'metas', label: 'Metas', icon: '🎯' },
   ];

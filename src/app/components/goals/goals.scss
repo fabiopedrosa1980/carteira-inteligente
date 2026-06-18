@@ -245,6 +245,9 @@
   tr:last-child td {
     border-bottom: none;
   }
+  tbody tr {
+    cursor: pointer;
+  }
   tbody tr:hover td {
     background: var(--row-hover, rgba(255, 255, 255, 0.03));
   }

@@ -186,6 +186,9 @@
   &:hover {
     background: rgba(128, 128, 128, 0.03);
   }
+  &.clickable {
+    cursor: pointer;
+  }
 
   @media (max-width: 600px) {
     grid-template-columns: repeat(4, 1fr) 56px;

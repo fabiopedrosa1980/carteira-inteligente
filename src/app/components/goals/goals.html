@@ -74,7 +74,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let meta of metas()">
+        <tr
+          *ngFor="let meta of metas()"
+          class="meta-row"
+          (click)="openForm(meta)"
+          title="Editar meta"
+        >
           <td>
             <span class="meta-name-cell" [title]="meta.name">
               <span class="meta-name-text">{{ meta.name }}</span>
@@ -96,8 +101,18 @@
           </td>
           <td>
             <div class="meta-actions">
-              <button class="icon-btn" title="Editar" (click)="openForm(meta)">✏️</button>
-              <button class="icon-btn danger" title="Excluir" (click)="deleteMeta(meta.id)">
+              <button
+                class="icon-btn"
+                title="Editar"
+                (click)="openForm(meta); $event.stopPropagation()"
+              >
+                ✏️
+              </button>
+              <button
+                class="icon-btn danger"
+                title="Excluir"
+                (click)="deleteMeta(meta.id); $event.stopPropagation()"
+              >
                 🗑️
               </button>
             </div>

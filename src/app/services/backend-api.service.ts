@@ -143,14 +143,8 @@ export interface ApiAcaoItem {
   history_ready: boolean;
   stock_id: number;
   transaction_count: number;
-  // Indicadores fundamentais (Status Invest), quando o backend os fornecer.
-  indicators?: {
-    pl?: number;
-    pvp?: number;
-    dy?: number;
-    roe?: number;
-    payout?: number;
-  };
+  // Indicadores fundamentalistas (Investidor10) como lista rótulo/valor.
+  indicators?: { label: string; value: string }[];
 }
 
 export interface ApiGoal {

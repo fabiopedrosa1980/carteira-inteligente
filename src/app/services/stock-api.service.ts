@@ -18,16 +18,6 @@ export interface TickerSuggestion {
   name: string;
 }
 
-// Indicadores fundamentais (Status Invest) — opcionais; preenchidos pelo backend
-// quando disponíveis. Ver contrato em design.md.
-export interface StockIndicators {
-  pl?: number;
-  pvp?: number;
-  dy?: number;
-  roe?: number;
-  payout?: number;
-}
-
 @Injectable({ providedIn: 'root' })
 export class StockApiService {
   private readonly proxyUrl = 'https://carteira-inteligente-api.onrender.com/api/v1';

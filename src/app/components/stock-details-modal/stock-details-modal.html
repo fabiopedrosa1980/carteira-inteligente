@@ -55,49 +55,15 @@
         </div>
       </div>
 
-      <!-- Indicadores (Status Invest) -->
+      <!-- Indicadores fundamentalistas (Investidor10) -->
       <div class="section" *ngIf="hasIndicators">
-        <h3 class="section-title">Indicadores</h3>
+        <h3 class="section-title">Indicadores fundamentalistas</h3>
         <div class="metrics-grid">
-          <div class="metric" *ngIf="stock.indicators?.pl !== undefined">
-            <span class="m-label">P/L</span>
-            <span class="m-value">{{ stock.indicators!.pl | number: '1.2-2' }}</span>
-          </div>
-          <div class="metric" *ngIf="stock.indicators?.pvp !== undefined">
-            <span class="m-label">P/VP</span>
-            <span class="m-value">{{ stock.indicators!.pvp | number: '1.2-2' }}</span>
-          </div>
-          <div class="metric" *ngIf="stock.indicators?.dy !== undefined">
-            <span class="m-label">DY (SI)</span>
-            <span class="m-value">{{ stock.indicators!.dy | number: '1.1-2' }}%</span>
-          </div>
-          <div class="metric" *ngIf="stock.indicators?.roe !== undefined">
-            <span class="m-label">ROE</span>
-            <span class="m-value">{{ stock.indicators!.roe | number: '1.1-2' }}%</span>
-          </div>
-          <div class="metric" *ngIf="stock.indicators?.payout !== undefined">
-            <span class="m-label">Payout</span>
-            <span class="m-value">{{ stock.indicators!.payout | number: '1.1-2' }}%</span>
+          <div class="metric" *ngFor="let ind of stock.indicators">
+            <span class="m-label">{{ ind.label }}</span>
+            <span class="m-value">{{ ind.value }}</span>
           </div>
         </div>
-      </div>
-
-      <!-- Histórico de dividendos -->
-      <div class="section">
-        <h3 class="section-title">Histórico de dividendos</h3>
-        <div class="d-loading" *ngIf="loadingDividends()">Carregando…</div>
-        <div class="d-empty" *ngIf="!loadingDividends() && dividends().length === 0">
-          Sem dividendos no histórico.
-        </div>
-        <ul class="div-list" *ngIf="!loadingDividends() && dividends().length > 0">
-          <li *ngFor="let d of dividends().slice(0, 12)">
-            <span class="dl-date">{{ d.month | number: '2.0-0' }}/{{ d.year }}</span>
-            <span class="dl-type" [class.jcp]="(d.type || '').toLowerCase() === 'jcp'">{{
-              typeLabel(d.type)
-            }}</span>
-            <span class="dl-amount">{{ d.amount | currency: 'BRL' : 'symbol' : '1.2-4' }}</span>
-          </li>
-        </ul>
       </div>
     </div>
   </div>

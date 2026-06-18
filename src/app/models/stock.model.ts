@@ -7,12 +7,9 @@ export interface DividendRecord {
   payDate: string;
 }
 
-export interface StockIndicators {
-  pl?: number;
-  pvp?: number;
-  dy?: number;
-  roe?: number;
-  payout?: number;
+export interface IndicatorItem {
+  label: string;
+  value: string;
 }
 
 export interface Stock {
@@ -27,7 +24,7 @@ export interface Stock {
   stockId?: number;
   quantity?: number;
   avgPrice?: number;
-  indicators?: StockIndicators;
+  indicators?: IndicatorItem[];
 }
 
 export interface MonthSummary {

@@ -131,7 +131,7 @@ export class DashboardComponent {
     {
       id: 'meus-ativos',
       label: 'Lançamentos',
-      iconPath: 'M3 7a2 2 0 0 1 2-2h3l2 2h9a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z',
+      iconPath: 'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01',
     },
     {
       id: 'portfolio',

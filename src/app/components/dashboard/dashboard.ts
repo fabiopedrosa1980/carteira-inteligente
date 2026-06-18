@@ -126,11 +126,30 @@ export class DashboardComponent {
     });
   });
 
+  // Ícones de traço (SVG path d, viewBox 24) por aba, no lugar de emojis.
   tabs = [
-    { id: 'meus-ativos', label: 'Meus Ativos', icon: '💼' },
-    { id: 'portfolio', label: 'Minhas Ações', icon: '📈' },
-    { id: 'calendar', label: 'Dividendos', icon: '📅' },
-    { id: 'metas', label: 'Metas', icon: '🎯' },
+    {
+      id: 'meus-ativos',
+      label: 'Meus Ativos',
+      iconPath: 'M3 7a2 2 0 0 1 2-2h3l2 2h9a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z',
+    },
+    {
+      id: 'portfolio',
+      label: 'Minhas Ações',
+      iconPath: 'M3 17l6-6 4 4 7-8M21 7v5M21 7h-5',
+    },
+    {
+      id: 'calendar',
+      label: 'Dividendos',
+      iconPath:
+        'M7 3v3M17 3v3M4 8h16M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z',
+    },
+    {
+      id: 'metas',
+      label: 'Metas',
+      iconPath:
+        'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z',
+    },
   ];
 
   loading: Signal<boolean> = signal(true);

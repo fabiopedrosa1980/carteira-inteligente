@@ -130,7 +130,7 @@ export class DashboardComponent {
   tabs = [
     {
       id: 'meus-ativos',
-      label: 'Meus Ativos',
+      label: 'Lançamentos',
       iconPath: 'M3 7a2 2 0 0 1 2-2h3l2 2h9a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z',
     },
     {

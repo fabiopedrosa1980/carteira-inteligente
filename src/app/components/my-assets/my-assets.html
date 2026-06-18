@@ -2,7 +2,7 @@
   <!-- Header -->
   <div class="page-header">
     <div class="ma-header-left">
-      <h2 class="page-title">Meus Ativos</h2>
+      <h2 class="page-title">Lançamentos</h2>
       <p class="page-subtitle">
         {{ svc.transactions().length }} lançamento{{ svc.transactions().length !== 1 ? 's' : '' }} ·
         Total: {{ totalAll() | currency: 'BRL' : 'symbol' : '1.2-2' }}
@@ -21,21 +21,6 @@
     <div class="accordion" *ngFor="let sec of sections">
       <button class="accordion-header" (click)="toggle(sec.id)">
         <div class="ah-left">
-          <svg
-            class="sec-icon"
-            *ngIf="sec.iconPath"
-            viewBox="0 0 24 24"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              [attr.d]="sec.iconPath"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
           <span class="sec-label">{{ sec.label }}</span>
           <span class="sec-count" *ngIf="sectionData()[sec.id].length > 0">
             {{ sectionData()[sec.id].length }}

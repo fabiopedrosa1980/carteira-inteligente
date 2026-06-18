@@ -2,10 +2,27 @@
   <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-header">
       <div class="modal-title-group">
-        <span class="modal-icon">⚠️</span>
+        <svg class="modal-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0ZM12 9v4M12 17h.01"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
         <h2>{{ s.title }}</h2>
       </div>
-      <button class="close-btn" (click)="cancel()" aria-label="Fechar">×</button>
+      <button class="close-btn" (click)="cancel()" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M18 6 6 18M6 6l12 12"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
     </div>
 
     <div class="modal-body">

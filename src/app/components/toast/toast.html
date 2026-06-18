@@ -1,5 +1,22 @@
 <div class="toast" *ngIf="message() as msg" role="status">
-  <span class="toast-icon">✓</span>
+  <svg class="toast-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M20 6 9 17l-5-5"
+      stroke="currentColor"
+      stroke-width="2.4"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
   <span class="toast-text">{{ msg }}</span>
-  <button class="toast-close" (click)="dismiss()" aria-label="Fechar">×</button>
+  <button class="toast-close" (click)="dismiss()" aria-label="Fechar">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M18 6 6 18M6 6l12 12"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+    </svg>
+  </button>
 </div>

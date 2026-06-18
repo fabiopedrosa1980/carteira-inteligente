@@ -25,8 +25,9 @@
 }
 
 .toast-icon {
-  color: #22c55e;
-  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  color: var(--color-pos);
   flex-shrink: 0;
 }
 
@@ -35,14 +36,23 @@
 }
 
 .toast-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-size: 1.25rem;
   line-height: 1;
   cursor: pointer;
-  padding: 0 0.2rem;
+  padding: 2px;
   flex-shrink: 0;
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+  &:hover {
+    color: var(--text-primary);
+  }
 }
 
 @keyframes toast-in {

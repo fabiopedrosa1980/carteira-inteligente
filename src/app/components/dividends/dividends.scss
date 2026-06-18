@@ -65,15 +65,14 @@
 }
 
 .dv-tab-icon {
-  font-size: 0.95rem;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 @media (max-width: 480px) {
   .dv-tab {
     padding: 0.4rem 0.7rem;
     font-size: 0.8rem;
-  }
-  .dv-tab-icon {
-    font-size: 1rem;
   }
 }

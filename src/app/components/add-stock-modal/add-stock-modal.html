@@ -2,14 +2,22 @@
   <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-header">
       <h2>Adicionar Lançamentos</h2>
-      <button class="close-btn" (click)="close.emit()">✕</button>
+      <button class="close-btn" (click)="close.emit()" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M18 6 6 18M6 6l12 12"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
     </div>
 
     <div class="modal-body">
       <div class="form-section">
         <h3>Dados da Ação</h3>
         <div class="form-row">
-
           <!-- Ticker com lookup -->
           <div class="form-group ticker-group">
             <label>Ticker *</label>
@@ -20,20 +28,42 @@
                 maxlength="7"
                 (ngModelChange)="onTickerChange($event)"
                 [class.error]="errors.ticker"
-                autocomplete="off" />
+                autocomplete="off"
+              />
               <span class="ticker-spinner" *ngIf="fetching()">⟳</span>
-              <span class="ticker-ok" *ngIf="fetchOk() && !fetching()">✓</span>
+              <svg
+                class="ticker-ok"
+                *ngIf="fetchOk() && !fetching()"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M20 6 9 17l-5-5"
+                  stroke="currentColor"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </div>
             <span class="field-error" *ngIf="errors.ticker">{{ errors.ticker }}</span>
-            <span class="fetch-hint" *ngIf="fetchError() && !fetching()">Ticker não encontrado na B3</span>
+            <span class="fetch-hint" *ngIf="fetchError() && !fetching()"
+              >Ticker não encontrado na B3</span
+            >
           </div>
 
           <!-- Nome -->
           <div class="form-group">
-            <label>Nome da empresa *
+            <label
+              >Nome da empresa *
               <span class="auto-badge" *ngIf="autoFilled.name">auto</span>
             </label>
-            <input [(ngModel)]="form.name" placeholder="ex: Vale S.A." [class.error]="errors.name" />
+            <input
+              [(ngModel)]="form.name"
+              placeholder="ex: Vale S.A."
+              [class.error]="errors.name"
+            />
             <span class="field-error" *ngIf="errors.name">{{ errors.name }}</span>
           </div>
         </div>
@@ -41,7 +71,8 @@
         <div class="form-row">
           <!-- Setor -->
           <div class="form-group">
-            <label>Setor *
+            <label
+              >Setor *
               <span class="auto-badge" *ngIf="autoFilled.sector">auto</span>
             </label>
             <select [(ngModel)]="form.sector">
@@ -52,15 +83,26 @@
 
           <!-- Preço -->
           <div class="form-group">
-            <label>Preço atual (R$) *
+            <label
+              >Preço atual (R$) *
               <span class="auto-badge" *ngIf="autoFilled.price">auto</span>
             </label>
             <div class="price-wrap">
-              <input [(ngModel)]="form.price" type="number" min="0.01" step="0.01"
-                     placeholder="0,00" [class.error]="errors.price" />
-              <span class="change-badge" *ngIf="changePercent !== null"
-                    [class.pos]="changePercent >= 0" [class.neg]="changePercent < 0">
-                {{ changePercent >= 0 ? '+' : '' }}{{ changePercent | number:'1.2-2' }}%
+              <input
+                [(ngModel)]="form.price"
+                type="number"
+                min="0.01"
+                step="0.01"
+                placeholder="0,00"
+                [class.error]="errors.price"
+              />
+              <span
+                class="change-badge"
+                *ngIf="changePercent !== null"
+                [class.pos]="changePercent >= 0"
+                [class.neg]="changePercent < 0"
+              >
+                {{ changePercent >= 0 ? '+' : '' }}{{ changePercent | number: '1.2-2' }}%
               </span>
             </div>
             <span class="field-error" *ngIf="errors.price">{{ errors.price }}</span>
@@ -69,8 +111,15 @@
           <!-- DY -->
           <div class="form-group">
             <label>Dividend Yield %</label>
-            <input [(ngModel)]="form.dividendYield" type="number" min="0" max="100"
-                   step="0.1" placeholder="0,0" [class.error]="errors.dy" />
+            <input
+              [(ngModel)]="form.dividendYield"
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              placeholder="0,0"
+              [class.error]="errors.dy"
+            />
             <span class="field-error" *ngIf="errors.dy">{{ errors.dy }}</span>
           </div>
         </div>
@@ -82,7 +131,15 @@
     <div class="modal-footer">
       <button class="btn-cancel" (click)="close.emit()">Cancelar</button>
       <button class="btn-save" (click)="save()" [disabled]="saving() || fetching()">
-        {{ saving() ? 'Salvando...' : '+ Adicionar Lançamentos' }}
+        <svg *ngIf="!saving()" class="btn-check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M12 5v14M5 12h14"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+          />
+        </svg>
+        {{ saving() ? 'Salvando...' : 'Adicionar Lançamentos' }}
       </button>
     </div>
   </div>

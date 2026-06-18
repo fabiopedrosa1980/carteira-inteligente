@@ -130,8 +130,11 @@
   padding: 18px 20px;
 }
 .empty-icon {
-  font-size: 20px;
-  opacity: 0.5;
+  width: 22px;
+  height: 22px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  flex-shrink: 0;
 }
 .empty-text {
   font-size: 13px;
@@ -284,11 +287,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 30px;
+  height: 30px;
   background: none;
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
-  padding: 6px;
   border-radius: 6px;
   transition: all 0.15s;
   font-family: inherit;

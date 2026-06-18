@@ -6,14 +6,31 @@
 
   <!-- Erro ao importar dividendos -->
   <div class="dh-error" *ngIf="error()">
-    <span class="dh-error-icon">⚠️</span>
+    <svg class="dh-error-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0ZM12 9v4M12 17h.01"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
     <span>Falha ao importar os dividendos.</span>
   </div>
 
   <ng-container *ngIf="!loadingPositions()">
     <!-- Banner de processamento -->
     <div class="dh-processing-banner" *ngIf="anyProcessing()">
-      <span class="dh-processing-icon">⏳</span>
+      <svg class="dh-processing-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity="0.3" />
+        <path
+          d="M12 7v5l3 2"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
       <span>Histórico de dividendos da sua carteira está em processamento.</span>
     </div>
 

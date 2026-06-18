@@ -53,7 +53,11 @@
 
   <!-- Estado vazio -->
   <div class="empty-state" *ngIf="!loading() && metas().length === 0 && !showForm()">
-    <span class="empty-icon">🎯</span>
+    <svg class="empty-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8" />
+      <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8" />
+      <circle cx="12" cy="12" r="1" fill="currentColor" />
+    </svg>
     <h3>Nenhuma meta cadastrada</h3>
     <p>Defina um valor alvo de patrimônio e acompanhe seu progresso.</p>
     <button class="btn-nova" (click)="openForm()">+ Criar primeira meta</button>

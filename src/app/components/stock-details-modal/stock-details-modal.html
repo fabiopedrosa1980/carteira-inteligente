@@ -60,7 +60,7 @@
         <div class="indicators-grid">
           <div class="indicator" *ngFor="let ind of stock.indicators">
             <span class="i-label">{{ ind.label }}</span>
-            <span class="i-value">{{ ind.value }}</span>
+            <span class="i-value">{{ formatValue(ind.value) }}</span>
           </div>
         </div>
       </section>

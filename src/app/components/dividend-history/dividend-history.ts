@@ -24,8 +24,8 @@ export class DividendHistoryComponent implements OnChanges {
   readonly loading = signal(false);
   readonly error = signal(false);
   readonly page = signal(0);
-  // null = todos os anos (padrão)
-  readonly selectedYear = signal<number | null>(null);
+  // Padrão: ano corrente (null = todos os anos).
+  readonly selectedYear = signal<number | null>(new Date().getFullYear());
 
   readonly availableYears = computed(() => {
     const currentYear = new Date().getFullYear();

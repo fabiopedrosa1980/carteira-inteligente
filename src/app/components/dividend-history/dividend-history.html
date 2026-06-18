@@ -29,18 +29,18 @@
     <div class="dh-years" *ngIf="visiblePositions().length > 0">
       <button
         class="dh-year-chip"
-        [class.active]="selectedYear() === null"
-        (click)="selectYear(null)"
-      >
-        Todos
-      </button>
-      <button
-        class="dh-year-chip"
         *ngFor="let y of availableYears()"
         [class.active]="selectedYear() === y"
         (click)="selectYear(y)"
       >
         {{ y }}
+      </button>
+      <button
+        class="dh-year-chip"
+        [class.active]="selectedYear() === null"
+        (click)="selectYear(null)"
+      >
+        Todos
       </button>
     </div>
 

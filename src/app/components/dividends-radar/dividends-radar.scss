@@ -82,6 +82,15 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  flex-wrap: wrap;
+}
+/* Grupo à direita do cabeçalho: rótulo(s) + ícone + contador, encostados. */
+.rc-head-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 .rc-month {
   display: inline-flex;
@@ -130,23 +139,29 @@
   opacity: 0.5;
 }
 
-/* Rótulos de chamada nos cards de destaque. */
+/* Rótulos de chamada nos cards de destaque — no topo, junto ao contador. */
 .rc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   padding: 2px 8px;
   border-radius: 6px;
-  align-self: flex-start;
+  white-space: nowrap;
 }
-.rc-tag-top {
+/* Mesmo estilo (cor de fonte e destaque) para os dois rótulos. */
+.rc-tag-top,
+.rc-tag-next {
   color: var(--color-pos);
   background: color-mix(in srgb, var(--color-pos) 12%, transparent);
 }
-.rc-tag-next {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
+.rc-warn {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 @media (max-width: 900px) {

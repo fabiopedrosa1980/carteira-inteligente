@@ -43,15 +43,15 @@ export class DividendsComponent {
       iconPath: 'M3 17l6-6 4 4 7-8M21 7v5M21 7h-5',
     },
     {
-      id: 'proximas',
-      label: 'Próximas datas-com',
-      iconPath: 'M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
-    },
-    {
       id: 'radar',
       label: 'Radar de proventos',
       iconPath:
         'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM12 12l7-7',
+    },
+    {
+      id: 'proximas',
+      label: 'Próximas datas-com',
+      iconPath: 'M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
     },
   ];
 

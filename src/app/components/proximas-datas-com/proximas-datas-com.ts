@@ -14,7 +14,7 @@ interface UpcomingItem {
 }
 
 const MONTHS = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
-const HORIZON_DAYS = 45;
+const HORIZON_DAYS = 90;
 
 @Component({
   selector: 'app-proximas-datas-com',

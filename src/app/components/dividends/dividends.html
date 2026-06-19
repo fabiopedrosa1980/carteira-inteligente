@@ -49,7 +49,11 @@
   mode="projected"
   [assetType]="assetType()"
 ></app-dividends-summary>
-<ng-container *ngIf="activeTab() === 'radar'">
-  <app-proximas-datas-com [assetType]="assetType()"></app-proximas-datas-com>
-  <app-dividends-radar [assetType]="assetType()"></app-dividends-radar>
-</ng-container>
+<app-proximas-datas-com
+  *ngIf="activeTab() === 'proximas'"
+  [assetType]="assetType()"
+></app-proximas-datas-com>
+<app-dividends-radar
+  *ngIf="activeTab() === 'radar'"
+  [assetType]="assetType()"
+></app-dividends-radar>

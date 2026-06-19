@@ -1,27 +1,31 @@
 <div class="radar-section">
   <h3 class="radar-title">Radar de proventos</h3>
   <p class="radar-hint">
-    Tickers da carteira com data-com em cada mês no ano anterior — útil para comprar antes da
-    próxima data-com.
+    Cada linha é um ativo da carteira; a marca indica o mês em que teve data-com no ano anterior —
+    útil para antecipar a próxima.
   </p>
 
   <div class="radar-loading" *ngIf="loading()">Calculando…</div>
 
-  <div class="radar-grid" *ngIf="!loading()">
-    <div
-      class="radar-card"
-      *ngFor="let m of months()"
-      [class.top]="isTop(m)"
-      [class.next]="isNext(m)"
-    >
-      <span class="rc-perf-bar"></span>
-      <div class="rc-head">
-        <span class="rc-month">{{ m.label }}</span>
-        <span class="rc-head-right">
-          <span class="rc-tag rc-tag-top" *ngIf="isTop(m)">Melhor mês, aproveite</span>
-          <span class="rc-tag rc-tag-next" *ngIf="isNext(m)">
+  <ng-container *ngIf="!loading()">
+    <p class="radar-empty" *ngIf="rows().length === 0">Nenhum ativo com proventos no período.</p>
+
+    <div class="radar-scroll" *ngIf="rows().length > 0">
+      <div class="radar-matrix" role="table">
+        <!-- Cabeçalho: canto + meses -->
+        <div class="rm-row rm-head" role="row">
+          <span class="rm-corner rm-sticky" role="columnheader">Ativo</span>
+          <span
+            class="rm-month"
+            role="columnheader"
+            *ngFor="let label of monthLabels; let i = index"
+            [class.top]="isTopCol(i)"
+            [class.next]="isNextCol(i)"
+            [title]="isNextCol(i) ? 'Oportunidade de compra' : isTopCol(i) ? 'Melhor mês' : label"
+          >
             <svg
-              class="rc-warn"
+              *ngIf="isNextCol(i)"
+              class="rm-warn"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -36,15 +40,26 @@
               <path d="M12 9v4" />
               <path d="M12 17h.01" />
             </svg>
-            Oportunidade de compra
+            {{ label }}
           </span>
-          <span class="rc-count" *ngIf="m.tickers.length > 0">{{ m.tickers.length }}</span>
-        </span>
+        </div>
+
+        <!-- Linhas: ticker + células -->
+        <div class="rm-row" role="row" *ngFor="let row of rows()">
+          <span class="rm-ticker rm-sticky" role="rowheader">{{ row.ticker }}</span>
+          <span
+            class="rm-cell"
+            role="cell"
+            *ngFor="let on of row.marks; let i = index"
+            [class.on]="on"
+            [class.top]="isTopCol(i)"
+            [class.next]="isNextCol(i)"
+            [title]="row.ticker + ' · ' + monthLabels[i]"
+          >
+            <span class="rm-dot" *ngIf="on"></span>
+          </span>
+        </div>
       </div>
-      <div class="rc-tickers" *ngIf="m.tickers.length > 0">
-        <span class="ticker-chip" *ngFor="let t of m.tickers">{{ t }}</span>
-      </div>
-      <span class="rc-empty" *ngIf="m.tickers.length === 0">—</span>
     </div>
-  </div>
+  </ng-container>
 </div>

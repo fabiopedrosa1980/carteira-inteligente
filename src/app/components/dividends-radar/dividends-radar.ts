@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiDividend } from '../../services/backend-api.service';
 
-interface MonthCell {
-  month: number;
-  label: string;
-  tickers: string[];
+interface TickerRow {
+  ticker: string;
+  marks: boolean[]; // 12 posições (Jan→Dez); true = teve data-com no mês
 }
 
 const MONTHS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
@@ -23,39 +22,42 @@ export class DividendsRadarComponent implements OnChanges {
 
   private readonly api = inject(BackendApiService);
   readonly loading = signal(true);
-  readonly months = signal<MonthCell[]>([]);
+  readonly rows = signal<TickerRow[]>([]);
+  readonly monthLabels = MONTHS;
   readonly year = new Date().getFullYear() - 1;
 
   // Mês seguinte ao atual (oportunidade mais próxima); Dez→Jan.
   readonly nextMonth = ((new Date().getMonth() + 1) % 12) + 1;
 
-  // Mês com mais tickers (length > 0); empate resolve no primeiro; 0 se nenhum.
+  // Mês (1–12) com mais ativos marcados; empate resolve no primeiro; 0 se nenhum.
   readonly topMonth = computed(() => {
+    const counts = new Array(12).fill(0);
+    for (const r of this.rows()) {
+      r.marks.forEach((on, i) => {
+        if (on) counts[i]++;
+      });
+    }
     let top = 0;
     let max = 0;
-    for (const m of this.months()) {
-      if (m.tickers.length > max) {
-        max = m.tickers.length;
-        top = m.month;
+    counts.forEach((c, i) => {
+      if (c > max) {
+        max = c;
+        top = i + 1;
       }
-    }
+    });
     return top;
   });
 
-  isTop(m: MonthCell): boolean {
-    return m.month === this.topMonth();
+  // Destaques de COLUNA (índice 0–11).
+  isTopCol(i: number): boolean {
+    return i + 1 === this.topMonth();
   }
-
-  isNext(m: MonthCell): boolean {
-    return m.month === this.nextMonth;
+  isNextCol(i: number): boolean {
+    return i + 1 === this.nextMonth;
   }
 
   ngOnChanges(): void {
     this.load();
-  }
-
-  private empty(): MonthCell[] {
-    return MONTHS.map((label, idx) => ({ month: idx + 1, label, tickers: [] }));
   }
 
   // Mês/ano da data-com (ex_date) — data relevante para comprar antes do provento.
@@ -76,45 +78,45 @@ export class DividendsRadarComponent implements OnChanges {
 
   private load(): void {
     this.loading.set(true);
-    this.months.set([]);
+    this.rows.set([]);
     const source = this.assetType === 'FIIs' ? this.api.getFiis() : this.api.getAcoes();
     source.subscribe({
       next: (positions) => {
         const visible = positions.filter((p) => p.stock_id > 0);
         if (visible.length === 0) {
-          this.months.set(this.empty());
+          this.rows.set([]);
           this.loading.set(false);
           return;
         }
         forkJoin(visible.map((p) => this.api.getStockDividends(p.stock_id))).subscribe({
           next: (lists) => {
-            const byMonth = new Map<number, Set<string>>();
+            const byTicker = new Map<string, Set<number>>();
             visible.forEach((p, i) => {
+              const set = byTicker.get(p.ticker) ?? new Set<number>();
               (lists[i] ?? []).forEach((d) => {
                 if (this.yearOf(d) !== this.year) return;
                 const m = this.monthOf(d);
-                if (m < 1 || m > 12) return;
-                if (!byMonth.has(m)) byMonth.set(m, new Set());
-                byMonth.get(m)!.add(p.ticker);
+                if (m >= 1 && m <= 12) set.add(m);
               });
+              byTicker.set(p.ticker, set);
             });
-            this.months.set(
-              MONTHS.map((label, idx) => ({
-                month: idx + 1,
-                label,
-                tickers: [...(byMonth.get(idx + 1) ?? [])].sort(),
-              })),
-            );
+            const rows: TickerRow[] = [...byTicker.entries()]
+              .map(([ticker, set]) => ({
+                ticker,
+                marks: MONTHS.map((_, idx) => set.has(idx + 1)),
+              }))
+              .sort((a, b) => a.ticker.localeCompare(b.ticker));
+            this.rows.set(rows);
             this.loading.set(false);
           },
           error: () => {
-            this.months.set(this.empty());
+            this.rows.set([]);
             this.loading.set(false);
           },
         });
       },
       error: () => {
-        this.months.set(this.empty());
+        this.rows.set([]);
         this.loading.set(false);
       },
     });

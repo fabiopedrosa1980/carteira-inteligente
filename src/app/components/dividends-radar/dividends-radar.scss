@@ -1,4 +1,4 @@
-/* Tabular monospace para números — alinhado ao stock-card. */
+/* Tabular monospace para a matriz — alinhado ao stock-card. */
 $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', monospace;
 
 .radar-title {
@@ -12,171 +12,122 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   color: var(--text-secondary);
   margin: 0 0 1rem;
 }
-.radar-loading {
+.radar-loading,
+.radar-empty {
   font-size: 0.85rem;
   color: var(--text-secondary);
 }
 
-.radar-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
-.radar-card {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: 108px;
-  padding: 16px 18px 14px 18px;
-  background: var(--card-bg);
+/* Container com rolagem horizontal em telas estreitas. */
+.radar-scroll {
+  overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: 14px;
-  transition:
-    transform 0.22s ease,
-    border-color 0.22s ease,
-    box-shadow 0.22s ease;
-
-  &:hover {
-    transform: translateY(-3px);
-    border-color: var(--accent);
-    box-shadow: 0 8px 28px var(--shadow-hover);
-
-    .rc-perf-bar {
-      width: 5px;
-    }
-  }
+  background: var(--card-bg);
 }
 
-/* Faixa de destaque à esquerda — como a perf-bar do stock-card. */
-.rc-perf-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--border);
-  transition:
-    width 0.22s ease,
-    background 0.22s ease;
+.radar-matrix {
+  display: grid;
+  grid-template-columns: minmax(72px, max-content) repeat(12, minmax(34px, 1fr));
+  min-width: max-content;
+  font-family: $mono;
 }
 
-/* Mês com mais ativos (★) — realce verde. */
-.radar-card.top {
-  border-color: color-mix(in srgb, var(--color-pos) 45%, var(--border));
-  .rc-perf-bar {
-    background: var(--color-pos);
-    box-shadow: 0 0 14px -2px var(--color-pos);
-  }
+/* Linhas como display:contents → células alinham numa única grade. */
+.rm-row {
+  display: contents;
 }
 
-/* Próximo mês ao atual — realce accent. */
-.radar-card.next {
-  border-color: var(--accent);
-  .rc-perf-bar {
-    background: var(--accent);
-    box-shadow: 0 0 14px -2px var(--accent);
-  }
-}
-
-.rc-head {
+.rm-corner,
+.rm-month,
+.rm-ticker,
+.rm-cell {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
+  justify-content: center;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--border);
 }
-/* Grupo à direita do cabeçalho: rótulo(s) + ícone + contador, encostados. */
-.rc-head-right {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
+.rm-row:last-child .rm-ticker,
+.rm-row:last-child .rm-cell {
+  border-bottom: none;
 }
-.rc-month {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+
+/* Cabeçalho de meses. */
+.rm-month {
+  gap: 3px;
   font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+.rm-warn {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+/* Coluna de tickers fixa à esquerda. */
+.rm-sticky {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  justify-content: flex-start;
+  background: var(--card-bg);
+  border-right: 1px solid var(--border);
+}
+.rm-corner {
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-secondary);
+  z-index: 2;
 }
-.rc-count {
-  font-family: $mono;
-  font-size: 11px;
+.rm-ticker {
+  padding-left: 12px;
+  padding-right: 12px;
+  font-size: 13px;
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 5px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9px;
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  color: var(--accent);
-}
-/* Faixa inferior de tickers — espelha a .stat-strip do stock-card. */
-.rc-tickers {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-}
-.ticker-chip {
-  font-size: 12px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  color: var(--accent);
-}
-.rc-empty {
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-  color: var(--text-secondary);
-  opacity: 0.5;
+  letter-spacing: 0.4px;
+  color: var(--text-primary);
 }
 
-/* Rótulos de chamada nos cards de destaque — no topo, junto ao contador. */
-.rc-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 2px 8px;
-  border-radius: 6px;
-  white-space: nowrap;
+/* Células: marcada (disco accent) vs vazia (ponto sutil). */
+.rm-cell {
+  min-height: 36px;
 }
-/* Mesmo estilo (cor de fonte e destaque) para os dois rótulos. */
-.rc-tag-top,
-.rc-tag-next {
+.rm-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.rm-cell:not(.on)::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--border);
+  opacity: 0.6;
+}
+
+/* Destaque de colunas: melhor mês (verde) e próximo mês (accent). */
+.rm-cell.top,
+.rm-month.top {
+  background: color-mix(in srgb, var(--color-pos) 10%, transparent);
+}
+.rm-cell.next,
+.rm-month.next {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.rm-month.top {
   color: var(--color-pos);
-  background: color-mix(in srgb, var(--color-pos) 12%, transparent);
 }
-.rc-warn {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
+.rm-month.next {
+  color: var(--accent);
 }
-
-@media (max-width: 900px) {
-  .radar-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (max-width: 480px) {
-  .radar-grid {
-    grid-template-columns: 1fr;
-  }
+.rm-cell.on.top .rm-dot {
+  background: var(--color-pos);
 }

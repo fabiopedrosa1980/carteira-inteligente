@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, computed, inject, signal } from '@angular/core';
+import { Component, Input, OnChanges, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiDividend } from '../../services/backend-api.service';
@@ -9,6 +9,7 @@ interface TickerRow {
 }
 
 const MONTHS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+const MONTH_INITIALS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
 @Component({
   selector: 'app-dividends-radar',
@@ -24,37 +25,8 @@ export class DividendsRadarComponent implements OnChanges {
   readonly loading = signal(true);
   readonly rows = signal<TickerRow[]>([]);
   readonly monthLabels = MONTHS;
+  readonly monthInitials = MONTH_INITIALS;
   readonly year = new Date().getFullYear() - 1;
-
-  // Mês seguinte ao atual (oportunidade mais próxima); Dez→Jan.
-  readonly nextMonth = ((new Date().getMonth() + 1) % 12) + 1;
-
-  // Mês (1–12) com mais ativos marcados; empate resolve no primeiro; 0 se nenhum.
-  readonly topMonth = computed(() => {
-    const counts = new Array(12).fill(0);
-    for (const r of this.rows()) {
-      r.marks.forEach((on, i) => {
-        if (on) counts[i]++;
-      });
-    }
-    let top = 0;
-    let max = 0;
-    counts.forEach((c, i) => {
-      if (c > max) {
-        max = c;
-        top = i + 1;
-      }
-    });
-    return top;
-  });
-
-  // Destaques de COLUNA (índice 0–11).
-  isTopCol(i: number): boolean {
-    return i + 1 === this.topMonth();
-  }
-  isNextCol(i: number): boolean {
-    return i + 1 === this.nextMonth;
-  }
 
   ngOnChanges(): void {
     this.load();

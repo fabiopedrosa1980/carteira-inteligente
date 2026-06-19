@@ -62,10 +62,9 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   letter-spacing: 0.04em;
   color: var(--text-secondary);
 }
-.rm-warn {
-  width: 12px;
-  height: 12px;
-  flex-shrink: 0;
+/* Mês: abreviação (full) por padrão, inicial só no mobile. */
+.rm-m-ini {
+  display: none;
 }
 
 /* Coluna de tickers fixa à esquerda. */
@@ -113,21 +112,21 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   opacity: 0.6;
 }
 
-/* Destaque de colunas: melhor mês (verde) e próximo mês (accent). */
-.rm-cell.top,
-.rm-month.top {
-  background: color-mix(in srgb, var(--color-pos) 10%, transparent);
-}
-.rm-cell.next,
-.rm-month.next {
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-}
-.rm-month.top {
-  color: var(--color-pos);
-}
-.rm-month.next {
-  color: var(--accent);
-}
-.rm-cell.on.top .rm-dot {
-  background: var(--color-pos);
+/* Mobile: meses como inicial única e colunas mais estreitas. */
+@media (max-width: 480px) {
+  .radar-matrix {
+    grid-template-columns: minmax(64px, max-content) repeat(12, minmax(22px, 1fr));
+  }
+  .rm-m-full {
+    display: none;
+  }
+  .rm-m-ini {
+    display: inline;
+  }
+  .rm-corner,
+  .rm-month,
+  .rm-cell {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
 }

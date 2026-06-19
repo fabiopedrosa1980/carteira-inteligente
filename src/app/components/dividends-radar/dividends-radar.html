@@ -1,5 +1,5 @@
 <div class="radar-section">
-  <h3 class="radar-title">Radar de proventos · {{ year }}</h3>
+  <h3 class="radar-title">Radar de proventos</h3>
   <p class="radar-hint">
     Tickers da carteira com data-com em cada mês no ano anterior — útil para comprar antes da
     próxima data-com.
@@ -8,8 +8,20 @@
   <div class="radar-loading" *ngIf="loading()">Calculando…</div>
 
   <div class="radar-grid" *ngIf="!loading()">
-    <div class="radar-card" *ngFor="let m of months()">
-      <span class="rc-month">{{ m.label }}</span>
+    <div
+      class="radar-card"
+      *ngFor="let m of months()"
+      [class.top]="isTop(m)"
+      [class.next]="isNext(m)"
+    >
+      <span class="rc-perf-bar"></span>
+      <div class="rc-head">
+        <span class="rc-month">
+          <span class="rc-star" *ngIf="isTop(m)" title="Mês com mais ativos">★</span>
+          {{ m.label }}
+        </span>
+        <span class="rc-count" *ngIf="m.tickers.length > 0">{{ m.tickers.length }}</span>
+      </div>
       <div class="rc-tickers" *ngIf="m.tickers.length > 0">
         <span class="ticker-chip" *ngFor="let t of m.tickers">{{ t }}</span>
       </div>

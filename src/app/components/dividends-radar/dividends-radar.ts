@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, inject, signal } from '@angular/core';
+import { Component, Input, OnChanges, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiDividend } from '../../services/backend-api.service';
@@ -25,6 +25,30 @@ export class DividendsRadarComponent implements OnChanges {
   readonly loading = signal(true);
   readonly months = signal<MonthCell[]>([]);
   readonly year = new Date().getFullYear() - 1;
+
+  // Mês seguinte ao atual (oportunidade mais próxima); Dez→Jan.
+  readonly nextMonth = ((new Date().getMonth() + 1) % 12) + 1;
+
+  // Mês com mais tickers (length > 0); empate resolve no primeiro; 0 se nenhum.
+  readonly topMonth = computed(() => {
+    let top = 0;
+    let max = 0;
+    for (const m of this.months()) {
+      if (m.tickers.length > max) {
+        max = m.tickers.length;
+        top = m.month;
+      }
+    }
+    return top;
+  });
+
+  isTop(m: MonthCell): boolean {
+    return m.month === this.topMonth();
+  }
+
+  isNext(m: MonthCell): boolean {
+    return m.month === this.nextMonth;
+  }
 
   ngOnChanges(): void {
     this.load();

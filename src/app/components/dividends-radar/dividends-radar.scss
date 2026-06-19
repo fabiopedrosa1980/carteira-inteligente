@@ -20,21 +20,97 @@
   gap: 10px;
 }
 .radar-card {
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 8px;
   min-height: 92px;
-  padding: 12px 14px;
+  padding: 12px 14px 12px 16px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 14px;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 28px var(--shadow-hover);
+
+    .rc-perf-bar {
+      width: 5px;
+    }
+  }
+}
+
+/* Faixa de destaque à esquerda — como a perf-bar do stock-card. */
+.rc-perf-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--border);
+  transition:
+    width 0.22s ease,
+    background 0.22s ease;
+}
+
+/* Mês com mais ativos (★) — realce verde. */
+.radar-card.top {
+  border-color: color-mix(in srgb, var(--color-pos) 45%, var(--border));
+  .rc-perf-bar {
+    background: var(--color-pos);
+    box-shadow: 0 0 14px -2px var(--color-pos);
+  }
+}
+
+/* Próximo mês ao atual — realce accent. */
+.radar-card.next {
+  border-color: var(--accent);
+  .rc-perf-bar {
+    background: var(--accent);
+    box-shadow: 0 0 14px -2px var(--accent);
+  }
+}
+
+.rc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 .rc-month {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-secondary);
+}
+.rc-star {
+  font-size: 12px;
+  color: var(--color-pos);
+  line-height: 1;
+}
+.rc-count {
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
 }
 .rc-tickers {
   display: flex;

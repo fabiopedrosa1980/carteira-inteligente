@@ -16,10 +16,7 @@
     >
       <span class="rc-perf-bar"></span>
       <div class="rc-head">
-        <span class="rc-month">
-          <span class="rc-star" *ngIf="isTop(m)" title="Mês com mais ativos">★</span>
-          {{ m.label }}
-        </span>
+        <span class="rc-month">{{ m.label }}</span>
         <span class="rc-head-right">
           <span class="rc-tag rc-tag-top" *ngIf="isTop(m)">Melhor mês, aproveite</span>
           <span class="rc-tag rc-tag-next" *ngIf="isNext(m)">

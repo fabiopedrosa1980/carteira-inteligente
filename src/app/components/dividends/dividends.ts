@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DividendHistoryComponent } from '../dividend-history/dividend-history';
 import { DividendsSummaryComponent } from '../dividends-summary/dividends-summary';
 import { DividendsRadarComponent } from '../dividends-radar/dividends-radar';
+import { ProximasDatasComComponent } from '../proximas-datas-com/proximas-datas-com';
 
 type DividendsTab = 'historico' | 'recebidos' | 'projetados' | 'radar';
 type AssetClass = 'Acoes' | 'FIIs';
@@ -15,6 +16,7 @@ type AssetClass = 'Acoes' | 'FIIs';
     DividendHistoryComponent,
     DividendsSummaryComponent,
     DividendsRadarComponent,
+    ProximasDatasComComponent,
   ],
   templateUrl: './dividends.html',
   styleUrls: ['./dividends.scss'],

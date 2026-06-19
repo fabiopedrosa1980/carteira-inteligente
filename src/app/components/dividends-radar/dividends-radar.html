@@ -22,6 +22,8 @@
         </span>
         <span class="rc-count" *ngIf="m.tickers.length > 0">{{ m.tickers.length }}</span>
       </div>
+      <span class="rc-tag rc-tag-top" *ngIf="isTop(m)">Melhor mês, aproveite</span>
+      <span class="rc-tag rc-tag-next" *ngIf="isNext(m)">Oportunidade de compra</span>
       <div class="rc-tickers" *ngIf="m.tickers.length > 0">
         <span class="ticker-chip" *ngFor="let t of m.tickers">{{ t }}</span>
       </div>

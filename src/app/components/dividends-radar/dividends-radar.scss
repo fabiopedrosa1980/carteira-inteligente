@@ -130,6 +130,25 @@
   opacity: 0.5;
 }
 
+/* Rótulos de chamada nos cards de destaque. */
+.rc-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 6px;
+  align-self: flex-start;
+}
+.rc-tag-top {
+  color: var(--color-pos);
+  background: color-mix(in srgb, var(--color-pos) 12%, transparent);
+}
+.rc-tag-next {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
 @media (max-width: 900px) {
   .radar-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

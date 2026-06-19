@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { DividendHistoryComponent } from '../dividend-history/dividend-history';
 import { DividendsSummaryComponent } from '../dividends-summary/dividends-summary';
 import { DividendsRadarComponent } from '../dividends-radar/dividends-radar';
-import { ProximasDatasComComponent } from '../proximas-datas-com/proximas-datas-com';
 
-type DividendsTab = 'historico' | 'recebidos' | 'projetados' | 'proximas' | 'radar';
+type DividendsTab = 'historico' | 'recebidos' | 'projetados' | 'radar';
 type AssetClass = 'Acoes' | 'FIIs';
 
 @Component({
@@ -16,7 +15,6 @@ type AssetClass = 'Acoes' | 'FIIs';
     DividendHistoryComponent,
     DividendsSummaryComponent,
     DividendsRadarComponent,
-    ProximasDatasComComponent,
   ],
   templateUrl: './dividends.html',
   styleUrls: ['./dividends.scss'],
@@ -44,14 +42,9 @@ export class DividendsComponent {
     },
     {
       id: 'radar',
-      label: 'Radar de proventos',
+      label: 'Radar',
       iconPath:
         'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM12 12l7-7',
-    },
-    {
-      id: 'proximas',
-      label: 'Próximas datas-com',
-      iconPath: 'M12 8v4l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
     },
   ];
 

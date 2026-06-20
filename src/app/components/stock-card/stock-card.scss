@@ -1,5 +1,7 @@
 :host {
   display: block;
+  // Permite o card encolher dentro de uma coluna estreita (2 por linha no mobile).
+  min-width: 0;
 }
 
 /* Tabular monospace for financial figures — column-aligned, terminal feel. */

@@ -4,9 +4,14 @@
     Tickers da carteira com data-com em cada mês no ano anterior — útil para antecipar a próxima.
   </p>
 
-  <!-- Alternador de visualização (ícones) -->
+  <!-- Alternador de visualização (ícones) — oculto no mobile, onde só há cards. -->
   <div class="radar-toolbar">
-    <div class="radar-view-toggle" role="group" aria-label="Visualização do radar">
+    <div
+      class="radar-view-toggle"
+      *ngIf="!isMobile()"
+      role="group"
+      aria-label="Visualização do radar"
+    >
       <button
         type="button"
         class="rv-btn"

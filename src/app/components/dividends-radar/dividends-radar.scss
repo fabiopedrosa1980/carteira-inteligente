@@ -231,8 +231,9 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   }
 }
 @media (max-width: 480px) {
+  // 2 colunas no mobile (alinhado a Minhas Ações), sem rolagem.
   .radar-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

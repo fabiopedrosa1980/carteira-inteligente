@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, computed, inject, signal } from '@angular/
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiDividend } from '../../services/backend-api.service';
+import { ResponsiveService } from '../../services/responsive.service';
 
 interface TickerRow {
   ticker: string;
@@ -31,6 +32,8 @@ export class DividendsRadarComponent implements OnChanges {
   @Input() assetType: 'Acoes' | 'FIIs' = 'Acoes';
 
   private readonly api = inject(BackendApiService);
+  private readonly responsive = inject(ResponsiveService);
+  readonly isMobile = this.responsive.isMobile;
   readonly loading = signal(true);
   readonly rows = signal<TickerRow[]>([]);
   readonly monthLabels = MONTHS;
@@ -45,6 +48,10 @@ export class DividendsRadarComponent implements OnChanges {
   // Visualização: matriz (padrão) ou cards; lembrada entre sessões.
   readonly view = signal<RadarView>(this.readView());
 
+  // No mobile a matriz (heatmap largo) força rolagem horizontal; usamos sempre cards.
+  // No desktop respeita a escolha do usuário.
+  readonly effectiveView = computed<RadarView>(() => (this.isMobile() ? 'cards' : this.view()));
+
   setView(v: RadarView): void {
     this.view.set(v);
     try {
@@ -54,7 +61,7 @@ export class DividendsRadarComponent implements OnChanges {
     }
   }
   isView(v: RadarView): boolean {
-    return this.view() === v;
+    return this.effectiveView() === v;
   }
   private readView(): RadarView {
     try {

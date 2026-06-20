@@ -47,19 +47,9 @@
       <select class="dh-select" (change)="selectStock(+$any($event.target).value)">
         <option *ngFor="let p of visiblePositions()" [value]="p.stock_id">{{ p.ticker }}</option>
       </select>
-
-      <!-- Filtro de ano como combo (apenas mobile), na mesma linha que Ativo -->
-      <select
-        class="dh-select dh-year-select"
-        [value]="selectedYear() === null ? 'all' : selectedYear()"
-        (change)="selectYearFromCombo($any($event.target).value)"
-      >
-        <option *ngFor="let y of availableYears()" [value]="y">{{ y }}</option>
-        <option value="all">Todos</option>
-      </select>
     </div>
 
-    <!-- Filtro de ano por chips (apenas desktop) -->
+    <!-- Filtro de ano por chips -->
     <div class="dh-years" *ngIf="visiblePositions().length > 0">
       <button
         class="dh-year-chip"

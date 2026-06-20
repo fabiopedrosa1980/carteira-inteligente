@@ -107,11 +107,6 @@ export class DividendHistoryComponent implements OnChanges {
     this.page.set(0);
   }
 
-  // Combo de anos (mobile): valor sentinela 'all' representa "Todos" (null).
-  selectYearFromCombo(value: string): void {
-    this.selectYear(value === 'all' ? null : +value);
-  }
-
   prevPage(): void {
     if (this.page() > 0) this.page.update((p) => p - 1);
   }

@@ -1,6 +1,6 @@
 ## 1. Backend (serviço externo — coordenação)
 
-- [ ] 1.1 [EXTERNO] No serviço Go `carteira-inteligente-api`: fazer `/api/v1/quote/:ticker` honrar `?date=YYYY-MM-DD` — retornar o fechamento na data (ou pregão anterior mais próximo) quando a data < hoje; manter cotação atual sem data. (Fora deste repo; pré-requisito para o efeito visível.)
+- [x] 1.1 [EXTERNO→FEITO no repo carteira-inteligente-api, commit 58850d2] No serviço Go `carteira-inteligente-api`: fazer `/api/v1/quote/:ticker` honrar `?date=YYYY-MM-DD` — retornar o fechamento na data (ou pregão anterior mais próximo) quando a data < hoje; manter cotação atual sem data. (Fora deste repo; pré-requisito para o efeito visível.)
 
 ## 2. Serviço de cotação (stock-api.service.ts)
 

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, inject, signal } from '@angular/core';
+import { Component, Input, OnChanges, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiDividend } from '../../services/backend-api.service';
@@ -7,6 +7,15 @@ interface TickerRow {
   ticker: string;
   marks: boolean[]; // 12 posições (Jan→Dez); true = teve data-com no mês
 }
+
+interface MonthCard {
+  month: number;
+  label: string;
+  tickers: string[];
+}
+
+type RadarView = 'cards' | 'matrix';
+const VIEW_KEY = 'radar-view';
 
 const MONTHS = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 const MONTH_INITIALS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
@@ -31,6 +40,40 @@ export class DividendsRadarComponent implements OnChanges {
   // Dimensões do skeleton de carregamento (6 linhas × 13 colunas).
   readonly skelRows = Array.from({ length: 6 });
   readonly skelCols = Array.from({ length: 13 });
+  readonly skelCards = Array.from({ length: 12 });
+
+  // Visualização: matriz (padrão) ou cards; lembrada entre sessões.
+  readonly view = signal<RadarView>(this.readView());
+
+  setView(v: RadarView): void {
+    this.view.set(v);
+    try {
+      localStorage.setItem(VIEW_KEY, v);
+    } catch {
+      /* ignore */
+    }
+  }
+  isView(v: RadarView): boolean {
+    return this.view() === v;
+  }
+  private readView(): RadarView {
+    try {
+      return localStorage.getItem(VIEW_KEY) === 'cards' ? 'cards' : 'matrix';
+    } catch {
+      return 'matrix';
+    }
+  }
+
+  // Cards Jan→Dez derivados das linhas (sem fetch extra): tickers por mês.
+  readonly monthCards = computed<MonthCard[]>(() =>
+    MONTHS.map((label, i) => ({
+      month: i + 1,
+      label,
+      tickers: this.rows()
+        .filter((r) => r.marks[i])
+        .map((r) => r.ticker),
+    })),
+  );
 
   ngOnChanges(): void {
     this.load();

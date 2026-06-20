@@ -1,57 +1,102 @@
 <div class="radar-section">
   <h3 class="radar-title">Radar de proventos</h3>
   <p class="radar-hint">
-    Cada linha é um ativo da carteira; a marca indica o mês em que teve data-com no ano anterior —
-    útil para antecipar a próxima.
+    Tickers da carteira com data-com em cada mês no ano anterior — útil para antecipar a próxima.
   </p>
 
-  <!-- Skeleton da matriz enquanto carrega -->
-  <div class="radar-scroll" *ngIf="loading()" aria-hidden="true">
-    <div class="radar-matrix radar-skel">
-      <div class="rm-row" *ngFor="let r of skelRows">
-        <span class="rm-skel-cell rm-sticky">
-          <span class="skeleton skeleton-line" style="width: 70%"></span>
-        </span>
-        <span class="rm-skel-cell" *ngFor="let c of skelCols">
-          <span class="skeleton" style="width: 12px; height: 12px; border-radius: 50%"></span>
-        </span>
+  <!-- Alternador de visualização -->
+  <div class="radar-view-toggle" role="group" aria-label="Visualização do radar">
+    <button
+      type="button"
+      class="rv-btn"
+      [class.active]="isView('cards')"
+      [attr.aria-pressed]="isView('cards')"
+      (click)="setView('cards')"
+    >
+      Cards
+    </button>
+    <button
+      type="button"
+      class="rv-btn"
+      [class.active]="isView('matrix')"
+      [attr.aria-pressed]="isView('matrix')"
+      (click)="setView('matrix')"
+    >
+      Matriz
+    </button>
+  </div>
+
+  <!-- Skeleton enquanto carrega -->
+  <ng-container *ngIf="loading()">
+    <!-- Cards -->
+    <div class="radar-grid" *ngIf="isView('cards')" aria-hidden="true">
+      <div class="skeleton skeleton-card" *ngFor="let c of skelCards"></div>
+    </div>
+    <!-- Matriz -->
+    <div class="radar-scroll" *ngIf="isView('matrix')" aria-hidden="true">
+      <div class="radar-matrix radar-skel">
+        <div class="rm-row" *ngFor="let r of skelRows">
+          <span class="rm-skel-cell rm-sticky">
+            <span class="skeleton skeleton-line" style="width: 70%"></span>
+          </span>
+          <span class="rm-skel-cell" *ngFor="let c of skelCols">
+            <span class="skeleton" style="width: 12px; height: 12px; border-radius: 50%"></span>
+          </span>
+        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 
   <ng-container *ngIf="!loading()">
     <p class="radar-empty" *ngIf="rows().length === 0">Nenhum ativo com proventos no período.</p>
 
-    <div class="radar-scroll fade-in" *ngIf="rows().length > 0">
-      <div class="radar-matrix" role="table">
-        <!-- Cabeçalho: canto + meses -->
-        <div class="rm-row rm-head" role="row">
-          <span class="rm-corner rm-sticky" role="columnheader">Ativo</span>
-          <span
-            class="rm-month"
-            role="columnheader"
-            *ngFor="let label of monthLabels; let i = index"
-            [title]="label"
-          >
-            <span class="rm-m-full">{{ label }}</span>
-            <span class="rm-m-ini">{{ monthInitials[i] }}</span>
-          </span>
-        </div>
-
-        <!-- Linhas: ticker + células -->
-        <div class="rm-row" role="row" *ngFor="let row of rows()">
-          <span class="rm-ticker rm-sticky" role="rowheader">{{ row.ticker }}</span>
-          <span
-            class="rm-cell"
-            role="cell"
-            *ngFor="let on of row.marks; let i = index"
-            [class.on]="on"
-            [title]="row.ticker + ' · ' + monthLabels[i]"
-          >
-            <span class="rm-dot" *ngIf="on"></span>
-          </span>
+    <ng-container *ngIf="rows().length > 0">
+      <!-- Visualização em cards (Jan→Dez) -->
+      <div class="radar-grid fade-in" *ngIf="isView('cards')">
+        <div class="radar-card" *ngFor="let m of monthCards()">
+          <div class="rc-head">
+            <span class="rc-month">{{ m.label }}</span>
+            <span class="rc-count" *ngIf="m.tickers.length > 0">{{ m.tickers.length }}</span>
+          </div>
+          <div class="rc-tickers" *ngIf="m.tickers.length > 0">
+            <span class="ticker-chip" *ngFor="let t of m.tickers">{{ t }}</span>
+          </div>
+          <span class="rc-empty" *ngIf="m.tickers.length === 0">—</span>
         </div>
       </div>
-    </div>
+
+      <!-- Visualização em matriz (batalha naval) -->
+      <div class="radar-scroll fade-in" *ngIf="isView('matrix')">
+        <div class="radar-matrix" role="table">
+          <!-- Cabeçalho: canto + meses -->
+          <div class="rm-row rm-head" role="row">
+            <span class="rm-corner rm-sticky" role="columnheader">Ativo</span>
+            <span
+              class="rm-month"
+              role="columnheader"
+              *ngFor="let label of monthLabels; let i = index"
+              [title]="label"
+            >
+              <span class="rm-m-full">{{ label }}</span>
+              <span class="rm-m-ini">{{ monthInitials[i] }}</span>
+            </span>
+          </div>
+
+          <!-- Linhas: ticker + células -->
+          <div class="rm-row" role="row" *ngFor="let row of rows()">
+            <span class="rm-ticker rm-sticky" role="rowheader">{{ row.ticker }}</span>
+            <span
+              class="rm-cell"
+              role="cell"
+              *ngFor="let on of row.marks; let i = index"
+              [class.on]="on"
+              [title]="row.ticker + ' · ' + monthLabels[i]"
+            >
+              <span class="rm-dot" *ngIf="on"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </ng-container>
 </div>

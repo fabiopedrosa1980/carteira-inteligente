@@ -32,6 +32,12 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     return this.transaction !== null;
   }
 
+  // Tipo de ativo travado quando definido pelo contexto: edição (tipo fixo) ou
+  // adição a partir de uma seção (tipo pré-definido). Evita cair na área errada.
+  get isAssetTypeLocked(): boolean {
+    return this.isEdit || this.defaultAssetType !== null;
+  }
+
   // Ticker inválido enquanto incompleto (<3), em busca, ou explicitamente não
   // encontrado pela cotação. Não exige o nome resolvido — assim um ticker válido
   // não fica bloqueado por cotação lenta/sem nome. Em edição o ticker é fixo.

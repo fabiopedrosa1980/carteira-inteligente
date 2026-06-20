@@ -33,10 +33,12 @@
           class="form-input form-select"
           [(ngModel)]="form.assetType"
           [class.error]="errors.assetType"
+          [disabled]="isAssetTypeLocked"
         >
           <option value="">Selecione...</option>
           <option *ngFor="let t of assetTypes" [value]="t.id">{{ t.label }}</option>
         </select>
+        <span class="field-hint" *ngIf="isAssetTypeLocked && !isEdit">Definido pela seção</span>
         <span class="field-error" *ngIf="errors.assetType">{{ errors.assetType }}</span>
       </div>
 

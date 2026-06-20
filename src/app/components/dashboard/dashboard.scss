@@ -258,13 +258,21 @@
   }
 }
 .sort-controls {
-  // Host do <app-scroll-bar>: rola horizontalmente no mobile sem quebrar linha.
+  // Host do <app-scroll-bar>: rola horizontalmente sem quebrar linha.
   display: block;
   --scroll-gap: 6px;
-  // Preenche a largura quando o section-header vira coluna no mobile,
-  // garantindo que a rolagem aconteça dentro da barra.
-  width: 100%;
-  align-self: stretch;
+  // Desktop: dimensiona pelo conteúdo ao lado do título, encolhendo se faltar
+  // espaço (rolagem interna da barra), sem quebrar o cabeçalho.
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+
+  // Mobile: o section-header vira coluna; a barra ocupa a largura toda e a
+  // rolagem acontece dentro dela.
+  @media (max-width: 640px) {
+    width: 100%;
+    align-self: stretch;
+  }
 }
 .sort-label {
   font-size: 12px;

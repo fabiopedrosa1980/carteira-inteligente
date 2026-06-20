@@ -64,11 +64,28 @@
 }
 
 .dh-years {
-  // Chips em todos os tamanhos; quebram de linha no mobile, sem rolagem.
+  // Chips no desktop; quebram de linha quando necessário, sem rolagem.
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1.25rem;
+
+  // No mobile o filtro de ano vira combo (.dh-year-combo).
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+.dh-year-combo {
+  // Combo de ano apenas no mobile.
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+
+  @media (max-width: 480px) {
+    display: flex;
+  }
 }
 
 .dh-year-chip {

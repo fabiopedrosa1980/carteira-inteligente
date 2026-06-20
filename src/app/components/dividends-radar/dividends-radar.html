@@ -115,23 +115,18 @@
         >
           <span class="rc-bar"></span>
           <div class="rc-head">
-            <span class="rc-month">
-              <svg
-                class="ic-star"
-                *ngIf="isTopMonth(m.month)"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 21.4l1.4-6.8L2.2 9l6.9-.7Z"
-                  fill="currentColor"
-                />
-              </svg>
-              {{ m.label }}
-            </span>
+            <span class="rc-month">{{ m.label }}</span>
             <span class="rc-count" *ngIf="m.tickers.length > 0">{{ m.tickers.length }}</span>
           </div>
-          <span class="rc-tag rc-tag-top" *ngIf="isTopMonth(m.month)">Melhor mês</span>
+          <span class="rc-tag rc-tag-top" *ngIf="isTopMonth(m.month)">
+            <svg class="ic-star" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 21.4l1.4-6.8L2.2 9l6.9-.7Z"
+                fill="currentColor"
+              />
+            </svg>
+            Melhor mês
+          </span>
           <span class="rc-tag rc-tag-next" *ngIf="isNextMonth(m.month)">
             <svg
               class="ic-warn"

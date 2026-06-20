@@ -38,7 +38,7 @@ export class MyAssetsComponent {
 
   collapsed = signal<Set<AssetType>>(new Set());
 
-  sortField = signal<SortField | null>(null);
+  sortField = signal<SortField | null>('ticker');
   sortAsc = signal(true);
 
   setSort(field: SortField) {

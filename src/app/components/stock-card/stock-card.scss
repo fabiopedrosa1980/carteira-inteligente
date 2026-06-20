@@ -200,6 +200,18 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   .stock-card {
     padding: 14px 14px 12px 16px;
     border-radius: 12px;
+    min-width: 0;
+  }
+
+  // Permite que os filhos flex encolham e o conteúdo nunca empurre a largura.
+  .card-top,
+  .stat-strip,
+  .stat,
+  .price-row {
+    min-width: 0;
+  }
+  .price {
+    overflow-wrap: anywhere;
   }
 
   .card-top {
@@ -238,5 +250,12 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   .stat-sep,
   .sector-tag {
     display: none;
+  }
+}
+
+/* Telas muito estreitas: baixa o preço hero mais um passo. */
+@media (max-width: 380px) {
+  .price {
+    font-size: 20px;
   }
 }

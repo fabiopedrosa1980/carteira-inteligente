@@ -312,12 +312,79 @@
   .table-row {
     grid-template-columns: 1.4fr repeat(3, 1fr) 0.7fr;
   }
+
+  /* Mobile: cards empilhados (rótulo: valor), fonte maior, legível no claro/escuro. */
   @media (max-width: 600px) {
-    .table-header,
+    padding: 4px 0;
+
+    .table-header {
+      display: none;
+    }
+
     .table-row {
-      grid-template-columns: 1.4fr repeat(3, 1fr) 0.7fr;
-      padding-left: 12px;
-      padding-right: 12px;
+      display: block;
+      grid-template-columns: none;
+      padding: 14px 16px;
+      margin: 0 12px 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card-bg);
+      font-size: 14px;
+
+      &:last-child {
+        margin-bottom: 12px;
+      }
+      &:hover {
+        background: var(--card-bg);
+      }
+    }
+
+    /* Ticker como cabeçalho do card. */
+    .ticker-cell {
+      display: block;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .ticker-badge {
+      font-size: 16px;
+    }
+
+    /* Demais campos: rótulo à esquerda, valor à direita. */
+    .qty-cell,
+    .price-cell,
+    .total-cell,
+    .count-cell {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 5px 0;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: right;
+    }
+    .qty-cell::before {
+      content: 'Quantidade';
+    }
+    .price-cell::before {
+      content: 'Preço médio';
+    }
+    .total-cell::before {
+      content: 'Total';
+    }
+    .count-cell::before {
+      content: 'Lançamentos';
+    }
+    .qty-cell::before,
+    .price-cell::before,
+    .total-cell::before,
+    .count-cell::before {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
     }
   }
 }

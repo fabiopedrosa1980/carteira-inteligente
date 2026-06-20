@@ -75,7 +75,8 @@
           type="date"
           class="form-input date-input"
           [class.error]="errors.date"
-          [(ngModel)]="form.date"
+          [ngModel]="form.date"
+          (ngModelChange)="onDateChange($event)"
         />
         <span class="field-error" *ngIf="errors.date">{{ errors.date }}</span>
       </div>
@@ -102,11 +103,15 @@
             class="form-input"
             [class.error]="errors.price"
             placeholder="0,00"
-            [(ngModel)]="form.price"
+            [ngModel]="form.price"
+            (ngModelChange)="onPriceChange($event)"
             min="0.01"
             step="0.01"
           />
           <span class="field-error" *ngIf="errors.price">{{ errors.price }}</span>
+          <span class="quote-hint found" *ngIf="quoteAsOf()">
+            Cotação de {{ quoteAsOf() | date: 'dd/MM/yyyy' }}
+          </span>
         </div>
       </div>
 

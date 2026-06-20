@@ -11,7 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { TransactionService } from '../../services/transaction.service';
 import { StockApiService, TickerSuggestion } from '../../services/stock-api.service';
 import { AssetType, Transaction } from '../../models/transaction.model';
@@ -43,10 +43,13 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
 
   private readonly svc = inject(TransactionService);
   private readonly stockApi = inject(StockApiService);
-  private readonly tickerInput$ = new Subject<string>();
+  private readonly tickerInput$ = new Subject<{ ticker: string; date: string }>();
   private tickerSub?: Subscription;
   private readonly searchInput$ = new Subject<string>();
   private searchSub?: Subscription;
+
+  // True quando o usuário editou o preço à mão — impede sobrescrever pela cotação.
+  private priceManuallyEdited = false;
 
   suggestions = signal<TickerSuggestion[]>([]);
 
@@ -60,6 +63,8 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
   quoteLoading = signal(false);
   quoteName = signal('');
   quoteNotFound = signal(false);
+  // Data de referência da cotação preenchida (YYYY-MM-DD), quando for passada.
+  quoteAsOf = signal('');
 
   form = {
     assetType: '' as AssetType | '',
@@ -93,19 +98,23 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     this.tickerSub = this.tickerInput$
       .pipe(
         debounceTime(600),
-        distinctUntilChanged(),
-        filter((t) => t.length >= 3),
-        switchMap((ticker) => {
+        distinctUntilChanged((a, b) => a.ticker === b.ticker && a.date === b.date),
+        filter((q) => q.ticker.length >= 3),
+        switchMap(({ ticker, date }) => {
           this.quoteLoading.set(true);
           this.quoteName.set('');
           this.quoteNotFound.set(false);
-          return this.stockApi.getQuote(ticker);
+          return this.stockApi.getQuote(ticker, date).pipe(map((quote) => ({ quote, date })));
         }),
       )
-      .subscribe((quote) => {
+      .subscribe(({ quote, date }) => {
         this.quoteLoading.set(false);
         if (quote.found && quote.price > 0) {
-          this.form.price = quote.price;
+          // Não sobrescreve um preço editado à mão.
+          if (!this.priceManuallyEdited) {
+            this.form.price = quote.price;
+            this.quoteAsOf.set(date < this.todayStr() ? date : '');
+          }
           this.quoteName.set(quote.name || quote.ticker);
           this.quoteNotFound.set(false);
         } else {
@@ -143,8 +152,10 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     delete this.errors.ticker;
     this.quoteName.set('');
     this.quoteNotFound.set(false);
+    // Novo ticker reabre o auto-preenchimento do preço.
+    this.priceManuallyEdited = false;
     if (value.length >= 3) {
-      this.tickerInput$.next(value.toUpperCase());
+      this.tickerInput$.next({ ticker: value.toUpperCase(), date: this.form.date });
       this.searchInput$.next(value.toUpperCase());
     } else {
       this.suggestions.set([]);
@@ -155,7 +166,35 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     this.suggestions.set([]);
     this.onTickerChange(s.ticker);
     // Resolve nome/cotação imediatamente para o ticker escolhido.
-    this.tickerInput$.next(s.ticker.toUpperCase());
+    this.tickerInput$.next({ ticker: s.ticker.toUpperCase(), date: this.form.date });
+  }
+
+  // Ao trocar a data (modo adição): rebusca o preço para a nova data. Em edição,
+  // preserva o preço registrado (não auto-preenche).
+  onDateChange(value: string) {
+    this.form.date = value;
+    delete this.errors.date;
+    if (this.isEdit) return;
+    const ticker = (this.form.ticker || '').trim();
+    if (ticker.length >= 3) {
+      this.tickerInput$.next({ ticker: ticker.toUpperCase(), date: this.form.date });
+    }
+  }
+
+  // Marca o preço como editado à mão para não ser sobrescrito pela cotação.
+  onPriceChange(value: number | null) {
+    this.form.price = value;
+    this.priceManuallyEdited = true;
+    this.quoteAsOf.set('');
+    delete this.errors.price;
+  }
+
+  // Data de hoje em horário local (YYYY-MM-DD), sem deslocamento de fuso.
+  todayStr(): string {
+    const d = new Date();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${m}-${day}`;
   }
 
   save() {

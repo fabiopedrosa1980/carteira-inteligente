@@ -24,10 +24,22 @@ export class StockApiService {
 
   constructor(private http: HttpClient) {}
 
-  getQuote(ticker: string): Observable<StockQuote> {
-    return this.http
-      .get<StockQuote>(`${this.proxyUrl}/quote/${ticker.toUpperCase()}`)
-      .pipe(catchError(() => of(this.empty(ticker))));
+  // Cotação do ativo. Se `date` (YYYY-MM-DD) for informada e anterior a hoje,
+  // pede o fechamento naquela data via `?date=`; senão, a cotação atual.
+  getQuote(ticker: string, date?: string): Observable<StockQuote> {
+    let url = `${this.proxyUrl}/quote/${ticker.toUpperCase()}`;
+    if (date && date < this.todayStr()) {
+      url += `?date=${date}`;
+    }
+    return this.http.get<StockQuote>(url).pipe(catchError(() => of(this.empty(ticker))));
+  }
+
+  // Data de hoje em horário local (YYYY-MM-DD), evitando deslocamento de fuso.
+  private todayStr(): string {
+    const d = new Date();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${d.getFullYear()}-${m}-${day}`;
   }
 
   // Busca de tickers para o autocomplete do lançamento. Consome o endpoint de

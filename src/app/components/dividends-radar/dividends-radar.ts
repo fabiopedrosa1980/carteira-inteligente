@@ -28,6 +28,10 @@ export class DividendsRadarComponent implements OnChanges {
   readonly monthInitials = MONTH_INITIALS;
   readonly year = new Date().getFullYear() - 1;
 
+  // Dimensões do skeleton de carregamento (6 linhas × 13 colunas).
+  readonly skelRows = Array.from({ length: 6 });
+  readonly skelCols = Array.from({ length: 13 });
+
   ngOnChanges(): void {
     this.load();
   }

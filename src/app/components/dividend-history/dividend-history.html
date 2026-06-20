@@ -1,8 +1,15 @@
 <div class="dh-section">
   <h3 class="dh-title">Histórico</h3>
 
-  <!-- Carregando posições -->
-  <div class="dh-loading" *ngIf="loadingPositions()">Carregando ativos…</div>
+  <!-- Carregando posições: skeleton do seletor + chips de ano -->
+  <div class="dh-skel-controls" *ngIf="loadingPositions()" aria-hidden="true">
+    <span class="skeleton" style="height: 38px; width: 220px; border-radius: 8px"></span>
+    <div class="dh-skel-chips">
+      <span class="skeleton" style="height: 28px; width: 54px; border-radius: 20px"></span>
+      <span class="skeleton" style="height: 28px; width: 54px; border-radius: 20px"></span>
+      <span class="skeleton" style="height: 28px; width: 54px; border-radius: 20px"></span>
+    </div>
+  </div>
 
   <!-- Erro ao importar dividendos -->
   <div class="dh-error" *ngIf="error()">
@@ -61,8 +68,15 @@
       </button>
     </div>
 
-    <!-- Carregando dividendos -->
-    <div class="dh-loading" *ngIf="loading()">Carregando dividendos…</div>
+    <!-- Carregando dividendos: skeleton da tabela -->
+    <div class="dh-skel-table" *ngIf="loading()" aria-hidden="true">
+      <div class="dh-skel-row" *ngFor="let r of skelRows">
+        <span class="skeleton skeleton-line" style="width: 60px"></span>
+        <span class="skeleton skeleton-line" style="width: 80px"></span>
+        <span class="skeleton skeleton-line" style="width: 80px"></span>
+        <span class="skeleton skeleton-line" style="width: 70px"></span>
+      </div>
+    </div>
 
     <!-- Estado vazio após seleção -->
     <div
@@ -75,7 +89,7 @@
     </div>
 
     <!-- Tabela -->
-    <div class="dh-table-wrap" *ngIf="!loading() && !error() && pageItems().length > 0">
+    <div class="dh-table-wrap fade-in" *ngIf="!loading() && !error() && pageItems().length > 0">
       <table class="dh-table">
         <colgroup>
           <col class="col-tipo" />

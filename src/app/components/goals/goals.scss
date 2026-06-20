@@ -386,3 +386,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Skeleton de carregamento */
+.goals-skel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.goals-skel-card {
+  height: 64px;
+  border-radius: 12px;
+}

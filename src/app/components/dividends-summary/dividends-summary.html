@@ -1,7 +1,15 @@
 <div class="ds-section">
   <h3 class="ds-title">{{ title() }}</h3>
 
-  <div class="ds-loading" *ngIf="loading()">Calculando…</div>
+  <!-- Skeleton enquanto carrega -->
+  <div class="ds-skel" *ngIf="loading()" aria-hidden="true">
+    <div class="skeleton" style="height: 64px; border-radius: 12px; margin-bottom: 12px"></div>
+    <div class="ds-skel-row" *ngFor="let r of skelRows">
+      <span class="skeleton skeleton-line" style="width: 30%"></span>
+      <span class="skeleton skeleton-line" style="width: 15%"></span>
+      <span class="skeleton skeleton-line" style="width: 22%"></span>
+    </div>
+  </div>
 
   <div class="ds-error" *ngIf="error() && !loading()">
     <svg class="ds-error-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -18,7 +26,7 @@
 
   <ng-container *ngIf="!loading() && !error()">
     <!-- Total geral -->
-    <div class="ds-total-card">
+    <div class="ds-total-card fade-in">
       <span class="ds-total-label">{{
         mode === 'received' ? 'Total recebido' : 'Total projetado'
       }}</span>
@@ -29,7 +37,7 @@
     <div class="ds-empty" *ngIf="rows().length === 0">Nenhum ativo com proventos para exibir.</div>
 
     <!-- Detalhamento por ativo (acordeão) -->
-    <div class="ds-list" *ngIf="rows().length > 0">
+    <div class="ds-list fade-in" *ngIf="rows().length > 0">
       <div class="ds-row-head ds-header-labels">
         <span class="col-ativo">Ativo</span>
         <span class="col-cotas">Cotas</span>

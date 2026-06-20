@@ -5,12 +5,24 @@
     útil para antecipar a próxima.
   </p>
 
-  <div class="radar-loading" *ngIf="loading()">Calculando…</div>
+  <!-- Skeleton da matriz enquanto carrega -->
+  <div class="radar-scroll" *ngIf="loading()" aria-hidden="true">
+    <div class="radar-matrix radar-skel">
+      <div class="rm-row" *ngFor="let r of skelRows">
+        <span class="rm-skel-cell rm-sticky">
+          <span class="skeleton skeleton-line" style="width: 70%"></span>
+        </span>
+        <span class="rm-skel-cell" *ngFor="let c of skelCols">
+          <span class="skeleton" style="width: 12px; height: 12px; border-radius: 50%"></span>
+        </span>
+      </div>
+    </div>
+  </div>
 
   <ng-container *ngIf="!loading()">
     <p class="radar-empty" *ngIf="rows().length === 0">Nenhum ativo com proventos no período.</p>
 
-    <div class="radar-scroll" *ngIf="rows().length > 0">
+    <div class="radar-scroll fade-in" *ngIf="rows().length > 0">
       <div class="radar-matrix" role="table">
         <!-- Cabeçalho: canto + meses -->
         <div class="rm-row rm-head" role="row">

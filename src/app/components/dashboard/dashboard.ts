@@ -81,6 +81,8 @@ export class DashboardComponent {
 
   readonly acoes = signal<Stock[]>([]);
   readonly acoesLoading = signal(false);
+  // Cards do skeleton de carregamento.
+  readonly skelCards = Array.from({ length: 6 });
   readonly selectedStock = signal<Stock | null>(null);
 
   toggleTheme() {

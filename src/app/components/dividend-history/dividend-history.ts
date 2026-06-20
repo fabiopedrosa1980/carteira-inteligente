@@ -24,6 +24,8 @@ export class DividendHistoryComponent implements OnChanges {
   readonly loading = signal(false);
   readonly error = signal(false);
   readonly page = signal(0);
+  // Linhas do skeleton da tabela.
+  readonly skelRows = Array.from({ length: 6 });
   // Padrão: ano corrente (null = todos os anos).
   readonly selectedYear = signal<number | null>(new Date().getFullYear());
 

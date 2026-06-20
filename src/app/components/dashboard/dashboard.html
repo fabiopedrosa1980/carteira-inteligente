@@ -115,9 +115,8 @@
           </div>
         </div>
 
-        <div class="loading-bar" *ngIf="acoesLoading()">
-          <div class="loading-bar-fill"></div>
-          <span>Buscando cotações em tempo real…</span>
+        <div class="stocks-grid" *ngIf="acoesLoading()" aria-hidden="true">
+          <div class="skeleton skeleton-card" *ngFor="let c of skelCards"></div>
         </div>
 
         <div class="empty-portfolio" *ngIf="!acoesLoading() && acoes().length === 0">
@@ -136,7 +135,7 @@
           </p>
         </div>
 
-        <div class="stocks-grid" *ngIf="!acoesLoading() && acoes().length > 0">
+        <div class="stocks-grid fade-in" *ngIf="!acoesLoading() && acoes().length > 0">
           <app-stock-card
             *ngFor="let stock of sortedStocks()"
             [stock]="stock"

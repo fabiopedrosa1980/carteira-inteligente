@@ -46,9 +46,9 @@
   </div>
 
   <!-- Loading -->
-  <div class="loading-bar" *ngIf="loading()">
-    <div class="loading-bar-fill"></div>
-    <span>Carregando dados da carteira…</span>
+  <!-- Skeleton de carregamento -->
+  <div class="goals-skel" *ngIf="loading()" aria-hidden="true">
+    <div class="skeleton goals-skel-card" *ngFor="let c of skelCards"></div>
   </div>
 
   <!-- Estado vazio -->
@@ -64,7 +64,7 @@
   </div>
 
   <!-- Lista de metas -->
-  <div class="metas-table-wrap" *ngIf="!loading() && metas().length > 0">
+  <div class="metas-table-wrap fade-in" *ngIf="!loading() && metas().length > 0">
     <table class="metas-table">
       <colgroup>
         <col class="col-nome" />

@@ -20,6 +20,8 @@ export class GoalsComponent {
 
   readonly metas = this.metasService.getMetas;
   readonly loading = this.metasService.loading;
+  // Cards do skeleton de carregamento.
+  readonly skelCards = Array.from({ length: 3 });
 
   showForm = signal(false);
   editingId = signal<string | null>(null);

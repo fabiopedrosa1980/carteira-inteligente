@@ -53,6 +53,9 @@ export class DividendsSummaryComponent implements OnChanges {
   readonly rows = signal<SummaryRow[]>([]);
   readonly expanded = signal<Set<string>>(new Set());
 
+  // Linhas do skeleton de carregamento.
+  readonly skelRows = Array.from({ length: 5 });
+
   readonly total = computed(() => this.rows().reduce((sum, r) => sum + r.value, 0));
 
   toggle(ticker: string): void {

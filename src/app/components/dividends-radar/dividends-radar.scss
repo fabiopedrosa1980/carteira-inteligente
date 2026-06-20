@@ -41,12 +41,21 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 .rm-corner,
 .rm-month,
 .rm-ticker,
-.rm-cell {
+.rm-cell,
+.rm-skel-cell {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 8px 6px;
   border-bottom: 1px solid var(--border);
+}
+.rm-skel-cell {
+  min-height: 36px;
+}
+.rm-skel-cell.rm-sticky {
+  justify-content: flex-start;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 .rm-row:last-child .rm-ticker,
 .rm-row:last-child .rm-cell {

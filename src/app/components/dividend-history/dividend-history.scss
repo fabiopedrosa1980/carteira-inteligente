@@ -280,3 +280,27 @@ body.light-theme {
   min-width: 50px;
   text-align: center;
 }
+
+/* Skeleton de carregamento */
+.dh-skel-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.dh-skel-chips {
+  display: flex;
+  gap: 8px;
+}
+.dh-skel-table {
+  display: flex;
+  flex-direction: column;
+}
+.dh-skel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+}

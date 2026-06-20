@@ -175,3 +175,13 @@ button.ds-row-head {
     font-size: 0.8rem;
   }
 }
+
+/* Skeleton de carregamento */
+.ds-skel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--border);
+}

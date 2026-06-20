@@ -288,25 +288,26 @@
       vertical-align: top;
     }
 
-    // Oculta a coluna "Valor Alvo" (3ª) para caber sem scroll
+    // Oculta "Valor Atual" (2ª) e "Valor Alvo" (3ª) para caber sem estourar.
+    // Mantém Meta, Progresso e Operação (editar/excluir).
+    col:nth-child(2),
+    th:nth-child(2),
+    td:nth-child(2),
     col:nth-child(3),
     th:nth-child(3),
     td:nth-child(3) {
       display: none;
     }
 
-    // Reproporciona as 4 colunas visíveis para preencher 100% da largura
+    // Reproporciona as 3 colunas visíveis para preencher 100% da largura
     .col-nome {
-      width: 40%;
-    }
-    .col-atual {
-      width: 24%;
+      width: 52%;
     }
     .col-progresso {
-      width: 16%;
+      width: 24%;
     }
     .col-acoes {
-      width: 20%;
+      width: 24%;
     }
   }
 }

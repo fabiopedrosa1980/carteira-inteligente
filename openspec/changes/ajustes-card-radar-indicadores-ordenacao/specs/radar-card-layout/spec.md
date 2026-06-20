@@ -1,13 +1,14 @@
 ## ADDED Requirements
 
-### Requirement: Tag de destaque na mesma linha dos tickers no card do Radar
+### Requirement: Tag de destaque ao lado do mês no card do Radar
 
-No card de mês do Radar de proventos (visão em cards), a tag de destaque ("Melhor mês" ou "Oportunidade de compra") SHALL ser exibida **na mesma linha dos chips de ticker**, e não em uma linha própria acima deles. O layout MUST permanecer legível e contido no card, sem rolagem horizontal.
+No card de mês do Radar de proventos (visão em cards), a tag de destaque ("Melhor mês" ou "Oportunidade") SHALL ser exibida **na mesma linha do nome do mês** (no cabeçalho do card), com a contagem de ativos alinhada à direita. A tag MUST quebrar de linha graciosamente em cards estreitos, permanecendo legível e contida, sem rolagem horizontal. A tag de oportunidade MUST exibir o texto curto "Oportunidade".
 
-#### Scenario: Tag inline com os tickers
+#### Scenario: Tag ao lado do mês
 
-- **WHEN** um card de mês do Radar com tag de destaque e ao menos um ticker é exibido
-- **THEN** a tag aparece na mesma linha dos chips de ticker
+- **WHEN** um card de mês do Radar com tag de destaque é exibido
+- **THEN** a tag aparece na mesma linha do nome do mês, no cabeçalho do card
+- **AND** a contagem de ativos fica alinhada à direita
 - **AND** o conteúdo permanece contido no card, sem estourar
 
 ### Requirement: Oportunidade de compra destacada no mês atual

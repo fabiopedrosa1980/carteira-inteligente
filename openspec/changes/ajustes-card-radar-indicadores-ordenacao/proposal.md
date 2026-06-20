@@ -6,7 +6,7 @@ Sete ajustes de UI corrigem alinhamentos, cortes de texto e melhoram a clareza: 
 
 - **Card de Minhas Ações — Nota**: alinhar a Nota à **linha do ticker** (topo), em vez de centralizada verticalmente entre ticker e nome.
 - **Ordenação (web) — rótulo cortado**: tirar o rótulo "Ordenar por" de dentro da área com máscara de fade do `app-scroll-bar`, para não ser cortado.
-- **Radar — tag ao lado dos tickers**: exibir a tag de destaque ("Melhor mês"/"Oportunidade de compra") na **mesma linha dos chips de ticker**, não em linha própria.
+- **Radar — tag ao lado do mês**: exibir a tag de destaque ("Melhor mês"/"Oportunidade") na **mesma linha do nome do mês** (cabeçalho do card), com a contagem à direita.
 - **Radar — oportunidade no mês atual**: mover o destaque "Oportunidade de compra" do **próximo mês para o mês atual** (ajustar legenda correspondente).
 - **Detalhe da ação — descrições**: garantir o ícone "i" com descrição para **todos** os indicadores fundamentalistas (ampliar o mapa de descrições).
 - **Ordenação (mobile)**: iniciar com **"Nome"** selecionado e **remover a opção "Padrão"** do combo.
@@ -15,7 +15,7 @@ Sete ajustes de UI corrigem alinhamentos, cortes de texto e melhoram a clareza: 
 ## Capabilities
 
 ### New Capabilities
-- `radar-card-layout`: posição da tag de destaque no card do Radar e mês destacado como "oportunidade de compra".
+- `radar-card-layout`: posição da tag de destaque no card do Radar (ao lado do mês) e mês destacado como "oportunidade".
 - `stock-indicator-descriptions`: ícone "i" com descrição para todos os indicadores fundamentalistas no detalhe da ação.
 - `historico-filtros-layout`: seletor de Ativo e filtro de Ano dispostos na mesma linha no Histórico.
 

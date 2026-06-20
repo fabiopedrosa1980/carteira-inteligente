@@ -21,7 +21,7 @@ Sete ajustes de UI em componentes standalone, sem mudança de serviços/modelos:
 
 - **Rótulo "Ordenar por" fora da máscara**: no desktop, reestruturar para que `.sort-controls` seja um container flex contendo `<span class="sort-label">` **fora** do `app-scroll-bar`, e o `app-scroll-bar` (com apenas os botões) vira `.sort-scroll`. Assim a máscara só afeta os botões. Alternativa: desativar o fade do lado esquerdo — descartada por ser frágil entre browsers.
 
-- **Radar: tag inline com tickers**: mover `.rc-tag` para dentro/junto de `.rc-tickers` na mesma linha (flex com `flex-wrap`), exibindo a tag como um item ao lado dos chips. A tag pode virar um chip com ícone. Manter cores de destaque. Alternativa: manter a tag no topo e só reduzir margem — não atende ao pedido.
+- **Radar: tag ao lado do mês**: mover `.rc-tag` para dentro de `.rc-head` (linha do nome do mês), com `flex-wrap` e `.rc-count` empurrado à direita via `margin-left: auto`. A tag de oportunidade exibe o texto curto "Oportunidade". Manter cores de destaque. Alternativa: tag na linha dos chips de ticker — descartada a pedido do usuário (preferiu ao lado do mês).
 
 - **Radar: oportunidade no mês atual**: trocar a base de `nextMonth` para o mês atual (`getMonth()+1`), renomeando para refletir semântica (ex.: `currentMonth`/`opportunityMonth`), e ajustar a legenda para "Mês atual — oportunidade de compra". `isNextMonth` passa a comparar com o mês atual (mantendo classes `.next` para não mexer no CSS, ou renomeando com cuidado). Decisão: manter as classes CSS `.next` e o método, apenas mudando o valor de origem e os textos, para minimizar a superfície de mudança.
 

@@ -120,6 +120,9 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   display: flex;
   align-items: center;
   gap: 14px;
+  // Quebra de linha para nunca cortar Nota/setor em cards estreitos.
+  flex-wrap: wrap;
+  row-gap: 8px;
   margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid var(--border);

@@ -130,12 +130,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   color: var(--text-primary);
   margin: 0 0 4px;
 }
-.section-hint {
-  margin: 0 0 14px;
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
 /* Indicadores: 4 cards por linha (responsivo). minmax(0,1fr) evita estouro. */
 .indicators-grid {
   display: grid;

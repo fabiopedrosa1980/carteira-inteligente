@@ -7,11 +7,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   color: var(--text-primary);
   margin: 1rem 0 0.25rem;
 }
-.radar-hint {
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  margin: 0 0 1rem;
-}
 .radar-loading,
 .radar-empty {
   font-size: 0.85rem;
@@ -232,8 +227,10 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 }
 @media (max-width: 480px) {
   // 2 colunas no mobile (alinhado a Minhas Ações), sem rolagem.
+  // grid-auto-rows: 1fr iguala a altura de todos os cards à do mais cheio.
   .radar-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
   }
 }
 

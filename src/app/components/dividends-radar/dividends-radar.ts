@@ -82,8 +82,8 @@ export class DividendsRadarComponent implements OnChanges {
     })),
   );
 
-  // Mês atual (1–12) — destacado como oportunidade de compra.
-  readonly nextMonth = new Date().getMonth() + 1;
+  // Mês seguinte ao atual (1–12) — destacado como oportunidade; Dez→Jan.
+  readonly nextMonth = ((new Date().getMonth() + 1) % 12) + 1;
 
   // Mês (1–12) com mais ativos marcados; empate no primeiro; 0 se nenhum.
   readonly topMonth = computed(() => {

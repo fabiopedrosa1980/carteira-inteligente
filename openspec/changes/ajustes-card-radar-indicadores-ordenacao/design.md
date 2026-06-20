@@ -23,7 +23,7 @@ Sete ajustes de UI em componentes standalone, sem mudança de serviços/modelos:
 
 - **Radar: tag ao lado do mês**: mover `.rc-tag` para dentro de `.rc-head` (linha do nome do mês), com `flex-wrap` e `.rc-count` empurrado à direita via `margin-left: auto`. A tag de oportunidade exibe o texto curto "Oportunidade". Manter cores de destaque. Alternativa: tag na linha dos chips de ticker — descartada a pedido do usuário (preferiu ao lado do mês).
 
-- **Radar: oportunidade no mês atual**: trocar a base de `nextMonth` para o mês atual (`getMonth()+1`), renomeando para refletir semântica (ex.: `currentMonth`/`opportunityMonth`), e ajustar a legenda para "Mês atual — oportunidade de compra". `isNextMonth` passa a comparar com o mês atual (mantendo classes `.next` para não mexer no CSS, ou renomeando com cuidado). Decisão: manter as classes CSS `.next` e o método, apenas mudando o valor de origem e os textos, para minimizar a superfície de mudança.
+- **Radar: oportunidade no próximo mês**: `nextMonth = ((getMonth()+1)%12)+1` (mês seguinte ao atual; Dez→Jan), com legenda "Próximo mês — oportunidade de compra". Mantém o método `isNextMonth` e a classe CSS `.next`.
 
 - **Descrições de indicadores**: ampliar o mapa `DESCRIPTIONS` (chaves normalizadas) cobrindo o conjunto comum do Investidor10 (P/EBIT, P/Ativo, PSR, EV/EBIT, ROA, margens, variações de dívida, Patrimônio/Ativos, Passivos/Ativos, Giro de Ativos, CAGR receitas/lucros, etc.). O ícone "i" continua condicionado a `describe()`; com o mapa ampliado, todos os indicadores comuns passam a ter descrição. Alternativa: fallback genérico para rótulos desconhecidos — descartada para não exibir texto vago.
 

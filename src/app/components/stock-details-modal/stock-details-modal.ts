@@ -19,25 +19,68 @@ export class StockDetailsModalComponent {
     this.close.emit();
   }
 
-  // Descrição dos indicadores mais comuns (chave normalizada → texto do tooltip).
+  // Descrição dos indicadores fundamentalistas (chave normalizada → tooltip).
+  // O normalizador remove espaços/pontos/acentos mas mantém a barra "/", por isso
+  // os índices de razão têm variante com e sem barra para casar com qualquer rótulo.
   private static readonly DESCRIPTIONS: Record<string, string> = {
+    // Múltiplos de preço
     pl: 'Preço/Lucro — quantos anos de lucro atual para reaver o preço pago pela ação.',
+    'p/l': 'Preço/Lucro — quantos anos de lucro atual para reaver o preço pago pela ação.',
     pvp: 'Preço/Valor Patrimonial — relação entre o preço e o valor contábil por ação.',
-    dy: 'Dividend Yield — proventos dos últimos 12 meses sobre o preço atual.',
-    dividendyield: 'Dividend Yield — proventos dos últimos 12 meses sobre o preço atual.',
-    roe: 'ROE — retorno sobre o patrimônio líquido (lucro ÷ patrimônio).',
-    roic: 'ROIC — retorno sobre o capital investido na operação.',
-    margemliquida: 'Margem líquida — lucro líquido como percentual da receita.',
-    margembruta: 'Margem bruta — lucro bruto como percentual da receita.',
-    margemebit: 'Margem EBIT — resultado operacional como percentual da receita.',
-    'dividaliquida/ebitda': 'Dívida líquida/EBITDA — endividamento sobre a geração de caixa.',
-    dividaliquidaebitda: 'Dívida líquida/EBITDA — endividamento sobre a geração de caixa.',
+    'p/vp': 'Preço/Valor Patrimonial — relação entre o preço e o valor contábil por ação.',
+    pebit: 'Preço/EBIT — preço da ação sobre o resultado operacional por ação.',
+    'p/ebit': 'Preço/EBIT — preço da ação sobre o resultado operacional por ação.',
+    pativo: 'Preço/Ativo — valor de mercado sobre o total de ativos.',
+    'p/ativo': 'Preço/Ativo — valor de mercado sobre o total de ativos.',
+    psr: 'PSR (Preço/Receita) — valor de mercado sobre a receita líquida.',
+    'p/sr': 'PSR (Preço/Receita) — valor de mercado sobre a receita líquida.',
+    pcapitaldegiro: 'Preço/Capital de Giro — preço sobre o capital de giro da empresa.',
+    'p/capitaldegiro': 'Preço/Capital de Giro — preço sobre o capital de giro da empresa.',
+    pativocirculanteliquido:
+      'Preço/Ativo Circulante Líquido — preço sobre o ativo circulante menos passivos.',
+    'p/ativocirculanteliquido':
+      'Preço/Ativo Circulante Líquido — preço sobre o ativo circulante menos passivos.',
+    // Enterprise value
     'ev/ebitda': 'EV/EBITDA — valor da firma sobre a geração de caixa operacional.',
     evebitda: 'EV/EBITDA — valor da firma sobre a geração de caixa operacional.',
+    'ev/ebit': 'EV/EBIT — valor da firma sobre o resultado operacional.',
+    evebit: 'EV/EBIT — valor da firma sobre o resultado operacional.',
+    // Proventos
+    dy: 'Dividend Yield — proventos dos últimos 12 meses sobre o preço atual.',
+    dividendyield: 'Dividend Yield — proventos dos últimos 12 meses sobre o preço atual.',
+    payout: 'Payout — percentual do lucro distribuído como proventos.',
+    // Rentabilidade
+    roe: 'ROE — retorno sobre o patrimônio líquido (lucro ÷ patrimônio).',
+    roa: 'ROA — retorno sobre os ativos (lucro ÷ ativos totais).',
+    roic: 'ROIC — retorno sobre o capital investido na operação.',
+    giroativos: 'Giro de Ativos — receita gerada para cada R$ de ativos.',
+    // Margens
+    margembruta: 'Margem bruta — lucro bruto como percentual da receita.',
+    margemebit: 'Margem EBIT — resultado operacional como percentual da receita.',
+    margemebitda: 'Margem EBITDA — geração de caixa operacional como percentual da receita.',
+    margemliquida: 'Margem líquida — lucro líquido como percentual da receita.',
+    // Endividamento
+    'dividaliquida/ebitda': 'Dívida líquida/EBITDA — endividamento sobre a geração de caixa.',
+    dividaliquidaebitda: 'Dívida líquida/EBITDA — endividamento sobre a geração de caixa.',
+    'dividaliquida/ebit': 'Dívida líquida/EBIT — endividamento sobre o resultado operacional.',
+    dividaliquidaebit: 'Dívida líquida/EBIT — endividamento sobre o resultado operacional.',
+    'dividaliquida/patrimonio':
+      'Dívida líquida/Patrimônio — endividamento sobre o patrimônio líquido.',
+    dividaliquidapatrimonio:
+      'Dívida líquida/Patrimônio — endividamento sobre o patrimônio líquido.',
+    'patrimonio/ativos': 'Patrimônio/Ativos — quanto do ativo é financiado por capital próprio.',
+    patrimonioativos: 'Patrimônio/Ativos — quanto do ativo é financiado por capital próprio.',
+    'passivos/ativos': 'Passivos/Ativos — quanto do ativo é financiado por terceiros.',
+    passivosativos: 'Passivos/Ativos — quanto do ativo é financiado por terceiros.',
+    liquidezcorrente: 'Liquidez corrente — capacidade de pagar obrigações de curto prazo.',
+    // Por ação
     lpa: 'LPA — lucro por ação.',
     vpa: 'VPA — valor patrimonial por ação.',
-    payout: 'Payout — percentual do lucro distribuído como proventos.',
-    liquidezcorrente: 'Liquidez corrente — capacidade de pagar obrigações de curto prazo.',
+    // Crescimento
+    cagrreceitas5anos: 'CAGR Receitas (5 anos) — crescimento anual composto da receita.',
+    cagrreceitas: 'CAGR Receitas — crescimento anual composto da receita.',
+    cagrlucros5anos: 'CAGR Lucros (5 anos) — crescimento anual composto do lucro.',
+    cagrlucros: 'CAGR Lucros — crescimento anual composto do lucro.',
   };
 
   get hasIndicators(): boolean {

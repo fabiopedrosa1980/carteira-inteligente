@@ -76,13 +76,13 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 .ic-star {
   width: 13px;
   height: 13px;
-  color: var(--color-warning);
+  color: var(--color-pos);
   flex-shrink: 0;
 }
 .ic-warn {
   width: 13px;
   height: 13px;
-  color: var(--accent);
+  color: var(--color-warning);
   flex-shrink: 0;
 }
 
@@ -125,20 +125,20 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   overflow: hidden;
 }
 .radar-card.top {
-  border-color: color-mix(in srgb, var(--color-warning) 45%, var(--border));
+  border-color: color-mix(in srgb, var(--color-pos) 45%, var(--border));
   .rc-bar {
     width: 3px;
-    background: var(--color-warning);
+    background: var(--color-pos);
   }
   .rc-month .ic-star {
-    color: var(--color-warning);
+    color: var(--color-pos);
   }
 }
 .radar-card.next {
-  border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  border-color: color-mix(in srgb, var(--color-warning) 50%, var(--border));
   .rc-bar {
     width: 3px;
-    background: var(--accent);
+    background: var(--color-warning);
   }
 }
 /* Tags de chamada no card. */
@@ -162,12 +162,12 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   }
 }
 .rc-tag-top {
-  color: var(--color-warning);
-  background: color-mix(in srgb, var(--color-warning) 14%, transparent);
+  color: var(--color-pos);
+  background: color-mix(in srgb, var(--color-pos) 14%, transparent);
 }
 .rc-tag-next {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--color-warning);
+  background: color-mix(in srgb, var(--color-warning) 12%, transparent);
 }
 .rc-month {
   display: inline-flex;
@@ -351,20 +351,20 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 }
 .rm-month.top,
 .rm-cell.top {
-  background: color-mix(in srgb, var(--color-warning) 12%, transparent);
+  background: color-mix(in srgb, var(--color-pos) 12%, transparent);
 }
 .rm-month.next,
 .rm-cell.next {
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  background: color-mix(in srgb, var(--color-warning) 12%, transparent);
 }
 .rm-month.top {
-  color: var(--color-warning);
+  color: var(--color-pos);
 }
 .rm-month.next {
-  color: var(--accent);
+  color: var(--color-warning);
 }
 .rm-cell.on.next .rm-dot {
-  background: var(--accent);
+  background: var(--color-warning);
 }
 
 /* Mobile: meses como inicial única e colunas mais estreitas. */

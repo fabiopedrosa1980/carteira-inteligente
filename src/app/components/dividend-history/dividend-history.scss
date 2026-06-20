@@ -55,12 +55,20 @@
   flex-shrink: 0;
 }
 
+.dh-controls {
+  // Ativo + filtro de Ano na mesma linha; quebram juntos quando falta espaço.
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
 .dh-selector {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-bottom: 1rem;
 }
 
 .dh-years {
@@ -68,7 +76,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 1.25rem;
 
   // No mobile o filtro de ano vira combo (.dh-year-combo).
   @media (max-width: 480px) {
@@ -81,7 +88,6 @@
   display: none;
   align-items: center;
   gap: 0.75rem;
-  margin-bottom: 1.25rem;
 
   @media (max-width: 480px) {
     display: flex;

@@ -41,45 +41,49 @@
       <span>Histórico de dividendos da sua carteira está em processamento.</span>
     </div>
 
-    <!-- Seletores -->
-    <div class="dh-selector" *ngIf="visiblePositions().length > 0">
-      <label class="dh-label">Ativo</label>
-      <select class="dh-select" (change)="selectStock(+$any($event.target).value)">
-        <option *ngFor="let p of visiblePositions()" [value]="p.stock_id">{{ p.ticker }}</option>
-      </select>
-    </div>
+    <!-- Seletores: Ativo + filtro de Ano na mesma linha -->
+    <div class="dh-controls" *ngIf="visiblePositions().length > 0">
+      <div class="dh-selector">
+        <label class="dh-label">Ativo</label>
+        <select class="dh-select" (change)="selectStock(+$any($event.target).value)">
+          <option *ngFor="let p of visiblePositions()" [value]="p.stock_id">{{ p.ticker }}</option>
+        </select>
+      </div>
 
-    <!-- Filtro de ano por chips (desktop); quebram de linha quando necessário -->
-    <div class="dh-years" *ngIf="visiblePositions().length > 0">
-      <button
-        class="dh-year-chip"
-        *ngFor="let y of availableYears()"
-        [class.active]="selectedYear() === y"
-        (click)="selectYear(y)"
-      >
-        {{ y }}
-      </button>
-      <button
-        class="dh-year-chip"
-        [class.active]="selectedYear() === null"
-        (click)="selectYear(null)"
-      >
-        Todos
-      </button>
-    </div>
-
-    <!-- Filtro de ano por combo (mobile) -->
-    <div class="dh-year-combo" *ngIf="visiblePositions().length > 0">
-      <label class="dh-label">Ano</label>
-      <select
-        class="dh-select"
-        (change)="selectYear($any($event.target).value === '' ? null : +$any($event.target).value)"
-      >
-        <option *ngFor="let y of availableYears()" [value]="y" [selected]="selectedYear() === y">
+      <!-- Filtro de ano por chips (desktop); quebram de linha quando necessário -->
+      <div class="dh-years">
+        <button
+          class="dh-year-chip"
+          *ngFor="let y of availableYears()"
+          [class.active]="selectedYear() === y"
+          (click)="selectYear(y)"
+        >
           {{ y }}
-        </option>
-        <option value="" [selected]="selectedYear() === null">Todos</option>
-      </select>
+        </button>
+        <button
+          class="dh-year-chip"
+          [class.active]="selectedYear() === null"
+          (click)="selectYear(null)"
+        >
+          Todos
+        </button>
+      </div>
+
+      <!-- Filtro de ano por combo (mobile) -->
+      <div class="dh-year-combo">
+        <label class="dh-label">Ano</label>
+        <select
+          class="dh-select"
+          (change)="
+            selectYear($any($event.target).value === '' ? null : +$any($event.target).value)
+          "
+        >
+          <option *ngFor="let y of availableYears()" [value]="y" [selected]="selectedYear() === y">
+            {{ y }}
+          </option>
+          <option value="" [selected]="selectedYear() === null">Todos</option>
+        </select>
+      </div>
     </div>
 
     <!-- Carregando dividendos: skeleton da tabela -->

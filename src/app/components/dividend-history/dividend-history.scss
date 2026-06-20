@@ -63,15 +63,11 @@
   margin-bottom: 1rem;
 }
 
-// Combo de anos (mobile): empurrado para a direita, na mesma linha que "Ativo".
-.dh-year-select {
-  margin-left: auto;
-}
-
 .dh-years {
-  // Host do app-scroll-bar (renderizado só no desktop): uma linha rolável.
-  display: block;
-  --scroll-gap: 0.5rem;
+  // Chips em todos os tamanhos; quebram de linha no mobile, sem rolagem.
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-bottom: 1.25rem;
 }
 

@@ -1,15 +1,13 @@
 import { Component, Input, OnChanges, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BackendApiService, ApiDividend, ApiAcaoItem } from '../../services/backend-api.service';
-import { ResponsiveService } from '../../services/responsive.service';
-import { ScrollBarComponent } from '../scroll-bar/scroll-bar';
 
 const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-dividend-history',
   standalone: true,
-  imports: [CommonModule, ScrollBarComponent],
+  imports: [CommonModule],
   templateUrl: './dividend-history.html',
   styleUrls: ['./dividend-history.scss'],
 })
@@ -17,10 +15,6 @@ export class DividendHistoryComponent implements OnChanges {
   @Input() assetType: 'Acoes' | 'FIIs' = 'Acoes';
 
   private readonly api = inject(BackendApiService);
-  private readonly responsive = inject(ResponsiveService);
-
-  // Mobile → combo de anos; desktop → chips. Só uma variante no DOM.
-  readonly isMobile = this.responsive.isMobile;
 
   readonly positions = signal<ApiAcaoItem[]>([]);
   readonly loadingPositions = signal(true);
@@ -111,11 +105,6 @@ export class DividendHistoryComponent implements OnChanges {
   selectYear(year: number | null): void {
     this.selectedYear.set(year);
     this.page.set(0);
-  }
-
-  // Combo de anos (mobile): valor sentinela 'all' representa "Todos" (null).
-  selectYearFromCombo(value: string): void {
-    this.selectYear(value === 'all' ? null : +value);
   }
 
   prevPage(): void {

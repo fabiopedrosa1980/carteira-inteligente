@@ -271,6 +271,53 @@
   color: var(--text-secondary);
   margin-right: 2px;
 }
+
+/* Mobile: combo de campo + botão de direção, em uma linha, sem rolagem. */
+.sort-mobile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.sort-select {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  &:focus {
+    border-color: var(--accent);
+  }
+}
+.sort-dir {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--accent);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  &:hover:not(:disabled) {
+    border-color: var(--accent);
+  }
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    color: var(--text-secondary);
+  }
+}
 .sort-controls button {
   padding: 5px 12px;
   border-radius: 20px;

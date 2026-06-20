@@ -109,19 +109,43 @@
           <div>
             <h2 class="page-title">Minhas Ações</h2>
           </div>
-          <app-scroll-bar class="sort-controls" [activeKey]="sortField()">
-            <span class="sort-label">Ordenar por</span>
-            <button
-              *ngFor="let opt of sortOptions"
-              [class.active]="sortField() === opt.field"
-              (click)="setSort(opt.field)"
-            >
-              {{ opt.label }}
-              <span class="sort-arrow" *ngIf="sortField() === opt.field">
+          @if (isMobile()) {
+            <div class="sort-mobile">
+              <span class="sort-label">Ordenar por</span>
+              <select
+                class="sort-select"
+                [value]="sortField()"
+                (change)="setSort($any($event.target).value)"
+              >
+                <option value="default">Padrão</option>
+                <option *ngFor="let opt of sortOptions" [value]="opt.field">{{ opt.label }}</option>
+              </select>
+              <button
+                type="button"
+                class="sort-dir"
+                (click)="toggleSortDir()"
+                [disabled]="sortField() === 'default'"
+                [title]="sortAsc() ? 'Ascendente' : 'Descendente'"
+                [attr.aria-label]="sortAsc() ? 'Ordem ascendente' : 'Ordem descendente'"
+              >
                 {{ sortAsc() ? '↑' : '↓' }}
-              </span>
-            </button>
-          </app-scroll-bar>
+              </button>
+            </div>
+          } @else {
+            <app-scroll-bar class="sort-controls" [activeKey]="sortField()">
+              <span class="sort-label">Ordenar por</span>
+              <button
+                *ngFor="let opt of sortOptions"
+                [class.active]="sortField() === opt.field"
+                (click)="setSort(opt.field)"
+              >
+                {{ opt.label }}
+                <span class="sort-arrow" *ngIf="sortField() === opt.field">
+                  {{ sortAsc() ? '↑' : '↓' }}
+                </span>
+              </button>
+            </app-scroll-bar>
+          }
         </div>
 
         <div class="stocks-grid" *ngIf="acoesLoading()" aria-hidden="true">

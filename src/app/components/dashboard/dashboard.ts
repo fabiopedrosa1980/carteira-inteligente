@@ -13,6 +13,7 @@ import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
 import { DividendsComponent } from '../dividends/dividends';
 import { ScrollBarComponent } from '../scroll-bar/scroll-bar';
+import { ResponsiveService } from '../../services/responsive.service';
 import { Stock } from '../../models/stock.model';
 
 type SortField = 'name' | 'price' | 'change' | 'dy' | 'nota' | 'default';
@@ -41,6 +42,10 @@ export class DashboardComponent {
   private readonly router = inject(Router);
   private readonly transactionSvc = inject(TransactionService);
   private readonly metasSvc = inject(MetasService);
+  private readonly responsive = inject(ResponsiveService);
+
+  // Mobile → combo de ordenação; desktop → chips.
+  readonly isMobile = this.responsive.isMobile;
 
   // Usuário autenticado para identificação no header.
   readonly user = this.auth.user;
@@ -117,6 +122,11 @@ export class DashboardComponent {
       // Métricas onde "maior é melhor" iniciam em ordem decrescente
       this.sortAsc.set(!['change', 'dy', 'nota'].includes(field));
     }
+  }
+
+  // Botão de direção do combo (mobile): só inverte a direção, sem trocar o campo.
+  toggleSortDir() {
+    this.sortAsc.update((v) => !v);
   }
 
   sortedStocks = computed(() => {

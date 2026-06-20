@@ -103,7 +103,8 @@ export class DashboardComponent {
     localStorage.setItem(THEME_KEY, this.isDark() ? 'dark' : 'light');
   }
 
-  sortField = signal<SortField>('default');
+  // Inicia ordenado por Nome (sem opção "Padrão" na UI).
+  sortField = signal<SortField>('name');
   sortAsc = signal(true);
 
   sortOptions: { label: string; field: SortField }[] = [

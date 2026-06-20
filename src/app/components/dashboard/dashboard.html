@@ -117,7 +117,6 @@
                 [value]="sortField()"
                 (change)="setSort($any($event.target).value)"
               >
-                <option value="default">Padrão</option>
                 <option *ngFor="let opt of sortOptions" [value]="opt.field">{{ opt.label }}</option>
               </select>
               <button
@@ -132,19 +131,21 @@
               </button>
             </div>
           } @else {
-            <app-scroll-bar class="sort-controls" [activeKey]="sortField()">
+            <div class="sort-controls">
               <span class="sort-label">Ordenar por</span>
-              <button
-                *ngFor="let opt of sortOptions"
-                [class.active]="sortField() === opt.field"
-                (click)="setSort(opt.field)"
-              >
-                {{ opt.label }}
-                <span class="sort-arrow" *ngIf="sortField() === opt.field">
-                  {{ sortAsc() ? '↑' : '↓' }}
-                </span>
-              </button>
-            </app-scroll-bar>
+              <app-scroll-bar class="sort-scroll" [activeKey]="sortField()">
+                <button
+                  *ngFor="let opt of sortOptions"
+                  [class.active]="sortField() === opt.field"
+                  (click)="setSort(opt.field)"
+                >
+                  {{ opt.label }}
+                  <span class="sort-arrow" *ngIf="sortField() === opt.field">
+                    {{ sortAsc() ? '↑' : '↓' }}
+                  </span>
+                </button>
+              </app-scroll-bar>
+            </div>
           }
         </div>
 

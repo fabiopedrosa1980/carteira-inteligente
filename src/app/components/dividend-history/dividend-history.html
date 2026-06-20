@@ -123,9 +123,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let d of pageItems()">
-            <td>
-              <span class="badge" [ngClass]="typeClass(d.type)">{{ typeLabel(d.type) }}</span>
-            </td>
+            <td>{{ typeLabel(d.type) }}</td>
             <td>{{ d.ex_date ? (d.ex_date | date: 'dd/MM/yyyy') : '—' }}</td>
             <td>{{ d.pay_date ? (d.pay_date | date: 'dd/MM/yyyy') : '—' }}</td>
             <td>{{ d.amount | currency: 'BRL' : 'symbol' : '1.2-2' }}</td>

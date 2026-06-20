@@ -119,8 +119,4 @@ export class DividendHistoryComponent implements OnChanges {
     if (!type) return 'Dividendo';
     return type.toLowerCase() === 'jcp' ? 'JCP' : 'Dividendo';
   }
-
-  typeClass(type: string): string {
-    return (type ?? '').toLowerCase() === 'jcp' ? 'badge-jcp' : 'badge-dividendo';
-  }
 }

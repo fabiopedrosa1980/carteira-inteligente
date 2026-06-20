@@ -17,6 +17,12 @@
 - [x] 3.4 Em `dividends-radar.html`, atualizar a legenda "Próximo mês — oportunidade de compra" para refletir o **mês atual**.
 - [x] 3.5 Validar: tag inline com tickers; destaque de oportunidade no mês atual; legenda coerente.
 
+## 3b. Radar — sem destaques para FIIs
+
+- [ ] 3b.1 Em `dividends-radar.ts`, fazer `isTopMonth`/`isNextMonth` retornarem `false` quando `assetType === 'FIIs'` (ou condicionar a origem do destaque ao tipo Ações).
+- [ ] 3b.2 Em `dividends-radar.html`, ocultar os itens da legenda ("Mês com mais ativos" e "Próximo mês — oportunidade de compra") quando `assetType === 'FIIs'`.
+- [ ] 3b.3 Validar: com FIIs, nenhum card/coluna recebe "Melhor mês" ou "Oportunidade" e a legenda some; com Ações, os destaques permanecem.
+
 ## 4. Detalhe da ação — descrição de todos os indicadores
 
 - [x] 4.1 Em `stock-details-modal.ts`, ampliar o mapa `DESCRIPTIONS` (chaves normalizadas) cobrindo o conjunto comum do Investidor10 (P/EBIT, P/Ativo, PSR, EV/EBIT, ROA, margens, variações de dívida, Patrimônio/Ativos, Passivos/Ativos, Giro de Ativos, CAGR receitas/lucros, etc.).

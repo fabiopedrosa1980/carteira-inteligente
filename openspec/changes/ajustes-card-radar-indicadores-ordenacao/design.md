@@ -25,6 +25,8 @@ Sete ajustes de UI em componentes standalone, sem mudança de serviços/modelos:
 
 - **Radar: oportunidade no próximo mês**: `nextMonth = ((getMonth()+1)%12)+1` (mês seguinte ao atual; Dez→Jan), com legenda "Próximo mês — oportunidade de compra". Mantém o método `isNextMonth` e a classe CSS `.next`.
 
+- **Radar: sem destaques para FIIs**: o componente já recebe `@Input() assetType: 'Acoes' | 'FIIs'`. Decisão: `isTopMonth`/`isNextMonth` retornam `false` quando `assetType === 'FIIs'`, suprimindo classes `.top`/`.next`, tags e cores em cards e matriz de uma só vez; a legenda desses destaques é ocultada via `*ngIf` no template. Alternativa: esconder só as tags via CSS — descartada por deixar bordas/cores e legenda inconsistentes.
+
 - **Descrições de indicadores**: ampliar o mapa `DESCRIPTIONS` (chaves normalizadas) cobrindo o conjunto comum do Investidor10 (P/EBIT, P/Ativo, PSR, EV/EBIT, ROA, margens, variações de dívida, Patrimônio/Ativos, Passivos/Ativos, Giro de Ativos, CAGR receitas/lucros, etc.). O ícone "i" continua condicionado a `describe()`; com o mapa ampliado, todos os indicadores comuns passam a ter descrição. Alternativa: fallback genérico para rótulos desconhecidos — descartada para não exibir texto vago.
 
 - **Histórico: Ativo + Ano na mesma linha**: envolver `.dh-selector` e o filtro de ano em um container flex (`.dh-controls`) com `align-items: center`, `gap`, `flex-wrap: wrap`. Mantém chips no desktop e combo no mobile; em telas estreitas o conjunto quebra sem rolagem.

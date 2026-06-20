@@ -8,6 +8,7 @@ Sete ajustes de UI corrigem alinhamentos, cortes de texto e melhoram a clareza: 
 - **Ordenação (web) — rótulo cortado**: tirar o rótulo "Ordenar por" de dentro da área com máscara de fade do `app-scroll-bar`, para não ser cortado.
 - **Radar — tag ao lado do mês**: exibir a tag de destaque ("Melhor mês"/"Oportunidade") na **mesma linha do nome do mês** (cabeçalho do card), com a contagem à direita.
 - **Radar — oportunidade no próximo mês**: destaque "Oportunidade" aplicado ao **próximo mês** (seguinte ao atual; Dez→Jan), com legenda correspondente.
+- **Radar — sem destaques para FIIs**: quando o tipo for **FIIs**, não exibir "Melhor mês" nem "Oportunidade" (cards, matriz e legenda).
 - **Detalhe da ação — descrições**: garantir o ícone "i" com descrição para **todos** os indicadores fundamentalistas (ampliar o mapa de descrições).
 - **Ordenação (mobile)**: iniciar com **"Nome"** selecionado e **remover a opção "Padrão"** do combo.
 - **Histórico — filtros na mesma linha**: posicionar o **filtro de ano na mesma linha do seletor de Ativo**.

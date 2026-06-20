@@ -169,16 +169,15 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     this.tickerInput$.next({ ticker: s.ticker.toUpperCase(), date: this.form.date });
   }
 
-  // Ao trocar a data (modo adição): rebusca o preço para a nova data. Em edição,
-  // preserva o preço registrado (não auto-preenche).
+  // Ao trocar a data: rebusca o preço para a nova data. Na adição, sempre.
+  // Na edição, só para data anterior a hoje (hoje/futuro preserva o registrado).
   onDateChange(value: string) {
     this.form.date = value;
     delete this.errors.date;
-    if (this.isEdit) return;
     const ticker = (this.form.ticker || '').trim();
-    if (ticker.length >= 3) {
-      this.tickerInput$.next({ ticker: ticker.toUpperCase(), date: this.form.date });
-    }
+    if (ticker.length < 3) return;
+    if (this.isEdit && value >= this.todayStr()) return;
+    this.tickerInput$.next({ ticker: ticker.toUpperCase(), date: this.form.date });
   }
 
   // Marca o preço como editado à mão para não ser sobrescrito pela cotação.

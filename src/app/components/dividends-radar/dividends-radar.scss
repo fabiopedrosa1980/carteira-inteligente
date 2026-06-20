@@ -205,6 +205,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 .rc-tickers {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 6px;
 }
 .ticker-chip {

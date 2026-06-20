@@ -70,6 +70,14 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   min-width: 0;
 }
 
+/* Nota alinhada à direita, na mesma linha do ticker, sem rótulo. */
+.card-nota {
+  margin-left: auto;
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 16px;
+}
+
 .ticker {
   font-family: $mono;
   font-size: 17px;

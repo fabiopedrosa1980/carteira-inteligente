@@ -139,9 +139,9 @@
 }
 
 .tab-nav {
-  // Host do <app-scroll-bar>: a rolagem/gap vivem na track interna.
-  display: block;
-  --scroll-gap: 2px;
+  // Desktop: abas horizontais no topo.
+  display: flex;
+  gap: 2px;
   padding: 0 32px;
   border-bottom: 1px solid var(--border);
   background: var(--header-bg);
@@ -182,20 +182,52 @@
     height: 17px;
     flex-shrink: 0;
   }
-  @media (max-width: 768px) {
+  @media (min-width: 601px) and (max-width: 768px) {
     padding: 0 16px;
   }
-  @media (max-width: 480px) {
-    // Uma linha rolável (via app-scroll-bar): botões em tamanho natural, sem quebrar.
-    padding: 0 8px;
+
+  // Mobile: barra fixa na parte inferior, com ícones (padrão de app nativo).
+  @media (max-width: 600px) {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    // Abaixo dos overlays de modal, acima do conteúdo.
+    z-index: 40;
+    gap: 0;
+    padding: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    border-bottom: none;
+    border-top: 1px solid var(--border);
+    background: color-mix(in srgb, var(--header-bg) 96%, transparent);
+    backdrop-filter: saturate(140%) blur(8px);
+
     button {
-      padding: 10px 10px;
-      font-size: 11.5px;
-      gap: 4px;
+      // Ícone acima do rótulo, 4 itens em colunas de largura igual.
+      flex: 1 1 0;
+      min-width: 0;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+      padding: 8px 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+      border-bottom: none;
+      margin-bottom: 0;
+      // Underline de aba não faz sentido na barra inferior.
+      &.active {
+        border-bottom-color: transparent;
+      }
+    }
+    .tab-label {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .tab-icon {
-      width: 15px;
-      height: 15px;
+      width: 20px;
+      height: 20px;
     }
   }
 }
@@ -205,8 +237,10 @@
   @media (max-width: 768px) {
     padding: 16px;
   }
-  @media (max-width: 480px) {
+  @media (max-width: 600px) {
     padding: 12px;
+    // Reserva espaço para a barra inferior fixa (altura ~56px + safe-area).
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
   }
 }
 

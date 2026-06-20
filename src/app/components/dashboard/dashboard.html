@@ -78,7 +78,7 @@
     </div>
   </header>
 
-  <app-scroll-bar class="tab-nav" [activeKey]="activeTab">
+  <nav class="tab-nav">
     <button
       *ngFor="let tab of tabs"
       [class.active]="activeTab === tab.id"
@@ -95,7 +95,7 @@
       </svg>
       <span class="tab-label">{{ tab.label }}</span>
     </button>
-  </app-scroll-bar>
+  </nav>
 
   <main class="content">
     <div *ngIf="activeTab === 'meus-ativos'">

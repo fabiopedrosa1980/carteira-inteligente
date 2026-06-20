@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { DividendHistoryComponent } from '../dividend-history/dividend-history';
 import { DividendsSummaryComponent } from '../dividends-summary/dividends-summary';
 import { DividendsRadarComponent } from '../dividends-radar/dividends-radar';
-import { ScrollBarComponent } from '../scroll-bar/scroll-bar';
 
 type DividendsTab = 'historico' | 'recebidos' | 'projetados' | 'radar';
 type AssetClass = 'Acoes' | 'FIIs';
@@ -16,7 +15,6 @@ type AssetClass = 'Acoes' | 'FIIs';
     DividendHistoryComponent,
     DividendsSummaryComponent,
     DividendsRadarComponent,
-    ScrollBarComponent,
   ],
   templateUrl: './dividends.html',
   styleUrls: ['./dividends.scss'],

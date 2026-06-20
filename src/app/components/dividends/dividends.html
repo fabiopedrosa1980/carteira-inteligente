@@ -4,7 +4,7 @@
   </div>
 </div>
 
-<app-scroll-bar class="dv-asset-toggle" role="tablist" [activeKey]="assetType()">
+<div class="dv-asset-toggle" role="tablist">
   <button
     *ngFor="let ac of assetClasses"
     class="dv-asset-btn"
@@ -13,9 +13,9 @@
   >
     {{ ac.label }}
   </button>
-</app-scroll-bar>
+</div>
 
-<app-scroll-bar class="dv-tabs" [activeKey]="activeTab()">
+<div class="dv-tabs">
   <button
     *ngFor="let tab of tabs"
     class="dv-tab"
@@ -33,7 +33,7 @@
     </svg>
     <span class="dv-tab-label">{{ tab.label }}</span>
   </button>
-</app-scroll-bar>
+</div>
 
 <app-dividend-history
   *ngIf="activeTab() === 'historico'"

@@ -1,9 +1,7 @@
 .dv-asset-toggle {
-  // Host do app-scroll-bar; a pílula continua "abraçando" o conteúdo (inline),
-  // mas rola caso não caiba.
-  display: inline-block;
-  max-width: 100%;
-  --scroll-gap: 3px;
+  // Pílula com 2 itens; cabe sem rolagem.
+  display: inline-flex;
+  gap: 3px;
   margin-top: 1rem;
   padding: 3px;
   background: var(--input-bg);
@@ -33,9 +31,9 @@
 }
 
 .dv-tabs {
-  // Host do app-scroll-bar: uma linha rolável (gap/scroll na track interna).
-  display: block;
-  --scroll-gap: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   margin-top: 1rem;
 }
 
@@ -73,14 +71,40 @@
   flex-shrink: 0;
 }
 
-@media (max-width: 480px) {
-  // Compacta os itens no mobile; a rolagem em si fica a cargo do app-scroll-bar.
+@media (max-width: 600px) {
+  // Submenus cabem sem rolar: itens em colunas de largura igual.
+  .dv-asset-toggle {
+    display: flex;
+    width: 100%;
+  }
+  .dv-asset-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.4rem 0.6rem;
+    text-align: center;
+  }
+
+  .dv-tabs {
+    flex-wrap: nowrap;
+  }
   .dv-tab {
-    padding: 0.35rem 0.6rem;
-    font-size: 0.78rem;
+    flex: 1 1 0;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    padding: 0.4rem 0.3rem;
+    font-size: 0.72rem;
+    text-align: center;
+  }
+  .dv-tab-label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .dv-tab-icon {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
   }
 }

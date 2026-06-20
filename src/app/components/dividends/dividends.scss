@@ -71,8 +71,22 @@
 }
 
 @media (max-width: 480px) {
+  // Uma linha no mobile: sem quebra, rola horizontalmente se não couber.
+  .dv-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
   .dv-tab {
-    padding: 0.4rem 0.7rem;
-    font-size: 0.8rem;
+    flex-shrink: 0;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.78rem;
+  }
+  .dv-tab-icon {
+    width: 14px;
+    height: 14px;
   }
 }

@@ -48,6 +48,15 @@
 
       <div class="accordion-body" [class.collapsed]="isCollapsed(sec.id)">
         <div class="accordion-inner">
+          <!-- Skeleton durante o carregamento da carteira -->
+          <div class="ma-skel" *ngIf="svc.loading()" aria-hidden="true">
+            <div class="ma-skel-row" *ngFor="let r of [1, 2, 3]">
+              <span class="skeleton skeleton-line" style="width: 28%"></span>
+              <span class="skeleton skeleton-line" style="width: 18%"></span>
+              <span class="skeleton skeleton-line" style="width: 22%"></span>
+            </div>
+          </div>
+
           <!-- Tabela agrupada por ticker -->
           <div
             class="transactions-table grouped fade-in"
@@ -196,7 +205,7 @@
           </div>
 
           <!-- Estado vazio: mensagem -->
-          <p class="empty-msg" *ngIf="sectionData()[sec.id].length === 0">
+          <p class="empty-msg" *ngIf="!svc.loading() && sectionData()[sec.id].length === 0">
             Nenhum lançamento cadastrado
           </p>
 

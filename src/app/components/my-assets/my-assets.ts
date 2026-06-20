@@ -16,6 +16,7 @@ interface GroupedRow {
 }
 
 const GROUPED_KEY = 'lancamentos-grouped';
+const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-my-assets',
@@ -153,6 +154,40 @@ export class MyAssetsComponent {
 
   totalFor(type: AssetType): number {
     return (this.sectionData()[type] ?? []).reduce((s, t) => s + t.quantity * t.price, 0);
+  }
+
+  // ---- Paginação por seção (10 itens/página) ----
+  private readonly pages = signal<Record<string, number>>({});
+
+  private rowsCount(sec: AssetType): number {
+    return this.grouped()
+      ? (this.groupedData()[sec] ?? []).length
+      : (this.sectionData()[sec] ?? []).length;
+  }
+  totalPages(sec: AssetType): number {
+    return Math.max(1, Math.ceil(this.rowsCount(sec) / PAGE_SIZE));
+  }
+  pageOf(sec: AssetType): number {
+    return Math.min(this.pages()[sec] ?? 0, this.totalPages(sec) - 1);
+  }
+  showPager(sec: AssetType): boolean {
+    return this.rowsCount(sec) > PAGE_SIZE;
+  }
+  pagedDetailed(sec: AssetType): Transaction[] {
+    const start = this.pageOf(sec) * PAGE_SIZE;
+    return (this.sectionData()[sec] ?? []).slice(start, start + PAGE_SIZE);
+  }
+  pagedGrouped(sec: AssetType): GroupedRow[] {
+    const start = this.pageOf(sec) * PAGE_SIZE;
+    return (this.groupedData()[sec] ?? []).slice(start, start + PAGE_SIZE);
+  }
+  prevPage(sec: AssetType): void {
+    const p = this.pageOf(sec);
+    if (p > 0) this.pages.update((m) => ({ ...m, [sec]: p - 1 }));
+  }
+  nextPage(sec: AssetType): void {
+    const p = this.pageOf(sec);
+    if (p < this.totalPages(sec) - 1) this.pages.update((m) => ({ ...m, [sec]: p + 1 }));
   }
 
   constructor(readonly svc: TransactionService) {}

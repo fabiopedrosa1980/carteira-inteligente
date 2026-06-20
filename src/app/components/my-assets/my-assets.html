@@ -60,7 +60,7 @@
               <span>Total</span>
               <span>Lanç.</span>
             </div>
-            <div class="table-row" *ngFor="let g of groupedData()[sec.id]">
+            <div class="table-row" *ngFor="let g of pagedGrouped(sec.id)">
               <span class="ticker-cell">
                 <span class="ticker-badge">{{ g.ticker }}</span>
               </span>
@@ -130,7 +130,7 @@
             </div>
             <div
               class="table-row clickable"
-              *ngFor="let t of sectionData()[sec.id]"
+              *ngFor="let t of pagedDetailed(sec.id)"
               (click)="edit(t)"
               title="Editar lançamento"
             >
@@ -178,6 +178,21 @@
                 </button>
               </span>
             </div>
+          </div>
+
+          <!-- Paginação (10 por página) -->
+          <div class="ma-pagination" *ngIf="showPager(sec.id)">
+            <button class="pag-btn" (click)="prevPage(sec.id)" [disabled]="pageOf(sec.id) === 0">
+              ‹ Anterior
+            </button>
+            <span class="pag-info">{{ pageOf(sec.id) + 1 }} / {{ totalPages(sec.id) }}</span>
+            <button
+              class="pag-btn"
+              (click)="nextPage(sec.id)"
+              [disabled]="pageOf(sec.id) === totalPages(sec.id) - 1"
+            >
+              Próxima ›
+            </button>
           </div>
 
           <!-- Estado vazio: mensagem -->

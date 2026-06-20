@@ -150,8 +150,11 @@
   letter-spacing: 0.5px;
 
   @media (max-width: 600px) {
-    grid-template-columns: repeat(4, 1fr) 56px;
+    // Mobile compacto: Ativo · Qtd · Total · ações (oculta Data e Preço).
+    grid-template-columns: repeat(3, 1fr) 56px;
     padding: 8px 12px;
+    font-size: 12px;
+    > span:nth-child(2),
     > span:nth-child(4) {
       display: none;
     }
@@ -177,9 +180,10 @@
   }
 
   @media (max-width: 600px) {
-    grid-template-columns: repeat(4, 1fr) 56px;
-    padding: 10px 12px;
-    font-size: 12px;
+    // Mobile compacto: 4 colunas (Ativo · Qtd · Total · ações), fonte maior.
+    grid-template-columns: repeat(3, 1fr) 56px;
+    padding: 12px;
+    font-size: 14px;
   }
 }
 .align-right {
@@ -218,6 +222,9 @@
 .date-cell {
   color: var(--text-secondary);
   font-size: 13px;
+  @media (max-width: 600px) {
+    display: none;
+  }
 }
 .qty-cell {
   font-weight: 600;
@@ -391,4 +398,43 @@
 .count-cell {
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
+}
+
+/* Paginação por seção (10 por página). */
+.ma-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  @media (max-width: 600px) {
+    padding: 12px;
+  }
+}
+.pag-btn {
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+.pag-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.pag-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.pag-info {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
 }

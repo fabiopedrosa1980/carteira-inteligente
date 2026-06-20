@@ -59,6 +59,11 @@ export class DashboardComponent {
     this.refreshActiveTab();
   }
 
+  // Clique na marca → volta à home (aba padrão), fechando o detalhe aberto.
+  goHome(): void {
+    this.setActiveTab('meus-ativos');
+  }
+
   private refreshActiveTab(): void {
     switch (this.activeTab) {
       case 'meus-ativos':

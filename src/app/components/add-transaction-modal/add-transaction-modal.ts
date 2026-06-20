@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -27,6 +28,12 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
   @Input() transaction: Transaction | null = null;
   @Input() defaultAssetType: AssetType | null = null;
   @Output() close = new EventEmitter<void>();
+
+  // Fecha o modal ao pressionar Esc.
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.close.emit();
+  }
 
   get isEdit(): boolean {
     return this.transaction !== null;

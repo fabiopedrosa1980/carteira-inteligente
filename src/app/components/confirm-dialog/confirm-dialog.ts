@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ConfirmService } from '../../services/confirm.service';
 
@@ -13,6 +13,12 @@ export class ConfirmDialogComponent {
   private readonly confirmService = inject(ConfirmService);
 
   readonly state = this.confirmService.state;
+
+  // Esc cancela o diálogo, apenas quando há um aberto.
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.state()) this.cancel();
+  }
 
   accept(): void {
     this.confirmService.accept();

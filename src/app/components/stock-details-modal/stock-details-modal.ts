@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stock } from '../../models/stock.model';
 
@@ -12,6 +12,12 @@ import { Stock } from '../../models/stock.model';
 export class StockDetailsModalComponent {
   @Input({ required: true }) stock!: Stock;
   @Output() close = new EventEmitter<void>();
+
+  // Fecha o detalhe ao pressionar Esc.
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.close.emit();
+  }
 
   // Descrição dos indicadores mais comuns (chave normalizada → texto do tooltip).
   private static readonly DESCRIPTIONS: Record<string, string> = {

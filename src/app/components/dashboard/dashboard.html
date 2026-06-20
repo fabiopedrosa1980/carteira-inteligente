@@ -1,7 +1,16 @@
 <div class="dashboard">
   <header class="dashboard-header">
     <div class="header-left">
-      <div class="logo">
+      <div
+        class="logo"
+        role="button"
+        tabindex="0"
+        title="Voltar para o início"
+        aria-label="Carteira Inteligente — voltar para o início"
+        (click)="goHome()"
+        (keydown.enter)="goHome()"
+        (keydown.space)="goHome(); $event.preventDefault()"
+      >
         <svg class="logo-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
           <rect x="3" y="18" width="6" height="11" rx="1.5" fill="currentColor" opacity="0.45" />
           <rect x="13" y="11" width="6" height="18" rx="1.5" fill="currentColor" opacity="0.7" />

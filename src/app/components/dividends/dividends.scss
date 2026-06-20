@@ -72,6 +72,19 @@
 
 @media (max-width: 480px) {
   // Uma linha no mobile: sem quebra, rola horizontalmente se não couber.
+  .dv-asset-toggle {
+    display: flex;
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .dv-asset-btn {
+    flex-shrink: 0;
+    padding: 0.4rem 0.9rem;
+  }
   .dv-tabs {
     flex-wrap: nowrap;
     overflow-x: auto;

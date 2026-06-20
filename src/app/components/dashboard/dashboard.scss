@@ -23,6 +23,22 @@
     padding: 10px 16px;
     gap: 8px;
   }
+  // Mobile: logo/título na 1ª linha, ações empurradas para a linha abaixo à direita.
+  @media (max-width: 600px) {
+    gap: 8px;
+    .header-left {
+      flex: 1 1 100%;
+    }
+    .header-actions {
+      flex: 1 1 100%;
+      justify-content: flex-end;
+    }
+  }
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  min-width: 0;
 }
 .logo {
   display: flex;
@@ -311,6 +327,10 @@
   @media (max-width: 640px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    // Permite que cada coluna encolha; o conteúdo do card nunca empurra a largura.
+    > * {
+      min-width: 0;
+    }
   }
 }
 

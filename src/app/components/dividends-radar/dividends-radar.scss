@@ -367,6 +367,37 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   background: var(--color-warning);
 }
 
+/* Tema light: --color-warning vira marrom-escuro; força amarelo no destaque
+   de "Oportunidade" (próximo mês) para ficar visivelmente amarelo. */
+body.light-theme {
+  $light-warn: #caa204; // amarelo dourado para barra/borda/ícone/ponto
+  $light-warn-text: #8a6d00; // amarelo escuro para texto (contraste no claro)
+
+  .ic-warn {
+    color: $light-warn-text;
+  }
+  .radar-card.next {
+    border-color: color-mix(in srgb, #{$light-warn} 55%, var(--border));
+    .rc-bar {
+      background: $light-warn;
+    }
+  }
+  .rc-tag-next {
+    color: $light-warn-text;
+    background: color-mix(in srgb, #{$light-warn} 18%, transparent);
+  }
+  .rm-month.next,
+  .rm-cell.next {
+    background: color-mix(in srgb, #{$light-warn} 16%, transparent);
+  }
+  .rm-month.next {
+    color: $light-warn-text;
+  }
+  .rm-cell.on.next .rm-dot {
+    background: $light-warn;
+  }
+}
+
 /* Mobile: meses como inicial única e colunas mais estreitas. */
 @media (max-width: 480px) {
   .radar-matrix {

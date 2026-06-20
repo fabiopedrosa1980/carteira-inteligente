@@ -228,7 +228,9 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   }
 
   .card-top {
-    flex-wrap: wrap;
+    // nowrap garante que a Nota fique na mesma linha do ticker (não quebra
+    // para baixo); o nome da empresa cede espaço via ellipsis (min-width: 0).
+    flex-wrap: nowrap;
     gap: 8px;
     margin-bottom: 12px;
   }

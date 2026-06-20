@@ -13,22 +13,26 @@ export class StockDetailsModalComponent {
   @Input({ required: true }) stock!: Stock;
   @Output() close = new EventEmitter<void>();
 
-  // Indicadores mais usados pelo mercado para análise de ativos — destacados na tela.
-  private static readonly KEY_INDICATORS = new Set([
-    'pl',
-    'pvp',
-    'dy',
-    'dividendyield',
-    'roe',
-    'roic',
-    'margemliquida',
-    'dividaliquida/ebitda',
-    'dividaliquidaebitda',
-    'ev/ebitda',
-    'evebitda',
-    'lpa',
-    'vpa',
-  ]);
+  // Descrição dos indicadores mais comuns (chave normalizada → texto do tooltip).
+  private static readonly DESCRIPTIONS: Record<string, string> = {
+    pl: 'Preço/Lucro — quantos anos de lucro atual para reaver o preço pago pela ação.',
+    pvp: 'Preço/Valor Patrimonial — relação entre o preço e o valor contábil por ação.',
+    dy: 'Dividend Yield — proventos dos últimos 12 meses sobre o preço atual.',
+    dividendyield: 'Dividend Yield — proventos dos últimos 12 meses sobre o preço atual.',
+    roe: 'ROE — retorno sobre o patrimônio líquido (lucro ÷ patrimônio).',
+    roic: 'ROIC — retorno sobre o capital investido na operação.',
+    margemliquida: 'Margem líquida — lucro líquido como percentual da receita.',
+    margembruta: 'Margem bruta — lucro bruto como percentual da receita.',
+    margemebit: 'Margem EBIT — resultado operacional como percentual da receita.',
+    'dividaliquida/ebitda': 'Dívida líquida/EBITDA — endividamento sobre a geração de caixa.',
+    dividaliquidaebitda: 'Dívida líquida/EBITDA — endividamento sobre a geração de caixa.',
+    'ev/ebitda': 'EV/EBITDA — valor da firma sobre a geração de caixa operacional.',
+    evebitda: 'EV/EBITDA — valor da firma sobre a geração de caixa operacional.',
+    lpa: 'LPA — lucro por ação.',
+    vpa: 'VPA — valor patrimonial por ação.',
+    payout: 'Payout — percentual do lucro distribuído como proventos.',
+    liquidezcorrente: 'Liquidez corrente — capacidade de pagar obrigações de curto prazo.',
+  };
 
   get hasIndicators(): boolean {
     return !!this.stock.indicators && this.stock.indicators.length > 0;
@@ -43,8 +47,9 @@ export class StockDetailsModalComponent {
       .replace(/[\s.]/g, '');
   }
 
-  isKeyIndicator(label: string): boolean {
-    return StockDetailsModalComponent.KEY_INDICATORS.has(this.normLabel(label));
+  // Descrição do indicador (tooltip), ou vazio quando não há descrição conhecida.
+  describe(label: string): string {
+    return StockDetailsModalComponent.DESCRIPTIONS[this.normLabel(label)] ?? '';
   }
 
   get hasCompanyInfo(): boolean {

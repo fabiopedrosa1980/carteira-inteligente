@@ -4,26 +4,80 @@
     Tickers da carteira com data-com em cada mês no ano anterior — útil para antecipar a próxima.
   </p>
 
-  <!-- Alternador de visualização -->
-  <div class="radar-view-toggle" role="group" aria-label="Visualização do radar">
-    <button
-      type="button"
-      class="rv-btn"
-      [class.active]="isView('cards')"
-      [attr.aria-pressed]="isView('cards')"
-      (click)="setView('cards')"
-    >
-      Cards
-    </button>
-    <button
-      type="button"
-      class="rv-btn"
-      [class.active]="isView('matrix')"
-      [attr.aria-pressed]="isView('matrix')"
-      (click)="setView('matrix')"
-    >
-      Matriz
-    </button>
+  <!-- Alternador de visualização (ícones) -->
+  <div class="radar-toolbar">
+    <div class="radar-view-toggle" role="group" aria-label="Visualização do radar">
+      <button
+        type="button"
+        class="rv-btn"
+        [class.active]="isView('cards')"
+        [attr.aria-pressed]="isView('cards')"
+        (click)="setView('cards')"
+        title="Ver em cards"
+        aria-label="Ver em cards"
+      >
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="2" />
+          <rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="2" />
+          <rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="2" />
+          <rect
+            x="13"
+            y="13"
+            width="8"
+            height="8"
+            rx="1.5"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="rv-btn"
+        [class.active]="isView('matrix')"
+        [attr.aria-pressed]="isView('matrix')"
+        (click)="setView('matrix')"
+        title="Ver em matriz"
+        aria-label="Ver em matriz"
+      >
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2" />
+          <path d="M3 9h18M3 14h18M9 4v16" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Legenda dos destaques -->
+    <div class="radar-legend">
+      <span class="rl-item">
+        <svg class="ic-star" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 21.4l1.4-6.8L2.2 9l6.9-.7Z"
+            fill="currentColor"
+          />
+        </svg>
+        Mês com mais ativos
+      </span>
+      <span class="rl-item">
+        <svg
+          class="ic-warn"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path
+            d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
+          />
+          <path d="M12 9v4" />
+          <path d="M12 17h.01" />
+        </svg>
+        Próximo mês — oportunidade de compra
+      </span>
+    </div>
   </div>
 
   <!-- Skeleton enquanto carrega -->
@@ -53,11 +107,50 @@
     <ng-container *ngIf="rows().length > 0">
       <!-- Visualização em cards (Jan→Dez) -->
       <div class="radar-grid fade-in" *ngIf="isView('cards')">
-        <div class="radar-card" *ngFor="let m of monthCards()">
+        <div
+          class="radar-card"
+          *ngFor="let m of monthCards()"
+          [class.top]="isTopMonth(m.month)"
+          [class.next]="isNextMonth(m.month)"
+        >
+          <span class="rc-bar"></span>
           <div class="rc-head">
-            <span class="rc-month">{{ m.label }}</span>
+            <span class="rc-month">
+              <svg
+                class="ic-star"
+                *ngIf="isTopMonth(m.month)"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 21.4l1.4-6.8L2.2 9l6.9-.7Z"
+                  fill="currentColor"
+                />
+              </svg>
+              {{ m.label }}
+            </span>
             <span class="rc-count" *ngIf="m.tickers.length > 0">{{ m.tickers.length }}</span>
           </div>
+          <span class="rc-tag rc-tag-top" *ngIf="isTopMonth(m.month)">Melhor mês</span>
+          <span class="rc-tag rc-tag-next" *ngIf="isNextMonth(m.month)">
+            <svg
+              class="ic-warn"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path
+                d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
+              />
+              <path d="M12 9v4" />
+              <path d="M12 17h.01" />
+            </svg>
+            Oportunidade de compra
+          </span>
           <div class="rc-tickers" *ngIf="m.tickers.length > 0">
             <span class="ticker-chip" *ngFor="let t of m.tickers">{{ t }}</span>
           </div>
@@ -75,8 +168,39 @@
               class="rm-month"
               role="columnheader"
               *ngFor="let label of monthLabels; let i = index"
-              [title]="label"
+              [class.top]="isTopMonth(i + 1)"
+              [class.next]="isNextMonth(i + 1)"
+              [title]="
+                isTopMonth(i + 1)
+                  ? label + ' · Mês com mais ativos'
+                  : isNextMonth(i + 1)
+                    ? label + ' · Oportunidade de compra'
+                    : label
+              "
             >
+              <svg class="ic-star" *ngIf="isTopMonth(i + 1)" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 2l2.9 6.3 6.9.7-5.1 4.6 1.4 6.8L12 17.8 5.9 21.4l1.4-6.8L2.2 9l6.9-.7Z"
+                  fill="currentColor"
+                />
+              </svg>
+              <svg
+                class="ic-warn"
+                *ngIf="isNextMonth(i + 1)"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
+                />
+                <path d="M12 9v4" />
+                <path d="M12 17h.01" />
+              </svg>
               <span class="rm-m-full">{{ label }}</span>
               <span class="rm-m-ini">{{ monthInitials[i] }}</span>
             </span>
@@ -90,6 +214,8 @@
               role="cell"
               *ngFor="let on of row.marks; let i = index"
               [class.on]="on"
+              [class.top]="isTopMonth(i + 1)"
+              [class.next]="isNextMonth(i + 1)"
               [title]="row.ticker + ' · ' + monthLabels[i]"
             >
               <span class="rm-dot" *ngIf="on"></span>

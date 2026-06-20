@@ -75,6 +75,29 @@ export class DividendsRadarComponent implements OnChanges {
     })),
   );
 
+  // Mês seguinte ao atual (oportunidade mais próxima); Dez→Jan.
+  readonly nextMonth = ((new Date().getMonth() + 1) % 12) + 1;
+
+  // Mês (1–12) com mais ativos marcados; empate no primeiro; 0 se nenhum.
+  readonly topMonth = computed(() => {
+    let top = 0;
+    let max = 0;
+    for (const c of this.monthCards()) {
+      if (c.tickers.length > max) {
+        max = c.tickers.length;
+        top = c.month;
+      }
+    }
+    return top;
+  });
+
+  isTopMonth(month: number): boolean {
+    return month === this.topMonth();
+  }
+  isNextMonth(month: number): boolean {
+    return month === this.nextMonth;
+  }
+
   ngOnChanges(): void {
     this.load();
   }

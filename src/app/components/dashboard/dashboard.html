@@ -78,7 +78,7 @@
     </div>
   </header>
 
-  <nav class="tab-nav">
+  <app-scroll-bar class="tab-nav" [activeKey]="activeTab">
     <button
       *ngFor="let tab of tabs"
       [class.active]="activeTab === tab.id"
@@ -95,7 +95,7 @@
       </svg>
       <span class="tab-label">{{ tab.label }}</span>
     </button>
-  </nav>
+  </app-scroll-bar>
 
   <main class="content">
     <div *ngIf="activeTab === 'meus-ativos'">
@@ -109,7 +109,7 @@
           <div>
             <h2 class="page-title">Minhas Ações</h2>
           </div>
-          <div class="sort-controls">
+          <app-scroll-bar class="sort-controls" [activeKey]="sortField()">
             <span class="sort-label">Ordenar por</span>
             <button
               *ngFor="let opt of sortOptions"
@@ -121,7 +121,7 @@
                 {{ sortAsc() ? '↑' : '↓' }}
               </span>
             </button>
-          </div>
+          </app-scroll-bar>
         </div>
 
         <div class="stocks-grid" *ngIf="acoesLoading()" aria-hidden="true">

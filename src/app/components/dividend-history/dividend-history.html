@@ -47,26 +47,40 @@
       <select class="dh-select" (change)="selectStock(+$any($event.target).value)">
         <option *ngFor="let p of visiblePositions()" [value]="p.stock_id">{{ p.ticker }}</option>
       </select>
+
+      <!-- Mobile: filtro de ano como combo, na mesma linha que Ativo -->
+      @if (isMobile()) {
+        <select
+          class="dh-select dh-year-select"
+          [value]="selectedYear() === null ? 'all' : selectedYear()"
+          (change)="selectYearFromCombo($any($event.target).value)"
+        >
+          <option *ngFor="let y of availableYears()" [value]="y">{{ y }}</option>
+          <option value="all">Todos</option>
+        </select>
+      }
     </div>
 
-    <!-- Filtro de ano por chips -->
-    <div class="dh-years" *ngIf="visiblePositions().length > 0">
-      <button
-        class="dh-year-chip"
-        *ngFor="let y of availableYears()"
-        [class.active]="selectedYear() === y"
-        (click)="selectYear(y)"
-      >
-        {{ y }}
-      </button>
-      <button
-        class="dh-year-chip"
-        [class.active]="selectedYear() === null"
-        (click)="selectYear(null)"
-      >
-        Todos
-      </button>
-    </div>
+    <!-- Desktop: filtro de ano por chips (em barra rolável) -->
+    @if (!isMobile() && visiblePositions().length > 0) {
+      <app-scroll-bar class="dh-years" [activeKey]="selectedYear()">
+        <button
+          class="dh-year-chip"
+          *ngFor="let y of availableYears()"
+          [class.active]="selectedYear() === y"
+          (click)="selectYear(y)"
+        >
+          {{ y }}
+        </button>
+        <button
+          class="dh-year-chip"
+          [class.active]="selectedYear() === null"
+          (click)="selectYear(null)"
+        >
+          Todos
+        </button>
+      </app-scroll-bar>
+    }
 
     <!-- Carregando dividendos: skeleton da tabela -->
     <div class="dh-skel-table" *ngIf="loading()" aria-hidden="true">

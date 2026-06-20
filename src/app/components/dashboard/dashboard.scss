@@ -139,16 +139,12 @@
 }
 
 .tab-nav {
-  display: flex;
-  gap: 2px;
+  // Host do <app-scroll-bar>: a rolagem/gap vivem na track interna.
+  display: block;
+  --scroll-gap: 2px;
   padding: 0 32px;
   border-bottom: 1px solid var(--border);
   background: var(--header-bg);
-  overflow-x: auto;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
   button {
     display: inline-flex;
     align-items: center;
@@ -190,27 +186,16 @@
     padding: 0 16px;
   }
   @media (max-width: 480px) {
-    // Uma linha: encolhe os botões para caber; rola só se realmente não couber.
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding: 0 6px;
-    gap: 2px;
+    // Uma linha rolável (via app-scroll-bar): botões em tamanho natural, sem quebrar.
+    padding: 0 8px;
     button {
-      flex: 1 1 0;
-      min-width: 0;
-      justify-content: center;
-      padding: 10px 4px;
+      padding: 10px 10px;
       font-size: 11.5px;
       gap: 4px;
     }
     .tab-icon {
       width: 15px;
       height: 15px;
-    }
-    .tab-label {
-      // Em telas muito estreitas, prioriza o ícone; rótulo pode ocultar se faltar espaço.
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
   }
 }
@@ -239,10 +224,13 @@
   }
 }
 .sort-controls {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
+  // Host do <app-scroll-bar>: rola horizontalmente no mobile sem quebrar linha.
+  display: block;
+  --scroll-gap: 6px;
+  // Preenche a largura quando o section-header vira coluna no mobile,
+  // garantindo que a rolagem aconteça dentro da barra.
+  width: 100%;
+  align-self: stretch;
 }
 .sort-label {
   font-size: 12px;

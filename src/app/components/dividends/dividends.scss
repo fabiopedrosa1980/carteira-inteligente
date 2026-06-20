@@ -1,8 +1,11 @@
 .dv-asset-toggle {
-  display: inline-flex;
+  // Host do app-scroll-bar; a pílula continua "abraçando" o conteúdo (inline),
+  // mas rola caso não caiba.
+  display: inline-block;
+  max-width: 100%;
+  --scroll-gap: 3px;
   margin-top: 1rem;
   padding: 3px;
-  gap: 3px;
   background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -30,9 +33,9 @@
 }
 
 .dv-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  // Host do app-scroll-bar: uma linha rolável (gap/scroll na track interna).
+  display: block;
+  --scroll-gap: 0.5rem;
   margin-top: 1rem;
 }
 
@@ -71,17 +74,8 @@
 }
 
 @media (max-width: 480px) {
-  // Uma linha no mobile: sem quebra, rola horizontalmente se não couber.
-  .dv-tabs {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
+  // Compacta os itens no mobile; a rolagem em si fica a cargo do app-scroll-bar.
   .dv-tab {
-    flex-shrink: 0;
     padding: 0.35rem 0.6rem;
     font-size: 0.78rem;
   }

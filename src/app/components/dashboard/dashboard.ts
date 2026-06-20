@@ -12,6 +12,7 @@ import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
 import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
 import { DividendsComponent } from '../dividends/dividends';
+import { ScrollBarComponent } from '../scroll-bar/scroll-bar';
 import { Stock } from '../../models/stock.model';
 
 type SortField = 'name' | 'price' | 'change' | 'dy' | 'nota' | 'default';
@@ -29,6 +30,7 @@ const THEME_KEY = 'ci-theme';
     MyAssetsComponent,
     GoalsComponent,
     DividendsComponent,
+    ScrollBarComponent,
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],

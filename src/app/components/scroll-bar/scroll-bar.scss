@@ -1,0 +1,73 @@
+:host {
+  display: block;
+  min-width: 0;
+  // Limita a barra à largura do container; a rolagem fica aqui, nunca na página.
+  max-width: 100%;
+}
+
+.scroll-track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  // Espaçamento configurável por consumidor (cascateia via --scroll-gap no host).
+  gap: var(--scroll-gap, 8px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  // Encaixa "perto" de um item ao parar de rolar, sem prender o gesto.
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+
+  // Scrollbar oculta (Firefox + WebKit).
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// Os itens projetados pertencem ao escopo do componente pai; usamos
+// :host ::ng-deep (limitado a esta instância) para que não encolham e
+// encaixem no snap pela borda inicial.
+:host ::ng-deep .scroll-track > * {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+/*
+ * Fade de borda via máscara: "come" a opacidade do próprio conteúdo, então
+ * funciona em qualquer fundo e nos dois temas (sem depender da cor de fundo).
+ * Quando suportado, animation-timeline: scroll() torna o fade condicional à
+ * posição da rolagem (some quando chega ao início/fim). Browsers sem suporte
+ * degradam para fade fixo nas bordas — aceitável.
+ */
+.scroll-track {
+  --fade: 18px;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--fade),
+    #000 calc(100% - var(--fade)),
+    transparent 100%
+  );
+}
+
+@supports (animation-timeline: scroll(self inline)) {
+  .scroll-track {
+    // Esconde o fade do lado já totalmente revelado (início/fim do scroll).
+    animation: scroll-fade linear both;
+    animation-timeline: scroll(self inline);
+  }
+
+  @keyframes scroll-fade {
+    0% {
+      mask-image: linear-gradient(
+        to right,
+        #000 0,
+        #000 calc(100% - var(--fade)),
+        transparent 100%
+      );
+    }
+    100% {
+      mask-image: linear-gradient(to right, transparent 0, #000 var(--fade), #000 100%);
+    }
+  }
+}

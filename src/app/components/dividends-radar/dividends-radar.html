@@ -49,8 +49,8 @@
       </button>
     </div>
 
-    <!-- Legenda dos destaques -->
-    <div class="radar-legend">
+    <!-- Legenda dos destaques (oculta para FIIs) -->
+    <div class="radar-legend" *ngIf="showHighlights">
       <span class="rl-item">
         <svg class="ic-star" viewBox="0 0 24 24" aria-hidden="true">
           <path

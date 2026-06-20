@@ -19,9 +19,9 @@
 
 ## 3b. Radar — sem destaques para FIIs
 
-- [ ] 3b.1 Em `dividends-radar.ts`, fazer `isTopMonth`/`isNextMonth` retornarem `false` quando `assetType === 'FIIs'` (ou condicionar a origem do destaque ao tipo Ações).
-- [ ] 3b.2 Em `dividends-radar.html`, ocultar os itens da legenda ("Mês com mais ativos" e "Próximo mês — oportunidade de compra") quando `assetType === 'FIIs'`.
-- [ ] 3b.3 Validar: com FIIs, nenhum card/coluna recebe "Melhor mês" ou "Oportunidade" e a legenda some; com Ações, os destaques permanecem.
+- [x] 3b.1 Em `dividends-radar.ts`, fazer `isTopMonth`/`isNextMonth` retornarem `false` quando `assetType === 'FIIs'` (ou condicionar a origem do destaque ao tipo Ações).
+- [x] 3b.2 Em `dividends-radar.html`, ocultar os itens da legenda ("Mês com mais ativos" e "Próximo mês — oportunidade de compra") quando `assetType === 'FIIs'`.
+- [x] 3b.3 Validar: com FIIs, nenhum card/coluna recebe "Melhor mês" ou "Oportunidade" e a legenda some; com Ações, os destaques permanecem.
 
 ## 4. Detalhe da ação — descrição de todos os indicadores
 

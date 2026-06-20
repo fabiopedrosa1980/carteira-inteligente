@@ -98,11 +98,16 @@ export class DividendsRadarComponent implements OnChanges {
     return top;
   });
 
+  // FIIs costumam pagar mensalmente; "Melhor mês"/"Oportunidade" não informam.
+  get showHighlights(): boolean {
+    return this.assetType !== 'FIIs';
+  }
+
   isTopMonth(month: number): boolean {
-    return month === this.topMonth();
+    return this.showHighlights && month === this.topMonth();
   }
   isNextMonth(month: number): boolean {
-    return month === this.nextMonth;
+    return this.showHighlights && month === this.nextMonth;
   }
 
   ngOnChanges(): void {

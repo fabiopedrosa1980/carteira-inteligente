@@ -62,20 +62,24 @@ A barra rolável reutilizável `<app-scroll-bar>` SHALL ser usada pelos controle
 
 ### Requirement: Filtro de anos alterna chips/combo por estado responsivo
 
-No Histórico de dividendos, o filtro de anos SHALL ser renderizado condicionalmente conforme `ResponsiveService.isMobile()`: combo (`<select>`) no mobile e chips no desktop, com apenas a variante ativa presente no DOM (sem duplicação por `display:none`).
+No Histórico de dividendos, o filtro de anos SHALL ser exibido sempre como **chips** de ano (incluindo a opção "Todos"), em todos os tamanhos de tela, posicionados na linha abaixo do seletor de "Ativo". No mobile, os chips MUST quebrar de linha (`flex-wrap`) quando não couberem, sem rolagem horizontal e sem usar combo `<select>`.
 
-#### Scenario: Combo no mobile
+#### Scenario: Chips em todos os tamanhos
 
-- **WHEN** o Histórico é exibido com `isMobile()` verdadeiro e há posições visíveis
-- **THEN** o filtro de anos aparece como combo `<select>` (incluindo a opção "Todos")
-- **AND** os chips de ano não estão presentes no DOM
-- **AND** selecionar um ano no combo filtra a tabela igual aos chips
+- **WHEN** o Histórico é exibido com posições visíveis, em qualquer largura de viewport
+- **THEN** o filtro de anos aparece como chips (anos + "Todos"), abaixo do seletor de "Ativo"
+- **AND** nenhum combo `<select>` de anos é renderizado
 
-#### Scenario: Chips no desktop
+#### Scenario: Chips quebram de linha no mobile sem rolagem
 
-- **WHEN** o Histórico é exibido com `isMobile()` falso
-- **THEN** o filtro de anos aparece como chips
-- **AND** o combo de anos não está presente no DOM
+- **WHEN** o Histórico é exibido em largura estreita e os chips de ano não cabem em uma linha
+- **THEN** os chips quebram para a(s) linha(s) abaixo
+- **AND** não há rolagem horizontal dos chips nem da página
+
+#### Scenario: Selecionar um ano filtra a tabela
+
+- **WHEN** o usuário toca em um chip de ano (ou em "Todos")
+- **THEN** a tabela de dividendos é filtrada por aquele ano (ou mostra todos)
 
 ### Requirement: Navegação principal como barra inferior no mobile
 

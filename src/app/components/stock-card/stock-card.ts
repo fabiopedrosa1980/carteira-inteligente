@@ -25,7 +25,8 @@ export class StockCardComponent {
   }
 
   get notaClass(): string {
-    if (this.stock.nota >= 8) return 'nota-high';
+    // Faixas de cor da Nota: < 5 vermelho, 5 a 7 amarelo, > 7 verde.
+    if (this.stock.nota > 7) return 'nota-high';
     if (this.stock.nota >= 5) return 'nota-mid';
     return 'nota-low';
   }

@@ -146,7 +146,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  align-self: flex-start;
+  align-self: center;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
@@ -177,8 +177,8 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 .rc-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 6px 8px;
 }
 .rc-month {
   font-size: 11px;
@@ -188,6 +188,8 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   color: var(--text-secondary);
 }
 .rc-count {
+  // Empurra a contagem para a direita; mês e tag ficam juntos à esquerda.
+  margin-left: auto;
   font-family: $mono;
   font-size: 11px;
   font-weight: 700;

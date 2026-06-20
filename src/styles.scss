@@ -53,6 +53,10 @@ body {
   font-size: 15px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  // Rede de segurança: nenhum estouro de largura gera rolagem horizontal da página.
+  // `clip` (em vez de `hidden`) não cria contexto de rolagem nem quebra position: sticky.
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 ::-webkit-scrollbar {

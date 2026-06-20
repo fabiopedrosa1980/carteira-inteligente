@@ -139,7 +139,9 @@
 /* Table — colunas de tamanho igual (5 colunas de dados + ações) */
 .table-header {
   display: grid;
-  grid-template-columns: repeat(5, 1fr) 72px;
+  // minmax(0, 1fr): permite a coluna encolher abaixo do conteúdo, evitando
+  // que valores/nomes longos estourem a largura no mobile.
+  grid-template-columns: repeat(5, minmax(0, 1fr)) 72px;
   padding: 9px 20px;
   background: rgba(128, 128, 128, 0.05);
   border-bottom: 1px solid var(--border);
@@ -151,7 +153,7 @@
 
   @media (max-width: 600px) {
     // Mobile compacto: Ativo · Qtd · Total · ações (oculta Data e Preço).
-    grid-template-columns: repeat(3, 1fr) 56px;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 56px;
     padding: 8px 12px;
     font-size: 12px;
     > span:nth-child(2),
@@ -162,7 +164,7 @@
 }
 .table-row {
   display: grid;
-  grid-template-columns: repeat(5, 1fr) 72px;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) 72px;
   padding: 12px 20px;
   border-bottom: 1px solid var(--border);
   font-size: 13px;
@@ -181,10 +183,20 @@
 
   @media (max-width: 600px) {
     // Mobile compacto: 4 colunas (Ativo · Qtd · Total · ações), fonte maior.
-    grid-template-columns: repeat(3, 1fr) 56px;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 56px;
     padding: 12px;
     font-size: 14px;
   }
+}
+
+// Células da grade podem encolher; números/textos longos são truncados
+// em vez de empurrar a largura da linha.
+.table-header > span,
+.table-row > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .align-right {
   text-align: right;
@@ -317,7 +329,7 @@
 .transactions-table.grouped {
   .table-header,
   .table-row {
-    grid-template-columns: 1.4fr repeat(3, 1fr) 0.7fr;
+    grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr)) minmax(0, 0.7fr);
   }
 
   /* Mobile: cards empilhados (rótulo: valor), fonte maior, legível no claro/escuro. */

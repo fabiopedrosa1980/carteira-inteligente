@@ -65,6 +65,8 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
   quoteNotFound = signal(false);
   // Data de referência da cotação preenchida (YYYY-MM-DD), quando for passada.
   quoteAsOf = signal('');
+  // Limite máximo do seletor de data: hoje (sem datas futuras).
+  readonly maxDate = this.todayStr();
 
   form = {
     assetType: '' as AssetType | '',
@@ -202,6 +204,7 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     if (!this.form.assetType) this.errors.assetType = 'Selecione o tipo de ativo';
     if (!this.form.ticker.trim()) this.errors.ticker = 'Ativo obrigatório';
     if (!this.form.date) this.errors.date = 'Data obrigatória';
+    else if (this.form.date > this.maxDate) this.errors.date = 'A data não pode ser futura';
     if (!this.form.quantity || this.form.quantity <= 0)
       this.errors.quantity = 'Quantidade inválida';
     if (!this.form.price || this.form.price <= 0) this.errors.price = 'Preço inválido';

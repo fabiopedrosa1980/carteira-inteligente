@@ -75,6 +75,7 @@
           type="date"
           class="form-input date-input"
           [class.error]="errors.date"
+          [max]="maxDate"
           [ngModel]="form.date"
           (ngModelChange)="onDateChange($event)"
         />

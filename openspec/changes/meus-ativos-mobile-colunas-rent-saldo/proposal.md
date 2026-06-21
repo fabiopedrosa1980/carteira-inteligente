@@ -4,8 +4,8 @@ Na listagem de "Meus Ativos" no mobile, o conjunto de colunas atual (Ativo, Qtde
 
 ## What Changes
 
-- Na tabela `.acoes-list` em mobile (≤640px), exibir **apenas 4 colunas**: **Ativo, Quantidade, Rentabilidade e Saldo** (ocultar Preço Médio, Hoje e Variação).
-- Larguras das colunas no mobile: **Ativo 15%**, **Qtde 15%**, e as outras duas (**Rentabilidade** e **Saldo**) ocupando o restante (**~35% cada**, somando ~70%).
+- Na tabela `.acoes-list` em mobile (≤640px), exibir **apenas 3 colunas**: **Ativo, Quantidade e Rentabilidade** (ocultar Preço Médio, Hoje, Saldo e Variação).
+- Larguras das colunas no mobile: **Ativo 15%**, **Qtde 15%** e **Rentabilidade ~70%**.
 - Desktop permanece com todas as colunas.
 
 ## Capabilities

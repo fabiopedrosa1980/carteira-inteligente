@@ -322,10 +322,10 @@
     color: var(--color-neg);
   }
 
-  // Mobile: exibe apenas 4 colunas — Ativo(1), Qtd(2), Saldo(5), Rent.(7).
+  // Mobile: exibe apenas 3 colunas — Ativo(1), Qtd(2), Rent.(7).
   // Colunas: Ativo(1) Qtd(2) Preço(3) Hoje(4) Saldo(5) Variação(6) Rent(7).
-  // Ocultas: Preço Médio(3), Hoje(4) e Variação(6).
-  // Larguras: Ativo 15%, Qtd 15%, Saldo 35%, Rent. 35%.
+  // Ocultas: Preço Médio(3), Hoje(4), Saldo(5) e Variação(6).
+  // Larguras: Ativo 15%, Qtd 15%, Rent. 70%.
   @media (max-width: 640px) {
     font-size: 12px;
     th,
@@ -336,12 +336,15 @@
     td:nth-child(3),
     th:nth-child(4),
     td:nth-child(4),
+    th:nth-child(5),
+    td:nth-child(5),
     th:nth-child(6),
     td:nth-child(6) {
       display: none;
     }
     .cl-preco,
     .cl-hoje,
+    .cl-saldo,
     .cl-var {
       width: 0;
     }
@@ -351,11 +354,8 @@
     .cl-qtd {
       width: 15%;
     }
-    .cl-saldo {
-      width: 35%;
-    }
     .cl-rent {
-      width: 35%;
+      width: 70%;
     }
     // Qtd agora é coluna própria; a sub-linha de quantidade fica oculta.
     .ca-qty {

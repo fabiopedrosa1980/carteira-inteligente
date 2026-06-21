@@ -324,7 +324,7 @@
 
   // Mobile (≤640px): a linha vira CARD (sem <table>), evitando a armadilha de
   // tracks do table-layout fixed ao ocultar células. Exibe Ativo (linha
-  // inteira), Saldo e Rentabilidade lado a lado.
+  // inteira) + todas as métricas em grid de 2 colunas, com rótulos inline.
   // Colunas no DOM: Ativo(1) Qtd(2) Preço(3) Hoje(4) Saldo(5) Variação(6) Rent(7).
   @media (max-width: 640px) {
     display: block;
@@ -342,7 +342,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       column-gap: 12px;
-      row-gap: 4px;
+      row-gap: 8px;
       padding: 12px 14px;
       border-bottom: 1px solid var(--border);
     }
@@ -355,14 +355,6 @@
       border: none;
     }
 
-    // Oculta Qtd(2), Preço Médio(3), Hoje(4) e Variação(6).
-    td:nth-child(2),
-    td:nth-child(3),
-    td:nth-child(4),
-    td:nth-child(6) {
-      display: none;
-    }
-
     // Ativo (ticker) ocupa a linha inteira do card.
     .cell-ativo {
       grid-column: 1 / -1;
@@ -372,16 +364,29 @@
       display: none;
     }
 
-    // Rótulos inline (o thead está oculto): Saldo(5) e Rent.(7).
-    td:nth-child(5)::before,
-    td:nth-child(7)::before {
-      content: 'Saldo';
+    // Rótulos inline (o thead está oculto) para cada métrica.
+    td:not(.cell-ativo)::before {
       display: block;
       font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.03em;
       color: var(--text-secondary);
+    }
+    td:nth-child(2)::before {
+      content: 'Qtd';
+    }
+    td:nth-child(3)::before {
+      content: 'Preço Médio';
+    }
+    td:nth-child(4)::before {
+      content: 'Hoje';
+    }
+    td:nth-child(5)::before {
+      content: 'Saldo';
+    }
+    td:nth-child(6)::before {
+      content: 'Variação';
     }
     td:nth-child(7)::before {
       content: 'Rent.';

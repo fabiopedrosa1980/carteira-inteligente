@@ -322,44 +322,69 @@
     color: var(--color-neg);
   }
 
-  // Mobile: exibe apenas 3 colunas — Ativo(1), Qtd(2), Rent.(7).
-  // Colunas: Ativo(1) Qtd(2) Preço(3) Hoje(4) Saldo(5) Variação(6) Rent(7).
-  // Ocultas: Preço Médio(3), Hoje(4), Saldo(5) e Variação(6).
-  // Larguras: Ativo 15%, Qtd 15%, Rent. 70%.
+  // Mobile (≤640px): a linha vira CARD (sem <table>), evitando a armadilha de
+  // tracks do table-layout fixed ao ocultar células. Exibe Ativo (linha
+  // inteira), Saldo e Rentabilidade lado a lado.
+  // Colunas no DOM: Ativo(1) Qtd(2) Preço(3) Hoje(4) Saldo(5) Variação(6) Rent(7).
   @media (max-width: 640px) {
-    font-size: 12px;
-    th,
-    td {
-      padding: 10px 6px;
+    display: block;
+    font-size: 13px;
+
+    thead {
+      display: none;
     }
-    th:nth-child(3),
+    tbody,
+    td {
+      display: block;
+    }
+
+    tr.acoes-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 12px;
+      row-gap: 4px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    tr.acoes-row:last-child {
+      border-bottom: none;
+    }
+
+    td {
+      padding: 0;
+      border: none;
+    }
+
+    // Oculta Qtd(2), Preço Médio(3), Hoje(4) e Variação(6).
+    td:nth-child(2),
     td:nth-child(3),
-    th:nth-child(4),
     td:nth-child(4),
-    th:nth-child(5),
-    td:nth-child(5),
-    th:nth-child(6),
     td:nth-child(6) {
       display: none;
     }
-    .cl-preco,
-    .cl-hoje,
-    .cl-saldo,
-    .cl-var {
-      width: 0;
+
+    // Ativo (ticker) ocupa a linha inteira do card.
+    .cell-ativo {
+      grid-column: 1 / -1;
+      font-size: 15px;
     }
-    .cl-ativo {
-      width: 15%;
-    }
-    .cl-qtd {
-      width: 15%;
-    }
-    .cl-rent {
-      width: 70%;
-    }
-    // Qtd agora é coluna própria; a sub-linha de quantidade fica oculta.
     .ca-qty {
       display: none;
+    }
+
+    // Rótulos inline (o thead está oculto): Saldo(5) e Rent.(7).
+    td:nth-child(5)::before,
+    td:nth-child(7)::before {
+      content: 'Saldo';
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-secondary);
+    }
+    td:nth-child(7)::before {
+      content: 'Rent.';
     }
   }
 }

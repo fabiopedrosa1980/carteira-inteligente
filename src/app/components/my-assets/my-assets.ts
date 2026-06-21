@@ -7,15 +7,6 @@ import { AssetType, Transaction } from '../../models/transaction.model';
 
 type SortField = 'ticker' | 'date' | 'quantity' | 'price' | 'total';
 
-interface GroupedRow {
-  ticker: string;
-  quantity: number;
-  avgPrice: number;
-  total: number;
-  count: number;
-}
-
-const GROUPED_KEY = 'lancamentos-grouped';
 const PAGE_SIZE = 10;
 
 @Component({
@@ -86,55 +77,6 @@ export class MyAssetsComponent {
     };
   });
 
-  // Agrupar por ticker: soma de quantidade + preço médio ponderado.
-  grouped = signal<boolean>(this.readGrouped());
-
-  toggleGrouped(): void {
-    this.grouped.update((v) => !v);
-    try {
-      localStorage.setItem(GROUPED_KEY, this.grouped() ? '1' : '0');
-    } catch {
-      /* ignore */
-    }
-  }
-  private readGrouped(): boolean {
-    try {
-      return localStorage.getItem(GROUPED_KEY) === '1';
-    } catch {
-      return false;
-    }
-  }
-
-  private groupRows(rows: Transaction[]): GroupedRow[] {
-    const map = new Map<string, { quantity: number; cost: number; count: number }>();
-    for (const t of rows) {
-      const key = t.ticker.toUpperCase();
-      const g = map.get(key) ?? { quantity: 0, cost: 0, count: 0 };
-      g.quantity += t.quantity;
-      g.cost += t.quantity * t.price;
-      g.count += 1;
-      map.set(key, g);
-    }
-    return [...map.entries()]
-      .map(([ticker, g]) => ({
-        ticker,
-        quantity: g.quantity,
-        total: g.cost,
-        avgPrice: g.quantity > 0 ? g.cost / g.quantity : 0,
-        count: g.count,
-      }))
-      .sort((a, b) => a.ticker.localeCompare(b.ticker, 'pt-BR'));
-  }
-
-  groupedData = computed(() => {
-    const all = this.svc.transactions();
-    return {
-      Acoes: this.groupRows(all.filter((t) => t.assetType === 'Acoes')),
-      FIIs: this.groupRows(all.filter((t) => t.assetType === 'FIIs')),
-      ETFs: this.groupRows(all.filter((t) => t.assetType === 'ETFs')),
-    };
-  });
-
   totalAll = computed(() =>
     this.svc.transactions().reduce((sum, t) => sum + t.quantity * t.price, 0),
   );
@@ -160,9 +102,7 @@ export class MyAssetsComponent {
   private readonly pages = signal<Record<string, number>>({});
 
   private rowsCount(sec: AssetType): number {
-    return this.grouped()
-      ? (this.groupedData()[sec] ?? []).length
-      : (this.sectionData()[sec] ?? []).length;
+    return (this.sectionData()[sec] ?? []).length;
   }
   totalPages(sec: AssetType): number {
     return Math.max(1, Math.ceil(this.rowsCount(sec) / PAGE_SIZE));
@@ -176,10 +116,6 @@ export class MyAssetsComponent {
   pagedDetailed(sec: AssetType): Transaction[] {
     const start = this.pageOf(sec) * PAGE_SIZE;
     return (this.sectionData()[sec] ?? []).slice(start, start + PAGE_SIZE);
-  }
-  pagedGrouped(sec: AssetType): GroupedRow[] {
-    const start = this.pageOf(sec) * PAGE_SIZE;
-    return (this.groupedData()[sec] ?? []).slice(start, start + PAGE_SIZE);
   }
   prevPage(sec: AssetType): void {
     const p = this.pageOf(sec);

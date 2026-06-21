@@ -8,24 +8,6 @@
         Total: {{ totalAll() | currency: 'BRL' : 'symbol' : '1.2-2' }}
       </p>
     </div>
-    <button
-      type="button"
-      class="ma-group-toggle"
-      [class.active]="grouped()"
-      [attr.aria-pressed]="grouped()"
-      (click)="toggleGrouped()"
-      title="Somar quantidades e preço médio por ativo"
-    >
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M3 6h18M3 12h18M3 18h18"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-        />
-      </svg>
-      Agrupar por ticker
-    </button>
   </div>
 
   <!-- Accordion sections -->
@@ -57,33 +39,8 @@
             </div>
           </div>
 
-          <!-- Tabela agrupada por ticker -->
-          <div
-            class="transactions-table grouped fade-in"
-            *ngIf="grouped() && groupedData()[sec.id].length > 0"
-          >
-            <div class="table-header">
-              <span>Ativo</span>
-              <span>Qtd.</span>
-              <span>Preço médio</span>
-              <span>Total</span>
-              <span>Lanç.</span>
-            </div>
-            <div class="table-row" *ngFor="let g of pagedGrouped(sec.id)">
-              <span class="ticker-cell">
-                <span class="ticker-badge">{{ g.ticker }}</span>
-              </span>
-              <span class="qty-cell">{{ g.quantity | number: '1.0-0' }}</span>
-              <span class="price-cell">{{
-                g.avgPrice | currency: 'BRL' : 'symbol' : '1.2-2'
-              }}</span>
-              <span class="total-cell">{{ g.total | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
-              <span class="count-cell">{{ g.count }}</span>
-            </div>
-          </div>
-
           <!-- Tabela detalhada (uma linha por lançamento) -->
-          <div class="transactions-table" *ngIf="!grouped() && sectionData()[sec.id].length > 0">
+          <div class="transactions-table" *ngIf="sectionData()[sec.id].length > 0">
             <div class="table-header">
               <span
                 class="th-sort"

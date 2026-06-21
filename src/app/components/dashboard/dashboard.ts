@@ -100,7 +100,7 @@ export class DashboardComponent {
   readonly selectedStock = signal<Stock | null>(null);
 
   // Visão de Minhas Ações: cards (padrão) ou lista.
-  readonly viewMode = signal<ViewMode>('cards');
+  readonly viewMode = signal<ViewMode>('list');
   setView(mode: ViewMode) {
     this.viewMode.set(mode);
   }

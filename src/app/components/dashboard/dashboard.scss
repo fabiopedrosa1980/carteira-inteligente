@@ -364,7 +364,7 @@
     font-size: 13px;
     th,
     td {
-      padding: 10px 8px;
+      padding: 10px 6px;
     }
     // Oculta Qtd(2), Preço(3), Hoje(4) e Variação(6).
     th:nth-child(2),
@@ -377,14 +377,21 @@
     td:nth-child(6) {
       display: none;
     }
+    // Colunas ocultas ficam com largura zero para não gerar overflow em table-layout:fixed.
+    .cl-qtd,
+    .cl-preco,
+    .cl-hoje,
+    .cl-var {
+      width: 0;
+    }
     .cl-ativo {
-      width: 40%;
+      width: 42%;
     }
     .cl-saldo {
-      width: 32%;
+      width: 33%;
     }
     .cl-rent {
-      width: 28%;
+      width: 25%;
     }
   }
 }

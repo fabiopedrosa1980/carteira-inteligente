@@ -322,74 +322,176 @@
     color: var(--color-neg);
   }
 
-  // Mobile (≤640px): a linha vira CARD (sem <table>), evitando a armadilha de
-  // tracks do table-layout fixed ao ocultar células. Exibe Ativo (linha
-  // inteira) + todas as métricas em grid de 2 colunas, com rótulos inline.
-  // Colunas no DOM: Ativo(1) Qtd(2) Preço(3) Hoje(4) Saldo(5) Variação(6) Rent(7).
+  // Mobile (≤640px): cada ativo vira um CARD no mesmo idioma visual dos cards
+  // de ação — perf-bar à esquerda (cor do dia), números em mono e Saldo como
+  // número-herói. Sem <table>/<col>, evitando a armadilha de tracks ao ocultar
+  // colunas. DOM: Ativo(1) Qtd(2) Preço(3) Hoje(4) Saldo(5) Variação(6) Rent(7).
   @media (max-width: 640px) {
     display: block;
-    font-size: 13px;
+    font-family: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', monospace;
 
     thead {
       display: none;
     }
-    tbody,
-    td {
+    tbody {
       display: block;
+      padding: 10px 12px;
     }
 
     tr.acoes-row {
+      position: relative;
+      overflow: hidden;
       display: grid;
       grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'ticker hoje'
+        'saldo  saldo'
+        'rent   var'
+        'qtd    preco';
       column-gap: 12px;
-      row-gap: 8px;
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
+      row-gap: 10px;
+      align-items: end;
+      padding: 14px 16px 14px 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 10px;
+      transition: border-color 0.2s ease;
     }
     tr.acoes-row:last-child {
-      border-bottom: none;
+      margin-bottom: 0;
+    }
+    tr.acoes-row:active {
+      border-color: var(--accent);
+    }
+
+    // Faixa de desempenho do dia (assinatura), à esquerda do card.
+    tr.acoes-row::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--border);
+    }
+    tr.acoes-row.is-up::before {
+      background: var(--color-pos);
+      box-shadow: 0 0 14px -2px var(--color-pos);
+    }
+    tr.acoes-row.is-down::before {
+      background: var(--color-neg);
+      box-shadow: 0 0 14px -2px var(--color-neg);
+    }
+
+    // Hover de célula não faz sentido no card.
+    tbody tr:hover td {
+      background: transparent;
     }
 
     td {
+      display: block;
       padding: 0;
       border: none;
+      white-space: nowrap;
     }
 
-    // Ativo (ticker) ocupa a linha inteira do card.
+    // Micro-rótulo (o thead some no mobile): sans em caixa-alta, contrastando
+    // com os números em mono. Só é gerado quando há `content`.
+    td:not(.cell-ativo)::before {
+      display: block;
+      margin-bottom: 2px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    // 1) Ticker
     .cell-ativo {
-      grid-column: 1 / -1;
-      font-size: 15px;
+      grid-area: ticker;
+      align-self: center;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
     }
     .ca-qty {
       display: none;
     }
 
-    // Rótulos inline (o thead está oculto) para cada métrica.
-    td:not(.cell-ativo)::before {
-      display: block;
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
+    // 2) Hoje — pílula de momentum no topo direito (sem rótulo).
+    td:nth-child(4) {
+      grid-area: hoje;
+      justify-self: end;
+      align-self: center;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
       color: var(--text-secondary);
+      background: color-mix(in srgb, var(--text-secondary) 12%, transparent);
+    }
+    td:nth-child(4).pos {
+      color: var(--color-pos);
+      background: color-mix(in srgb, var(--color-pos) 15%, transparent);
+    }
+    td:nth-child(4).neg {
+      color: var(--color-neg);
+      background: color-mix(in srgb, var(--color-neg) 15%, transparent);
+    }
+
+    // 3) Saldo — número-herói do card.
+    td:nth-child(5) {
+      grid-area: saldo;
+      font-size: 23px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    td:nth-child(5)::before {
+      content: 'Saldo';
+    }
+
+    // 4) Rentabilidade e Variação — desempenho da posição.
+    td:nth-child(7) {
+      grid-area: rent;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    td:nth-child(7)::before {
+      content: 'Rentabilidade';
+    }
+    td:nth-child(6) {
+      grid-area: var;
+      justify-self: end;
+      text-align: right;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    td:nth-child(6)::before {
+      content: 'Variação';
+    }
+
+    // 5) Qtd e Preço médio — contexto discreto.
+    td:nth-child(2),
+    td:nth-child(3) {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    td:nth-child(2) {
+      grid-area: qtd;
+    }
+    td:nth-child(3) {
+      grid-area: preco;
+      justify-self: end;
+      text-align: right;
     }
     td:nth-child(2)::before {
       content: 'Qtd';
     }
     td:nth-child(3)::before {
-      content: 'Preço Médio';
-    }
-    td:nth-child(4)::before {
-      content: 'Hoje';
-    }
-    td:nth-child(5)::before {
-      content: 'Saldo';
-    }
-    td:nth-child(6)::before {
-      content: 'Variação';
-    }
-    td:nth-child(7)::before {
-      content: 'Rent.';
+      content: 'Preço médio';
     }
   }
 }

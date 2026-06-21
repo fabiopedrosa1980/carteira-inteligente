@@ -259,6 +259,8 @@
                             @let sld = saldoOf(stock);
                             <tr
                               class="acoes-row"
+                              [class.is-up]="stock.changePercent > 0"
+                              [class.is-down]="stock.changePercent < 0"
                               (click)="selectedStock.set(stock)"
                               title="Ver detalhes"
                             >

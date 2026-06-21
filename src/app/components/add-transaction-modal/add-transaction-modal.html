@@ -66,6 +66,9 @@
           </ul>
         </div>
         <span class="field-error" *ngIf="errors.ticker">{{ errors.ticker }}</span>
+        <span class="quote-hint mismatch" *ngIf="!errors.ticker && tickerTypeMismatch">{{
+          tickerTypeMismatch
+        }}</span>
         <span class="quote-hint found" *ngIf="quoteName()">{{ quoteName() }}</span>
         <span class="quote-hint not-found" *ngIf="quoteNotFound()">Ativo não encontrado</span>
       </div>

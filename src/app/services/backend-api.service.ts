@@ -100,6 +100,11 @@ export class BackendApiService {
     return this.http.delete<void>(`${this.baseUrl}/transactions/${id}`);
   }
 
+  // Remove todos os lançamentos de uma vez (idempotente no backend).
+  deleteAllTransactions(): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/transactions`);
+  }
+
   getAcoes(): Observable<ApiAcaoItem[]> {
     return this.http
       .get<ApiAcaoItem[]>(`${this.baseUrl}/transactions/acoes`)

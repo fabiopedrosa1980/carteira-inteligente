@@ -168,4 +168,19 @@ export class MyAssetsComponent {
         }
       });
   }
+
+  // Remove todos os lançamentos, reutilizando a mesma confirmação de exclusão.
+  clearAll() {
+    this.confirmService
+      .confirm({
+        title: 'Limpar tudo',
+        message: 'Deseja realmente excluir TODOS os lançamentos? Esta ação não pode ser desfeita.',
+        confirmLabel: 'Limpar tudo',
+      })
+      .then((ok) => {
+        if (ok) {
+          this.svc.clearAll(() => this.forceReload());
+        }
+      });
+  }
 }

@@ -108,6 +108,17 @@ export class TransactionService {
     });
   }
 
+  // Remove todos os lançamentos de uma vez via API e esvazia o estado local.
+  clearAll(onDone?: () => void): void {
+    this.api.deleteAllTransactions().subscribe({
+      next: () => {
+        this._transactions.set([]);
+        this.notifications.show('Lançamentos removidos com sucesso');
+        onDone?.();
+      },
+    });
+  }
+
   byType(type: AssetType): Transaction[] {
     return this._transactions().filter((t) => t.assetType === type);
   }

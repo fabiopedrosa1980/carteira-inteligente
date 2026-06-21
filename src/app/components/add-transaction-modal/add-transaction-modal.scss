@@ -247,6 +247,10 @@ h2 {
   &.not-found {
     color: var(--color-neg);
   }
+  &.mismatch {
+    color: var(--color-neg);
+    font-weight: 600;
+  }
 }
 
 .form-select {

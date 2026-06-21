@@ -8,6 +8,40 @@
   flex-shrink: 0;
 }
 
+/* Botão "Limpar tudo" no header — ação destrutiva, estilo discreto. */
+.btn-clear-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: all 0.2s;
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+  &:hover {
+    border-color: var(--color-neg);
+    color: var(--color-neg);
+    background: color-mix(in srgb, var(--color-neg) 8%, transparent);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--color-neg);
+    outline-offset: 2px;
+  }
+  @media (max-width: 600px) {
+    justify-content: center;
+  }
+}
+
 /* Accordion */
 .sections-list {
   display: flex;
@@ -24,9 +58,11 @@
 
 .accordion-header {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  // Mobile (base): rótulo à esquerda, total + chevron agrupados à direita.
+  display: grid;
+  grid-template-columns: 1fr auto auto;
   align-items: center;
+  gap: 12px;
   padding: 16px 20px;
   background: none;
   border: none;
@@ -35,6 +71,19 @@
   transition: background 0.15s;
   &:hover {
     background: rgba(128, 128, 128, 0.04);
+  }
+
+  // Web/desktop: três zonas (rótulo à esquerda, total centralizado, chevron à
+  // direita). As colunas laterais 1fr equilibram para o total ficar no centro.
+  @media (min-width: 601px) {
+    grid-template-columns: 1fr auto 1fr;
+    .sec-total {
+      justify-self: center;
+      text-align: center;
+    }
+    .ah-right {
+      justify-self: end;
+    }
   }
 }
 .ah-left {

@@ -55,6 +55,20 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     return this.quoteLoading() || this.quoteNotFound();
   }
 
+  // Mensagem em tempo real quando o ticker digitado não condiz com o tipo
+  // selecionado. Usa a mesma heurística por sufixo do salvamento: tolera a
+  // ambiguidade FII × ETF e ignora sufixos não reconhecidos (retorna '').
+  get tickerTypeMismatch(): string {
+    if (this.isEdit || !this.form.assetType) return '';
+    const detected = detectAssetType(this.form.ticker);
+    if (detected && detected !== this.form.assetType) {
+      return `Ticker é de ${assetTypeLabel(detected)}, não condiz com ${assetTypeLabel(
+        this.form.assetType as AssetType,
+      )}`;
+    }
+    return '';
+  }
+
   private readonly svc = inject(TransactionService);
   private readonly stockApi = inject(StockApiService);
   private readonly tickerInput$ = new Subject<{ ticker: string; date: string }>();

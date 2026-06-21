@@ -199,7 +199,7 @@
                     </div>
                     <div class="ah-right">
                       <span class="sec-total" *ngIf="groupSaldo(group) > 0">
-                        R$ {{ groupSaldo(group) | number: '1.2-2' }}
+                        {{ groupSaldo(group) | currency: 'BRL' : 'symbol' : '1.2-2' }}
                       </span>
                       <span
                         class="sec-rent"

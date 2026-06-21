@@ -102,14 +102,14 @@
         <div class="form-group">
           <label class="form-label">Preço Unit. (R$) <span class="required">*</span></label>
           <input
-            type="number"
+            type="text"
+            inputmode="decimal"
             class="form-input"
             [class.error]="errors.price"
             placeholder="0,00"
-            [ngModel]="form.price"
-            (ngModelChange)="onPriceChange($event)"
-            min="0.01"
-            step="0.01"
+            [ngModel]="priceDisplay"
+            (ngModelChange)="onPriceInput($event)"
+            autocomplete="off"
           />
           <span class="field-error" *ngIf="errors.price">{{ errors.price }}</span>
           <span class="quote-hint found" *ngIf="quoteAsOf()">

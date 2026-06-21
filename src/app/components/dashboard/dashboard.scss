@@ -552,6 +552,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  @media (max-width: 600px) {
+    gap: 8px;
+  }
 }
 
 .sec-label {
@@ -578,11 +581,11 @@
   }
 }
 
-// Total do tipo no cabeçalho do acordeão.
+// Total do tipo no cabeçalho do acordeão (padrão de Lançamentos: accent).
 .sec-total {
   font-size: 14px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   @media (max-width: 600px) {
@@ -605,13 +608,6 @@
   }
   @media (max-width: 600px) {
     font-size: 12px;
-  }
-}
-
-// No mobile, a contagem cede espaço para total + rentabilidade.
-@media (max-width: 600px) {
-  .sec-count {
-    display: none;
   }
 }
 

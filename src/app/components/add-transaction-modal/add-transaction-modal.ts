@@ -89,6 +89,34 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     price: null as number | null,
   };
 
+  // Valor exibido no campo Preço com máscara de moeda (ex.: "1.234,56").
+  // `form.price` mantém o número correspondente para cálculo/salvamento.
+  priceDisplay = '';
+
+  // Formata um número como moeda BR (sem símbolo): 1234.5 -> "1.234,50".
+  private formatPrice(value: number): string {
+    return value.toLocaleString('pt-BR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  // Aplica a máscara ao digitar: extrai dígitos, interpreta como centavos.
+  onPriceInput(raw: string): void {
+    const digits = (raw ?? '').replace(/\D/g, '');
+    this.priceManuallyEdited = true;
+    this.quoteAsOf.set('');
+    delete this.errors.price;
+    if (!digits) {
+      this.form.price = null;
+      this.priceDisplay = '';
+      return;
+    }
+    const value = parseInt(digits, 10) / 100;
+    this.form.price = value;
+    this.priceDisplay = this.formatPrice(value);
+  }
+
   errors: {
     assetType?: string;
     ticker?: string;
@@ -105,6 +133,7 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
       this.form.date = this.transaction.date;
       this.form.quantity = this.transaction.quantity;
       this.form.price = this.transaction.price;
+      this.priceDisplay = this.formatPrice(this.transaction.price);
     } else if (this.defaultAssetType) {
       // Modo adição a partir de uma seção: categoria já selecionada.
       this.form.assetType = this.defaultAssetType;
@@ -128,6 +157,7 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
           // Não sobrescreve um preço editado à mão.
           if (!this.priceManuallyEdited) {
             this.form.price = quote.price;
+            this.priceDisplay = this.formatPrice(quote.price);
             this.quoteAsOf.set(date < this.todayStr() ? date : '');
           }
           this.quoteName.set(quote.name || quote.ticker);
@@ -146,7 +176,8 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
         filter((t) => t.length >= 3),
         switchMap((q) => this.stockApi.searchTickers(q)),
       )
-      .subscribe((list) => this.suggestions.set(list));
+      // Descarta ativos do mercado fracionário (ticker terminado em "F").
+      .subscribe((list) => this.suggestions.set(list.filter((s) => !/F$/i.test(s.ticker))));
   }
 
   ngOnDestroy(): void {
@@ -195,20 +226,21 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     this.tickerInput$.next({ ticker: ticker.toUpperCase(), date: this.form.date });
   }
 
-  // Marca o preço como editado à mão para não ser sobrescrito pela cotação.
-  onPriceChange(value: number | null) {
-    this.form.price = value;
-    this.priceManuallyEdited = true;
-    this.quoteAsOf.set('');
-    delete this.errors.price;
-  }
-
   // Data de hoje em horário local (YYYY-MM-DD), sem deslocamento de fuso.
   todayStr(): string {
     const d = new Date();
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     return `${d.getFullYear()}-${m}-${day}`;
+  }
+
+  // Classifica o ticker pela origem do sufixo B3 (heurística): final 11 →
+  // FII/ETF; final 3/4/5/6/7/8 → ação; senão desconhecido.
+  private tickerKind(ticker: string): 'acao' | 'fii_etf' | 'unknown' {
+    const t = (ticker ?? '').toUpperCase().trim();
+    if (/11$/.test(t)) return 'fii_etf';
+    if (/[345678]$/.test(t)) return 'acao';
+    return 'unknown';
   }
 
   save() {
@@ -221,6 +253,19 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     if (!this.form.quantity || this.form.quantity <= 0)
       this.errors.quantity = 'Quantidade inválida';
     if (!this.form.price || this.form.price <= 0) this.errors.price = 'Preço inválido';
+
+    // Valida se o ticker condiz com o tipo escolhido (heurística por sufixo).
+    if (!this.errors.ticker && this.form.assetType) {
+      const kind = this.tickerKind(this.form.ticker);
+      if (this.form.assetType === 'Acoes' && kind === 'fii_etf') {
+        this.errors.ticker = 'Ticker de FII/ETF (final 11) não condiz com Ações';
+      } else if (
+        (this.form.assetType === 'FIIs' || this.form.assetType === 'ETFs') &&
+        kind === 'acao'
+      ) {
+        this.errors.ticker = 'Ticker de ação não condiz com FIIs/ETFs';
+      }
+    }
 
     if (Object.keys(this.errors).length > 0) return;
 

@@ -258,55 +258,6 @@
   }
 }
 
-/* Agrupa ordenação + toggle de visão à direita do cabeçalho. */
-.section-actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  min-width: 0;
-  @media (max-width: 640px) {
-    width: 100%;
-  }
-}
-
-/* Toggle Cards/Lista (espelha o do Radar). */
-.view-toggle {
-  display: inline-flex;
-  flex-shrink: 0;
-  gap: 2px;
-  padding: 2px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-.vt-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 30px;
-  border: none;
-  background: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  border-radius: 6px;
-  transition:
-    background 0.15s,
-    color 0.15s;
-
-  svg {
-    width: 17px;
-    height: 17px;
-  }
-  &:hover {
-    color: var(--text-primary);
-  }
-  &.active {
-    background: color-mix(in srgb, var(--accent) 14%, transparent);
-    color: var(--accent);
-  }
-}
-
 .acoes-list {
   width: 100%;
   border-collapse: collapse;
@@ -371,55 +322,43 @@
     color: var(--color-neg);
   }
 
-  // Mobile: Ativo(1) + qty sub-linha, Hoje(4) e Saldo(5). Oculta o resto.
+  // Mobile: oculta apenas Hoje(4) e Variação(6).
+  // Colunas: Ativo(1) Qtd(2) Preço(3) Hoje(4) Saldo(5) Variação(6) Rent(7).
+  // Permanecem visíveis: Ativo, Qtd, Preço Médio, Saldo e Rent.
   @media (max-width: 640px) {
-    font-size: 13px;
+    font-size: 12px;
     th,
     td {
-      padding: 10px 8px;
+      padding: 10px 6px;
     }
-    th:nth-child(2),
-    td:nth-child(2),
-    th:nth-child(3),
-    td:nth-child(3),
+    th:nth-child(4),
+    td:nth-child(4),
     th:nth-child(6),
-    td:nth-child(6),
-    th:nth-child(7),
-    td:nth-child(7) {
+    td:nth-child(6) {
       display: none;
     }
-    .cl-qtd,
-    .cl-preco,
-    .cl-var,
-    .cl-rent {
+    .cl-hoje,
+    .cl-var {
       width: 0;
     }
     .cl-ativo {
-      width: 50%;
+      width: 26%;
     }
-    .cl-hoje {
+    .cl-qtd {
+      width: 14%;
+    }
+    .cl-preco {
       width: 22%;
     }
     .cl-saldo {
-      width: 28%;
+      width: 22%;
     }
-    th:nth-child(4),
-    td:nth-child(4) {
-      text-align: center;
+    .cl-rent {
+      width: 16%;
     }
-    th:nth-child(5),
-    td:nth-child(5) {
-      text-align: right;
-    }
-    .cell-ativo {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      white-space: normal;
-      overflow: visible;
-    }
+    // Qtd agora é coluna própria; a sub-linha de quantidade fica oculta.
     .ca-qty {
-      display: block;
+      display: none;
     }
   }
 }
@@ -529,37 +468,49 @@
   border-top: 1px solid var(--border);
 }
 
-.accordion-cards {
-  padding: 16px;
+/* Botão único de adicionar, ao final do acordeão (padrão de Lançamentos) */
+.add-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 20px;
+  @media (max-width: 600px) {
+    padding: 12px;
+  }
 }
 
-.btn-add-tx {
+.btn-plus {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.btn-add-inline {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  background: none;
-  border: none;
+  gap: 5px;
+  background: transparent;
+  border: 1px solid var(--border);
   color: var(--text-secondary);
+  padding: 5px 12px;
+  border-radius: 8px;
   cursor: pointer;
-  border-radius: 6px;
-  transition: background 0.15s, color 0.15s;
-  flex-shrink: 0;
-
-  svg {
-    width: 16px;
-    height: 16px;
-  }
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all 0.2s;
+  white-space: nowrap;
 
   &:hover {
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border-color: var(--accent);
     color: var(--accent);
   }
-
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+  }
+  .btn-plus {
+    width: 14px;
+    height: 14px;
   }
 }
 
@@ -581,7 +532,9 @@
   cursor: pointer;
   font-size: 13px;
   font-family: inherit;
-  transition: border-color 0.15s, color 0.15s;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
 
   &:hover:not(:disabled) {
     border-color: var(--accent);
@@ -662,13 +615,37 @@
   line-height: 1.1;
 }
 
-.ps-lucro {
-  font-size: 13px;
+.ps-lucro-row {
+  display: flex;
+  gap: 20px;
+  margin-top: 2px;
+}
+
+.ps-lucro-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ps-lucro-label {
+  font-size: 10px;
   font-weight: 500;
   color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ps-lucro-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
-  &.pos { color: var(--color-pos); }
-  &.neg { color: var(--color-neg); }
+  &.pos {
+    color: var(--color-pos);
+  }
+  &.neg {
+    color: var(--color-neg);
+  }
 }
 
 .ps-secondary {
@@ -681,7 +658,9 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  &:first-child { border-right: 1px solid var(--border); }
+  &:first-child {
+    border-right: 1px solid var(--border);
+  }
 }
 
 .ps-stat-label {
@@ -711,6 +690,7 @@
     align-items: baseline;
     gap: 6px 12px;
   }
-  .ps-label { width: 100%; }
+  .ps-label {
+    width: 100%;
+  }
 }
-

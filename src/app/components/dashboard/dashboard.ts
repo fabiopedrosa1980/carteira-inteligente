@@ -7,17 +7,17 @@ import { BackendApiService, ApiAcaoItem, ApiTransaction } from '../../services/b
 import { AuthService } from '../../services/auth.service';
 import { TransactionService } from '../../services/transaction.service';
 import { MetasService } from '../../services/metas.service';
-import { StockCardComponent } from '../stock-card/stock-card';
 import { StockDetailsModalComponent } from '../stock-details-modal/stock-details-modal';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
+import { AddTransactionModalComponent } from '../add-transaction-modal/add-transaction-modal';
 import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
 import { DividendsComponent } from '../dividends/dividends';
 import { Stock } from '../../models/stock.model';
+import { AssetType } from '../../models/transaction.model';
 import { saldo, custo, variacaoPosicao, rentabilidade } from '../../models/position.util';
 
 type SortField = 'name' | 'price' | 'change' | 'qty' | 'saldo' | 'variacao' | 'rentabilidade';
-type ViewMode = 'cards' | 'list';
 
 const THEME_KEY = 'ci-theme';
 const PAGE_SIZE = 10;
@@ -27,9 +27,9 @@ const PAGE_SIZE = 10;
   standalone: true,
   imports: [
     CommonModule,
-    StockCardComponent,
     StockDetailsModalComponent,
     AddStockModalComponent,
+    AddTransactionModalComponent,
     MyAssetsComponent,
     GoalsComponent,
     DividendsComponent,
@@ -52,6 +52,8 @@ export class DashboardComponent {
   }
 
   showModal = false;
+  showTxModal = signal(false);
+  txPresetType = signal<AssetType | null>(null);
   activeTab = 'portfolio';
 
   setActiveTab(id: string): void {
@@ -88,11 +90,6 @@ export class DashboardComponent {
   readonly skelCards = Array.from({ length: 6 });
   readonly selectedStock = signal<Stock | null>(null);
 
-  readonly viewMode = signal<ViewMode>('list');
-  setView(mode: ViewMode) {
-    this.viewMode.set(mode);
-  }
-
   // ---- Grupos de ativos ----
   readonly groups = ['Ações', 'FII', 'ETF'] as const;
   readonly groupLabels: Record<string, string> = {
@@ -114,6 +111,17 @@ export class DashboardComponent {
 
   isCollapsed(g: string): boolean {
     return this.collapsed().has(g);
+  }
+
+  private readonly groupToAssetType: Record<string, AssetType> = {
+    Ações: 'Acoes',
+    FII: 'FIIs',
+    ETF: 'ETFs',
+  };
+
+  openAddTx(group: string): void {
+    this.txPresetType.set(this.groupToAssetType[group] ?? null);
+    this.showTxModal.set(true);
   }
 
   stocksForGroup(g: string): Stock[] {
@@ -186,10 +194,10 @@ export class DashboardComponent {
   }
 
   readonly patrimonioTotal = computed(() =>
-    this.sortedStocks().reduce((sum, s) => sum + (saldo(s) ?? 0), 0)
+    this.sortedStocks().reduce((sum, s) => sum + (saldo(s) ?? 0), 0),
   );
   readonly valorInvestido = computed(() =>
-    this.sortedStocks().reduce((sum, s) => sum + (custo(s) ?? 0), 0)
+    this.sortedStocks().reduce((sum, s) => sum + (custo(s) ?? 0), 0),
   );
   readonly lucroTotal = computed(() => this.patrimonioTotal() - this.valorInvestido());
   readonly lucroPercent = computed(() => {
@@ -197,10 +205,12 @@ export class DashboardComponent {
     return inv > 0 ? (this.lucroTotal() / inv) * 100 : null;
   });
   readonly dividendosRecebidos = computed(() =>
-    this.svc.stocks().reduce(
-      (sum, stk) => sum + stk.dividends.reduce((ds, d) => ds + d.value * (stk.quantity ?? 0), 0),
-      0
-    )
+    this.svc
+      .stocks()
+      .reduce(
+        (sum, stk) => sum + stk.dividends.reduce((ds, d) => ds + d.value * (stk.quantity ?? 0), 0),
+        0,
+      ),
   );
 
   sortedStocks = computed(() => {

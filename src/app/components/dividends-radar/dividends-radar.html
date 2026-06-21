@@ -1,14 +1,9 @@
 <div class="radar-section">
   <h3 class="radar-title">Radar de proventos</h3>
 
-  <!-- Alternador de visualização (ícones) — oculto no mobile, onde só há cards. -->
+  <!-- Alternador de visualização (ícones) — disponível também no mobile. -->
   <div class="radar-toolbar">
-    <div
-      class="radar-view-toggle"
-      *ngIf="!isMobile()"
-      role="group"
-      aria-label="Visualização do radar"
-    >
+    <div class="radar-view-toggle" role="group" aria-label="Visualização do radar">
       <button
         type="button"
         class="rv-btn"

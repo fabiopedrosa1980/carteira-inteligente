@@ -48,9 +48,9 @@ export class DividendsRadarComponent implements OnChanges {
   // Visualização: matriz (padrão) ou cards; lembrada entre sessões.
   readonly view = signal<RadarView>(this.readView());
 
-  // No mobile a matriz (heatmap largo) força rolagem horizontal; usamos sempre cards.
-  // No desktop respeita a escolha do usuário.
-  readonly effectiveView = computed<RadarView>(() => (this.isMobile() ? 'cards' : this.view()));
+  // Respeita a escolha do usuário em qualquer largura, inclusive no mobile
+  // (visão em matriz / "batalha naval" disponível também em telas estreitas).
+  readonly effectiveView = computed<RadarView>(() => this.view());
 
   setView(v: RadarView): void {
     this.view.set(v);

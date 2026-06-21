@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { StockDataService } from '../../services/stock-data.service';
-import { BackendApiService, ApiAcaoItem } from '../../services/backend-api.service';
+import { BackendApiService, ApiAcaoItem, ApiTransaction } from '../../services/backend-api.service';
 import { AuthService } from '../../services/auth.service';
 import { TransactionService } from '../../services/transaction.service';
 import { MetasService } from '../../services/metas.service';
@@ -240,10 +240,41 @@ export class DashboardComponent {
     });
   }
 
+  private deriveEtfPositions(txns: ApiTransaction[]): Stock[] {
+    const byTicker = new Map<string, ApiTransaction[]>();
+    for (const t of txns) {
+      if (!byTicker.has(t.ticker)) byTicker.set(t.ticker, []);
+      byTicker.get(t.ticker)!.push(t);
+    }
+    return Array.from(byTicker.entries())
+      .map(([ticker, ts]) => {
+        const qty = ts.reduce((s, t) => s + t.quantity, 0);
+        const cost = ts.reduce((s, t) => s + t.quantity * t.price, 0);
+        return {
+          ticker,
+          name: ticker,
+          sector: 'ETF',
+          price: 0,
+          changePercent: 0,
+          dividendYield: 0,
+          nota: 0,
+          dividends: [],
+          quantity: qty,
+          avgPrice: qty > 0 ? cost / qty : 0,
+        } as Stock;
+      })
+      .filter((s) => (s.quantity ?? 0) > 0);
+  }
+
   loadAtivos(): void {
     this.acoesLoading.set(true);
-    forkJoin([this.api.getAcoes(), this.api.getFiis(), this.api.getEtfs()]).subscribe({
-      next: ([acoes, fiis, etfs]) => {
+    forkJoin([
+      this.api.getAcoes(),
+      this.api.getFiis(),
+      this.api.getEtfs(),
+      this.api.getTransactions(),
+    ]).subscribe({
+      next: ([acoes, fiis, etfs, txns]) => {
         const mapItem = (item: ApiAcaoItem, sector: string): Stock => ({
           ticker: item.ticker,
           name: item.name || item.ticker,
@@ -259,10 +290,17 @@ export class DashboardComponent {
           indicators: item.indicators,
           companyInfo: item.company_info,
         });
+
+        // Se o backend não tem /transactions/etfs, deriva posições das transações.
+        const etfStocks =
+          etfs.length > 0
+            ? etfs.map((item) => mapItem(item, 'ETF'))
+            : this.deriveEtfPositions(txns.filter((t) => t.asset_type === 'ETFs'));
+
         this.acoes.set([
           ...acoes.map((item) => mapItem(item, 'Ações')),
           ...fiis.map((item) => mapItem(item, 'FII')),
-          ...etfs.map((item) => mapItem(item, 'ETF')),
+          ...etfStocks,
         ]);
         this.acoesLoading.set(false);
       },

@@ -2,7 +2,15 @@
 
 ### Requirement: Card "Dividendos Recebidos" com a lógica da tela Recebidos
 
-O card de proventos no resumo de "Meus Ativos" SHALL ser rotulado **"Dividendos Recebidos"** (substituindo "Dividendos Hist.") e o valor exibido MUST ser calculado com a **mesma lógica** da tela Dividendos → Recebidos: considerar apenas proventos do **ano corrente** já pagos (com `pay_date` anterior à data de hoje) e somar, por ativo, `valor do provento × cotas elegíveis`, onde cotas elegíveis são as dos lançamentos cuja data é **anterior ou igual à data-com** (`ex_date`). O total do card MUST ser a soma desses valores entre todos os ativos da carteira.
+O card de proventos no resumo de "Meus Ativos" SHALL ser rotulado **"Dividendos Recebidos"** (substituindo "Dividendos Hist.") e o valor exibido MUST ser calculado com a **mesma lógica** da tela Dividendos → Recebidos: considerar apenas proventos do **ano corrente** já pagos (com `pay_date` anterior à data de hoje) e somar, por ativo, `valor do provento × cotas elegíveis`, onde cotas elegíveis são as dos lançamentos cuja data é **anterior ou igual à data-com** (`ex_date`). A resolução de ano/mês do provento MUST usar fallback para a data de pagamento quando `year`/`month` não vierem preenchidos (paridade com `yearOf`/`monthOf` da tela).
+
+O total do card MUST corresponder à soma **Recebidos(Ações) + Recebidos(FIIs)** — as duas classes da tela; ETFs ficam de fora. A função de cálculo MUST ser **compartilhada** entre o card e a tela Recebidos (implementação única) para garantir que os valores coincidam.
+
+#### Scenario: Total coincide com Ações + FIIs da tela Recebidos
+
+- **WHEN** o card "Dividendos Recebidos" é exibido e há proventos pagos no ano corrente em Ações e FIIs
+- **THEN** o valor do card é igual à soma do total da aba Recebidos com classe "Ações" e do total com classe "FIIs"
+- **AND** proventos de ETFs não entram no total
 
 #### Scenario: Rótulo atualizado
 

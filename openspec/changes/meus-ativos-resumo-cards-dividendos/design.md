@@ -27,17 +27,37 @@ A tela Dividendos → Recebidos (`DividendsSummaryComponent`, modo `received`) j
 - Grid responsivo: desktop `repeat(auto-fit, minmax(...))` ou colunas fixas; mobile (≤640px) reduz para 2 colunas (e Patrimônio ocupando a linha inteira). Sem rolagem horizontal.
 - Ganho/Variação mantêm classes `.pos`/`.neg` para cor por sinal (reaproveitar `lucroTotal()`/`lucroPercent()`).
 
-### Dividendos Recebidos (`portfolio-dividendos-recebidos`)
-- Renomear o rótulo no HTML para "Dividendos Recebidos".
-- Reescrever `dividendosRecebidos()` em `dashboard.ts` replicando `computeReceived`:
-  - `currentYear = new Date().getFullYear()`; `todayStr` em horário local (YYYY-MM-DD).
-  - Para cada stock da carteira: filtrar transações do mesmo ticker (`transactionSvc.transactions()`), e para cada provento (`stock.dividends`) com `year === currentYear` e `payDate` existente e `< todayStr`:
-    - `comDate = exDate || payDate`
-    - `eligibleShares = soma das quantidades dos lançamentos com t.date <= comDate`
-    - acumular `value * eligibleShares`.
-  - Total = soma entre todos os ativos.
-- Observação de fidelidade: o `Stock` mapeado em `StockDataService` já expõe `dividends[].exDate/payDate/year/value`. Usar `value` (equivalente a `amount`). Normalizar tickers com `toUpperCase().trim()` como na tela Recebidos.
-- Reutilização: opcionalmente extrair a função pura para um util compartilhado; mínimo viável é replicar a lógica no `computed` do dashboard (mesma fórmula).
+### Dividendos Recebidos (`portfolio-dividendos-recebidos`) — CORRIGIDO
+
+Diagnóstico do desencontro (1ª implementação): o card somava `svc.stocks()` (todas as classes: Ações + FIIs + ETFs, fonte `/stocks`) enquanto a tela Recebidos mostra **uma classe por vez** (`/transactions/acoes` ou `/transactions/fiis`). Além disso o card usava `d.year` estrito, sem o fallback `yearOf` da tela. Por isso nunca batia.
+
+Restrições de dados descobertas:
+- `acoes()` (lista do Dashboard) é montada de `getAcoes/getFiis/getEtfs` mas mapeia `dividends: []` — **não tem proventos**, só posição/`sector` correto (`Ações`/`FII`/`ETF`).
+- `svc.stocks()` (`StockDataService`) **tem** proventos (`/stocks` + `getStockDividends`) mas **não tem** `quantity` e seu `sector` é o setor GICS (não a classe).
+
+Decisão:
+- Criar util puro compartilhado `src/app/models/dividends-received.util.ts` com `receivedForTicker(dividends, txOfTicker, todayStr, currentYear)` (e helpers `yearOf`/`monthOf` com fallback para `pay_date`). Mesma fórmula da tela: ano corrente, `pay_date` < hoje, `comDate = ex_date || pay_date`, `eligibleShares = Σ qty (t.date <= comDate)`, soma `amount × eligibleShares`.
+- `DividendsSummaryComponent.computeReceived` passa a chamar o util (uma única implementação → garante paridade).
+- `dashboard.dividendosRecebidos()`:
+  - Escopo Ações + FIIs: montar conjunto de tickers permitidos a partir de `acoes()` onde `sector === 'Ações' || sector === 'FII'` (exclui ETF).
+  - Proventos: vir de `svc.stocks()` (que os carrega via `getStockDividends`), filtrando aos tickers permitidos.
+  - Cotas elegíveis: de `transactionSvc.transactions()` por ticker.
+  - Total = Σ `receivedForTicker(...)` entre os tickers permitidos.
+  - Tickers normalizados com `toUpperCase().trim()` (igual à tela).
+- Observação: o card só aparece dentro de `*ngIf="!acoesLoading() && acoes().length > 0"`, então `acoes()` já está carregado quando o card é exibido.
+
+### Layout dos cards de resumo (`portfolio-resumo-cards`) — ajuste
+- Desktop: `.ps-cards` em **uma linha** → `grid-template-columns: repeat(5, 1fr)` (sem `auto-fit`, sem span do hero).
+- Mobile (≤640px): **2 por linha** → `grid-template-columns: repeat(2, 1fr)`. O card hero (Patrimônio) ocupa a linha inteira no mobile (`grid-column: 1 / -1`) para destaque; os demais ficam 2 por linha.
+- Remover o `grid-column: 1 / -1` global do hero (passa a valer só no mobile).
+
+### Reload ao fechar o modal de lançamentos (`lancamentos-modal-reload-api`)
+- Forçar releitura na API ao fechar o modal (add/edit/remove), reusando os métodos que refazem as chamadas HTTP:
+  - `StockDataService.reload()` (reexpor público; refaz `/stocks` + `getStockDividends`).
+  - `TransactionService.reload()` (já existe; refaz `/transactions`).
+  - Dashboard `loadAtivos()` (refaz `getAcoes/getFiis/getEtfs/getTransactions`).
+- Dashboard: trocar `(close)="showTxModal.set(false)"` por `(close)="closeTxModal()"`, onde `closeTxModal()` fecha o modal e chama `loadAtivos()` + `svc.reload()` + `transactionSvc.reload()`.
+- Lançamentos (`MyAssetsComponent.closeModal()`): além de fechar, chamar `transactionSvc.reload()` + `stockData.reload()`. Em `remove()`, chamar os reloads após a exclusão.
 
 ### Mobile 4 colunas (`portfolio-lista-mobile-4-colunas`)
 - Colunas atuais (1→7): Ativo, Qtd, Preço Médio, Hoje, Saldo, Variação, Rent.

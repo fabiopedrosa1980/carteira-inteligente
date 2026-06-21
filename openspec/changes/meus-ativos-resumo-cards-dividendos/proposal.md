@@ -4,8 +4,8 @@ Na aba "Meus Ativos" (tab `portfolio` do Dashboard), o resumo da carteira está 
 
 ## What Changes
 
-- **Resumo em mais cards**: quebrar o bloco único de resumo (`.ps-strip`) em cards separados — Patrimônio Total, Investido, Ganho (R$), Variação (%) e Dividendos Recebidos — num grid responsivo, melhorando a leitura.
-- **Renomear e recalcular "Dividendos Hist."**: trocar o rótulo para **"Dividendos Recebidos"** e calcular o valor com a **mesma lógica** da tela Dividendos → Recebidos (`DividendsSummaryComponent` em modo `received`): proventos do **ano corrente** já pagos (`pay_date < hoje`), somando `valor × cotas elegíveis` (lançamentos com data ≤ data-com).
+- **Resumo em mais cards**: quebrar o bloco único de resumo (`.ps-strip`) em cards separados — Patrimônio Total, Investido, Ganho (R$), Variação (%) e Dividendos Recebidos. No **desktop** os cards ficam em **uma única linha**; no **mobile** ficam **2 por linha**.
+- **Renomear e recalcular "Dividendos Hist."**: trocar o rótulo para **"Dividendos Recebidos"** e calcular o valor com a **mesma lógica** da tela Dividendos → Recebidos (`DividendsSummaryComponent` em modo `received`): proventos do **ano corrente** já pagos (`pay_date < hoje`), somando `valor × cotas elegíveis` (lançamentos com data ≤ data-com). O total do card MUST corresponder a **Recebidos(Ações) + Recebidos(FIIs)** (as duas classes da tela; ETFs ficam de fora), com paridade de regras (`yearOf`/`monthOf` com fallback para a data de pagamento). A lógica MUST ser **compartilhada** entre o card e a tela (util único) para evitar divergência.
 - **Mobile: 4 colunas**: na listagem de "Meus Ativos" em mobile (≤640px), exibir apenas **Ativo, Qtde, Variação e Total** (Total = valor da posição, hoje exibido como "Saldo"), ocultando Preço Médio, Hoje e Rent.
 
 ## Capabilities
@@ -21,5 +21,8 @@ Na aba "Meus Ativos" (tab `portfolio` do Dashboard), o resumo da carteira está 
 
 - `src/app/components/dashboard/dashboard.html` — bloco `.portfolio-summary`/`.ps-strip` reescrito em cards; rótulo "Dividendos Hist." → "Dividendos Recebidos".
 - `src/app/components/dashboard/dashboard.scss` — novo grid de cards de resumo; media query da `.acoes-list` (≤640px) ajustada para 4 colunas.
-- `src/app/components/dashboard/dashboard.ts` — `dividendosRecebidos()` recalculado conforme a lógica `computeReceived` (ano corrente, pagos, cotas elegíveis por data-com), reutilizando `transactionSvc.transactions()` e os proventos das ações.
+- `src/app/components/dashboard/dashboard.ts` — `dividendosRecebidos()` recalculado via util compartilhado (ano corrente, pagos, cotas elegíveis por data-com, fallback de `yearOf`/`monthOf`), escopo Ações + FIIs (proventos de `svc.stocks()`, cotas de `transactionSvc.transactions()`, classe via `acoes()`).
+- `src/app/models/dividends-received.util.ts` (novo) — função pura compartilhada de cálculo de recebidos.
+- `src/app/components/dividends-summary/dividends-summary.ts` — `computeReceived` passa a usar o util compartilhado.
+- `src/app/components/dashboard/dashboard.scss` — `.ps-cards` em uma linha no desktop e 2 por linha no mobile.
 - Sem mudanças de API ou modelo de dados.

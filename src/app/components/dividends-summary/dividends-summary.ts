@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiAcaoItem, ApiDividend } from '../../services/backend-api.service';
 import { TransactionService } from '../../services/transaction.service';
+import { receivedByMonth } from '../../models/dividends-received.util';
 
 export type SummaryMode = 'received' | 'projected';
 
@@ -179,26 +180,24 @@ export class DividendsSummaryComponent implements OnChanges {
 
   // Recebidos: por mês do ano atual, soma amount × cotas elegíveis
   // (lançamentos cuja data é <= data-com), considerando apenas proventos já
-  // pagos (data de pagamento anterior a hoje).
+  // pagos. Usa o util compartilhado para garantir paridade com o card do
+  // Dashboard (Meus Ativos).
   private computeReceived(
     dividends: ApiDividend[],
     txOfTicker: { quantity: number; date: string }[],
   ): MonthValue[] {
-    const byMonth = new Map<number, number>();
-    for (const d of dividends) {
-      if (this.yearOf(d) !== this.currentYear) continue;
-      // Só conta o que já foi pago: pay_date existente e anterior a hoje.
-      if (!d.pay_date || d.pay_date >= this.todayStr) continue;
-
-      const comDate = d.ex_date || d.pay_date || '';
-      const eligibleShares = txOfTicker.reduce((sum, t) => {
-        if (!comDate || t.date <= comDate) return sum + t.quantity;
-        return sum;
-      }, 0);
-
-      const month = this.monthOf(d);
-      byMonth.set(month, (byMonth.get(month) ?? 0) + d.amount * eligibleShares);
-    }
+    const byMonth = receivedByMonth(
+      dividends.map((d) => ({
+        year: d.year,
+        month: d.month,
+        amount: d.amount,
+        exDate: d.ex_date,
+        payDate: d.pay_date,
+      })),
+      txOfTicker,
+      this.todayStr,
+      this.currentYear,
+    );
     return this.toMonthList(byMonth);
   }
 

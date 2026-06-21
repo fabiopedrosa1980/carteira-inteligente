@@ -582,10 +582,10 @@
   margin-bottom: 12px;
 }
 
-// Resumo quebrado em cards individuais num grid responsivo.
+// Resumo quebrado em cards individuais. Desktop: todos em uma única linha.
 .ps-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 10px;
 }
 
@@ -599,10 +599,7 @@
   gap: 6px;
 }
 
-// Patrimônio Total em destaque: ocupa a linha inteira e tem valor maior.
-.ps-card-hero {
-  grid-column: 1 / -1;
-}
+// Patrimônio Total em destaque (valor maior). No desktop ocupa 1 das 5 colunas.
 
 .ps-card-label {
   font-size: 11px;
@@ -632,8 +629,11 @@
 }
 
 @media (max-width: 640px) {
-  // Mobile: 2 colunas; Patrimônio (hero) continua em linha inteira.
+  // Mobile: 2 cards por linha; Patrimônio (hero) ocupa a linha inteira.
   .ps-cards {
     grid-template-columns: 1fr 1fr;
+  }
+  .ps-card-hero {
+    grid-column: 1 / -1;
   }
 }

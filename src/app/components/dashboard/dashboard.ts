@@ -16,6 +16,7 @@ import { DividendsComponent } from '../dividends/dividends';
 import { Stock } from '../../models/stock.model';
 import { AssetType } from '../../models/transaction.model';
 import { saldo, custo, variacaoPosicao, rentabilidade } from '../../models/position.util';
+import { receivedForTicker, localDateStr } from '../../models/dividends-received.util';
 
 type SortField = 'name' | 'price' | 'change' | 'qty' | 'saldo' | 'variacao' | 'rentabilidade';
 
@@ -124,6 +125,15 @@ export class DashboardComponent {
     this.showTxModal.set(true);
   }
 
+  // Fecha o modal de lançamento e força a releitura dos dados na API para que a
+  // tela reflita o estado atualizado (posições, totais e dividendos).
+  closeTxModal(): void {
+    this.showTxModal.set(false);
+    this.loadAtivos();
+    this.svc.reload();
+    this.transactionSvc.reload();
+  }
+
   stocksForGroup(g: string): Stock[] {
     return this.sortedStocks().filter((s) => s.sector === g);
   }
@@ -204,43 +214,40 @@ export class DashboardComponent {
     const inv = this.valorInvestido();
     return inv > 0 ? (this.lucroTotal() / inv) * 100 : null;
   });
-  // Dividendos Recebidos: mesma lógica da tela Dividendos → Recebidos
-  // (DividendsSummaryComponent.computeReceived). Considera apenas proventos do
-  // ano corrente já pagos (pay_date < hoje) e soma valor × cotas elegíveis
-  // (lançamentos com data <= data-com/ex_date), por ativo.
+  // Dividendos Recebidos: mesma lógica/util da tela Dividendos → Recebidos
+  // (receivedForTicker), garantindo que o valor coincida. Escopo = Ações + FIIs
+  // (as duas classes da tela; ETFs ficam de fora). Proventos vêm de
+  // svc.stocks() (carregados via getStockDividends); as cotas elegíveis vêm dos
+  // lançamentos; a classe de cada ticker vem de acoes() (sector correto).
   readonly dividendosRecebidos = computed(() => {
     const transactions = this.transactionSvc.transactions();
+    const todayStr = localDateStr();
     const currentYear = new Date().getFullYear();
-    const todayStr = this.localDateStr(new Date());
     const norm = (t: string) => (t ?? '').toUpperCase().trim();
+
+    // Tickers das classes que entram no total (Ações + FIIs).
+    const allowed = new Set(
+      this.acoes()
+        .filter((s) => s.sector === 'Ações' || s.sector === 'FII')
+        .map((s) => norm(s.ticker)),
+    );
 
     return this.svc.stocks().reduce((total, stk) => {
       const ticker = norm(stk.ticker);
+      if (!allowed.has(ticker)) return total;
+
       const txOfTicker = transactions.filter((t) => norm(t.ticker) === ticker);
+      const dividends = stk.dividends.map((d) => ({
+        year: d.year,
+        month: d.month,
+        amount: d.value,
+        exDate: d.exDate,
+        payDate: d.payDate,
+      }));
 
-      const received = stk.dividends.reduce((sum, d) => {
-        if (d.year !== currentYear) return sum;
-        if (!d.payDate || d.payDate >= todayStr) return sum;
-        const comDate = d.exDate || d.payDate || '';
-        const eligibleShares = txOfTicker.reduce(
-          (s, t) => (!comDate || t.date <= comDate ? s + t.quantity : s),
-          0,
-        );
-        return sum + d.value * eligibleShares;
-      }, 0);
-
-      return total + received;
+      return total + receivedForTicker(dividends, txOfTicker, todayStr, currentYear);
     }, 0);
   });
-
-  // Data de hoje em horário local (YYYY-MM-DD), evitando o deslocamento de fuso
-  // do toISOString() (UTC).
-  private localDateStr(d: Date): string {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
-  }
 
   sortedStocks = computed(() => {
     const list = [...this.acoes()];

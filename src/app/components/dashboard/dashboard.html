@@ -390,5 +390,5 @@
 <app-add-transaction-modal
   *ngIf="showTxModal()"
   [defaultAssetType]="txPresetType()"
-  (close)="showTxModal.set(false)"
+  (close)="closeTxModal()"
 ></app-add-transaction-modal>

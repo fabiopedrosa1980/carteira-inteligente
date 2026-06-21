@@ -15,7 +15,13 @@ A aba "Meus Ativos" SHALL exibir o resumo da carteira como **cards de estatísti
 - **WHEN** o ganho/variação da carteira é positivo ou negativo
 - **THEN** o valor do card correspondente é exibido com a cor de positivo (verde) ou negativo (vermelho)
 
-#### Scenario: Grid responsivo no mobile
+#### Scenario: Uma linha no desktop
+
+- **WHEN** a aba "Meus Ativos" é exibida no desktop (largura > 640px)
+- **THEN** todos os cards de resumo ficam em uma única linha (uma só fileira)
+
+#### Scenario: Dois por linha no mobile
 
 - **WHEN** a aba "Meus Ativos" é exibida em largura ≤640px
-- **THEN** os cards de resumo se reorganizam para caber na largura sem rolagem horizontal da página
+- **THEN** os cards de resumo são exibidos 2 por linha
+- **AND** não há rolagem horizontal da página

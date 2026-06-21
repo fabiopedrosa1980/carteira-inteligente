@@ -36,6 +36,18 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     this.close.emit();
   }
 
+  // Fecha a lista de sugestões ao clicar fora do campo/lista de ticker. Cliques
+  // dentro de .ticker-wrapper (input ou sugestões) não fecham por aqui — a
+  // seleção segue por selectSuggestion(). Não fecha o modal nem limpa o ticker.
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (this.suggestions().length === 0) return;
+    const target = event.target as HTMLElement | null;
+    if (!target || !target.closest('.ticker-wrapper')) {
+      this.suggestions.set([]);
+    }
+  }
+
   get isEdit(): boolean {
     return this.transaction !== null;
   }

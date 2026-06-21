@@ -138,6 +138,21 @@ export class DashboardComponent {
     return this.sortedStocks().filter((s) => s.sector === g);
   }
 
+  // ---- Agregados por tipo (cabeçalho do acordeão) ----
+  // Total do tipo = somatório do saldo (valor atual) das posições.
+  groupSaldo(g: string): number {
+    return this.stocksForGroup(g).reduce((sum, s) => sum + (saldo(s) ?? 0), 0);
+  }
+  private groupCusto(g: string): number {
+    return this.stocksForGroup(g).reduce((sum, s) => sum + (custo(s) ?? 0), 0);
+  }
+  // Rentabilidade agregada = (saldo total − custo total) / custo total × 100.
+  groupRentabilidade(g: string): number | null {
+    const c = this.groupCusto(g);
+    if (c <= 0) return null;
+    return ((this.groupSaldo(g) - c) / c) * 100;
+  }
+
   // ---- Paginação por grupo ----
   private readonly groupPages = signal<Record<string, number>>({});
 

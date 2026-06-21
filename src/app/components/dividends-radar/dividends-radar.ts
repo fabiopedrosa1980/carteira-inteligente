@@ -86,6 +86,7 @@ export class DividendsRadarComponent implements OnChanges {
   readonly nextMonth = ((new Date().getMonth() + 1) % 12) + 1;
 
   // Mês (1–12) com mais ativos marcados; empate no primeiro; 0 se nenhum.
+  // "Melhor mês" só vale quando há MAIS DE 1 ativo (≥2) no mês de maior contagem.
   readonly topMonth = computed(() => {
     let top = 0;
     let max = 0;
@@ -95,7 +96,7 @@ export class DividendsRadarComponent implements OnChanges {
         top = c.month;
       }
     }
-    return top;
+    return max > 1 ? top : 0;
   });
 
   // FIIs costumam pagar mensalmente; "Melhor mês"/"Oportunidade" não informam.
@@ -107,7 +108,9 @@ export class DividendsRadarComponent implements OnChanges {
     return this.showHighlights && month === this.topMonth();
   }
   isNextMonth(month: number): boolean {
-    return this.showHighlights && month === this.nextMonth;
+    if (!this.showHighlights || month !== this.nextMonth) return false;
+    // Só destaca o próximo mês se houver ao menos 1 ativo do tipo nele.
+    return (this.monthCards()[this.nextMonth - 1]?.tickers.length ?? 0) >= 1;
   }
 
   ngOnChanges(): void {

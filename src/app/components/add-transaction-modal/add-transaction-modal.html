@@ -50,7 +50,7 @@
             type="text"
             class="form-input"
             [class.error]="errors.ticker"
-            placeholder="Ex: VALE3, MXRF11, BOVA11"
+            [placeholder]="tickerPlaceholder"
             [ngModel]="form.ticker"
             (ngModelChange)="onTickerChange($event)"
             maxlength="10"

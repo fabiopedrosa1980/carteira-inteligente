@@ -16,6 +16,7 @@ import { debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs
 import { TransactionService } from '../../services/transaction.service';
 import { StockApiService, TickerSuggestion } from '../../services/stock-api.service';
 import { AssetType, Transaction } from '../../models/transaction.model';
+import { detectAssetType, assetTypeLabel } from '../../models/asset-type.util';
 
 @Component({
   selector: 'app-add-transaction-modal',
@@ -200,6 +201,11 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     this.quoteNotFound.set(false);
     // Novo ticker reabre o auto-preenchimento do preço.
     this.priceManuallyEdited = false;
+    // Sugere o tipo detectado pelo ticker (quando não travado pela seção).
+    if (!this.isAssetTypeLocked) {
+      const detected = detectAssetType(this.form.ticker);
+      if (detected) this.form.assetType = detected;
+    }
     if (value.length >= 3) {
       this.tickerInput$.next({ ticker: value.toUpperCase(), date: this.form.date });
       this.searchInput$.next(value.toUpperCase());
@@ -234,13 +240,18 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     return `${d.getFullYear()}-${m}-${day}`;
   }
 
-  // Classifica o ticker pela origem do sufixo B3 (heurística): final 11 →
-  // FII/ETF; final 3/4/5/6/7/8 → ação; senão desconhecido.
-  private tickerKind(ticker: string): 'acao' | 'fii_etf' | 'unknown' {
-    const t = (ticker ?? '').toUpperCase().trim();
-    if (/11$/.test(t)) return 'fii_etf';
-    if (/[345678]$/.test(t)) return 'acao';
-    return 'unknown';
+  // Placeholder do campo de ticker, específico do tipo selecionado.
+  get tickerPlaceholder(): string {
+    switch (this.form.assetType) {
+      case 'Acoes':
+        return 'Ex: VALE3';
+      case 'FIIs':
+        return 'Ex: MXRF11';
+      case 'ETFs':
+        return 'Ex: BOVA11';
+      default:
+        return 'Ex: VALE3, MXRF11, BOVA11';
+    }
   }
 
   save() {
@@ -254,16 +265,14 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
       this.errors.quantity = 'Quantidade inválida';
     if (!this.form.price || this.form.price <= 0) this.errors.price = 'Preço inválido';
 
-    // Valida se o ticker condiz com o tipo escolhido (heurística por sufixo).
+    // Valida se o ticker condiz com o tipo escolhido (detecção por ticker;
+    // distingue FII de ETF pela lista de ETFs conhecidos).
     if (!this.errors.ticker && this.form.assetType) {
-      const kind = this.tickerKind(this.form.ticker);
-      if (this.form.assetType === 'Acoes' && kind === 'fii_etf') {
-        this.errors.ticker = 'Ticker de FII/ETF (final 11) não condiz com Ações';
-      } else if (
-        (this.form.assetType === 'FIIs' || this.form.assetType === 'ETFs') &&
-        kind === 'acao'
-      ) {
-        this.errors.ticker = 'Ticker de ação não condiz com FIIs/ETFs';
+      const detected = detectAssetType(this.form.ticker);
+      if (detected && detected !== this.form.assetType) {
+        this.errors.ticker = `Ticker é de ${assetTypeLabel(detected)}, não condiz com ${assetTypeLabel(
+          this.form.assetType as AssetType,
+        )}`;
       }
     }
 

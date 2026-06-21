@@ -703,3 +703,106 @@
   opacity: 0.7;
   flex-shrink: 0;
 }
+
+/* ── Bloco de resumo financeiro ── */
+.portfolio-summary {
+  margin-bottom: 12px;
+}
+
+.ps-strip {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  overflow: hidden;
+}
+
+.ps-hero {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-right: 1px solid var(--border);
+}
+
+.ps-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ps-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.ps-lucro {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  &.pos { color: var(--color-pos); }
+  &.neg { color: var(--color-neg); }
+}
+
+.ps-secondary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.ps-stat {
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  &:first-child { border-right: 1px solid var(--border); }
+}
+
+.ps-stat-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ps-stat-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+  .ps-strip {
+    grid-template-columns: 1fr;
+  }
+  .ps-hero {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 12px;
+  }
+  .ps-label { width: 100%; }
+}
+
+/* Em telas muito pequenas (≤480px) oculta também Rent. (7ª col), deixando só Ativo e Saldo. */
+@media (max-width: 480px) {
+  .acoes-list {
+    th:nth-child(7),
+    td:nth-child(7) {
+      display: none;
+    }
+    .cl-rent { width: 0; }
+    .cl-ativo { width: 60%; }
+    .cl-saldo { width: 40%; }
+  }
+}

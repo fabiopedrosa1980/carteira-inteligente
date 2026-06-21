@@ -14,7 +14,7 @@ import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
 import { DividendsComponent } from '../dividends/dividends';
 import { Stock } from '../../models/stock.model';
-import { saldo, variacaoPosicao, rentabilidade } from '../../models/position.util';
+import { saldo, custo, variacaoPosicao, rentabilidade } from '../../models/position.util';
 
 type SortField = 'name' | 'price' | 'change' | 'qty' | 'saldo' | 'variacao' | 'rentabilidade';
 type ViewMode = 'cards' | 'list';
@@ -184,6 +184,24 @@ export class DashboardComponent {
     // Reinicia páginas ao mudar ordenação.
     this.groupPages.set({});
   }
+
+  readonly patrimonioTotal = computed(() =>
+    this.sortedStocks().reduce((sum, s) => sum + (saldo(s) ?? 0), 0)
+  );
+  readonly valorInvestido = computed(() =>
+    this.sortedStocks().reduce((sum, s) => sum + (custo(s) ?? 0), 0)
+  );
+  readonly lucroTotal = computed(() => this.patrimonioTotal() - this.valorInvestido());
+  readonly lucroPercent = computed(() => {
+    const inv = this.valorInvestido();
+    return inv > 0 ? (this.lucroTotal() / inv) * 100 : null;
+  });
+  readonly dividendosRecebidos = computed(() =>
+    this.svc.stocks().reduce(
+      (sum, stk) => sum + stk.dividends.reduce((ds, d) => ds + d.value * (stk.quantity ?? 0), 0),
+      0
+    )
+  );
 
   sortedStocks = computed(() => {
     const list = [...this.acoes()];

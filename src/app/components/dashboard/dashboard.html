@@ -95,6 +95,34 @@
 
         <ng-container *ngIf="!acoesLoading() && acoes().length > 0">
 
+          <div class="portfolio-summary">
+            <div class="ps-strip">
+              <div class="ps-hero">
+                <span class="ps-label">Patrimônio Total</span>
+                <span class="ps-value">R$ {{ patrimonioTotal() | number:'1.2-2' }}</span>
+                <span class="ps-lucro"
+                      [class.pos]="lucroPercent() !== null && lucroTotal() >= 0"
+                      [class.neg]="lucroPercent() !== null && lucroTotal() < 0">
+                  <ng-container *ngIf="lucroPercent() !== null">
+                    {{ lucroTotal() >= 0 ? '+' : '−' }}R$ {{ (lucroTotal() < 0 ? -lucroTotal() : lucroTotal()) | number:'1.2-2' }}
+                    &nbsp;{{ lucroTotal() >= 0 ? '+' : '−' }}{{ (lucroPercent()! < 0 ? -lucroPercent()! : lucroPercent()!) | number:'1.1-1' }}%
+                  </ng-container>
+                  <ng-container *ngIf="lucroPercent() === null">—</ng-container>
+                </span>
+              </div>
+              <div class="ps-secondary">
+                <div class="ps-stat">
+                  <span class="ps-stat-label">Investido</span>
+                  <span class="ps-stat-value">R$ {{ valorInvestido() | number:'1.2-2' }}</span>
+                </div>
+                <div class="ps-stat">
+                  <span class="ps-stat-label">Dividendos Hist.</span>
+                  <span class="ps-stat-value">R$ {{ dividendosRecebidos() | number:'1.2-2' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- ── Visão em lista ── -->
           @if (viewMode() === 'list') {
             <div class="sections-list">

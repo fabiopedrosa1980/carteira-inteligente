@@ -242,8 +242,8 @@ export class DashboardComponent {
 
   loadAtivos(): void {
     this.acoesLoading.set(true);
-    forkJoin([this.api.getAcoes(), this.api.getFiis()]).subscribe({
-      next: ([acoes, fiis]) => {
+    forkJoin([this.api.getAcoes(), this.api.getFiis(), this.api.getEtfs()]).subscribe({
+      next: ([acoes, fiis, etfs]) => {
         const mapItem = (item: ApiAcaoItem, sector: string): Stock => ({
           ticker: item.ticker,
           name: item.name || item.ticker,
@@ -262,6 +262,7 @@ export class DashboardComponent {
         this.acoes.set([
           ...acoes.map((item) => mapItem(item, 'Ações')),
           ...fiis.map((item) => mapItem(item, 'FII')),
+          ...etfs.map((item) => mapItem(item, 'ETF')),
         ]);
         this.acoesLoading.set(false);
       },

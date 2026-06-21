@@ -106,11 +106,15 @@ export class BackendApiService {
       .pipe(catchError(() => of([])));
   }
 
-  // Posições de FIIs (proventos = rendimentos). Defensivo: lista vazia se o
-  // endpoint ainda não existir no backend.
   getFiis(): Observable<ApiAcaoItem[]> {
     return this.http
       .get<ApiAcaoItem[]>(`${this.baseUrl}/transactions/fiis`)
+      .pipe(catchError(() => of([])));
+  }
+
+  getEtfs(): Observable<ApiAcaoItem[]> {
+    return this.http
+      .get<ApiAcaoItem[]>(`${this.baseUrl}/transactions/etfs`)
       .pipe(catchError(() => of([])));
   }
 

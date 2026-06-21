@@ -1,7 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../../services/transaction.service';
-import { StockDataService } from '../../services/stock-data.service';
 import { ConfirmService } from '../../services/confirm.service';
 import { AddTransactionModalComponent } from '../add-transaction-modal/add-transaction-modal';
 import { AssetType, Transaction } from '../../models/transaction.model';
@@ -127,8 +126,6 @@ export class MyAssetsComponent {
     if (p < this.totalPages(sec) - 1) this.pages.update((m) => ({ ...m, [sec]: p + 1 }));
   }
 
-  private readonly stockData = inject(StockDataService);
-
   constructor(readonly svc: TransactionService) {}
 
   openAdd(type?: AssetType) {
@@ -147,8 +144,6 @@ export class MyAssetsComponent {
     this.showModal = false;
     this.editing.set(null);
     this.presetType.set(null);
-    // Recarrega a carteira agregada para refletir adições/edições nos somatórios.
-    this.stockData.reload();
   }
 
   private readonly confirmService = inject(ConfirmService);
@@ -157,11 +152,7 @@ export class MyAssetsComponent {
     this.confirmService
       .confirm({ message: `Deseja realmente excluir o lançamento de ${t.ticker}?` })
       .then((ok) => {
-        if (ok) {
-          this.svc.remove(t.id);
-          // Reflete a exclusão nos somatórios derivados da carteira.
-          this.stockData.reload();
-        }
+        if (ok) this.svc.remove(t.id);
       });
   }
 }

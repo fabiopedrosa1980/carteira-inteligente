@@ -139,11 +139,9 @@
 /* Table — colunas de tamanho igual (5 colunas de dados + ações) */
 .table-header {
   display: grid;
-  // Colunas dimensionadas pelo conteúdo: campos curtos e previsíveis (Ativo,
-  // Data, Qtd., Preço) usam max-content; Total recebe o espaço flexível
-  // (minmax(0,1fr)) e pode truncar; Operação dimensiona aos botões (auto).
-  grid-template-columns: max-content max-content max-content max-content minmax(0, 1fr) auto;
-  column-gap: 16px;
+  // minmax(0, 1fr): permite a coluna encolher abaixo do conteúdo, evitando
+  // que valores/nomes longos estourem a largura no mobile.
+  grid-template-columns: repeat(5, minmax(0, 1fr)) 72px;
   padding: 9px 20px;
   background: rgba(128, 128, 128, 0.05);
   border-bottom: 1px solid var(--border);
@@ -155,9 +153,7 @@
 
   @media (max-width: 600px) {
     // Mobile compacto: Ativo · Qtd · Total · ações (oculta Data e Preço).
-    // 4 trilhas para as 4 colunas visíveis; ações em auto para caber os 2 botões.
-    grid-template-columns: max-content max-content minmax(0, 1fr) auto;
-    column-gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 56px;
     padding: 8px 12px;
     font-size: 12px;
     > span:nth-child(2),
@@ -168,9 +164,7 @@
 }
 .table-row {
   display: grid;
-  // Mesmo template do header para manter o alinhamento das colunas.
-  grid-template-columns: max-content max-content max-content max-content minmax(0, 1fr) auto;
-  column-gap: 16px;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) 72px;
   padding: 12px 20px;
   border-bottom: 1px solid var(--border);
   font-size: 13px;
@@ -189,8 +183,7 @@
 
   @media (max-width: 600px) {
     // Mobile compacto: 4 colunas (Ativo · Qtd · Total · ações), fonte maior.
-    grid-template-columns: max-content max-content minmax(0, 1fr) auto;
-    column-gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 56px;
     padding: 12px;
     font-size: 14px;
   }
@@ -298,6 +291,7 @@
   background: color-mix(in srgb, var(--color-neg) 12%, transparent);
   color: var(--color-neg);
 }
+
 
 /* Paginação por seção (10 por página). */
 .ma-pagination {

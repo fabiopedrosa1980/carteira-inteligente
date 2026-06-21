@@ -109,44 +109,117 @@
           <div>
             <h2 class="page-title">Minhas Ações</h2>
           </div>
-          @if (isMobile()) {
-            <div class="sort-mobile">
-              <span class="sort-label">Ordenar por</span>
-              <select
-                class="sort-select"
-                [value]="sortField()"
-                (change)="setSort($any($event.target).value)"
-              >
-                <option *ngFor="let opt of sortOptions" [value]="opt.field">{{ opt.label }}</option>
-              </select>
+          <div class="section-actions">
+            @if (isMobile()) {
+              <div class="sort-mobile">
+                <span class="sort-label">Ordenar por</span>
+                <select
+                  class="sort-select"
+                  [value]="sortField()"
+                  (change)="setSort($any($event.target).value)"
+                >
+                  <option *ngFor="let opt of sortOptions" [value]="opt.field">
+                    {{ opt.label }}
+                  </option>
+                </select>
+                <button
+                  type="button"
+                  class="sort-dir"
+                  (click)="toggleSortDir()"
+                  [disabled]="sortField() === 'default'"
+                  [title]="sortAsc() ? 'Ascendente' : 'Descendente'"
+                  [attr.aria-label]="sortAsc() ? 'Ordem ascendente' : 'Ordem descendente'"
+                >
+                  {{ sortAsc() ? '↑' : '↓' }}
+                </button>
+              </div>
+            } @else {
+              <div class="sort-controls">
+                <span class="sort-label">Ordenar por</span>
+                <app-scroll-bar class="sort-scroll" [activeKey]="sortField()">
+                  <button
+                    *ngFor="let opt of sortOptions"
+                    [class.active]="sortField() === opt.field"
+                    (click)="setSort(opt.field)"
+                  >
+                    {{ opt.label }}
+                    <span class="sort-arrow" *ngIf="sortField() === opt.field">
+                      {{ sortAsc() ? '↑' : '↓' }}
+                    </span>
+                  </button>
+                </app-scroll-bar>
+              </div>
+            }
+
+            <div class="view-toggle" role="group" aria-label="Visualização de Minhas Ações">
               <button
                 type="button"
-                class="sort-dir"
-                (click)="toggleSortDir()"
-                [disabled]="sortField() === 'default'"
-                [title]="sortAsc() ? 'Ascendente' : 'Descendente'"
-                [attr.aria-label]="sortAsc() ? 'Ordem ascendente' : 'Ordem descendente'"
+                class="vt-btn"
+                [class.active]="viewMode() === 'cards'"
+                [attr.aria-pressed]="viewMode() === 'cards'"
+                (click)="setView('cards')"
+                title="Ver em cards"
+                aria-label="Ver em cards"
               >
-                {{ sortAsc() ? '↑' : '↓' }}
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect
+                    x="3"
+                    y="3"
+                    width="8"
+                    height="8"
+                    rx="1.5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="13"
+                    y="3"
+                    width="8"
+                    height="8"
+                    rx="1.5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="3"
+                    y="13"
+                    width="8"
+                    height="8"
+                    rx="1.5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <rect
+                    x="13"
+                    y="13"
+                    width="8"
+                    height="8"
+                    rx="1.5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="vt-btn"
+                [class.active]="viewMode() === 'list'"
+                [attr.aria-pressed]="viewMode() === 'list'"
+                (click)="setView('list')"
+                title="Ver em lista"
+                aria-label="Ver em lista"
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
               </button>
             </div>
-          } @else {
-            <div class="sort-controls">
-              <span class="sort-label">Ordenar por</span>
-              <app-scroll-bar class="sort-scroll" [activeKey]="sortField()">
-                <button
-                  *ngFor="let opt of sortOptions"
-                  [class.active]="sortField() === opt.field"
-                  (click)="setSort(opt.field)"
-                >
-                  {{ opt.label }}
-                  <span class="sort-arrow" *ngIf="sortField() === opt.field">
-                    {{ sortAsc() ? '↑' : '↓' }}
-                  </span>
-                </button>
-              </app-scroll-bar>
-            </div>
-          }
+          </div>
         </div>
 
         <div class="stocks-grid" *ngIf="acoesLoading()" aria-hidden="true">
@@ -169,13 +242,72 @@
           </p>
         </div>
 
-        <div class="stocks-grid fade-in" *ngIf="!acoesLoading() && acoes().length > 0">
-          <app-stock-card
-            *ngFor="let stock of sortedStocks()"
-            [stock]="stock"
-            (select)="selectedStock.set($event)"
-          ></app-stock-card>
-        </div>
+        <ng-container *ngIf="!acoesLoading() && acoes().length > 0">
+          <!-- Visão em cards (padrão) -->
+          <div class="stocks-grid fade-in" *ngIf="viewMode() === 'cards'">
+            <app-stock-card
+              *ngFor="let stock of sortedStocks()"
+              [stock]="stock"
+              (select)="selectedStock.set($event)"
+            ></app-stock-card>
+          </div>
+
+          <!-- Visão em lista -->
+          <div class="acoes-list-wrap fade-in" *ngIf="viewMode() === 'list'">
+            <table class="acoes-list">
+              <colgroup>
+                <col class="cl-ativo" />
+                <col class="cl-qtd" />
+                <col class="cl-preco" />
+                <col class="cl-hoje" />
+                <col class="cl-saldo" />
+                <col class="cl-var" />
+                <col class="cl-rent" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>Ativo</th>
+                  <th>Qtd</th>
+                  <th>Preço</th>
+                  <th>Hoje</th>
+                  <th>Saldo</th>
+                  <th>Variação</th>
+                  <th>Rent.</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (stock of sortedStocks(); track stock.ticker) {
+                  @let v = variacaoOf(stock);
+                  @let r = rentabilidadeOf(stock);
+                  @let sld = saldoOf(stock);
+                  <tr class="acoes-row" (click)="selectedStock.set(stock)" title="Ver detalhes">
+                    <td class="cell-ativo">{{ stock.ticker }}</td>
+                    <td>{{ stock.quantity ? (stock.quantity | number: '1.0-0') : '—' }}</td>
+                    <td>{{ stock.price > 0 ? 'R$ ' + (stock.price | number: '1.2-2') : '—' }}</td>
+                    <td
+                      [class.pos]="stock.changePercent >= 0"
+                      [class.neg]="stock.changePercent < 0"
+                    >
+                      {{ stock.changePercent >= 0 ? '+' : ''
+                      }}{{ stock.changePercent | number: '1.2-2' }}%
+                    </td>
+                    <td>{{ sld === null ? '—' : 'R$ ' + (sld | number: '1.2-2') }}</td>
+                    <td [class.pos]="v !== null && v >= 0" [class.neg]="v !== null && v < 0">
+                      {{
+                        v === null ? '—' : (v >= 0 ? '+' : '−') + 'R$ ' + (abs(v) | number: '1.2-2')
+                      }}
+                    </td>
+                    <td [class.pos]="r !== null && r >= 0" [class.neg]="r !== null && r < 0">
+                      {{
+                        r === null ? '—' : (r >= 0 ? '+' : '−') + (abs(r) | number: '1.1-1') + '%'
+                      }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
       </ng-container>
 
       <!-- Detalhe da ação em tela cheia -->

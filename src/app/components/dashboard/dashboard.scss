@@ -257,6 +257,137 @@
     gap: 8px;
   }
 }
+
+/* Agrupa ordenação + toggle de visão à direita do cabeçalho. */
+.section-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+  @media (max-width: 640px) {
+    width: 100%;
+  }
+}
+
+/* Toggle Cards/Lista (espelha o do Radar). */
+.view-toggle {
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.vt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 30px;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 6px;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  svg {
+    width: 17px;
+    height: 17px;
+  }
+  &:hover {
+    color: var(--text-primary);
+  }
+  &.active {
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent);
+  }
+}
+
+/* Visão em lista de Minhas Ações. */
+.acoes-list-wrap {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.acoes-list {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 14px;
+
+  th {
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 12px 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tbody tr {
+    cursor: pointer;
+  }
+  tbody tr:hover td {
+    background: var(--row-hover, rgba(255, 255, 255, 0.03));
+  }
+  .cell-ativo {
+    font-weight: 700;
+  }
+  .pos {
+    color: var(--color-pos);
+  }
+  .neg {
+    color: var(--color-neg);
+  }
+
+  // Mobile: prioriza Ativo, Saldo e Rentabilidade; oculta as demais colunas.
+  @media (max-width: 640px) {
+    font-size: 13px;
+    th,
+    td {
+      padding: 10px 8px;
+    }
+    // Oculta Qtd(2), Preço(3), Hoje(4) e Variação(6).
+    th:nth-child(2),
+    td:nth-child(2),
+    th:nth-child(3),
+    td:nth-child(3),
+    th:nth-child(4),
+    td:nth-child(4),
+    th:nth-child(6),
+    td:nth-child(6) {
+      display: none;
+    }
+    .cl-ativo {
+      width: 40%;
+    }
+    .cl-saldo {
+      width: 32%;
+    }
+    .cl-rent {
+      width: 28%;
+    }
+  }
+}
 .sort-controls {
   // Rótulo (fora da máscara do app-scroll-bar) + barra rolável.
   display: flex;

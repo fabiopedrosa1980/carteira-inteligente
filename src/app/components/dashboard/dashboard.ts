@@ -15,8 +15,10 @@ import { DividendsComponent } from '../dividends/dividends';
 import { ScrollBarComponent } from '../scroll-bar/scroll-bar';
 import { ResponsiveService } from '../../services/responsive.service';
 import { Stock } from '../../models/stock.model';
+import { saldo, variacaoPosicao, rentabilidade } from '../../models/position.util';
 
 type SortField = 'name' | 'price' | 'change' | 'dy' | 'nota' | 'default';
+type ViewMode = 'cards' | 'list';
 
 const THEME_KEY = 'ci-theme';
 
@@ -96,6 +98,26 @@ export class DashboardComponent {
   // Cards do skeleton de carregamento.
   readonly skelCards = Array.from({ length: 6 });
   readonly selectedStock = signal<Stock | null>(null);
+
+  // Visão de Minhas Ações: cards (padrão) ou lista.
+  readonly viewMode = signal<ViewMode>('cards');
+  setView(mode: ViewMode) {
+    this.viewMode.set(mode);
+  }
+
+  // Cálculos de posição (reusam as funções puras) para a visão em lista.
+  saldoOf(s: Stock): number | null {
+    return saldo(s);
+  }
+  variacaoOf(s: Stock): number | null {
+    return variacaoPosicao(s);
+  }
+  rentabilidadeOf(s: Stock): number | null {
+    return rentabilidade(s);
+  }
+  abs(n: number): number {
+    return Math.abs(n);
+  }
 
   toggleTheme() {
     this.isDark.update((v) => !v);

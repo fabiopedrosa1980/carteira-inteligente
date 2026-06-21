@@ -152,14 +152,9 @@
   letter-spacing: 0.5px;
 
   @media (max-width: 600px) {
-    // Mobile compacto: Ativo · Qtd · Total · ações (oculta Data e Preço).
-    grid-template-columns: repeat(3, minmax(0, 1fr)) 56px;
-    padding: 8px 12px;
-    font-size: 12px;
-    > span:nth-child(2),
-    > span:nth-child(4) {
-      display: none;
-    }
+    // Mobile: cada lançamento vira card; o cabeçalho da tabela é ocultado
+    // (cada card traz seus próprios rótulos).
+    display: none;
   }
 }
 .table-row {
@@ -182,10 +177,27 @@
   }
 
   @media (max-width: 600px) {
-    // Mobile compacto: 4 colunas (Ativo · Qtd · Total · ações), fonte maior.
-    grid-template-columns: repeat(3, minmax(0, 1fr)) 56px;
-    padding: 12px;
+    // Mobile: a linha vira CARD em grid de áreas, exibindo todos os campos
+    // com rótulos próprios. Mesmo idioma dos cards de "Meus Ativos".
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      'ticker actions'
+      'data   qtd'
+      'preco  total';
+    column-gap: 12px;
+    row-gap: 10px;
+    align-items: end;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     font-size: 14px;
+    font-family: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', monospace;
+    &:last-child {
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -235,21 +247,27 @@
   color: var(--text-secondary);
   font-size: 13px;
   @media (max-width: 600px) {
-    display: none;
+    grid-area: data;
   }
 }
 .qty-cell {
   font-weight: 600;
+  @media (max-width: 600px) {
+    grid-area: qtd;
+  }
 }
 .price-cell {
   color: var(--text-secondary);
   @media (max-width: 600px) {
-    display: none;
+    grid-area: preco;
   }
 }
 .total-cell {
   font-weight: 700;
   color: var(--accent);
+  @media (max-width: 600px) {
+    grid-area: total;
+  }
 }
 
 .action-cell {
@@ -257,6 +275,51 @@
   align-items: center;
   justify-content: flex-start;
   gap: 2px;
+  @media (max-width: 600px) {
+    grid-area: actions;
+    justify-content: flex-end;
+    align-self: center;
+  }
+}
+
+// Mobile: rótulos próprios em cada célula do card (sans, caixa-alta), já que o
+// cabeçalho da tabela some. Números seguem em mono (definido na .table-row).
+@media (max-width: 600px) {
+  .ticker-cell {
+    grid-area: ticker;
+    align-self: center;
+  }
+  .date-cell::before,
+  .qty-cell::before,
+  .price-cell::before,
+  .total-cell::before {
+    display: block;
+    margin-bottom: 2px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+  .date-cell::before {
+    content: 'Data';
+  }
+  .qty-cell::before {
+    content: 'Qtd';
+  }
+  .price-cell::before {
+    content: 'Preço unit.';
+  }
+  .total-cell::before {
+    content: 'Total';
+  }
+  // Qtd e Total alinhados à direita das suas áreas.
+  .qty-cell,
+  .total-cell {
+    justify-self: end;
+    text-align: right;
+  }
 }
 .btn-edit,
 .btn-remove {
@@ -291,7 +354,6 @@
   background: color-mix(in srgb, var(--color-neg) 12%, transparent);
   color: var(--color-neg);
 }
-
 
 /* Paginação por seção (10 por página). */
 .ma-pagination {

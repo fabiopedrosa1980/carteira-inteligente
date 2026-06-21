@@ -375,7 +375,7 @@
     td {
       padding: 10px 6px;
     }
-    // Oculta Qtd(2), Preço(3), Hoje(4) e Variação(6).
+    // Oculta Qtd(2), Preço(3), Hoje(4), Variação(6) e Rent.(7) — deixa só Ativo e Saldo.
     th:nth-child(2),
     td:nth-child(2),
     th:nth-child(3),
@@ -383,24 +383,23 @@
     th:nth-child(4),
     td:nth-child(4),
     th:nth-child(6),
-    td:nth-child(6) {
+    td:nth-child(6),
+    th:nth-child(7),
+    td:nth-child(7) {
       display: none;
     }
-    // Colunas ocultas ficam com largura zero para não gerar overflow em table-layout:fixed.
     .cl-qtd,
     .cl-preco,
     .cl-hoje,
-    .cl-var {
+    .cl-var,
+    .cl-rent {
       width: 0;
     }
     .cl-ativo {
-      width: 42%;
+      width: 60%;
     }
     .cl-saldo {
-      width: 33%;
-    }
-    .cl-rent {
-      width: 25%;
+      width: 40%;
     }
   }
 }
@@ -794,15 +793,3 @@
   .ps-label { width: 100%; }
 }
 
-/* Em telas muito pequenas (≤480px) oculta também Rent. (7ª col), deixando só Ativo e Saldo. */
-@media (max-width: 480px) {
-  .acoes-list {
-    th:nth-child(7),
-    td:nth-child(7) {
-      display: none;
-    }
-    .cl-rent { width: 0; }
-    .cl-ativo { width: 60%; }
-    .cl-saldo { width: 40%; }
-  }
-}

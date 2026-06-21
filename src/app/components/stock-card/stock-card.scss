@@ -124,6 +124,46 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   }
 }
 
+/* ---------- Posição: Qtd/Saldo e Variação/Rentabilidade ---------- */
+.position {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.pos-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+.pos-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  min-width: 0;
+}
+.pos-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+.pos-value {
+  font-family: $mono;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+
+  &.pos {
+    color: var(--color-pos);
+  }
+  &.neg {
+    color: var(--color-neg);
+  }
+}
+
 /* ---------- Bottom stat strip ---------- */
 .stat-strip {
   display: flex;

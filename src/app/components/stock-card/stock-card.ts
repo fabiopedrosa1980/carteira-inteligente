@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stock } from '../../models/stock.model';
+import { saldo, variacaoPosicao, rentabilidade } from '../../models/position.util';
 
 @Component({
   selector: 'app-stock-card',
@@ -29,5 +30,20 @@ export class StockCardComponent {
     if (this.stock.nota > 7) return 'nota-high';
     if (this.stock.nota >= 5) return 'nota-mid';
     return 'nota-low';
+  }
+
+  // Posição: saldo, variação (R$) e rentabilidade (%) — null quando não há dados.
+  get saldo(): number | null {
+    return saldo(this.stock);
+  }
+  get variacao(): number | null {
+    return variacaoPosicao(this.stock);
+  }
+  get rentabilidade(): number | null {
+    return rentabilidade(this.stock);
+  }
+
+  abs(n: number): number {
+    return Math.abs(n);
   }
 }

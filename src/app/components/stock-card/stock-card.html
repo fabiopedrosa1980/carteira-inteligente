@@ -25,6 +25,33 @@
     <span class="price loading" *ngIf="stock.price === 0">—</span>
   </div>
 
+  <div class="position" *ngIf="stock.quantity && stock.quantity > 0">
+    <div class="pos-line">
+      <span class="pos-item">
+        <span class="pos-label">Qtd</span>
+        <span class="pos-value">{{ stock.quantity | number: '1.0-0' }}</span>
+      </span>
+      <span class="pos-item" *ngIf="saldo !== null">
+        <span class="pos-label">Saldo</span>
+        <span class="pos-value">R$ {{ saldo | number: '1.2-2' }}</span>
+      </span>
+    </div>
+    <div class="pos-line" *ngIf="variacao !== null || rentabilidade !== null">
+      <span class="pos-item" *ngIf="variacao !== null">
+        <span class="pos-label">Variação</span>
+        <span class="pos-value" [class.pos]="variacao >= 0" [class.neg]="variacao < 0">
+          {{ variacao >= 0 ? '+' : '−' }}R$ {{ abs(variacao) | number: '1.2-2' }}
+        </span>
+      </span>
+      <span class="pos-item" *ngIf="rentabilidade !== null">
+        <span class="pos-label">Rent.</span>
+        <span class="pos-value" [class.pos]="rentabilidade >= 0" [class.neg]="rentabilidade < 0">
+          {{ rentabilidade >= 0 ? '+' : '−' }}{{ abs(rentabilidade) | number: '1.1-1' }}%
+        </span>
+      </span>
+    </div>
+  </div>
+
   <div class="stat-strip">
     <div class="stat" *ngIf="stock.price > 0">
       <span class="stat-label">Hoje</span>

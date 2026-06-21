@@ -20,6 +20,7 @@ type SortField = 'name' | 'price' | 'change' | 'qty' | 'saldo' | 'variacao' | 'r
 type ViewMode = 'cards' | 'list';
 
 const THEME_KEY = 'ci-theme';
+const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-dashboard',
@@ -92,6 +93,64 @@ export class DashboardComponent {
     this.viewMode.set(mode);
   }
 
+  // ---- Grupos de ativos ----
+  readonly groups = ['Ações', 'FII', 'ETF'] as const;
+  readonly groupLabels: Record<string, string> = {
+    Ações: 'Ações',
+    FII: 'FIIs',
+    ETF: 'ETFs',
+  };
+
+  readonly collapsed = signal<Set<string>>(new Set());
+
+  toggle(g: string): void {
+    this.collapsed.update((set) => {
+      const next = new Set(set);
+      if (next.has(g)) next.delete(g);
+      else next.add(g);
+      return next;
+    });
+  }
+
+  isCollapsed(g: string): boolean {
+    return this.collapsed().has(g);
+  }
+
+  stocksForGroup(g: string): Stock[] {
+    return this.sortedStocks().filter((s) => s.sector === g);
+  }
+
+  // ---- Paginação por grupo ----
+  private readonly groupPages = signal<Record<string, number>>({});
+
+  totalPages(g: string): number {
+    return Math.max(1, Math.ceil(this.stocksForGroup(g).length / PAGE_SIZE));
+  }
+
+  pageOf(g: string): number {
+    return Math.min(this.groupPages()[g] ?? 0, this.totalPages(g) - 1);
+  }
+
+  showPager(g: string): boolean {
+    return this.stocksForGroup(g).length > PAGE_SIZE;
+  }
+
+  pagedFor(g: string): Stock[] {
+    const start = this.pageOf(g) * PAGE_SIZE;
+    return this.stocksForGroup(g).slice(start, start + PAGE_SIZE);
+  }
+
+  prevPage(g: string): void {
+    const p = this.pageOf(g);
+    if (p > 0) this.groupPages.update((m) => ({ ...m, [g]: p - 1 }));
+  }
+
+  nextPage(g: string): void {
+    const p = this.pageOf(g);
+    if (p < this.totalPages(g) - 1) this.groupPages.update((m) => ({ ...m, [g]: p + 1 }));
+  }
+
+  // ---- Cálculos de posição ----
   saldoOf(s: Stock): number | null {
     return saldo(s);
   }
@@ -122,6 +181,8 @@ export class DashboardComponent {
       // Métricas onde "maior é melhor" iniciam em ordem decrescente.
       this.sortAsc.set(!['change', 'saldo', 'variacao', 'rentabilidade'].includes(field));
     }
+    // Reinicia páginas ao mudar ordenação.
+    this.groupPages.set({});
   }
 
   sortedStocks = computed(() => {

@@ -15,83 +15,38 @@
           <rect x="3" y="18" width="6" height="11" rx="1.5" fill="currentColor" opacity="0.45" />
           <rect x="13" y="11" width="6" height="18" rx="1.5" fill="currentColor" opacity="0.7" />
           <rect x="23" y="4" width="6" height="25" rx="1.5" fill="currentColor" />
-          <path
-            d="M5 15 L16 8 L27 2"
-            stroke="currentColor"
-            stroke-width="1.6"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            opacity="0.5"
-          />
+          <path d="M5 15 L16 8 L27 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.5" />
         </svg>
         <span class="logo-text">Carteira <strong>Inteligente</strong></span>
       </div>
     </div>
     <div class="header-actions">
       <div class="user-chip" *ngIf="user() as u" [title]="u.email">
-        <img
-          class="user-avatar"
-          *ngIf="u.picture"
-          [src]="u.picture"
-          [alt]="u.name"
-          referrerpolicy="no-referrer"
-        />
+        <img class="user-avatar" *ngIf="u.picture" [src]="u.picture" [alt]="u.name" referrerpolicy="no-referrer" />
         <span class="user-avatar fallback" *ngIf="!u.picture">{{ u.name.charAt(0) }}</span>
         <span class="user-name">{{ u.name }}</span>
       </div>
-      <button
-        class="icon-btn"
-        (click)="toggleTheme()"
-        [title]="isDark() ? 'Ativar tema claro' : 'Ativar tema escuro'"
-        [attr.aria-label]="isDark() ? 'Ativar tema claro' : 'Ativar tema escuro'"
-      >
+      <button class="icon-btn" (click)="toggleTheme()" [title]="isDark() ? 'Ativar tema claro' : 'Ativar tema escuro'" [attr.aria-label]="isDark() ? 'Ativar tema claro' : 'Ativar tema escuro'">
         <svg *ngIf="isDark()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" />
-          <path
-            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
         </svg>
         <svg *ngIf="!isDark()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
       <button class="icon-btn danger" (click)="logout()" title="Sair" aria-label="Sair">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M16 17l5-5-5-5M21 12H9M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+          <path d="M16 17l5-5-5-5M21 12H9M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
     </div>
   </header>
 
   <nav class="tab-nav">
-    <button
-      *ngFor="let tab of tabs"
-      [class.active]="activeTab === tab.id"
-      (click)="setActiveTab(tab.id)"
-    >
+    <button *ngFor="let tab of tabs" [class.active]="activeTab === tab.id" (click)="setActiveTab(tab.id)">
       <svg class="tab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          [attr.d]="tab.iconPath"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
+        <path [attr.d]="tab.iconPath" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
       <span class="tab-label">{{ tab.label }}</span>
     </button>
@@ -103,7 +58,6 @@
     </div>
 
     <div *ngIf="activeTab === 'portfolio'">
-      <!-- Lista de ativos -->
       <ng-container *ngIf="!selectedStock()">
         <div class="section-header">
           <div>
@@ -111,70 +65,17 @@
           </div>
           <div class="section-actions">
             <div class="view-toggle" role="group" aria-label="Visualização de Meus Ativos">
-              <button
-                type="button"
-                class="vt-btn"
-                [class.active]="viewMode() === 'cards'"
-                [attr.aria-pressed]="viewMode() === 'cards'"
-                (click)="setView('cards')"
-                title="Ver em cards"
-                aria-label="Ver em cards"
-              >
+              <button type="button" class="vt-btn" [class.active]="viewMode() === 'cards'" [attr.aria-pressed]="viewMode() === 'cards'" (click)="setView('cards')" title="Ver em cards" aria-label="Ver em cards">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <rect
-                    x="3"
-                    y="3"
-                    width="8"
-                    height="8"
-                    rx="1.5"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  />
-                  <rect
-                    x="13"
-                    y="3"
-                    width="8"
-                    height="8"
-                    rx="1.5"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  />
-                  <rect
-                    x="3"
-                    y="13"
-                    width="8"
-                    height="8"
-                    rx="1.5"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  />
-                  <rect
-                    x="13"
-                    y="13"
-                    width="8"
-                    height="8"
-                    rx="1.5"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  />
+                  <rect x="3" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="2" />
+                  <rect x="13" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="2" />
+                  <rect x="3" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="2" />
+                  <rect x="13" y="13" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="2" />
                 </svg>
               </button>
-              <button
-                type="button"
-                class="vt-btn"
-                [class.active]="viewMode() === 'list'"
-                [attr.aria-pressed]="viewMode() === 'list'"
-                (click)="setView('list')"
-                title="Ver em lista"
-                aria-label="Ver em lista"
-              >
+              <button type="button" class="vt-btn" [class.active]="viewMode() === 'list'" [attr.aria-pressed]="viewMode() === 'list'" (click)="setView('list')" title="Ver em lista" aria-label="Ver em lista">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
+                  <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                 </svg>
               </button>
             </div>
@@ -187,125 +88,122 @@
 
         <div class="empty-portfolio" *ngIf="!acoesLoading() && acoes().length === 0">
           <svg class="empty-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+            <path d="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <p>
-            Nenhum ativo encontrado. Adicione <strong>Ações, FIIs ou ETFs</strong> na aba
-            Lançamentos.
-          </p>
+          <p>Nenhum ativo encontrado. Adicione <strong>Ações, FIIs ou ETFs</strong> na aba Lançamentos.</p>
         </div>
 
         <ng-container *ngIf="!acoesLoading() && acoes().length > 0">
-          <!-- Visão em cards -->
-          <div class="stocks-grid fade-in" *ngIf="viewMode() === 'cards'">
-            <app-stock-card
-              *ngFor="let stock of sortedStocks()"
-              [stock]="stock"
-              (select)="selectedStock.set($event)"
-            ></app-stock-card>
-          </div>
 
-          <!-- Visão em lista -->
-          <div class="acoes-list-wrap fade-in" *ngIf="viewMode() === 'list'">
-            <table class="acoes-list">
-              <colgroup>
-                <col class="cl-ativo" />
-                <col class="cl-qtd" />
-                <col class="cl-preco" />
-                <col class="cl-hoje" />
-                <col class="cl-saldo" />
-                <col class="cl-var" />
-                <col class="cl-rent" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th class="th-sortable" (click)="setSort('name')">
-                    Ativo<span class="th-arrow" *ngIf="sortField() === 'name'">{{ sortAsc() ? '↑' : '↓' }}</span>
-                  </th>
-                  <th class="th-sortable" (click)="setSort('qty')">
-                    Qtd<span class="th-arrow" *ngIf="sortField() === 'qty'">{{ sortAsc() ? '↑' : '↓' }}</span>
-                  </th>
-                  <th class="th-sortable" (click)="setSort('price')">
-                    Preço Médio<span class="th-arrow" *ngIf="sortField() === 'price'">{{ sortAsc() ? '↑' : '↓' }}</span>
-                  </th>
-                  <th class="th-sortable" (click)="setSort('change')">
-                    Hoje<span class="th-arrow" *ngIf="sortField() === 'change'">{{ sortAsc() ? '↑' : '↓' }}</span>
-                  </th>
-                  <th class="th-sortable" (click)="setSort('saldo')">
-                    Saldo<span class="th-arrow" *ngIf="sortField() === 'saldo'">{{ sortAsc() ? '↑' : '↓' }}</span>
-                  </th>
-                  <th class="th-sortable" (click)="setSort('variacao')">
-                    Variação<span class="th-arrow" *ngIf="sortField() === 'variacao'">{{ sortAsc() ? '↑' : '↓' }}</span>
-                  </th>
-                  <th class="th-sortable" (click)="setSort('rentabilidade')">
-                    Rent.<span class="th-arrow" *ngIf="sortField() === 'rentabilidade'">{{ sortAsc() ? '↑' : '↓' }}</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (stock of sortedStocks(); track stock.ticker) {
-                  @let v = variacaoOf(stock);
-                  @let r = rentabilidadeOf(stock);
-                  @let sld = saldoOf(stock);
-                  <tr class="acoes-row" (click)="selectedStock.set(stock)" title="Ver detalhes">
-                    <td class="cell-ativo">{{ stock.ticker }}</td>
-                    <td>{{ stock.quantity ? (stock.quantity | number: '1.0-0') : '—' }}</td>
-                    <td>{{ stock.avgPrice && stock.avgPrice > 0 ? 'R$ ' + (stock.avgPrice | number: '1.2-2') : '—' }}</td>
-                    <td
-                      [class.pos]="stock.changePercent >= 0"
-                      [class.neg]="stock.changePercent < 0"
-                    >
-                      {{ stock.changePercent >= 0 ? '+' : ''
-                      }}{{ stock.changePercent | number: '1.2-2' }}%
-                    </td>
-                    <td>{{ sld === null ? '—' : 'R$ ' + (sld | number: '1.2-2') }}</td>
-                    <td [class.pos]="v !== null && v >= 0" [class.neg]="v !== null && v < 0">
-                      {{
-                        v === null ? '—' : (v >= 0 ? '+' : '−') + 'R$ ' + (abs(v) | number: '1.2-2')
-                      }}
-                    </td>
-                    <td [class.pos]="r !== null && r >= 0" [class.neg]="r !== null && r < 0">
-                      {{
-                        r === null ? '—' : (r >= 0 ? '+' : '−') + (abs(r) | number: '1.1-1') + '%'
-                      }}
-                    </td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
+          <!-- ── Visão em lista ── -->
+          @if (viewMode() === 'list') {
+            @for (group of groups; track group) {
+              @if (stocksForGroup(group).length > 0) {
+                <div class="asset-group fade-in">
+                  <button class="group-header" (click)="toggle(group)" [attr.aria-expanded]="!isCollapsed(group)">
+                    <span class="group-title">{{ groupLabels[group] }} <span class="group-count">({{ stocksForGroup(group).length }})</span></span>
+                    <svg class="group-arrow" [class.collapsed]="isCollapsed(group)" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                  @if (!isCollapsed(group)) {
+                    <div class="group-body">
+                      <div class="acoes-list-wrap">
+                        <table class="acoes-list">
+                          <colgroup>
+                            <col class="cl-ativo" /><col class="cl-qtd" /><col class="cl-preco" />
+                            <col class="cl-hoje" /><col class="cl-saldo" /><col class="cl-var" /><col class="cl-rent" />
+                          </colgroup>
+                          <thead>
+                            <tr>
+                              <th class="th-sortable" (click)="setSort('name')">Ativo<span class="th-arrow" *ngIf="sortField() === 'name'">{{ sortAsc() ? '↑' : '↓' }}</span></th>
+                              <th class="th-sortable" (click)="setSort('qty')">Qtd<span class="th-arrow" *ngIf="sortField() === 'qty'">{{ sortAsc() ? '↑' : '↓' }}</span></th>
+                              <th class="th-sortable" (click)="setSort('price')">Preço Médio<span class="th-arrow" *ngIf="sortField() === 'price'">{{ sortAsc() ? '↑' : '↓' }}</span></th>
+                              <th class="th-sortable" (click)="setSort('change')">Hoje<span class="th-arrow" *ngIf="sortField() === 'change'">{{ sortAsc() ? '↑' : '↓' }}</span></th>
+                              <th class="th-sortable" (click)="setSort('saldo')">Saldo<span class="th-arrow" *ngIf="sortField() === 'saldo'">{{ sortAsc() ? '↑' : '↓' }}</span></th>
+                              <th class="th-sortable" (click)="setSort('variacao')">Variação<span class="th-arrow" *ngIf="sortField() === 'variacao'">{{ sortAsc() ? '↑' : '↓' }}</span></th>
+                              <th class="th-sortable" (click)="setSort('rentabilidade')">Rent.<span class="th-arrow" *ngIf="sortField() === 'rentabilidade'">{{ sortAsc() ? '↑' : '↓' }}</span></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (stock of pagedFor(group); track stock.ticker) {
+                              @let v = variacaoOf(stock);
+                              @let r = rentabilidadeOf(stock);
+                              @let sld = saldoOf(stock);
+                              <tr class="acoes-row" (click)="selectedStock.set(stock)" title="Ver detalhes">
+                                <td class="cell-ativo">{{ stock.ticker }}</td>
+                                <td>{{ stock.quantity ? (stock.quantity | number: '1.0-0') : '—' }}</td>
+                                <td>{{ stock.avgPrice && stock.avgPrice > 0 ? 'R$ ' + (stock.avgPrice | number: '1.2-2') : '—' }}</td>
+                                <td [class.pos]="stock.changePercent >= 0" [class.neg]="stock.changePercent < 0">{{ stock.changePercent >= 0 ? '+' : '' }}{{ stock.changePercent | number: '1.2-2' }}%</td>
+                                <td>{{ sld === null ? '—' : 'R$ ' + (sld | number: '1.2-2') }}</td>
+                                <td [class.pos]="v !== null && v >= 0" [class.neg]="v !== null && v < 0">{{ v === null ? '—' : (v >= 0 ? '+' : '−') + 'R$ ' + (abs(v) | number: '1.2-2') }}</td>
+                                <td [class.pos]="r !== null && r >= 0" [class.neg]="r !== null && r < 0">{{ r === null ? '—' : (r >= 0 ? '+' : '−') + (abs(r) | number: '1.1-1') + '%' }}</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                      @if (showPager(group)) {
+                        <div class="pager">
+                          <button (click)="prevPage(group)" [disabled]="pageOf(group) === 0">Anterior</button>
+                          <span>{{ pageOf(group) + 1 }} / {{ totalPages(group) }}</span>
+                          <button (click)="nextPage(group)" [disabled]="pageOf(group) >= totalPages(group) - 1">Próxima</button>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            }
+          }
+
+          <!-- ── Visão em cards ── -->
+          @if (viewMode() === 'cards') {
+            @for (group of groups; track group) {
+              @if (stocksForGroup(group).length > 0) {
+                <div class="asset-group fade-in">
+                  <button class="group-header" (click)="toggle(group)" [attr.aria-expanded]="!isCollapsed(group)">
+                    <span class="group-title">{{ groupLabels[group] }} <span class="group-count">({{ stocksForGroup(group).length }})</span></span>
+                    <svg class="group-arrow" [class.collapsed]="isCollapsed(group)" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                  @if (!isCollapsed(group)) {
+                    <div class="group-body">
+                      <div class="stocks-grid">
+                        <app-stock-card
+                          *ngFor="let stock of pagedFor(group)"
+                          [stock]="stock"
+                          (select)="selectedStock.set($event)"
+                        ></app-stock-card>
+                      </div>
+                      @if (showPager(group)) {
+                        <div class="pager">
+                          <button (click)="prevPage(group)" [disabled]="pageOf(group) === 0">Anterior</button>
+                          <span>{{ pageOf(group) + 1 }} / {{ totalPages(group) }}</span>
+                          <button (click)="nextPage(group)" [disabled]="pageOf(group) >= totalPages(group) - 1">Próxima</button>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            }
+          }
+
         </ng-container>
       </ng-container>
 
-      <!-- Detalhe do ativo em tela cheia -->
-      <app-stock-details-modal
-        *ngIf="selectedStock() as s"
-        [stock]="s"
-        (close)="selectedStock.set(null)"
-      ></app-stock-details-modal>
+      <app-stock-details-modal *ngIf="selectedStock() as s" [stock]="s" (close)="selectedStock.set(null)"></app-stock-details-modal>
     </div>
 
     <div *ngIf="activeTab === 'calendar'">
       <app-dividends *ngIf="acoes().length > 0"></app-dividends>
       <div class="empty-portfolio" *ngIf="acoes().length === 0 && !acoesLoading()">
         <svg class="empty-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
+          <path d="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
-        <p>
-          Cadastre ativos na aba <strong>Lançamentos</strong> para ver o histórico de dividendos.
-        </p>
+        <p>Cadastre ativos na aba <strong>Lançamentos</strong> para ver o histórico de dividendos.</p>
       </div>
     </div>
 

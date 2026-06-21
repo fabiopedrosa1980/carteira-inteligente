@@ -555,6 +555,98 @@
   color: var(--text-primary);
 }
 
+/* Grupos de ativos (acordeão) */
+.asset-group {
+  margin-bottom: 16px;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+  font-family: inherit;
+  transition: border-color 0.18s, background 0.18s;
+
+  &:hover {
+    border-color: var(--accent);
+  }
+}
+
+.group-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.group-count {
+  font-weight: 400;
+  color: var(--text-secondary);
+  font-size: 13px;
+  margin-left: 2px;
+}
+
+.group-arrow {
+  width: 18px;
+  height: 18px;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+
+  &.collapsed {
+    transform: rotate(-90deg);
+  }
+}
+
+.group-body {
+  margin-top: 8px;
+}
+
+/* Paginador por grupo */
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 0;
+
+  button {
+    padding: 5px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    transition: border-color 0.15s, color 0.15s;
+
+    &:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    &:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    font-size: 13px;
+    color: var(--text-secondary);
+    min-width: 56px;
+    text-align: center;
+  }
+}
+
 /* Estado vazio (portfólio / calendário) */
 .empty-portfolio {
   display: flex;

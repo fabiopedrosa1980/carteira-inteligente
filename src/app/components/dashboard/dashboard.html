@@ -103,55 +103,14 @@
     </div>
 
     <div *ngIf="activeTab === 'portfolio'">
-      <!-- Lista de ações -->
+      <!-- Lista de ativos -->
       <ng-container *ngIf="!selectedStock()">
         <div class="section-header">
           <div>
-            <h2 class="page-title">Minhas Ações</h2>
+            <h2 class="page-title">Meus Ativos</h2>
           </div>
           <div class="section-actions">
-            @if (isMobile()) {
-              <div class="sort-mobile">
-                <span class="sort-label">Ordenar por</span>
-                <select
-                  class="sort-select"
-                  [value]="sortField()"
-                  (change)="setSort($any($event.target).value)"
-                >
-                  <option *ngFor="let opt of sortOptions" [value]="opt.field">
-                    {{ opt.label }}
-                  </option>
-                </select>
-                <button
-                  type="button"
-                  class="sort-dir"
-                  (click)="toggleSortDir()"
-                  [disabled]="sortField() === 'default'"
-                  [title]="sortAsc() ? 'Ascendente' : 'Descendente'"
-                  [attr.aria-label]="sortAsc() ? 'Ordem ascendente' : 'Ordem descendente'"
-                >
-                  {{ sortAsc() ? '↑' : '↓' }}
-                </button>
-              </div>
-            } @else {
-              <div class="sort-controls">
-                <span class="sort-label">Ordenar por</span>
-                <app-scroll-bar class="sort-scroll" [activeKey]="sortField()">
-                  <button
-                    *ngFor="let opt of sortOptions"
-                    [class.active]="sortField() === opt.field"
-                    (click)="setSort(opt.field)"
-                  >
-                    {{ opt.label }}
-                    <span class="sort-arrow" *ngIf="sortField() === opt.field">
-                      {{ sortAsc() ? '↑' : '↓' }}
-                    </span>
-                  </button>
-                </app-scroll-bar>
-              </div>
-            }
-
-            <div class="view-toggle" role="group" aria-label="Visualização de Minhas Ações">
+            <div class="view-toggle" role="group" aria-label="Visualização de Meus Ativos">
               <button
                 type="button"
                 class="vt-btn"
@@ -237,13 +196,13 @@
             />
           </svg>
           <p>
-            Nenhuma ação encontrada. Adicione lançamentos do tipo <strong>Ações</strong> na aba
+            Nenhum ativo encontrado. Adicione <strong>Ações, FIIs ou ETFs</strong> na aba
             Lançamentos.
           </p>
         </div>
 
         <ng-container *ngIf="!acoesLoading() && acoes().length > 0">
-          <!-- Visão em cards (padrão) -->
+          <!-- Visão em cards -->
           <div class="stocks-grid fade-in" *ngIf="viewMode() === 'cards'">
             <app-stock-card
               *ngFor="let stock of sortedStocks()"
@@ -266,13 +225,27 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th>Ativo</th>
-                  <th>Qtd</th>
-                  <th>Preço</th>
-                  <th>Hoje</th>
-                  <th>Saldo</th>
-                  <th>Variação</th>
-                  <th>Rent.</th>
+                  <th class="th-sortable" (click)="setSort('name')">
+                    Ativo<span class="th-arrow" *ngIf="sortField() === 'name'">{{ sortAsc() ? '↑' : '↓' }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('qty')">
+                    Qtd<span class="th-arrow" *ngIf="sortField() === 'qty'">{{ sortAsc() ? '↑' : '↓' }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('price')">
+                    Preço<span class="th-arrow" *ngIf="sortField() === 'price'">{{ sortAsc() ? '↑' : '↓' }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('change')">
+                    Hoje<span class="th-arrow" *ngIf="sortField() === 'change'">{{ sortAsc() ? '↑' : '↓' }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('saldo')">
+                    Saldo<span class="th-arrow" *ngIf="sortField() === 'saldo'">{{ sortAsc() ? '↑' : '↓' }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('variacao')">
+                    Variação<span class="th-arrow" *ngIf="sortField() === 'variacao'">{{ sortAsc() ? '↑' : '↓' }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('rentabilidade')">
+                    Rent.<span class="th-arrow" *ngIf="sortField() === 'rentabilidade'">{{ sortAsc() ? '↑' : '↓' }}</span>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -310,7 +283,7 @@
         </ng-container>
       </ng-container>
 
-      <!-- Detalhe da ação em tela cheia -->
+      <!-- Detalhe do ativo em tela cheia -->
       <app-stock-details-modal
         *ngIf="selectedStock() as s"
         [stock]="s"

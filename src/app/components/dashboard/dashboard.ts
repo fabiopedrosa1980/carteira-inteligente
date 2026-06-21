@@ -1,6 +1,7 @@
 import { Component, computed, signal, Signal, inject, effect, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { StockDataService } from '../../services/stock-data.service';
 import { BackendApiService, ApiAcaoItem } from '../../services/backend-api.service';
 import { AuthService } from '../../services/auth.service';
@@ -12,12 +13,10 @@ import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
 import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
 import { DividendsComponent } from '../dividends/dividends';
-import { ScrollBarComponent } from '../scroll-bar/scroll-bar';
-import { ResponsiveService } from '../../services/responsive.service';
 import { Stock } from '../../models/stock.model';
 import { saldo, variacaoPosicao, rentabilidade } from '../../models/position.util';
 
-type SortField = 'name' | 'price' | 'change' | 'dy' | 'nota' | 'default';
+type SortField = 'name' | 'price' | 'change' | 'qty' | 'saldo' | 'variacao' | 'rentabilidade';
 type ViewMode = 'cards' | 'list';
 
 const THEME_KEY = 'ci-theme';
@@ -33,7 +32,6 @@ const THEME_KEY = 'ci-theme';
     MyAssetsComponent,
     GoalsComponent,
     DividendsComponent,
-    ScrollBarComponent,
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
@@ -44,12 +42,7 @@ export class DashboardComponent {
   private readonly router = inject(Router);
   private readonly transactionSvc = inject(TransactionService);
   private readonly metasSvc = inject(MetasService);
-  private readonly responsive = inject(ResponsiveService);
 
-  // Mobile → combo de ordenação; desktop → chips.
-  readonly isMobile = this.responsive.isMobile;
-
-  // Usuário autenticado para identificação no header.
   readonly user = this.auth.user;
 
   logout(): void {
@@ -58,19 +51,16 @@ export class DashboardComponent {
   }
 
   showModal = false;
-  activeTab = 'meus-ativos';
+  activeTab = 'portfolio';
 
-  // Troca de aba: sempre recarrega da API os dados da tela selecionada,
-  // garantindo que o usuário veja informações atualizadas a cada navegação.
   setActiveTab(id: string): void {
     this.activeTab = id;
     this.selectedStock.set(null);
     this.refreshActiveTab();
   }
 
-  // Clique na marca → volta à home (aba padrão), fechando o detalhe aberto.
   goHome(): void {
-    this.setActiveTab('meus-ativos');
+    this.setActiveTab('portfolio');
   }
 
   private refreshActiveTab(): void {
@@ -79,33 +69,29 @@ export class DashboardComponent {
         this.transactionSvc.reload();
         break;
       case 'portfolio':
-        this.loadAcoes();
+        this.loadAtivos();
         break;
       case 'calendar':
-        // Garante que a lista de ações exista para o histórico de dividendos;
-        // o próprio DividendHistoryComponent recarrega ao ser recriado.
-        this.loadAcoes();
+        this.loadAtivos();
         break;
       case 'metas':
         this.metasSvc.load();
         break;
     }
   }
+
   isDark = signal(localStorage.getItem(THEME_KEY) !== 'light');
 
   readonly acoes = signal<Stock[]>([]);
   readonly acoesLoading = signal(false);
-  // Cards do skeleton de carregamento.
   readonly skelCards = Array.from({ length: 6 });
   readonly selectedStock = signal<Stock | null>(null);
 
-  // Visão de Minhas Ações: cards (padrão) ou lista.
   readonly viewMode = signal<ViewMode>('list');
   setView(mode: ViewMode) {
     this.viewMode.set(mode);
   }
 
-  // Cálculos de posição (reusam as funções puras) para a visão em lista.
   saldoOf(s: Stock): number | null {
     return saldo(s);
   }
@@ -125,60 +111,46 @@ export class DashboardComponent {
     localStorage.setItem(THEME_KEY, this.isDark() ? 'dark' : 'light');
   }
 
-  // Inicia ordenado por Nome (sem opção "Padrão" na UI).
   sortField = signal<SortField>('name');
   sortAsc = signal(true);
-
-  sortOptions: { label: string; field: SortField }[] = [
-    { label: 'Nome', field: 'name' },
-    { label: 'Preço', field: 'price' },
-    { label: 'Variação', field: 'change' },
-    { label: 'DY', field: 'dy' },
-    { label: 'Nota', field: 'nota' },
-  ];
 
   setSort(field: SortField) {
     if (this.sortField() === field) {
       this.sortAsc.update((v) => !v);
     } else {
       this.sortField.set(field);
-      // Métricas onde "maior é melhor" iniciam em ordem decrescente
-      this.sortAsc.set(!['change', 'dy', 'nota'].includes(field));
+      // Métricas onde "maior é melhor" iniciam em ordem decrescente.
+      this.sortAsc.set(!['change', 'saldo', 'variacao', 'rentabilidade'].includes(field));
     }
-  }
-
-  // Botão de direção do combo (mobile): só inverte a direção, sem trocar o campo.
-  toggleSortDir() {
-    this.sortAsc.update((v) => !v);
   }
 
   sortedStocks = computed(() => {
     const list = [...this.acoes()];
     const field = this.sortField();
     const asc = this.sortAsc();
-    if (field === 'default') return list;
     return list.sort((a, b) => {
       let cmp = 0;
       if (field === 'name') cmp = a.name.localeCompare(b.name, 'pt-BR');
       else if (field === 'price') cmp = a.price - b.price;
       else if (field === 'change') cmp = a.changePercent - b.changePercent;
-      else if (field === 'dy') cmp = a.dividendYield - b.dividendYield;
-      else if (field === 'nota') cmp = a.nota - b.nota;
+      else if (field === 'qty') cmp = (a.quantity ?? 0) - (b.quantity ?? 0);
+      else if (field === 'saldo') cmp = (saldo(a) ?? 0) - (saldo(b) ?? 0);
+      else if (field === 'variacao') cmp = (variacaoPosicao(a) ?? 0) - (variacaoPosicao(b) ?? 0);
+      else if (field === 'rentabilidade') cmp = (rentabilidade(a) ?? 0) - (rentabilidade(b) ?? 0);
       return asc ? cmp : -cmp;
     });
   });
 
-  // Ícones de traço (SVG path d, viewBox 24) por aba, no lugar de emojis.
   tabs = [
+    {
+      id: 'portfolio',
+      label: 'Meus Ativos',
+      iconPath: 'M3 17l6-6 4 4 7-8M21 7v5M21 7h-5',
+    },
     {
       id: 'meus-ativos',
       label: 'Lançamentos',
       iconPath: 'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01',
-    },
-    {
-      id: 'portfolio',
-      label: 'Minhas Ações',
-      iconPath: 'M3 17l6-6 4 4 7-8M21 7v5M21 7h-5',
     },
     {
       id: 'calendar',
@@ -200,36 +172,36 @@ export class DashboardComponent {
     this.loading = svc.loading;
     document.body.classList.toggle('light-theme', !this.isDark());
 
-    // Carrega ações sempre que o usuário estiver autenticado.
-    // Dispara na criação do componente e também após re-login sem refresh.
     effect(() => {
       if (this.auth.isAuthenticated()) {
-        untracked(() => this.loadAcoes());
+        untracked(() => this.loadAtivos());
       }
     });
   }
 
-  loadAcoes(): void {
+  loadAtivos(): void {
     this.acoesLoading.set(true);
-    this.api.getAcoes().subscribe({
-      next: (items: ApiAcaoItem[]) => {
-        this.acoes.set(
-          items.map((item) => ({
-            ticker: item.ticker,
-            name: item.name || item.ticker,
-            sector: 'Ações',
-            price: item.current_price,
-            changePercent: item.change_percent,
-            dividendYield: item.dividend_yield,
-            nota: item.nota,
-            dividends: [],
-            stockId: item.stock_id,
-            quantity: item.total_quantity,
-            avgPrice: item.avg_price,
-            indicators: item.indicators,
-            companyInfo: item.company_info,
-          })),
-        );
+    forkJoin([this.api.getAcoes(), this.api.getFiis()]).subscribe({
+      next: ([acoes, fiis]) => {
+        const mapItem = (item: ApiAcaoItem, sector: string): Stock => ({
+          ticker: item.ticker,
+          name: item.name || item.ticker,
+          sector,
+          price: item.current_price,
+          changePercent: item.change_percent,
+          dividendYield: item.dividend_yield,
+          nota: item.nota,
+          dividends: [],
+          stockId: item.stock_id,
+          quantity: item.total_quantity,
+          avgPrice: item.avg_price,
+          indicators: item.indicators,
+          companyInfo: item.company_info,
+        });
+        this.acoes.set([
+          ...acoes.map((item) => mapItem(item, 'Ações')),
+          ...fiis.map((item) => mapItem(item, 'FII')),
+        ]);
         this.acoesLoading.set(false);
       },
       error: () => this.acoesLoading.set(false),

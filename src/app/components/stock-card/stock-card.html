@@ -13,9 +13,6 @@
         {{ displayName }}
       </span>
     </div>
-    <span class="card-nota stat-value" [class]="notaClass" *ngIf="stock.nota > 0" title="Nota">
-      {{ stock.nota | number: '1.0-1' }}
-    </span>
   </div>
 
   <div class="price-row">
@@ -52,30 +49,7 @@
     </div>
   </div>
 
-  <div class="stat-strip">
-    <div class="stat" *ngIf="stock.price > 0">
-      <span class="stat-label">Hoje</span>
-      <span
-        class="stat-value change"
-        [class.pos]="stock.changePercent >= 0"
-        [class.neg]="stock.changePercent < 0"
-      >
-        <span class="arrow">{{ stock.changePercent >= 0 ? '▲' : '▼' }}</span>
-        {{ stock.changePercent >= 0 ? '+' : '' }}{{ stock.changePercent | number: '1.2-2' }}%
-      </span>
-    </div>
-
-    <span class="stat-sep" *ngIf="stock.price > 0" aria-hidden="true"></span>
-
-    <div class="stat">
-      <span class="stat-label">DY</span>
-      <span class="stat-value" [class]="yieldClass">
-        {{ stock.dividendYield > 0 ? (stock.dividendYield | number: '1.1-1') + '%' : '—' }}
-      </span>
-    </div>
-
-    <span class="sector-tag" *ngIf="stock.sector && stock.sector !== 'Ações'">
-      {{ stock.sector }}
-    </span>
+  <div class="stat-strip" *ngIf="stock.sector && stock.sector !== 'Ações'">
+    <span class="sector-tag">{{ stock.sector }}</span>
   </div>
 </div>

@@ -70,15 +70,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   min-width: 0;
 }
 
-/* Nota alinhada à direita, na mesma linha do ticker (topo), sem rótulo. */
-.card-nota {
-  margin-left: auto;
-  flex-shrink: 0;
-  align-self: flex-start;
-  font-size: 16px;
-  line-height: 1.1;
-}
-
 .ticker {
   font-family: $mono;
   font-size: 17px;
@@ -164,12 +155,11 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   }
 }
 
-/* ---------- Bottom stat strip ---------- */
+/* ---------- Bottom stat strip — only rendered when sector-tag is present ---------- */
 .stat-strip {
   display: flex;
   align-items: center;
   gap: 14px;
-  // Quebra de linha para nunca cortar Nota/setor em cards estreitos.
   flex-wrap: wrap;
   row-gap: 8px;
   margin-top: auto;
@@ -177,69 +167,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   border-top: 1px solid var(--border);
 }
 
-.stat {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.stat-label {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-secondary);
-}
-
-.stat-value {
-  font-family: $mono;
-  font-size: 13px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--text-primary);
-
-  &.change {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-
-    .arrow {
-      font-size: 8px;
-      line-height: 1;
-    }
-    &.pos {
-      color: var(--color-pos);
-    }
-    &.neg {
-      color: var(--color-neg);
-    }
-  }
-
-  &.yield-high,
-  &.nota-high {
-    color: var(--color-pos);
-  }
-  &.yield-mid,
-  &.nota-mid {
-    color: var(--color-warning);
-  }
-  &.yield-low {
-    color: var(--text-secondary);
-  }
-  &.nota-low {
-    color: var(--color-neg);
-  }
-}
-
-.stat-sep {
-  width: 1px;
-  align-self: stretch;
-  margin: 2px 0;
-  background: var(--border);
-}
-
 .sector-tag {
-  margin-left: auto;
   font-size: 11px;
   font-weight: 500;
   color: var(--text-secondary);
@@ -260,7 +188,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   // Permite que os filhos flex encolham e o conteúdo nunca empurre a largura.
   .card-top,
   .stat-strip,
-  .stat,
   .price-row {
     min-width: 0;
   }
@@ -269,8 +196,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   }
 
   .card-top {
-    // nowrap garante que a Nota fique na mesma linha do ticker (não quebra
-    // para baixo); o nome da empresa cede espaço via ellipsis (min-width: 0).
     flex-wrap: nowrap;
     gap: 8px;
     margin-bottom: 12px;
@@ -299,13 +224,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
     gap: 10px;
     row-gap: 8px;
     padding-top: 10px;
-  }
-
-  // Em telas estreitas o setor e os divisores ocupam espaço precioso;
-  // priorizamos Hoje / DY / Nota, que reflui sem estourar o card.
-  .stat-sep,
-  .sector-tag {
-    display: none;
   }
 }
 

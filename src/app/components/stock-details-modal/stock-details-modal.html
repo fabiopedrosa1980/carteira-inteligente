@@ -12,19 +12,6 @@
           stock.name
         }}</span>
       </div>
-      <div class="price-group">
-        <span class="d-price"
-          ><span class="currency">R$</span>{{ stock.price | number: '1.2-2' }}</span
-        >
-        <span
-          class="d-change"
-          [class.pos]="stock.changePercent >= 0"
-          [class.neg]="stock.changePercent < 0"
-        >
-          {{ stock.changePercent >= 0 ? '▲' : '▼' }}
-          {{ stock.changePercent >= 0 ? '+' : '' }}{{ stock.changePercent | number: '1.2-2' }}%
-        </span>
-      </div>
     </header>
 
     <div class="details-body">

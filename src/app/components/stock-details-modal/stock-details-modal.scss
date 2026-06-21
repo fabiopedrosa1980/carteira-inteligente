@@ -71,46 +71,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   color: var(--text-secondary);
 }
 
-.price-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-}
-.d-price {
-  font-family: $mono;
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  font-variant-numeric: tabular-nums;
-  color: var(--text-primary);
-  line-height: 1;
-  .currency {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-right: 4px;
-  }
-}
-.d-change {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 13px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  padding: 3px 10px;
-  border-radius: 999px;
-  &.pos {
-    color: var(--color-pos);
-    background: color-mix(in srgb, var(--color-pos) 14%, transparent);
-  }
-  &.neg {
-    color: var(--color-neg);
-    background: color-mix(in srgb, var(--color-neg) 14%, transparent);
-  }
-}
-
 /* ---------- Corpo ---------- */
 .details-body {
   padding: 22px 24px 26px;
@@ -210,9 +170,6 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 @media (max-width: 600px) {
   .details-header {
     padding: 18px 16px;
-  }
-  .price-group {
-    align-items: flex-start;
   }
   .details-body {
     padding: 18px 16px 22px;

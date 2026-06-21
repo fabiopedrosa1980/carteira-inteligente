@@ -232,7 +232,7 @@
                     Qtd<span class="th-arrow" *ngIf="sortField() === 'qty'">{{ sortAsc() ? '↑' : '↓' }}</span>
                   </th>
                   <th class="th-sortable" (click)="setSort('price')">
-                    Preço<span class="th-arrow" *ngIf="sortField() === 'price'">{{ sortAsc() ? '↑' : '↓' }}</span>
+                    Preço Médio<span class="th-arrow" *ngIf="sortField() === 'price'">{{ sortAsc() ? '↑' : '↓' }}</span>
                   </th>
                   <th class="th-sortable" (click)="setSort('change')">
                     Hoje<span class="th-arrow" *ngIf="sortField() === 'change'">{{ sortAsc() ? '↑' : '↓' }}</span>
@@ -256,7 +256,7 @@
                   <tr class="acoes-row" (click)="selectedStock.set(stock)" title="Ver detalhes">
                     <td class="cell-ativo">{{ stock.ticker }}</td>
                     <td>{{ stock.quantity ? (stock.quantity | number: '1.0-0') : '—' }}</td>
-                    <td>{{ stock.price > 0 ? 'R$ ' + (stock.price | number: '1.2-2') : '—' }}</td>
+                    <td>{{ stock.avgPrice && stock.avgPrice > 0 ? 'R$ ' + (stock.avgPrice | number: '1.2-2') : '—' }}</td>
                     <td
                       [class.pos]="stock.changePercent >= 0"
                       [class.neg]="stock.changePercent < 0"

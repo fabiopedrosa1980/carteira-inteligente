@@ -131,7 +131,7 @@ export class DashboardComponent {
     return list.sort((a, b) => {
       let cmp = 0;
       if (field === 'name') cmp = a.name.localeCompare(b.name, 'pt-BR');
-      else if (field === 'price') cmp = a.price - b.price;
+      else if (field === 'price') cmp = (a.avgPrice ?? 0) - (b.avgPrice ?? 0);
       else if (field === 'change') cmp = a.changePercent - b.changePercent;
       else if (field === 'qty') cmp = (a.quantity ?? 0) - (b.quantity ?? 0);
       else if (field === 'saldo') cmp = (saldo(a) ?? 0) - (saldo(b) ?? 0);

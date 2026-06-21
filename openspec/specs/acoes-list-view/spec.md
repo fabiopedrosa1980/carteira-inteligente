@@ -42,5 +42,6 @@ Na visão em lista, cada ativo SHALL ser exibido em uma linha com colunas: **Ati
 #### Scenario: Lista no mobile
 
 - **WHEN** a visão em lista é exibida em tela ≤ 640px
-- **THEN** apenas as colunas Ativo, Saldo e Rentabilidade são exibidas
-- **AND** as colunas Qtd, Preço Médio, Hoje e Variação (R$) ficam ocultas
+- **THEN** apenas as colunas **Ativo** e **Saldo** são exibidas
+- **AND** as colunas Qtd, Preço Médio, Hoje, Variação (R$) e Rentabilidade ficam ocultas
+- **AND** Ativo ocupa ~60% da largura e Saldo ~40%

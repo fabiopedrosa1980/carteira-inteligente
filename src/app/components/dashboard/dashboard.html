@@ -140,8 +140,7 @@
                     </button>
                     <div class="accordion-body" [class.collapsed]="isCollapsed(group)">
                       <div class="accordion-inner">
-                        <div class="acoes-list-wrap">
-                          <table class="acoes-list">
+                        <table class="acoes-list">
                             <colgroup>
                               <col class="cl-ativo" /><col class="cl-qtd" /><col class="cl-preco" />
                               <col class="cl-hoje" /><col class="cl-saldo" /><col class="cl-var" /><col class="cl-rent" />
@@ -174,7 +173,6 @@
                               }
                             </tbody>
                           </table>
-                        </div>
                         @if (showPager(group)) {
                           <div class="ma-pagination">
                             <button class="pag-btn" (click)="prevPage(group)" [disabled]="pageOf(group) === 0">‹ Anterior</button>

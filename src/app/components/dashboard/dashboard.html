@@ -135,6 +135,11 @@
                         <span class="sec-count">{{ stocksForGroup(group).length }}</span>
                       </div>
                       <div class="ah-right">
+                        <button class="btn-add-tx" (click)="openAddTx(group); $event.stopPropagation()" title="Adicionar lançamento" aria-label="Adicionar lançamento">
+                          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                          </svg>
+                        </button>
                         <span class="chevron" [class.collapsed]="isCollapsed(group)">›</span>
                       </div>
                     </button>
@@ -162,7 +167,10 @@
                                 @let r = rentabilidadeOf(stock);
                                 @let sld = saldoOf(stock);
                                 <tr class="acoes-row" (click)="selectedStock.set(stock)" title="Ver detalhes">
-                                  <td class="cell-ativo">{{ stock.ticker }}</td>
+                                  <td class="cell-ativo">
+                                    <span class="ca-ticker">{{ stock.ticker }}</span>
+                                    <span class="ca-qty" *ngIf="stock.quantity">{{ stock.quantity | number:'1.0-0' }} un.</span>
+                                  </td>
                                   <td>{{ stock.quantity ? (stock.quantity | number: '1.0-0') : '—' }}</td>
                                   <td>{{ stock.avgPrice && stock.avgPrice > 0 ? 'R$ ' + (stock.avgPrice | number: '1.2-2') : '—' }}</td>
                                   <td [class.pos]="stock.changePercent >= 0" [class.neg]="stock.changePercent < 0">{{ stock.changePercent >= 0 ? '+' : '' }}{{ stock.changePercent | number: '1.2-2' }}%</td>
@@ -250,3 +258,9 @@
 </div>
 
 <app-add-stock-modal *ngIf="showModal" (close)="showModal = false"></app-add-stock-modal>
+
+<app-add-transaction-modal
+  *ngIf="showTxModal()"
+  [defaultAssetType]="txPresetType()"
+  (close)="showTxModal.set(false)"
+></app-add-transaction-modal>

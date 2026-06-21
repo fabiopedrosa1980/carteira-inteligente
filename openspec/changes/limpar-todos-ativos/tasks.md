@@ -1,8 +1,8 @@
 ## 1. API Go — limpar todos os lançamentos
 
-- [ ] 1.1 Adicionar handler e rota `DELETE /api/v1/transactions` que remove todos os lançamentos do usuário
-- [ ] 1.2 Garantir idempotência (sucesso 2xx mesmo sem lançamentos) e persistência antes da resposta
-- [ ] 1.3 Publicar/validar o endpoint no serviço Render (`carteira-inteligente-api.onrender.com`)
+- [x] 1.1 Adicionar handler e rota `DELETE /api/v1/transactions` que remove todos os lançamentos do usuário
+- [x] 1.2 Garantir idempotência (sucesso 2xx mesmo sem lançamentos) e persistência antes da resposta
+- [x] 1.3 Publicar/validar o endpoint no serviço Render (`carteira-inteligente-api.onrender.com`)
 
 ## 2. Frontend — serviço de limpeza
 

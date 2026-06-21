@@ -204,14 +204,43 @@ export class DashboardComponent {
     const inv = this.valorInvestido();
     return inv > 0 ? (this.lucroTotal() / inv) * 100 : null;
   });
-  readonly dividendosRecebidos = computed(() =>
-    this.svc
-      .stocks()
-      .reduce(
-        (sum, stk) => sum + stk.dividends.reduce((ds, d) => ds + d.value * (stk.quantity ?? 0), 0),
-        0,
-      ),
-  );
+  // Dividendos Recebidos: mesma lógica da tela Dividendos → Recebidos
+  // (DividendsSummaryComponent.computeReceived). Considera apenas proventos do
+  // ano corrente já pagos (pay_date < hoje) e soma valor × cotas elegíveis
+  // (lançamentos com data <= data-com/ex_date), por ativo.
+  readonly dividendosRecebidos = computed(() => {
+    const transactions = this.transactionSvc.transactions();
+    const currentYear = new Date().getFullYear();
+    const todayStr = this.localDateStr(new Date());
+    const norm = (t: string) => (t ?? '').toUpperCase().trim();
+
+    return this.svc.stocks().reduce((total, stk) => {
+      const ticker = norm(stk.ticker);
+      const txOfTicker = transactions.filter((t) => norm(t.ticker) === ticker);
+
+      const received = stk.dividends.reduce((sum, d) => {
+        if (d.year !== currentYear) return sum;
+        if (!d.payDate || d.payDate >= todayStr) return sum;
+        const comDate = d.exDate || d.payDate || '';
+        const eligibleShares = txOfTicker.reduce(
+          (s, t) => (!comDate || t.date <= comDate ? s + t.quantity : s),
+          0,
+        );
+        return sum + d.value * eligibleShares;
+      }, 0);
+
+      return total + received;
+    }, 0);
+  });
+
+  // Data de hoje em horário local (YYYY-MM-DD), evitando o deslocamento de fuso
+  // do toISOString() (UTC).
+  private localDateStr(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
 
   sortedStocks = computed(() => {
     const list = [...this.acoes()];

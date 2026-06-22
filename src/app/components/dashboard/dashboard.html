@@ -334,17 +334,6 @@
                           {{ groupSaldo(group) | currency: 'BRL' : 'symbol' : '1.2-2' }}
                         </span>
                       </span>
-                      <span class="sec-metric" *ngIf="groupRentabilidade(group) !== null">
-                        <span class="sec-cap">Rent.</span>
-                        <span
-                          class="sec-rent"
-                          [class.pos]="groupRentabilidade(group)! >= 0"
-                          [class.neg]="groupRentabilidade(group)! < 0"
-                        >
-                          {{ groupRentabilidade(group)! >= 0 ? '+' : '−'
-                          }}{{ abs(groupRentabilidade(group)!) | number: '1.1-1' }}%
-                        </span>
-                      </span>
                       <span class="chevron" [class.collapsed]="isCollapsed(group)">›</span>
                     </div>
                   </button>

@@ -344,10 +344,10 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-areas:
-        'ticker hoje'
+        'ticker rent'
         'saldo  qtd'
         'preco  patual'
-        'rent   var';
+        'hoje   var';
       column-gap: 12px;
       row-gap: 10px;
       align-items: end;
@@ -434,14 +434,13 @@
       content: 'Preço atual';
     }
 
-    // 2) Hoje — variação do dia no topo direito, com rótulo "Variação hoje"
-    // acima do valor (mesmo idioma dos demais micro-rótulos do card). Sem fundo
-    // destacado: o sinal é comunicado apenas pela cor do texto.
+    // 2) Hoje — variação do dia no rodapé esquerdo, na mesma linha da Variação,
+    // com rótulo "Variação hoje" acima do valor. Sem fundo destacado: o sinal é
+    // comunicado apenas pela cor do texto.
     td:nth-child(5) {
       grid-area: hoje;
-      justify-self: end;
-      align-self: center;
-      text-align: right;
+      justify-self: start;
+      text-align: left;
       font-size: 12px;
       font-weight: 700;
       color: var(--text-secondary);
@@ -467,9 +466,13 @@
       content: 'Saldo';
     }
 
-    // 4) Rentabilidade e Variação — desempenho da posição.
+    // 4) Rentabilidade e Variação — desempenho da posição. A rentabilidade fica
+    // no topo direito (ao lado do ticker); a variação no rodapé direito.
     td:nth-child(8) {
       grid-area: rent;
+      justify-self: end;
+      align-self: center;
+      text-align: right;
       font-size: 14px;
       font-weight: 600;
     }

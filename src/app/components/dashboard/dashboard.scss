@@ -302,14 +302,32 @@
   tbody tr:hover td {
     background: var(--row-hover, rgba(255, 255, 255, 0.03));
   }
+  // Faixa lateral = zona de preço-teto (semáforo). Cor resolvida por classe na
+  // <tr> e consumida no desktop (acento no .cell-ativo) e no mobile (::before).
+  tbody tr.acoes-row {
+    --zona-color: var(--border);
+  }
+  tbody tr.acoes-row.zona-compra {
+    --zona-color: var(--color-pos);
+  }
+  tbody tr.acoes-row.zona-justo {
+    --zona-color: #e0a82e;
+  }
+  tbody tr.acoes-row.zona-caro {
+    --zona-color: var(--color-neg);
+  }
+
   .cell-ativo {
     font-weight: 700;
+    box-shadow: inset 3px 0 0 0 var(--zona-color);
   }
   .ca-ticker {
     font-weight: 700;
   }
-  .ca-qty {
-    display: none;
+  // Sub-rótulo sob o ticker: DY atual + desconto vs teto (estados "n/a"/"teto n/d").
+  .ca-sub {
+    display: block;
+    margin-top: 2px;
     font-size: 11px;
     font-weight: 400;
     color: var(--text-secondary);
@@ -365,7 +383,7 @@
       border-color: var(--accent);
     }
 
-    // Faixa de desempenho do dia (assinatura), à esquerda do card.
+    // Faixa lateral = zona de preço-teto (semáforo), à esquerda do card.
     tr.acoes-row::before {
       content: '';
       position: absolute;
@@ -373,15 +391,13 @@
       left: 0;
       bottom: 0;
       width: 3px;
-      background: var(--border);
+      background: var(--zona-color);
     }
-    tr.acoes-row.is-up::before {
-      background: var(--color-pos);
-      box-shadow: 0 0 14px -2px var(--color-pos);
-    }
-    tr.acoes-row.is-down::before {
-      background: var(--color-neg);
-      box-shadow: 0 0 14px -2px var(--color-neg);
+    // Glow só para zonas com sinal (compra/justo/caro), não para neutro/sem-dados.
+    tr.acoes-row.zona-compra::before,
+    tr.acoes-row.zona-justo::before,
+    tr.acoes-row.zona-caro::before {
+      box-shadow: 0 0 14px -2px var(--zona-color);
     }
 
     // Hover de célula não faz sentido no card.
@@ -409,16 +425,19 @@
       color: var(--text-secondary);
     }
 
-    // 1) Ticker
+    // 1) Ticker (+ sub-rótulo DY · teto). A faixa de zona vem do ::before da linha,
+    // então o acento inset do .cell-ativo (usado no desktop) é desligado aqui.
     .cell-ativo {
       grid-area: ticker;
       align-self: center;
       font-size: 16px;
       font-weight: 700;
       letter-spacing: 0.02em;
+      box-shadow: none;
     }
-    .ca-qty {
-      display: none;
+    .ca-sub {
+      font-size: 11px;
+      font-weight: 400;
     }
 
     // Preço atual (cotação corrente): pareado com o Preço médio para comparar
@@ -434,9 +453,7 @@
       content: 'Preço atual';
     }
 
-    // 2) Hoje — variação do dia no rodapé esquerdo, na mesma linha da Variação,
-    // com rótulo "Variação hoje" acima do valor. Sem fundo destacado: o sinal é
-    // comunicado apenas pela cor do texto.
+    // 2) Oportunidade — semáforo + desconto vs preço-teto no rodapé esquerdo.
     td:nth-child(5) {
       grid-area: hoje;
       justify-self: start;
@@ -446,7 +463,7 @@
       color: var(--text-secondary);
     }
     td:nth-child(5)::before {
-      content: 'Variação hoje';
+      content: 'Oportunidade';
     }
     td:nth-child(5).pos {
       color: var(--color-pos);

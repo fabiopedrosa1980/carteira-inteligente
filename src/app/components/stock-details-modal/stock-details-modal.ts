@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stock } from '../../models/stock.model';
+import { PrecoTetoResult, Zona } from '../../models/preco-teto.util';
 
 @Component({
   selector: 'app-stock-details-modal',
@@ -11,7 +12,43 @@ import { Stock } from '../../models/stock.model';
 })
 export class StockDetailsModalComponent {
   @Input({ required: true }) stock!: Stock;
+  @Input() precoTeto?: PrecoTetoResult;
   @Output() close = new EventEmitter<void>();
+
+  // ---- Seção de Preço-teto ----
+  // Mostra a seção sempre que o cálculo está disponível (inclui "sem dados"/n/a,
+  // para deixar explícito por que não há veredito).
+  get hasTeto(): boolean {
+    return !!this.precoTeto;
+  }
+  get isFii(): boolean {
+    return this.stock.sector === 'FII';
+  }
+
+  private static readonly ZONA_LABEL: Record<Zona, string> = {
+    compra: '🟢 Zona de compra',
+    justo: '🟡 Preço justo / perto',
+    caro: '🔴 Caro',
+    'sem-dados': '⚪ Sem dados',
+    na: 'n/a (ETF)',
+  };
+  zonaLabel(z: Zona): string {
+    return StockDetailsModalComponent.ZONA_LABEL[z];
+  }
+
+  pvpLabel(sinal: 'barato' | 'caro' | 'neutro' | null): string {
+    if (sinal === 'barato') return 'abaixo do valor patrimonial (barato)';
+    if (sinal === 'caro') return 'acima do valor patrimonial (caro)';
+    if (sinal === 'neutro') return 'no valor patrimonial';
+    return '';
+  }
+
+  // Desconto/ágio vs teto formatado (ex.: "−18%" / "+10%").
+  descontoLabel(pct: number | null): string {
+    if (pct === null) return '—';
+    const v = Math.round(pct * 100);
+    return (v >= 0 ? '+' : '−') + Math.abs(v) + '%';
+  }
 
   // Fecha o detalhe ao pressionar Esc.
   @HostListener('document:keydown.escape')

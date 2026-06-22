@@ -21,6 +21,15 @@ import {
   projectedForTicker,
   localDateStr,
 } from '../../models/dividends-received.util';
+import {
+  classeFromSector,
+  dpaTrailing12m,
+  parsePvp,
+  precoTeto,
+  PrecoTetoResult,
+  Zona,
+} from '../../models/preco-teto.util';
+import { PrecoTetoConfigService } from '../../services/preco-teto-config.service';
 
 type SortField =
   | 'name'
@@ -30,7 +39,8 @@ type SortField =
   | 'qty'
   | 'saldo'
   | 'variacao'
-  | 'rentabilidade';
+  | 'rentabilidade'
+  | 'zona';
 
 const THEME_KEY = 'ci-theme';
 const PAGE_SIZE = 10;
@@ -56,6 +66,7 @@ export class DashboardComponent {
   private readonly router = inject(Router);
   private readonly transactionSvc = inject(TransactionService);
   private readonly metasSvc = inject(MetasService);
+  private readonly tetoConfig = inject(PrecoTetoConfigService);
 
   readonly user = this.auth.user;
 
@@ -209,6 +220,64 @@ export class DashboardComponent {
     return Math.abs(n);
   }
 
+  // ---- Preço-teto / Zona de compra ----
+  // Os proventos vivem em svc.stocks() (carregados via getStockDividends), não nas
+  // posições de acoes(); por isso cruzamos por ticker, como em dividendosRecebidos.
+  private readonly dividendsByTicker = computed(() => {
+    const map = new Map<string, { value: number; payDate?: string | null }[]>();
+    const norm = (t: string) => (t ?? '').toUpperCase().trim();
+    for (const stk of this.svc.stocks()) {
+      map.set(
+        norm(stk.ticker),
+        stk.dividends.map((d) => ({ value: d.value, payDate: d.payDate })),
+      );
+    }
+    return map;
+  });
+
+  // Resultado do preço-teto para uma posição (zona, teto, desconto, P/VP).
+  precoTetoOf(s: Stock): PrecoTetoResult {
+    const classe = classeFromSector(s.sector);
+    const norm = (t: string) => (t ?? '').toUpperCase().trim();
+    const divs = this.dividendsByTicker().get(norm(s.ticker)) ?? [];
+    const dpa12m = dpaTrailing12m(divs);
+    return precoTeto({
+      classe,
+      dpa12m,
+      yieldAlvo: this.tetoConfig.yieldFor(s.ticker, classe),
+      price: s.price ?? 0,
+      margem: this.tetoConfig.margem(),
+      pvp: parsePvp(s.indicators),
+    });
+  }
+
+  zonaOf(s: Stock): Zona {
+    return this.precoTetoOf(s).zona;
+  }
+
+  // Classe CSS da faixa lateral (cor do semáforo) conforme a zona.
+  zonaClass(s: Stock): string {
+    return 'zona-' + this.zonaOf(s);
+  }
+
+  // Badge da coluna "Oportunidade": semáforo + desconto/ágio vs teto
+  // (ex.: "🟢 −18%"). Estados sem número: ⚪ (sem dados) e "n/a" (ETF).
+  oportunidadeBadge(s: Stock): string {
+    const r = this.precoTetoOf(s);
+    if (r.zona === 'na') return 'n/a';
+    if (r.zona === 'sem-dados' || r.descontoPct === null) return '⚪ —';
+    const emoji = r.zona === 'compra' ? '🟢' : r.zona === 'justo' ? '🟡' : '🔴';
+    const pct = Math.round(r.descontoPct * 100);
+    return `${emoji} ${pct >= 0 ? '+' : '−'}${Math.abs(pct)}%`;
+  }
+
+  // DY atual formatado como percentual; "—" quando ausente/zero.
+  dyLabel(s: Stock): string {
+    const dy = s.dividendYield;
+    if (!dy || dy <= 0) return '—';
+    return dy.toLocaleString('pt-BR', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) + '%';
+  }
+
   toggleTheme() {
     this.isDark.update((v) => !v);
     document.body.classList.toggle('light-theme', !this.isDark());
@@ -322,6 +391,12 @@ export class DashboardComponent {
       else if (field === 'saldo') cmp = (saldo(a) ?? 0) - (saldo(b) ?? 0);
       else if (field === 'variacao') cmp = (variacaoPosicao(a) ?? 0) - (variacaoPosicao(b) ?? 0);
       else if (field === 'rentabilidade') cmp = (rentabilidade(a) ?? 0) - (rentabilidade(b) ?? 0);
+      // Zona: ordena por desconto vs teto (mais barato primeiro); sem-dados/ETF ao fim.
+      else if (field === 'zona') {
+        const da = this.precoTetoOf(a).descontoPct ?? Number.POSITIVE_INFINITY;
+        const db = this.precoTetoOf(b).descontoPct ?? Number.POSITIVE_INFINITY;
+        cmp = da - db;
+      }
       return asc ? cmp : -cmp;
     });
   });

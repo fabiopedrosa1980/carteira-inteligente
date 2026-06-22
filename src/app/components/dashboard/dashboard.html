@@ -374,12 +374,14 @@
                                 >{{ sortAsc() ? '↑' : '↓' }}</span
                               >
                             </th>
-                            <th class="th-sortable" (click)="setSort('change')">
-                              Variação hoje<span
-                                class="th-arrow"
-                                *ngIf="sortField() === 'change'"
-                                >{{ sortAsc() ? '↑' : '↓' }}</span
-                              >
+                            <th
+                              class="th-sortable"
+                              (click)="setSort('zona')"
+                              title="Ordena por desconto vs preço-teto (mais barato primeiro)"
+                            >
+                              Oportunidade<span class="th-arrow" *ngIf="sortField() === 'zona'">{{
+                                sortAsc() ? '↑' : '↓'
+                              }}</span>
                             </th>
                             <th class="th-sortable" (click)="setSort('saldo')">
                               Saldo<span class="th-arrow" *ngIf="sortField() === 'saldo'">{{
@@ -405,16 +407,13 @@
                             @let sld = saldoOf(stock);
                             <tr
                               class="acoes-row"
-                              [class.is-up]="stock.changePercent > 0"
-                              [class.is-down]="stock.changePercent < 0"
+                              [ngClass]="zonaClass(stock)"
                               (click)="selectedStock.set(stock)"
                               title="Ver detalhes"
                             >
                               <td class="cell-ativo">
                                 <span class="ca-ticker">{{ stock.ticker }}</span>
-                                <span class="ca-qty" *ngIf="stock.quantity"
-                                  >{{ stock.quantity | number: '1.0-0' }} un.</span
-                                >
+                                <span class="ca-sub">DY {{ dyLabel(stock) }}</span>
                               </td>
                               <td>
                                 {{ stock.quantity ? (stock.quantity | number: '1.0-0') : '—' }}
@@ -433,13 +432,7 @@
                                     : '—'
                                 }}
                               </td>
-                              <td
-                                [class.pos]="stock.changePercent >= 0"
-                                [class.neg]="stock.changePercent < 0"
-                              >
-                                {{ stock.changePercent >= 0 ? '+' : ''
-                                }}{{ stock.changePercent | number: '1.2-2' }}%
-                              </td>
+                              <td class="cell-oportunidade">{{ oportunidadeBadge(stock) }}</td>
                               <td>{{ sld === null ? '—' : 'R$ ' + (sld | number: '1.2-2') }}</td>
                               <td
                                 [class.pos]="v !== null && v >= 0"
@@ -512,6 +505,7 @@
       <app-stock-details-modal
         *ngIf="selectedStock() as s"
         [stock]="s"
+        [precoTeto]="precoTetoOf(s)"
         (close)="selectedStock.set(null)"
       ></app-stock-details-modal>
     </div>

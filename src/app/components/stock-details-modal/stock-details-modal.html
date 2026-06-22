@@ -15,6 +15,49 @@
     </header>
 
     <div class="details-body">
+      <!-- Preço-teto / Zona de compra -->
+      <section class="section section-teto" *ngIf="hasTeto && precoTeto as t">
+        <h3 class="section-title">Preço-teto</h3>
+
+        <p class="teto-verdict" [attr.data-zona]="t.zona">{{ zonaLabel(t.zona) }}</p>
+
+        <div class="indicators-grid" *ngIf="t.zona !== 'sem-dados' && t.zona !== 'na'">
+          <div class="indicator">
+            <span class="i-label">{{ isFii ? 'Rendimento (12m)' : 'DPA (12m)' }}</span>
+            <span class="i-value">R$ {{ t.dpa12m | number: '1.2-2' }}</span>
+          </div>
+          <div class="indicator">
+            <span class="i-label">Yield-alvo</span>
+            <span class="i-value">{{ t.yieldAlvo * 100 | number: '1.0-1' }}%</span>
+          </div>
+          <div class="indicator">
+            <span class="i-label">Preço-teto</span>
+            <span class="i-value">R$ {{ t.teto | number: '1.2-2' }}</span>
+          </div>
+          <div class="indicator">
+            <span class="i-label">Preço justo</span>
+            <span class="i-value">R$ {{ t.precoJusto | number: '1.2-2' }}</span>
+          </div>
+          <div class="indicator">
+            <span class="i-label">Preço atual vs teto</span>
+            <span class="i-value">{{ descontoLabel(t.descontoPct) }}</span>
+          </div>
+          <div class="indicator" *ngIf="isFii && t.pvpSinal">
+            <span class="i-label">P/VP</span>
+            <span class="i-value">{{ pvpLabel(t.pvpSinal) }}</span>
+          </div>
+        </div>
+
+        <p class="teto-empty" *ngIf="t.zona === 'sem-dados'">
+          Histórico de proventos insuficiente para calcular o preço-teto.
+        </p>
+
+        <p class="teto-disclaimer">
+          Cálculo informativo (método de preço-teto por dividendos). Não constitui recomendação de
+          investimento.
+        </p>
+      </section>
+
       <!-- Indicadores fundamentalistas (Investidor10) -->
       <section class="section" *ngIf="hasIndicators">
         <h3 class="section-title">Indicadores fundamentalistas</h3>

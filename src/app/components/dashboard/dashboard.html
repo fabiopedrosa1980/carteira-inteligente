@@ -313,6 +313,9 @@
             </div>
           </div>
 
+          <!-- Alocação da carteira (alvos por classe + concentração) -->
+          <app-allocation-card [stocks]="acoes()"></app-allocation-card>
+
           <!-- ── Visão em lista ── -->
           <div class="sections-list">
             @for (group of groups; track group) {

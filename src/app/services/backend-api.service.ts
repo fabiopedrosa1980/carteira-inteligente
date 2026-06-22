@@ -138,6 +138,26 @@ export class BackendApiService {
   deleteGoal(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/goals/${id}`);
   }
+
+  // Configuração de alocação da carteira. Endpoint é dependência externa (repo
+  // Go): enquanto não existir, getAllocation degrada para null e o frontend
+  // aplica defaults.
+  getAllocation(): Observable<ApiAllocation | null> {
+    return this.http
+      .get<ApiAllocation>(`${this.baseUrl}/allocation`)
+      .pipe(catchError(() => of(null)));
+  }
+
+  updateAllocation(data: ApiAllocation): Observable<ApiAllocation | null> {
+    return this.http
+      .put<ApiAllocation>(`${this.baseUrl}/allocation`, data)
+      .pipe(catchError(() => of(null)));
+  }
+}
+
+export interface ApiAllocation {
+  targets: { Acoes: number; FIIs: number; ETFs: number };
+  concentrationLimit: number;
 }
 
 export interface ApiAcaoItem {

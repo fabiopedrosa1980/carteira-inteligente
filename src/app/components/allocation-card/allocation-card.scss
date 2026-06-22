@@ -1,0 +1,222 @@
+.alloc-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.alloc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.alloc-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+}
+.alloc-total {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.alloc-edit {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    color: var(--text-primary);
+    border-color: var(--accent);
+  }
+}
+
+// ---- Barras por classe ----
+.alloc-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.alloc-row {
+  .ar-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+  }
+  .ar-name {
+    font-weight: 600;
+  }
+  .ar-pct {
+    font-variant-numeric: tabular-nums;
+    color: var(--text-secondary);
+  }
+}
+.ar-bar {
+  position: relative;
+  height: 8px;
+  border-radius: 6px;
+  background: var(--border);
+  overflow: visible;
+}
+.ar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 6px;
+  background: var(--accent);
+
+  &.st-abaixo {
+    background: #e0a82e;
+  }
+  &.st-acima {
+    background: var(--color-neg);
+  }
+  &.st-no-alvo {
+    background: var(--color-pos);
+  }
+}
+// Marca do alvo (linha vertical sobre a barra).
+.ar-target {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 2px;
+  background: var(--text-primary);
+  opacity: 0.6;
+  transform: translateX(-1px);
+}
+.ar-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+}
+.ar-target-label {
+  color: var(--text-secondary);
+}
+.ar-action {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+
+  &.st-abaixo {
+    color: #e0a82e;
+  }
+  &.st-acima {
+    color: var(--color-neg);
+  }
+  &.st-no-alvo {
+    color: var(--color-pos);
+  }
+}
+
+// ---- Concentração ----
+.alloc-conc {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+
+  .conc-icon {
+    color: var(--color-neg);
+  }
+  .conc-item {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+}
+
+// ---- Edição ----
+.alloc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.alloc-form-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+
+  label {
+    flex: 1;
+    min-width: 90px;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+
+    span {
+      opacity: 0.6;
+    }
+    input {
+      width: 100%;
+      min-width: 0;
+      background: var(--bg, transparent);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.4rem 0.5rem;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-variant-numeric: tabular-nums;
+    }
+    &.lim {
+      flex: 1 1 100%;
+    }
+  }
+}
+.alloc-warn {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #e0a82e;
+}
+.alloc-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-save {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+// ---- Estado vazio ----
+.alloc-empty {
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+  }
+}

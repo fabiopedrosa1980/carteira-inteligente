@@ -13,6 +13,7 @@ import { AddTransactionModalComponent } from '../add-transaction-modal/add-trans
 import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
 import { DividendsComponent } from '../dividends/dividends';
+import { AllocationCardComponent } from '../allocation-card/allocation-card';
 import { Stock } from '../../models/stock.model';
 import { AssetType } from '../../models/transaction.model';
 import { saldo, custo, variacaoPosicao, rentabilidade } from '../../models/position.util';
@@ -56,6 +57,7 @@ const PAGE_SIZE = 10;
     MyAssetsComponent,
     GoalsComponent,
     DividendsComponent,
+    AllocationCardComponent,
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],

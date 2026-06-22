@@ -1,0 +1,117 @@
+<section class="alloc-card" *ngIf="hasData(); else vazio">
+  <header class="alloc-head">
+    <div class="alloc-title">
+      <h3>Alocação</h3>
+      <span class="alloc-total">{{
+        result().patrimonio | currency: 'BRL' : 'symbol' : '1.2-2'
+      }}</span>
+    </div>
+    <button type="button" class="alloc-edit" (click)="editing() ? cancelEdit() : openEdit()">
+      {{ editing() ? 'Cancelar' : 'Editar' }}
+    </button>
+  </header>
+
+  <!-- Edição dos alvos e limite -->
+  <div class="alloc-form" *ngIf="editing()">
+    <div class="alloc-form-row">
+      <label
+        >Ações <span>%</span
+        ><input
+          type="number"
+          min="0"
+          max="100"
+          [ngModel]="formAcoes()"
+          (ngModelChange)="formAcoes.set($event)"
+      /></label>
+      <label
+        >FIIs <span>%</span
+        ><input
+          type="number"
+          min="0"
+          max="100"
+          [ngModel]="formFIIs()"
+          (ngModelChange)="formFIIs.set($event)"
+      /></label>
+      <label
+        >ETF <span>%</span
+        ><input
+          type="number"
+          min="0"
+          max="100"
+          [ngModel]="formETFs()"
+          (ngModelChange)="formETFs.set($event)"
+      /></label>
+    </div>
+    <div class="alloc-form-row">
+      <label class="lim"
+        >Limite de concentração por ativo <span>%</span
+        ><input
+          type="number"
+          min="1"
+          max="100"
+          [ngModel]="formLimit()"
+          (ngModelChange)="formLimit.set($event)"
+      /></label>
+    </div>
+    <p class="alloc-warn" *ngIf="formSum() !== 100">
+      Os alvos somam {{ formSum() }}% (o ideal é 100%).
+    </p>
+    <div class="alloc-form-actions">
+      <button type="button" class="btn-save" (click)="saveEdit()">Salvar</button>
+    </div>
+  </div>
+
+  <!-- Barras por classe -->
+  <ul class="alloc-rows" *ngIf="!editing()">
+    <li class="alloc-row" *ngFor="let r of rows()">
+      <div class="ar-top">
+        <span class="ar-name">{{ classLabels[r.classe] }}</span>
+        <span class="ar-pct">{{ r.atualPct | number: '1.0-1' }}%</span>
+      </div>
+      <div class="ar-bar">
+        <span
+          class="ar-fill"
+          [class]="'st-' + r.status"
+          [style.width.%]="barWidth(r.atualPct)"
+        ></span>
+        <span
+          class="ar-target"
+          [style.left.%]="barWidth(r.alvoPct)"
+          [title]="'Alvo ' + r.alvoPct + '%'"
+        ></span>
+      </div>
+      <div class="ar-bottom">
+        <span class="ar-target-label">alvo {{ r.alvoPct }}%</span>
+        <span class="ar-action" [class]="'st-' + r.status">
+          <ng-container [ngSwitch]="r.status">
+            <ng-container *ngSwitchCase="'abaixo'"
+              >▲ aportar {{ r.montante | currency: 'BRL' : 'symbol' : '1.0-0' }}</ng-container
+            >
+            <ng-container *ngSwitchCase="'acima'"
+              >▼ reduzir {{ r.montante | currency: 'BRL' : 'symbol' : '1.0-0' }}</ng-container
+            >
+            <ng-container *ngSwitchDefault>✓ no alvo</ng-container>
+          </ng-container>
+        </span>
+      </div>
+    </li>
+  </ul>
+
+  <!-- Concentração -->
+  <div class="alloc-conc" *ngIf="!editing() && concentrados().length > 0">
+    <span class="conc-icon" aria-hidden="true">⚠</span>
+    <span class="conc-text">
+      Concentração (limite {{ concentrationLimit() }}%):
+      <span class="conc-item" *ngFor="let c of concentrados(); let last = last"
+        >{{ c.ticker }} {{ c.pct | number: '1.0-1' }}%{{ last ? '' : ' · ' }}</span
+      >
+    </span>
+  </div>
+</section>
+
+<ng-template #vazio>
+  <section class="alloc-card alloc-empty">
+    <h3>Alocação</h3>
+    <p>Adicione posições com cotação para ver a alocação da carteira.</p>
+  </section>
+</ng-template>

@@ -1,3 +1,19 @@
+## ADDED Requirements
+
+### Requirement: Cores das ações de rebalanceamento
+
+A ação de rebalanceamento exibida por classe SHALL usar cores semânticas: **aportar = verde** (`--color-pos`), **reduzir = vermelho** (`--color-neg`) e **no alvo = neutro** (`--text-secondary`). As cores MUST vir dos tokens do tema.
+
+#### Scenario: Aportar em verde, reduzir em vermelho
+
+- **WHEN** a ação de uma classe é "aportar" ou "reduzir"
+- **THEN** "aportar" aparece em verde e "reduzir" em vermelho
+
+#### Scenario: No alvo neutro
+
+- **WHEN** a classe está no alvo
+- **THEN** a indicação aparece em cor neutra
+
 ## MODIFIED Requirements
 
 ### Requirement: Cores e moldura consistentes com o tema
@@ -13,20 +29,6 @@ A apresentação do card SHALL usar exclusivamente os **tokens do tema** — sem
 
 - **WHEN** o usuário alterna entre tema claro e escuro
 - **THEN** as cores das classes derivam dos tokens e continuam distinguíveis
-
-### Requirement: Cores das ações de rebalanceamento
-
-A ação de rebalanceamento exibida por classe SHALL usar cores semânticas: **aportar = verde** (`--color-pos`), **reduzir = vermelho** (`--color-neg`) e **no alvo = neutro** (`--text-secondary`). As cores MUST vir dos tokens do tema.
-
-#### Scenario: Aportar em verde, reduzir em vermelho
-
-- **WHEN** a ação de uma classe é "aportar" ou "reduzir"
-- **THEN** "aportar" aparece em verde e "reduzir" em vermelho
-
-#### Scenario: No alvo neutro
-
-- **WHEN** a classe está no alvo
-- **THEN** a indicação aparece em cor neutra
 
 ### Requirement: Edição do alvo por classe na barra
 

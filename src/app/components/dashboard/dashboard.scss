@@ -878,11 +878,14 @@
 }
 
 @media (max-width: 640px) {
-  // Mobile: 2 cards por linha; Patrimônio (hero) ocupa a linha inteira.
+  // Mobile: todos os cards 2 por linha, inclusive o Patrimônio (hero), que
+  // ocupa uma única coluna como os demais (sem ocupar a linha inteira).
   .ps-cards {
     grid-template-columns: 1fr 1fr;
   }
-  .ps-card-hero {
-    grid-column: 1 / -1;
+  // Valor do Patrimônio normalizado para caber no card em coluna única,
+  // sem destoar dos demais nem quebrar o layout.
+  .ps-card-hero .ps-card-value {
+    font-size: 17px;
   }
 }

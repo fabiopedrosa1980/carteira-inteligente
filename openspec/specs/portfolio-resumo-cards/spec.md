@@ -5,7 +5,7 @@ TBD - created by archiving change meus-ativos-resumo-cards-dividendos. Update Pu
 ## Requirements
 ### Requirement: Resumo da carteira exibido em múltiplos cards
 
-A aba "Meus Ativos" SHALL exibir o resumo da carteira como **cards de estatística separados**, em vez de um único bloco. Os cards MUST cobrir, no mínimo: Patrimônio Total, Investido, Ganho (R$), Variação (%) e Dividendos Recebidos. O Patrimônio Total MUST ter destaque visual (maior). Os cards MUST se organizar em um grid responsivo.
+A aba "Meus Ativos" SHALL exibir o resumo da carteira como **cards de estatística separados**, em vez de um único bloco. Os cards MUST cobrir, no mínimo: Patrimônio Total, Investido, Ganho (R$), Variação (%) e Dividendos Recebidos. O Patrimônio Total MUST ter destaque visual (maior) **no desktop**. Os cards MUST se organizar em um grid responsivo. No **mobile** (≤640px), todos os cards — **incluindo o Patrimônio Total** — MUST ocupar **uma única coluna** e ficar **2 por linha**; o card de Patrimônio Total NÃO ocupa a linha inteira, e seu valor MUST ser dimensionado para caber no card em coluna única sem quebrar o layout.
 
 #### Scenario: Cards de resumo no desktop
 
@@ -27,5 +27,7 @@ A aba "Meus Ativos" SHALL exibir o resumo da carteira como **cards de estatísti
 
 - **WHEN** a aba "Meus Ativos" é exibida em largura ≤640px
 - **THEN** os cards de resumo são exibidos 2 por linha
+- **AND** o card de Patrimônio Total ocupa apenas uma coluna (não a linha inteira)
+- **AND** o valor do Patrimônio Total é dimensionado para caber no card sem quebrar o layout
 - **AND** não há rolagem horizontal da página
 

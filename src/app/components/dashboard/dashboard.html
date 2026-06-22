@@ -135,17 +135,72 @@
             <div class="ps-cards">
               <!-- Card de destaque: Patrimônio Total -->
               <div class="ps-card ps-card-hero">
-                <span class="ps-card-label">Patrimônio Total</span>
+                <div class="ps-card-top">
+                  <span class="ps-card-label">Patrimônio Total</span>
+                  <span class="ps-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M21 12V7H5a2 2 0 0 1 0-4h14v4M3 5v14a2 2 0 0 0 2 2h16v-5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M18 12a2 2 0 0 0 0 4h4v-4Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
                 <span class="ps-card-value">R$ {{ patrimonioTotal() | number: '1.2-2' }}</span>
               </div>
 
               <div class="ps-card">
-                <span class="ps-card-label">Investido</span>
+                <div class="ps-card-top">
+                  <span class="ps-card-label">Investido</span>
+                  <span class="ps-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <rect
+                        x="2"
+                        y="6"
+                        width="20"
+                        height="12"
+                        rx="2"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                      />
+                      <circle cx="12" cy="12" r="2.5" stroke="currentColor" stroke-width="1.8" />
+                      <path
+                        d="M6 12h.01M18 12h.01"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
                 <span class="ps-card-value">R$ {{ valorInvestido() | number: '1.2-2' }}</span>
               </div>
 
               <div class="ps-card">
-                <span class="ps-card-label">Ganho</span>
+                <div class="ps-card-top">
+                  <span class="ps-card-label">Ganho</span>
+                  <span class="ps-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M3 17l6-6 4 4 7-8M21 7v5M21 7h-5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
                 <span
                   class="ps-card-value"
                   [class.pos]="lucroPercent() !== null && lucroTotal() >= 0"
@@ -160,7 +215,27 @@
               </div>
 
               <div class="ps-card">
-                <span class="ps-card-label">Variação</span>
+                <div class="ps-card-top">
+                  <span class="ps-card-label">Variação</span>
+                  <span class="ps-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M19 5 5 19"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                      />
+                      <circle cx="6.5" cy="6.5" r="2.5" stroke="currentColor" stroke-width="1.8" />
+                      <circle
+                        cx="17.5"
+                        cy="17.5"
+                        r="2.5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                      />
+                    </svg>
+                  </span>
+                </div>
                 <span
                   class="ps-card-value"
                   [class.pos]="lucroPercent() !== null && lucroTotal() >= 0"
@@ -177,8 +252,63 @@
               </div>
 
               <div class="ps-card">
-                <span class="ps-card-label">Dividendos Recebidos</span>
+                <div class="ps-card-top">
+                  <span class="ps-card-label">Dividendos Recebidos</span>
+                  <span class="ps-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.8" />
+                      <path
+                        d="M18.09 10.37A6 6 0 1 1 10.34 18"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M7 6h1v4M16.71 13.88l.7.71-2.82 2.82"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
                 <span class="ps-card-value">R$ {{ dividendosRecebidos() | number: '1.2-2' }}</span>
+              </div>
+
+              <div class="ps-card">
+                <div class="ps-card-top">
+                  <span class="ps-card-label">Dividendos a receber</span>
+                  <span class="ps-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <rect
+                        x="3"
+                        y="4"
+                        width="18"
+                        height="18"
+                        rx="2"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                      />
+                      <path
+                        d="M16 2v4M8 2v4M3 10h18"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M12 14v3l2 1"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
+                <span class="ps-card-value">R$ {{ dividendosAReceber() | number: '1.2-2' }}</span>
               </div>
             </div>
           </div>
@@ -198,17 +328,22 @@
                       <span class="sec-count">{{ stocksForGroup(group).length }}</span>
                     </div>
                     <div class="ah-right">
-                      <span class="sec-total" *ngIf="groupSaldo(group) > 0">
-                        {{ groupSaldo(group) | currency: 'BRL' : 'symbol' : '1.2-2' }}
+                      <span class="sec-metric" *ngIf="groupSaldo(group) > 0">
+                        <span class="sec-cap">Total</span>
+                        <span class="sec-total">
+                          {{ groupSaldo(group) | currency: 'BRL' : 'symbol' : '1.2-2' }}
+                        </span>
                       </span>
-                      <span
-                        class="sec-rent"
-                        *ngIf="groupRentabilidade(group) !== null"
-                        [class.pos]="groupRentabilidade(group)! >= 0"
-                        [class.neg]="groupRentabilidade(group)! < 0"
-                      >
-                        {{ groupRentabilidade(group)! >= 0 ? '+' : '−'
-                        }}{{ abs(groupRentabilidade(group)!) | number: '1.1-1' }}%
+                      <span class="sec-metric" *ngIf="groupRentabilidade(group) !== null">
+                        <span class="sec-cap">Rent.</span>
+                        <span
+                          class="sec-rent"
+                          [class.pos]="groupRentabilidade(group)! >= 0"
+                          [class.neg]="groupRentabilidade(group)! < 0"
+                        >
+                          {{ groupRentabilidade(group)! >= 0 ? '+' : '−'
+                          }}{{ abs(groupRentabilidade(group)!) | number: '1.1-1' }}%
+                        </span>
                       </span>
                       <span class="chevron" [class.collapsed]="isCollapsed(group)">›</span>
                     </div>
@@ -220,6 +355,7 @@
                           <col class="cl-ativo" />
                           <col class="cl-qtd" />
                           <col class="cl-preco" />
+                          <col class="cl-preco-atual" />
                           <col class="cl-hoje" />
                           <col class="cl-saldo" />
                           <col class="cl-var" />
@@ -242,10 +378,19 @@
                                 sortAsc() ? '↑' : '↓'
                               }}</span>
                             </th>
+                            <th class="th-sortable" (click)="setSort('precoAtual')">
+                              Preço Atual<span
+                                class="th-arrow"
+                                *ngIf="sortField() === 'precoAtual'"
+                                >{{ sortAsc() ? '↑' : '↓' }}</span
+                              >
+                            </th>
                             <th class="th-sortable" (click)="setSort('change')">
-                              Hoje<span class="th-arrow" *ngIf="sortField() === 'change'">{{
-                                sortAsc() ? '↑' : '↓'
-                              }}</span>
+                              Variação hoje<span
+                                class="th-arrow"
+                                *ngIf="sortField() === 'change'"
+                                >{{ sortAsc() ? '↑' : '↓' }}</span
+                              >
                             </th>
                             <th class="th-sortable" (click)="setSort('saldo')">
                               Saldo<span class="th-arrow" *ngIf="sortField() === 'saldo'">{{
@@ -289,6 +434,13 @@
                                 {{
                                   stock.avgPrice && stock.avgPrice > 0
                                     ? 'R$ ' + (stock.avgPrice | number: '1.2-2')
+                                    : '—'
+                                }}
+                              </td>
+                              <td class="cell-preco-atual">
+                                {{
+                                  stock.price && stock.price > 0
+                                    ? 'R$ ' + (stock.price | number: '1.2-2')
                                     : '—'
                                 }}
                               </td>

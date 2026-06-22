@@ -86,6 +86,25 @@
       </div>
     </div>
 
+    <!-- Sem nenhuma posição/dado: carteira vazia -->
+    <div class="dh-no-data" *ngIf="!error() && !anyProcessing() && visiblePositions().length === 0">
+      <svg class="dh-no-data-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8" />
+        <path
+          d="M16 2v4M8 2v4M3 10h18"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <p class="dh-no-data-title">Nenhum histórico para mostrar</p>
+      <p class="dh-no-data-text">
+        Cadastre lançamentos na aba <strong>Lançamentos</strong> para acompanhar aqui o histórico de
+        dividendos da sua carteira.
+      </p>
+    </div>
+
     <!-- Carregando dividendos: skeleton da tabela -->
     <div class="dh-skel-table" *ngIf="loading()" aria-hidden="true">
       <div class="dh-skel-row" *ngFor="let r of skelRows">

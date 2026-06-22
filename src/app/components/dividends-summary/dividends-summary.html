@@ -36,9 +36,8 @@
     <!-- Vazio: mesmo padrão visual do estado vazio do Histórico de dividendos -->
     <div class="ds-no-data" *ngIf="rows().length === 0">
       <svg class="ds-no-data-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8" />
         <path
-          d="M16 2v4M8 2v4M3 10h18"
+          [attr.d]="iconPath"
           stroke="currentColor"
           stroke-width="1.8"
           stroke-linecap="round"

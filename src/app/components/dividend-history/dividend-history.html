@@ -89,9 +89,8 @@
     <!-- Sem nenhuma posição/dado: carteira vazia -->
     <div class="dh-no-data" *ngIf="!error() && !anyProcessing() && visiblePositions().length === 0">
       <svg class="dh-no-data-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8" />
         <path
-          d="M16 2v4M8 2v4M3 10h18"
+          d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 12h6M9 16h6"
           stroke="currentColor"
           stroke-width="1.8"
           stroke-linecap="round"
@@ -136,12 +135,40 @@
         </colgroup>
         <thead>
           <tr>
-            <th>Tipo</th>
-            <th><span class="th-full">Data Com</span><span class="th-short">Dt Com</span></th>
-            <th>
-              <span class="th-full">Data de Pagamento</span><span class="th-short">Pgto</span>
+            <th class="th-sort" [class.active]="sortField() === 'type'" (click)="setSort('type')">
+              Tipo<span class="th-arrow" *ngIf="sortField() === 'type'">{{
+                sortAsc() ? '↑' : '↓'
+              }}</span>
             </th>
-            <th>Valor</th>
+            <th
+              class="th-sort"
+              [class.active]="sortField() === 'ex_date'"
+              (click)="setSort('ex_date')"
+            >
+              <span class="th-full">Data Com</span><span class="th-short">Dt Com</span
+              ><span class="th-arrow" *ngIf="sortField() === 'ex_date'">{{
+                sortAsc() ? '↑' : '↓'
+              }}</span>
+            </th>
+            <th
+              class="th-sort"
+              [class.active]="sortField() === 'pay_date'"
+              (click)="setSort('pay_date')"
+            >
+              <span class="th-full">Data de Pagamento</span><span class="th-short">Pgto</span
+              ><span class="th-arrow" *ngIf="sortField() === 'pay_date'">{{
+                sortAsc() ? '↑' : '↓'
+              }}</span>
+            </th>
+            <th
+              class="th-sort"
+              [class.active]="sortField() === 'amount'"
+              (click)="setSort('amount')"
+            >
+              Valor<span class="th-arrow" *ngIf="sortField() === 'amount'">{{
+                sortAsc() ? '↑' : '↓'
+              }}</span>
+            </th>
           </tr>
         </thead>
         <tbody>

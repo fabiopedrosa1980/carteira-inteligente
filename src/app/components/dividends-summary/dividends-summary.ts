@@ -74,6 +74,14 @@ export class DividendsSummaryComponent implements OnChanges {
 
   readonly title = computed(() => (this.mode === 'received' ? 'Recebidos' : 'Projetados'));
 
+  // Ícone do estado vazio = ícone do sub-menu (aba) correspondente ao modo:
+  // Recebidos (cifrão) ou Projetados (linha de tendência).
+  get iconPath(): string {
+    return this.mode === 'received'
+      ? 'M12 2v20M17 7a4 4 0 0 0-4-3h-2a3 3 0 0 0 0 6h2a3 3 0 0 1 0 6h-2a4 4 0 0 1-4-3'
+      : 'M3 17l6-6 4 4 7-8M21 7v5M21 7h-5';
+  }
+
   private readonly currentYear = new Date().getFullYear();
 
   // Data de hoje em horário local (YYYY-MM-DD), evitando o deslocamento de fuso

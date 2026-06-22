@@ -4,6 +4,8 @@ import { BackendApiService, ApiDividend, ApiAcaoItem } from '../../services/back
 
 const PAGE_SIZE = 10;
 
+type SortField = 'type' | 'ex_date' | 'pay_date' | 'amount';
+
 @Component({
   selector: 'app-dividend-history',
   standalone: true,
@@ -26,6 +28,10 @@ export class DividendHistoryComponent implements OnChanges {
   readonly page = signal(0);
   // Linhas do skeleton da tabela.
   readonly skelRows = Array.from({ length: 6 });
+
+  // Ordenação por coluna. Padrão: Data de Pagamento, mais recente primeiro.
+  readonly sortField = signal<SortField>('pay_date');
+  readonly sortAsc = signal(false);
   // Padrão: ano corrente (null = todos os anos).
   readonly selectedYear = signal<number | null>(new Date().getFullYear());
 
@@ -49,11 +55,35 @@ export class DividendHistoryComponent implements OnChanges {
     });
   });
 
-  readonly totalPages = computed(() => Math.ceil(this.filteredDividends().length / PAGE_SIZE));
+  // Aplica a ordenação por coluna sobre os dividendos filtrados pelo ano.
+  readonly sortedDividends = computed(() => {
+    const field = this.sortField();
+    const dir = this.sortAsc() ? 1 : -1;
+    const rows = [...this.filteredDividends()];
+    return rows.sort((a, b) => {
+      let cmp: number;
+      if (field === 'amount') {
+        cmp = (a.amount ?? 0) - (b.amount ?? 0);
+      } else if (field === 'type') {
+        cmp = this.typeLabel(a.type).localeCompare(this.typeLabel(b.type));
+      } else {
+        // ex_date / pay_date: strings ISO ordenam corretamente; vazios ao fim.
+        const av = a[field] ?? '';
+        const bv = b[field] ?? '';
+        if (!av && !bv) cmp = 0;
+        else if (!av) return 1;
+        else if (!bv) return -1;
+        else cmp = av.localeCompare(bv);
+      }
+      return cmp * dir;
+    });
+  });
+
+  readonly totalPages = computed(() => Math.ceil(this.sortedDividends().length / PAGE_SIZE));
   readonly pageItems = computed(() =>
-    this.filteredDividends().slice(this.page() * PAGE_SIZE, (this.page() + 1) * PAGE_SIZE),
+    this.sortedDividends().slice(this.page() * PAGE_SIZE, (this.page() + 1) * PAGE_SIZE),
   );
-  readonly showPagination = computed(() => this.filteredDividends().length > PAGE_SIZE);
+  readonly showPagination = computed(() => this.sortedDividends().length > PAGE_SIZE);
 
   ngOnChanges(): void {
     this.load();
@@ -89,9 +119,8 @@ export class DividendHistoryComponent implements OnChanges {
     this.error.set(false);
     this.api.getStockDividends(stockId).subscribe({
       next: (items) => {
-        this.dividends.set(
-          [...items].sort((a, b) => (b.pay_date ?? '').localeCompare(a.pay_date ?? '')),
-        );
+        // A ordenação é aplicada por `sortedDividends` (padrão: pay_date desc).
+        this.dividends.set([...items]);
         this.loading.set(false);
       },
       error: () => {
@@ -104,6 +133,18 @@ export class DividendHistoryComponent implements OnChanges {
 
   selectYear(year: number | null): void {
     this.selectedYear.set(year);
+    this.page.set(0);
+  }
+
+  // Ordena por coluna: alterna a direção se já ativa; senão, define a coluna com
+  // um padrão sensato (datas/valor desc, tipo asc) e volta para a 1ª página.
+  setSort(field: SortField): void {
+    if (this.sortField() === field) {
+      this.sortAsc.update((v) => !v);
+    } else {
+      this.sortField.set(field);
+      this.sortAsc.set(field === 'type');
+    }
     this.page.set(0);
   }
 

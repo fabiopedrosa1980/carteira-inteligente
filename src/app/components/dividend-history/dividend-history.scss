@@ -233,6 +233,25 @@
     font-weight: 500;
     border-bottom: 1px solid var(--border-color, #333);
     white-space: nowrap;
+
+    &.th-sort {
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+
+      &:hover {
+        color: var(--text-primary, #e2e8f0);
+      }
+      &.active {
+        color: var(--text-primary, #e2e8f0);
+      }
+    }
+  }
+
+  .th-arrow {
+    margin-left: 4px;
+    font-size: 0.8em;
+    color: var(--accent, #6366f1);
   }
 
   td {

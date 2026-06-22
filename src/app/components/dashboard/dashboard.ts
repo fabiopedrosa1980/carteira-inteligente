@@ -282,6 +282,14 @@ export class DashboardComponent {
     return `${emoji} ${pct >= 0 ? '+' : '−'}${Math.abs(pct)}%`;
   }
 
+  // Desconto/ágio vs teto formatado (ex.: "−18%" / "+10%"), espelhando o
+  // helper da tela de detalhe — usado no tooltip de oportunidade.
+  descontoLabel(pct: number | null): string {
+    if (pct === null) return '—';
+    const v = Math.round(pct * 100);
+    return (v >= 0 ? '+' : '−') + Math.abs(v) + '%';
+  }
+
   // DY atual formatado como percentual; "—" quando ausente/zero.
   dyLabel(s: Stock): string {
     const dy = s.dividendYield;

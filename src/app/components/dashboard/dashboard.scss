@@ -340,6 +340,91 @@
     color: var(--color-neg);
   }
 
+  // Indicador de oportunidade + tooltip (alt janela) no hover. Espelha a seção
+  // "Preço-teto" da tela de detalhe (5 campos com rótulo). O td tem
+  // overflow:hidden, então liberamos o overflow só nesta célula para o tooltip
+  // poder escapar; os ancestrais .accordion/.accordion-body fazem o mesmo abaixo.
+  td.cell-oportunidade {
+    overflow: visible;
+    position: relative;
+  }
+  .oport-anchor {
+    position: relative;
+    display: inline-flex;
+  }
+  .oport-badge {
+    cursor: help;
+  }
+  .oport-tooltip {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-4px);
+    z-index: 50;
+    min-width: 220px;
+    padding: 12px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
+    white-space: normal;
+    text-align: left;
+    font-weight: 400;
+    cursor: default;
+  }
+  .oport-anchor:hover .oport-tooltip,
+  .oport-anchor:focus-within .oport-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+  // Seta apontando para o badge.
+  .oport-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom-color: var(--border);
+  }
+  .ot-title {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+  .ot-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 16px;
+    font-size: 13px;
+  }
+  .ot-label {
+    color: var(--text-secondary);
+  }
+  .ot-value {
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .ot-msg {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
   // Mobile (≤640px): cada ativo vira um CARD no mesmo idioma visual dos cards
   // de ação — perf-bar à esquerda (cor do dia), números em mono e Saldo como
   // número-herói. Sem <table>/<col>, evitando a armadilha de tracks ao ocultar
@@ -562,7 +647,9 @@
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
-  overflow: hidden;
+  // overflow visível para o tooltip de oportunidade poder escapar do card; o
+  // recorte da animação de colapso fica por conta de .accordion-body.collapsed.
+  overflow: visible;
 }
 
 .accordion-header {
@@ -676,11 +763,14 @@
 
 .accordion-body {
   max-height: 4000px;
-  overflow: hidden;
+  // Expandido: overflow visível para não cortar o tooltip de oportunidade.
+  // Colapsado: volta a overflow:hidden para recortar o conteúdo em max-height:0.
+  overflow: visible;
   transition: max-height 0.35s ease;
 
   &.collapsed {
     max-height: 0;
+    overflow: hidden;
   }
 }
 

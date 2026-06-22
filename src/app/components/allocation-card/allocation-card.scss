@@ -247,21 +247,14 @@
   white-space: nowrap;
 
   &.st-abaixo {
-    color: var(--color-warning);
+    color: var(--color-pos);
   }
   &.st-acima {
     color: var(--color-neg);
   }
   &.st-no-alvo {
-    color: var(--color-pos);
+    color: var(--text-secondary);
   }
-}
-
-// ---- Aviso de soma ----
-.alloc-warn {
-  margin: 0.75rem 0 0;
-  font-size: 0.78rem;
-  color: var(--color-warning);
 }
 
 // ---- Edição: limite ----

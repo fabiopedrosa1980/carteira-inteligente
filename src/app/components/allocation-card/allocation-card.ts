@@ -85,11 +85,6 @@ export class AllocationCardComponent {
     concentrations(this._stocks(), this.result().patrimonio, this.concentrationLimit()),
   );
 
-  readonly targetsSum = computed(() => {
-    const t = this.effectiveTargets();
-    return Math.round(t.Acoes + t.FIIs + t.ETFs);
-  });
-
   clamp(n: number): number {
     return Math.min(100, Math.max(0, n));
   }
@@ -121,10 +116,17 @@ export class AllocationCardComponent {
     return Math.round(this.effectiveTargets()[classe]);
   }
 
-  // Define o alvo de UMA classe (slider independente). A soma pode ficar ≠ 100;
-  // o aviso de soma cobre isso (sem redistribuir entre classes).
+  // Define o alvo de UMA classe (slider independente), limitado ao máximo
+  // disponível do tipo = 100 − (soma das outras), para a soma nunca passar de 100%.
   private setClassTarget(classe: AllocClasse, pct: number): void {
-    this.editTargets.update((t) => ({ ...t, [classe]: this.clamp(Math.round(pct)) }));
+    this.editTargets.update((t) => {
+      const others = (Object.keys(t) as AllocClasse[])
+        .filter((k) => k !== classe)
+        .reduce((sum, k) => sum + t[k], 0);
+      const maxDisponivel = Math.max(0, 100 - others);
+      const value = Math.min(maxDisponivel, this.clamp(Math.round(pct)));
+      return { ...t, [classe]: value };
+    });
   }
 
   // Arraste por ponteiro no slider da classe: clientX → % sobre a trilha.

@@ -82,3 +82,37 @@ export function receivedForTicker(
   }
   return total;
 }
+
+// Projetados por mês do ano corrente: proventos ainda a receber (data de
+// pagamento de hoje em diante, pay_date >= hoje), soma amount × cotas atuais.
+// Complementa `receivedByMonth` (pay_date < hoje) sem lacuna nem sobreposição.
+export function projectedByMonth(
+  dividends: ReceivedDividend[],
+  currentShares: number,
+  todayStr: string = localDateStr(),
+  currentYear: number = new Date().getFullYear(),
+): Map<number, number> {
+  const byMonth = new Map<number, number>();
+  for (const d of dividends) {
+    if (yearOf(d) !== currentYear) continue;
+    // Só conta o que ainda será pago: pay_date existente e de hoje em diante.
+    if (!d.payDate || d.payDate < todayStr) continue;
+    const month = monthOf(d);
+    byMonth.set(month, (byMonth.get(month) ?? 0) + d.amount * currentShares);
+  }
+  return byMonth;
+}
+
+// Total a receber do ativo no ano corrente (soma de todos os meses projetados).
+export function projectedForTicker(
+  dividends: ReceivedDividend[],
+  currentShares: number,
+  todayStr: string = localDateStr(),
+  currentYear: number = new Date().getFullYear(),
+): number {
+  let total = 0;
+  for (const v of projectedByMonth(dividends, currentShares, todayStr, currentYear).values()) {
+    total += v;
+  }
+  return total;
+}

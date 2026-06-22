@@ -207,8 +207,10 @@
 .ledger-head,
 .ledger-row {
   display: grid;
-  grid-template-columns: 1fr auto auto minmax(0, 1.4fr);
-  gap: 0.75rem;
+  // Trilhas explícitas e idênticas em cabeçalho e linhas: Atual/Alvo com largura
+  // fixa para alinhar verticalmente (auto dimensionava por conteúdo de cada grid).
+  grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem minmax(0, 1.6fr);
+  column-gap: 0.75rem;
   align-items: center;
 }
 .ledger-head {
@@ -325,14 +327,14 @@
 // ---- Mobile: ação desce para a própria linha, sem colidir ----
 @media (max-width: 560px) {
   .ledger-head {
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem;
 
     .act {
       display: none;
     }
   }
   .ledger-row {
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem;
     row-gap: 0.2rem;
 
     .act {

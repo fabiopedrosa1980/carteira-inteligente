@@ -88,6 +88,15 @@ export class DashboardComponent {
     this.refreshActiveTab();
   }
 
+  // Visão inicial da tela de Dividendos quando aberta pelos cards de resumo.
+  readonly dividendsTab = signal<'historico' | 'recebidos' | 'projetados' | 'radar'>('historico');
+
+  // Deep-link a partir dos cards "Dividendos Recebidos"/"a receber".
+  openDividends(tab: 'recebidos' | 'projetados'): void {
+    this.dividendsTab.set(tab);
+    this.setActiveTab('calendar');
+  }
+
   goHome(): void {
     this.setActiveTab('portfolio');
   }

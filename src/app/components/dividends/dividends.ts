@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DividendHistoryComponent } from '../dividend-history/dividend-history';
 import { DividendsSummaryComponent } from '../dividends-summary/dividends-summary';
@@ -22,6 +22,11 @@ type AssetClass = 'Acoes' | 'FIIs';
 export class DividendsComponent {
   activeTab = signal<DividendsTab>('historico');
   assetType = signal<AssetClass>('Acoes');
+
+  // Visão inicial ao abrir a tela (deep-link a partir dos cards de Meus Ativos).
+  @Input() set initialTab(tab: DividendsTab | undefined) {
+    if (tab) this.activeTab.set(tab);
+  }
 
   tabs: { id: DividendsTab; label: string; iconPath: string }[] = [
     {

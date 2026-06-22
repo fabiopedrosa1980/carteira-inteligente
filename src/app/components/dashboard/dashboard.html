@@ -251,7 +251,15 @@
                 </span>
               </div>
 
-              <div class="ps-card">
+              <div
+                class="ps-card is-link"
+                role="button"
+                tabindex="0"
+                title="Ver dividendos recebidos"
+                (click)="openDividends('recebidos')"
+                (keydown.enter)="openDividends('recebidos')"
+                (keydown.space)="openDividends('recebidos')"
+              >
                 <div class="ps-card-top">
                   <span class="ps-card-label">Dividendos Recebidos</span>
                   <span class="ps-card-icon" aria-hidden="true">
@@ -277,7 +285,15 @@
                 <span class="ps-card-value">R$ {{ dividendosRecebidos() | number: '1.2-2' }}</span>
               </div>
 
-              <div class="ps-card">
+              <div
+                class="ps-card is-link"
+                role="button"
+                tabindex="0"
+                title="Ver dividendos projetados"
+                (click)="openDividends('projetados')"
+                (keydown.enter)="openDividends('projetados')"
+                (keydown.space)="openDividends('projetados')"
+              >
                 <div class="ps-card-top">
                   <span class="ps-card-label">Dividendos a receber</span>
                   <span class="ps-card-icon" aria-hidden="true">
@@ -516,7 +532,7 @@
     </div>
 
     <div *ngIf="activeTab === 'calendar'">
-      <app-dividends *ngIf="acoes().length > 0"></app-dividends>
+      <app-dividends *ngIf="acoes().length > 0" [initialTab]="dividendsTab()"></app-dividends>
       <div class="empty-portfolio" *ngIf="acoes().length === 0 && !acoesLoading()">
         <svg class="empty-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path

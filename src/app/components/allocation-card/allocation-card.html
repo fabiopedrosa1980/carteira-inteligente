@@ -11,9 +11,9 @@
     </button>
   </header>
 
-  <!-- Edição dos alvos e limite -->
+  <!-- Edição dos alvos e limite (2 campos por linha em web e mobile) -->
   <div class="alloc-form" *ngIf="editing()">
-    <div class="alloc-form-row">
+    <div class="alloc-form-grid">
       <label
         >Ações <span>%</span
         ><input
@@ -41,10 +41,8 @@
           [ngModel]="formETFs()"
           (ngModelChange)="formETFs.set($event)"
       /></label>
-    </div>
-    <div class="alloc-form-row">
-      <label class="lim"
-        >Limite de concentração por ativo <span>%</span
+      <label
+        >Limite/ativo <span>%</span
         ><input
           type="number"
           min="1"

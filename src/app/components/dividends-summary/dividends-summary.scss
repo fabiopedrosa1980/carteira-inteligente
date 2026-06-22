@@ -78,29 +78,64 @@
   flex-shrink: 0;
 }
 
+// Card de total na linguagem dos cards de métrica do resumo (.ps-card):
+// superfície neutra, rótulo secundário uppercase, valor-herói em texto primário
+// e a cor de accent restrita ao tile de ícone.
 .ds-total-card {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  padding: 1rem 1.25rem;
+  gap: 8px;
+  padding: 16px 18px;
   margin-bottom: 1.25rem;
   border-radius: 10px;
-  background: rgba(26, 127, 75, 0.1);
-  border: 1px solid rgba(26, 127, 75, 0.25);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+}
+
+.ds-total-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+
+  .ds-total-label {
+    align-self: center;
+  }
+}
+
+// Tile do ícone: quadrado arredondado com tinta sutil do accent, espelhando
+// .ps-card-icon do resumo.
+.ds-total-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .ds-total-label {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
   color: var(--text-secondary);
 }
 
 .ds-total-value {
-  font-size: 1.6rem;
+  font-size: 22px;
   font-weight: 700;
-  color: var(--accent);
+  line-height: 1.1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
 }
 
 .ds-list {

@@ -25,11 +25,26 @@
   </div>
 
   <ng-container *ngIf="!loading() && !error()">
-    <!-- Total geral (oculto no estado vazio) -->
+    <!-- Total geral (oculto no estado vazio) — mesma linguagem dos cards de
+         métrica do resumo: superfície neutra, rótulo secundário, valor-herói e
+         accent restrito ao tile de ícone. -->
     <div class="ds-total-card fade-in" *ngIf="rows().length > 0">
-      <span class="ds-total-label">{{
-        mode === 'received' ? 'Total recebido' : 'Total projetado'
-      }}</span>
+      <div class="ds-total-top">
+        <span class="ds-total-label">{{
+          mode === 'received' ? 'Total recebido' : 'Total projetado'
+        }}</span>
+        <span class="ds-total-icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              [attr.d]="iconPath"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
+      </div>
       <span class="ds-total-value">{{ total() | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
     </div>
 

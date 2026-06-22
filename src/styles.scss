@@ -23,6 +23,11 @@
   --btn-accent-hover: #1f9d5e;
   --shadow-hover: rgba(26, 127, 75, 0.15);
   --input-bg: #0d1117;
+
+  /* Cores de classe (faixa de composição da carteira) */
+  --class-acoes: #2ea043;
+  --class-fii: #3b82f6;
+  --class-etf: #a78bfa;
 }
 
 body.light-theme {
@@ -42,6 +47,11 @@ body.light-theme {
   --btn-accent-hover: #1f9d5e;
   --shadow-hover: rgba(26, 127, 75, 0.15);
   --input-bg: #f6f8fa;
+
+  /* Cores de classe (faixa de composição da carteira) */
+  --class-acoes: #1a7f4b;
+  --class-fii: #2563eb;
+  --class-etf: #7c3aed;
 }
 
 html,

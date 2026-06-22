@@ -6,94 +6,110 @@
         result().patrimonio | currency: 'BRL' : 'symbol' : '1.2-2'
       }}</span>
     </div>
-    <button type="button" class="alloc-edit" (click)="editing() ? cancelEdit() : openEdit()">
-      {{ editing() ? 'Cancelar' : 'Editar' }}
-    </button>
+    <div class="alloc-actions">
+      <button *ngIf="editing()" type="button" class="alloc-btn ghost" (click)="cancelEdit()">
+        Cancelar
+      </button>
+      <button
+        type="button"
+        class="alloc-btn"
+        [class.solid]="editing()"
+        (click)="editing() ? saveEdit() : openEdit()"
+      >
+        {{ editing() ? 'Salvar' : 'Editar' }}
+      </button>
+    </div>
   </header>
 
-  <!-- Edição dos alvos e limite (2 campos por linha em web e mobile) -->
-  <div class="alloc-form" *ngIf="editing()">
-    <div class="alloc-form-grid">
-      <label
-        >Ações <span>%</span
-        ><input
-          type="number"
-          min="0"
-          max="100"
-          [ngModel]="formAcoes()"
-          (ngModelChange)="formAcoes.set($event)"
-      /></label>
-      <label
-        >FIIs <span>%</span
-        ><input
-          type="number"
-          min="0"
-          max="100"
-          [ngModel]="formFIIs()"
-          (ngModelChange)="formFIIs.set($event)"
-      /></label>
-      <label
-        >ETF <span>%</span
-        ><input
-          type="number"
-          min="0"
-          max="100"
-          [ngModel]="formETFs()"
-          (ngModelChange)="formETFs.set($event)"
-      /></label>
-      <label
-        >Limite/ativo <span>%</span
-        ><input
-          type="number"
-          min="1"
-          max="100"
-          [ngModel]="formLimit()"
-          (ngModelChange)="formLimit.set($event)"
-      /></label>
+  <p class="alloc-eyebrow">Composição{{ editing() ? ' · arraste para definir o alvo' : '' }}</p>
+
+  <!-- Faixa de composição: segmentos = alocação atual; ticks/handles = alvo -->
+  <div class="comp-bar" #compBar [class.is-editing]="editing()">
+    <span
+      class="comp-seg"
+      *ngFor="let s of segments()"
+      [style.width.%]="s.pct"
+      [style.background]="s.color"
+      [title]="s.label + ' ' + (s.pct | number: '1.0-1') + '%'"
+    ></span>
+
+    <!-- Alvo (display): ticks finos -->
+    <ng-container *ngIf="!editing()">
+      <span class="comp-tick" *ngFor="let b of boundaries()" [style.left.%]="clamp(b.pos)"></span>
+    </ng-container>
+
+    <!-- Alvo (edição): handles arrastáveis -->
+    <ng-container *ngIf="editing()">
+      <span
+        class="comp-handle"
+        *ngFor="let b of boundaries()"
+        role="slider"
+        tabindex="0"
+        [attr.aria-label]="'Alvo entre ' + b.between[0] + ' e ' + b.between[1]"
+        [attr.aria-valuemin]="0"
+        [attr.aria-valuemax]="100"
+        [attr.aria-valuenow]="ariaValue(b.index)"
+        [style.left.%]="clamp(b.pos)"
+        (pointerdown)="onHandleDown(b.index, $event)"
+        (pointermove)="onHandleMove($event)"
+        (pointerup)="onHandleUp($event)"
+        (keydown)="onHandleKey(b.index, $event)"
+      ></span>
+    </ng-container>
+  </div>
+
+  <!-- Legenda de classes -->
+  <ul class="comp-legend">
+    <li *ngFor="let s of segments()">
+      <span class="lg-dot" [style.background]="s.color"></span>{{ s.label }}
+    </li>
+  </ul>
+
+  <!-- Ledger: classe · atual · alvo · ação -->
+  <div class="ledger" role="table">
+    <div class="ledger-head" role="row">
+      <span role="columnheader">Classe</span>
+      <span role="columnheader" class="num">Atual</span>
+      <span role="columnheader" class="num">Alvo</span>
+      <span role="columnheader" class="act">Ação</span>
     </div>
-    <p class="alloc-warn" *ngIf="formSum() !== 100">
-      Os alvos somam {{ formSum() }}% (o ideal é 100%).
-    </p>
-    <div class="alloc-form-actions">
-      <button type="button" class="btn-save" (click)="saveEdit()">Salvar</button>
+    <div class="ledger-row" role="row" *ngFor="let r of rows()">
+      <span class="ld-name" role="cell">
+        <span class="lg-dot" [style.background]="classColorVar(r.classe)"></span>
+        {{ classLabels[r.classe] }}
+      </span>
+      <span class="num" role="cell">{{ r.atualPct | number: '1.0-1' }}%</span>
+      <span class="num" role="cell">{{ r.alvoPct | number: '1.0-0' }}%</span>
+      <span class="act" role="cell" [class]="'st-' + r.status">
+        <ng-container [ngSwitch]="r.status">
+          <ng-container *ngSwitchCase="'abaixo'"
+            >▲ aportar {{ r.montante | currency: 'BRL' : 'symbol' : '1.0-0' }}</ng-container
+          >
+          <ng-container *ngSwitchCase="'acima'"
+            >▼ reduzir {{ r.montante | currency: 'BRL' : 'symbol' : '1.0-0' }}</ng-container
+          >
+          <ng-container *ngSwitchDefault>✓ no alvo</ng-container>
+        </ng-container>
+      </span>
     </div>
   </div>
 
-  <!-- Barras por classe -->
-  <ul class="alloc-rows" *ngIf="!editing()">
-    <li class="alloc-row" *ngFor="let r of rows()">
-      <div class="ar-top">
-        <span class="ar-name">{{ classLabels[r.classe] }}</span>
-        <span class="ar-pct">{{ r.atualPct | number: '1.0-1' }}%</span>
-      </div>
-      <div class="ar-bar">
-        <span
-          class="ar-fill"
-          [class]="'st-' + r.status"
-          [style.width.%]="barWidth(r.atualPct)"
-        ></span>
-        <span
-          class="ar-target"
-          [style.left.%]="barWidth(r.alvoPct)"
-          [title]="'Alvo ' + r.alvoPct + '%'"
-        ></span>
-      </div>
-      <div class="ar-bottom">
-        <span class="ar-target-label">alvo {{ r.alvoPct }}%</span>
-        <span class="ar-action" [class]="'st-' + r.status">
-          <ng-container [ngSwitch]="r.status">
-            <ng-container *ngSwitchCase="'abaixo'"
-              >▲ aportar {{ r.montante | currency: 'BRL' : 'symbol' : '1.0-0' }}</ng-container
-            >
-            <ng-container *ngSwitchCase="'acima'"
-              >▼ reduzir {{ r.montante | currency: 'BRL' : 'symbol' : '1.0-0' }}</ng-container
-            >
-            <ng-container *ngSwitchDefault>✓ no alvo</ng-container>
-          </ng-container>
-        </span>
-      </div>
-    </li>
-  </ul>
+  <p class="alloc-warn" *ngIf="targetsSum() !== 100">
+    Os alvos somam {{ targetsSum() }}% (o ideal é 100%).
+  </p>
+
+  <!-- Edição: limite de concentração -->
+  <div class="alloc-limit" *ngIf="editing()">
+    <label
+      >Limite de concentração por ativo <span>%</span
+      ><input
+        type="number"
+        min="1"
+        max="100"
+        [ngModel]="formLimit()"
+        (ngModelChange)="formLimit.set($event)"
+    /></label>
+  </div>
 
   <!-- Concentração -->
   <div class="alloc-conc" *ngIf="!editing() && concentrados().length > 0">

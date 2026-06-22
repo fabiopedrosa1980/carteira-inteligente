@@ -10,12 +10,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.75rem;
   margin-bottom: 1rem;
 }
 .alloc-title {
   display: flex;
   align-items: baseline;
   gap: 0.75rem;
+  min-width: 0;
 
   h3 {
     margin: 0;
@@ -28,104 +30,226 @@
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
 }
-.alloc-edit {
+.alloc-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.alloc-btn {
   background: transparent;
   border: 1px solid var(--border);
   color: var(--text-secondary);
   border-radius: 8px;
-  padding: 0.3rem 0.75rem;
+  padding: 0.3rem 0.8rem;
   font-size: 0.8rem;
+  font-weight: 600;
   cursor: pointer;
   transition:
     color 0.15s,
-    border-color 0.15s;
+    border-color 0.15s,
+    background 0.15s;
 
   &:hover {
     color: var(--text-primary);
     border-color: var(--accent);
   }
+  &.solid {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--btn-accent-text);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
 }
 
-// ---- Barras por classe ----
-.alloc-rows {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-}
-.alloc-row {
-  .ar-top {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    margin-bottom: 0.3rem;
-  }
-  .ar-name {
-    font-weight: 600;
-  }
-  .ar-pct {
-    font-variant-numeric: tabular-nums;
-    color: var(--text-secondary);
-  }
-}
-.ar-bar {
-  position: relative;
-  height: 8px;
-  border-radius: 6px;
-  background: var(--border);
-  overflow: visible;
-}
-.ar-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  border-radius: 6px;
-  background: var(--accent);
-
-  &.st-abaixo {
-    background: #e0a82e;
-  }
-  &.st-acima {
-    background: var(--color-neg);
-  }
-  &.st-no-alvo {
-    background: var(--color-pos);
-  }
-}
-// Marca do alvo (linha vertical sobre a barra).
-.ar-target {
-  position: absolute;
-  top: -2px;
-  bottom: -2px;
-  width: 2px;
-  background: var(--text-primary);
-  opacity: 0.6;
-  transform: translateX(-1px);
-}
-.ar-bottom {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 0.3rem;
-  font-size: 0.78rem;
-}
-.ar-target-label {
+.alloc-eyebrow {
+  margin: 0 0 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--text-secondary);
 }
-.ar-action {
+
+// ---- Faixa de composição (signature) ----
+.comp-bar {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 14px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: var(--border);
+
+  &.is-editing {
+    overflow: visible;
+  }
+}
+.comp-seg {
+  height: 100%;
+  min-width: 2px;
+  transition: width 0.25s ease;
+}
+// Tick fino de alvo (display)
+.comp-tick {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--text-primary);
+  opacity: 0.55;
+  transform: translateX(-1px);
+  pointer-events: none;
+}
+// Handle arrastável de alvo (edição)
+.comp-handle {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 22px;
+  margin-left: -7px;
+  border-radius: 5px;
+  background: var(--card-bg);
+  border: 2px solid var(--text-primary);
+  transform: translateY(-50%);
+  cursor: ew-resize;
+  touch-action: none;
+  z-index: 2;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 4px 5px;
+    border-left: 1px solid var(--text-secondary);
+    border-right: 1px solid var(--text-secondary);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+.comp-legend {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+}
+.lg-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+// ---- Ledger (classe · atual · alvo · ação) ----
+.ledger {
+  margin-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.ledger-head,
+.ledger-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto minmax(0, 1.4fr);
+  gap: 0.75rem;
+  align-items: center;
+}
+.ledger-head {
+  font-size: 0.68rem;
   font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.3rem;
+}
+.ledger-row {
+  padding: 0.35rem 0;
+  font-size: 0.85rem;
+
+  & + .ledger-row {
+    border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  }
+}
+.ld-name {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+}
+.num {
   font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--text-secondary);
+}
+.act {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
 
   &.st-abaixo {
-    color: #e0a82e;
+    color: var(--color-warning);
   }
   &.st-acima {
     color: var(--color-neg);
   }
   &.st-no-alvo {
     color: var(--color-pos);
+  }
+}
+
+// ---- Aviso de soma ----
+.alloc-warn {
+  margin: 0.75rem 0 0;
+  font-size: 0.78rem;
+  color: var(--color-warning);
+}
+
+// ---- Edição: limite ----
+.alloc-limit {
+  margin-top: 0.9rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+
+    span {
+      opacity: 0.6;
+    }
+    input {
+      width: 84px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.4rem 0.5rem;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-variant-numeric: tabular-nums;
+
+      &:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+      }
+    }
   }
 }
 
@@ -140,67 +264,12 @@
   color: var(--text-secondary);
 
   .conc-icon {
-    color: var(--color-neg);
+    color: var(--color-warning);
   }
   .conc-item {
     color: var(--text-primary);
     font-weight: 600;
   }
-}
-
-// ---- Edição ----
-.alloc-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-.alloc-form-grid {
-  // 2 campos por linha em web e mobile.
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-
-  label {
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-
-    span {
-      opacity: 0.6;
-    }
-    input {
-      width: 100%;
-      min-width: 0;
-      background: var(--bg, transparent);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 0.4rem 0.5rem;
-      color: var(--text-primary);
-      font-size: 0.9rem;
-      font-variant-numeric: tabular-nums;
-    }
-  }
-}
-.alloc-warn {
-  margin: 0;
-  font-size: 0.78rem;
-  color: #e0a82e;
-}
-.alloc-form-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-.btn-save {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.45rem 1.1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
 }
 
 // ---- Estado vazio ----
@@ -214,5 +283,31 @@
     margin: 0;
     color: var(--text-secondary);
     font-size: 0.88rem;
+  }
+}
+
+// ---- Mobile: ação desce para a própria linha, sem colidir ----
+@media (max-width: 560px) {
+  .ledger-head {
+    grid-template-columns: 1fr auto auto;
+
+    .act {
+      display: none;
+    }
+  }
+  .ledger-row {
+    grid-template-columns: 1fr auto auto;
+    row-gap: 0.2rem;
+
+    .act {
+      grid-column: 1 / -1;
+      text-align: left;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comp-seg {
+    transition: none;
   }
 }

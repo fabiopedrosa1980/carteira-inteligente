@@ -413,7 +413,9 @@
                             >
                               <td class="cell-ativo">
                                 <span class="ca-ticker">{{ stock.ticker }}</span>
-                                <span class="ca-sub">DY {{ dyLabel(stock) }}</span>
+                                <span class="ca-sub" *ngIf="stock.sector !== 'ETF'"
+                                  >DY {{ dyLabel(stock) }}</span
+                                >
                               </td>
                               <td>
                                 {{ stock.quantity ? (stock.quantity | number: '1.0-0') : '—' }}

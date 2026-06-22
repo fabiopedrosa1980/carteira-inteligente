@@ -364,7 +364,9 @@
                           <col class="cl-qtd" />
                           <col class="cl-preco" />
                           <col class="cl-preco-atual" />
-                          <col class="cl-hoje" />
+                          @if (group !== 'ETF') {
+                            <col class="cl-hoje" />
+                          }
                           <col class="cl-saldo" />
                           <col class="cl-var" />
                           <col class="cl-rent" />
@@ -393,15 +395,17 @@
                                 >{{ sortAsc() ? '↑' : '↓' }}</span
                               >
                             </th>
-                            <th
-                              class="th-sortable"
-                              (click)="setSort('zona')"
-                              title="Ordena por desconto vs preço-teto (mais barato primeiro)"
-                            >
-                              Oportunidade<span class="th-arrow" *ngIf="sortField() === 'zona'">{{
-                                sortAsc() ? '↑' : '↓'
-                              }}</span>
-                            </th>
+                            @if (group !== 'ETF') {
+                              <th
+                                class="th-sortable"
+                                (click)="setSort('zona')"
+                                title="Ordena por desconto vs preço-teto (mais barato primeiro)"
+                              >
+                                Oportunidade<span class="th-arrow" *ngIf="sortField() === 'zona'">{{
+                                  sortAsc() ? '↑' : '↓'
+                                }}</span>
+                              </th>
+                            }
                             <th class="th-sortable" (click)="setSort('saldo')">
                               Saldo<span class="th-arrow" *ngIf="sortField() === 'saldo'">{{
                                 sortAsc() ? '↑' : '↓'
@@ -454,53 +458,57 @@
                                     : '—'
                                 }}
                               </td>
-                              <td class="cell-oportunidade">
-                                <span class="oport-anchor">
-                                  <span class="oport-badge">{{ oportunidadeBadge(stock) }}</span>
-                                  <span
-                                    class="oport-tooltip"
-                                    role="tooltip"
-                                    (click)="$event.stopPropagation()"
-                                  >
-                                    <span class="ot-verdict" [attr.data-zona]="teto.zona">{{
-                                      zonaLabel(teto.zona)
-                                    }}</span>
-                                    @if (teto.zona === 'na') {
-                                      <span class="ot-msg">Não se aplica a este ativo.</span>
-                                    } @else if (teto.zona === 'sem-dados') {
-                                      <span class="ot-msg"
-                                        >Histórico de proventos insuficiente para calcular o
-                                        preço-teto.</span
-                                      >
-                                    } @else {
-                                      <span class="ot-grid">
-                                        <span class="ot-label">Yield-alvo</span>
-                                        <span class="ot-value"
-                                          >{{ teto.yieldAlvo * 100 | number: '1.0-1' }}%</span
+                              @if (group !== 'ETF') {
+                                <td class="cell-oportunidade">
+                                  <span class="oport-anchor">
+                                    <span class="oport-badge">{{ oportunidadeBadge(stock) }}</span>
+                                    <span
+                                      class="oport-tooltip"
+                                      role="tooltip"
+                                      (click)="$event.stopPropagation()"
+                                    >
+                                      <span class="ot-verdict" [attr.data-zona]="teto.zona">{{
+                                        zonaLabel(teto.zona)
+                                      }}</span>
+                                      @if (teto.zona === 'na') {
+                                        <span class="ot-msg">Não se aplica a este ativo.</span>
+                                      } @else if (teto.zona === 'sem-dados') {
+                                        <span class="ot-msg"
+                                          >Histórico de proventos insuficiente para calcular o
+                                          preço-teto.</span
                                         >
-                                        <span class="ot-label">Preço-teto</span>
-                                        <span class="ot-value"
-                                          >R$ {{ teto.teto | number: '1.2-2' }}</span
-                                        >
-                                        <span class="ot-label">Preço justo</span>
-                                        <span class="ot-value"
-                                          >R$ {{ teto.precoJusto | number: '1.2-2' }}</span
-                                        >
-                                        <span class="ot-label">{{
-                                          stock.sector === 'FII' ? 'Rendimento (12m)' : 'DPA (12m)'
-                                        }}</span>
-                                        <span class="ot-value"
-                                          >R$ {{ teto.dpa12m | number: '1.2-2' }}</span
-                                        >
-                                        <span class="ot-label">Preço atual vs teto</span>
-                                        <span class="ot-value">{{
-                                          descontoLabel(teto.descontoPct)
-                                        }}</span>
-                                      </span>
-                                    }
+                                      } @else {
+                                        <span class="ot-grid">
+                                          <span class="ot-label">Yield-alvo</span>
+                                          <span class="ot-value"
+                                            >{{ teto.yieldAlvo * 100 | number: '1.0-1' }}%</span
+                                          >
+                                          <span class="ot-label">Preço-teto</span>
+                                          <span class="ot-value"
+                                            >R$ {{ teto.teto | number: '1.2-2' }}</span
+                                          >
+                                          <span class="ot-label">Preço justo</span>
+                                          <span class="ot-value"
+                                            >R$ {{ teto.precoJusto | number: '1.2-2' }}</span
+                                          >
+                                          <span class="ot-label">{{
+                                            stock.sector === 'FII'
+                                              ? 'Rendimento (12m)'
+                                              : 'DPA (12m)'
+                                          }}</span>
+                                          <span class="ot-value"
+                                            >R$ {{ teto.dpa12m | number: '1.2-2' }}</span
+                                          >
+                                          <span class="ot-label">Preço atual vs teto</span>
+                                          <span class="ot-value">{{
+                                            descontoLabel(teto.descontoPct)
+                                          }}</span>
+                                        </span>
+                                      }
+                                    </span>
                                   </span>
-                                </span>
-                              </td>
+                                </td>
+                              }
                               <td>{{ sld === null ? '—' : 'R$ ' + (sld | number: '1.2-2') }}</td>
                               <td
                                 [class.pos]="v !== null && v >= 0"

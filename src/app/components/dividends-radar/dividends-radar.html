@@ -99,7 +99,24 @@
   </ng-container>
 
   <ng-container *ngIf="!loading()">
-    <p class="radar-empty" *ngIf="rows().length === 0">Nenhum ativo com proventos no período.</p>
+    <!-- Vazio: mesmo padrão visual do estado vazio das telas de dividendos -->
+    <div class="radar-no-data" *ngIf="rows().length === 0">
+      <svg class="radar-no-data-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8" />
+        <path
+          d="M16 2v4M8 2v4M3 10h18"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <p class="radar-no-data-title">Nenhum provento no período</p>
+      <p class="radar-no-data-text">
+        Cadastre lançamentos na aba <strong>Lançamentos</strong> para acompanhar aqui o radar de
+        proventos da sua carteira.
+      </p>
+    </div>
 
     <ng-container *ngIf="rows().length > 0">
       <!-- Visualização em cards (Jan→Dez) -->

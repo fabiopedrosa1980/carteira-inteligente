@@ -15,7 +15,7 @@
 
 ## 4. Edição do alvo na própria barra
 
-- [x] 4.1 No modo edição, renderizar **handles arrastáveis** nos limites entre segmentos da faixa de composição; arrastar redistribui o alvo entre as classes vizinhas mantendo a soma em 100%.
+- [x] 4.1 No modo edição, renderizar **um slider por classe** (Ações, FIIs, ETFs) — handles arrastáveis independentes, cada um define o alvo da sua classe; trilha mostra atual (tick) + alvo (fill/handle). Soma pode ≠ 100% (coberto pelo aviso).
 - [x] 4.2 Acessibilidade do controle: `role="slider"`, `aria-valuenow/min/max`, `tabindex=0`, setas (1pp) e Shift+seta (5pp); pointer/touch events; refletir no ledger e persistir ao salvar. Remover os inputs numéricos de alvo (manter o input do limite de concentração).
 
 ## 5. Cores nos tokens + a11y

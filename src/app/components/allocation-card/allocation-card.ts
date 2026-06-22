@@ -11,8 +11,6 @@ import {
   deviations,
 } from '../../models/allocation.util';
 
-const CLASSES: AllocClasse[] = ['Acoes', 'FIIs', 'ETFs'];
-
 @Component({
   selector: 'app-allocation-card',
   standalone: true,
@@ -57,7 +55,7 @@ export class AllocationCardComponent {
     this.editing() ? this.editTargets() : this.alloc.targets(),
   );
 
-  // Segmentos da faixa de composição (alocação ATUAL, colorida por classe).
+  // Segmentos da faixa de composição (alocacao ATUAL, colorida por classe).
   readonly segments = computed(() =>
     this.result().byClass.map((c) => ({
       classe: c.classe,
@@ -67,16 +65,10 @@ export class AllocationCardComponent {
     })),
   );
 
-  // Marcadores/handles de ALVO: posições acumuladas das duas fronteiras.
-  // b0 = alvo(Ações); b1 = alvo(Ações)+alvo(FIIs). ETF é o resto (100 − b1).
+  // Marcadores de ALVO (display): posições acumuladas das fronteiras na faixa.
   readonly boundaries = computed(() => {
     const t = this.effectiveTargets();
-    const b0 = t.Acoes;
-    const b1 = t.Acoes + t.FIIs;
-    return [
-      { index: 0, pos: b0, between: ['Ações', 'FIIs'] as const },
-      { index: 1, pos: b1, between: ['FIIs', 'ETFs'] as const },
-    ];
+    return [t.Acoes, t.Acoes + t.FIIs];
   });
 
   // Ledger: desvio por classe a partir dos alvos em vigor.
@@ -102,7 +94,7 @@ export class AllocationCardComponent {
     return Math.min(100, Math.max(0, n));
   }
 
-  // ---- Edição: alvos na própria barra + limite de concentração ----
+  // ---- Edição: um slider por classe (Ações, FIIs, ETFs) + limite ----
   formLimit = signal(0);
 
   openEdit(): void {
@@ -124,61 +116,51 @@ export class AllocationCardComponent {
     this.editing.set(false);
   }
 
-  // Define a fronteira `index` para a posição `pos` (0–100), mantendo soma 100.
-  private setBoundary(index: number, pos: number): void {
-    const t = { ...this.editTargets() };
-    const b0 = t.Acoes;
-    const b1 = t.Acoes + t.FIIs;
-    if (index === 0) {
-      const nb0 = this.clamp(Math.min(pos, b1));
-      t.Acoes = nb0;
-      t.FIIs = b1 - nb0;
-    } else {
-      const nb1 = this.clamp(Math.max(pos, b0));
-      t.FIIs = nb1 - b0;
-      t.ETFs = 100 - nb1;
-    }
-    this.editTargets.set(t);
+  // Alvo de uma classe (inteiro), para ARIA/exibição.
+  targetOf(classe: AllocClasse): number {
+    return Math.round(this.effectiveTargets()[classe]);
   }
 
-  // Arraste por ponteiro: converte clientX → % sobre a largura da barra.
-  private dragIndex: number | null = null;
+  // Define o alvo de UMA classe (slider independente). A soma pode ficar ≠ 100;
+  // o aviso de soma cobre isso (sem redistribuir entre classes).
+  private setClassTarget(classe: AllocClasse, pct: number): void {
+    this.editTargets.update((t) => ({ ...t, [classe]: this.clamp(Math.round(pct)) }));
+  }
 
-  onHandleDown(index: number, ev: PointerEvent): void {
+  // Arraste por ponteiro no slider da classe: clientX → % sobre a trilha.
+  private dragClasse: AllocClasse | null = null;
+  private dragTrack: HTMLElement | null = null;
+
+  onHandleDown(classe: AllocClasse, ev: PointerEvent): void {
     ev.preventDefault();
-    this.dragIndex = index;
+    this.dragClasse = classe;
+    this.dragTrack = (ev.target as HTMLElement).closest('.cls-track') as HTMLElement | null;
     (ev.target as HTMLElement).setPointerCapture?.(ev.pointerId);
   }
 
   onHandleMove(ev: PointerEvent): void {
-    if (this.dragIndex === null || !this.compBar) return;
-    const rect = this.compBar.nativeElement.getBoundingClientRect();
+    if (!this.dragClasse || !this.dragTrack) return;
+    const rect = this.dragTrack.getBoundingClientRect();
     if (rect.width <= 0) return;
     const pct = ((ev.clientX - rect.left) / rect.width) * 100;
-    this.setBoundary(this.dragIndex, pct);
+    this.setClassTarget(this.dragClasse, pct);
   }
 
   onHandleUp(ev: PointerEvent): void {
-    if (this.dragIndex === null) return;
+    if (!this.dragClasse) return;
     (ev.target as HTMLElement).releasePointerCapture?.(ev.pointerId);
-    this.dragIndex = null;
+    this.dragClasse = null;
+    this.dragTrack = null;
   }
 
-  // Teclado: setas ajustam ±1pp; Shift+seta ±5pp.
-  onHandleKey(index: number, ev: KeyboardEvent): void {
+  // Teclado: setas ajustam ±1pp; Shift+seta ±5pp (por classe).
+  onHandleKey(classe: AllocClasse, ev: KeyboardEvent): void {
     const step = ev.shiftKey ? 5 : 1;
     let delta = 0;
     if (ev.key === 'ArrowRight' || ev.key === 'ArrowUp') delta = step;
     else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowDown') delta = -step;
     else return;
     ev.preventDefault();
-    const cur = this.boundaries()[index].pos;
-    this.setBoundary(index, cur + delta);
-  }
-
-  // valor ARIA do handle = alvo da classe à esquerda da fronteira.
-  ariaValue(index: number): number {
-    const t = this.effectiveTargets();
-    return Math.round(index === 0 ? t.Acoes : t.FIIs);
+    this.setClassTarget(classe, this.editTargets()[classe] + delta);
   }
 }

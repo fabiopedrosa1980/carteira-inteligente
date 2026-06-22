@@ -103,14 +103,58 @@
   transform: translateX(-1px);
   pointer-events: none;
 }
-// Handle arrastável de alvo (edição)
-.comp-handle {
+// ---- Sliders por classe (edição) ----
+.cls-sliders {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.cls-row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr 2.75rem;
+  align-items: center;
+  gap: 0.75rem;
+}
+.cls-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+.cls-track {
+  position: relative;
+  height: 10px;
+  border-radius: 6px;
+  background: var(--border);
+  touch-action: none;
+}
+.cls-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 6px;
+  opacity: 0.5;
+}
+// Referência da alocação atual (tick claro sobre a trilha).
+.cls-cur {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--text-secondary);
+  transform: translateX(-1px);
+  pointer-events: none;
+}
+.cls-handle {
   position: absolute;
   top: 50%;
-  width: 14px;
-  height: 22px;
-  margin-left: -7px;
-  border-radius: 5px;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
   background: var(--card-bg);
   border: 2px solid var(--text-primary);
   transform: translateY(-50%);
@@ -118,17 +162,16 @@
   touch-action: none;
   z-index: 2;
 
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 4px 5px;
-    border-left: 1px solid var(--text-secondary);
-    border-right: 1px solid var(--text-secondary);
-  }
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
+}
+.cls-val {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .comp-legend {

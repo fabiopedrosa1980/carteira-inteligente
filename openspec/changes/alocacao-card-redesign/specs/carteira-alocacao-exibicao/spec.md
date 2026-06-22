@@ -29,20 +29,25 @@ O detalhamento por classe SHALL ser apresentado em **colunas alinhadas** (classe
 - **WHEN** o card é exibido em largura estreita (mobile)
 - **THEN** a ação de rebalanceamento reposiciona sem colidir com os demais campos
 
-### Requirement: Edição do alvo na própria barra
+### Requirement: Edição do alvo por classe na barra
 
-No modo de edição, o card SHALL permitir ajustar o **alvo de cada classe arrastando handles diretamente sobre a faixa de composição** (a barra de percentual). Arrastar o limite entre duas classes MUST redistribuir o alvo entre elas mantendo a soma dos alvos em 100%. O controle MUST ser operável por teclado (setas ajustam o alvo) e expor semântica de slider (ARIA). O valor de alvo resultante MUST refletir no ledger e ser persistido ao salvar.
+No modo de edição, o card SHALL apresentar **um controle por classe** (Ações, FIIs, ETFs) — três sliders independentes, cada um com um **handle arrastável** sobre a sua própria barra de percentual — para ajustar o alvo de cada classe. Cada slider MUST ser operável por teclado (setas ajustam o alvo) e expor semântica de slider (ARIA). Como os alvos são independentes, a soma PODE ficar diferente de 100% e o sistema MUST sinalizar isso com um aviso (sem redistribuir entre classes). O valor de alvo MUST refletir no ledger e ser persistido ao salvar.
 
-#### Scenario: Arrastar para ajustar o alvo
+#### Scenario: Ajustar o alvo de uma classe
 
-- **WHEN** o usuário arrasta o handle entre duas classes na barra
-- **THEN** o alvo das duas classes ajusta proporcionalmente ao arraste
-- **AND** a soma dos alvos permanece 100%
+- **WHEN** o usuário arrasta o handle do slider de uma classe
+- **THEN** apenas o alvo daquela classe é ajustado
+- **AND** o ledger reflete o novo alvo
+
+#### Scenario: Soma diferente de 100%
+
+- **WHEN** a soma dos três alvos fica diferente de 100%
+- **THEN** o card exibe um aviso indicando a soma atual
 
 #### Scenario: Ajuste por teclado
 
-- **WHEN** o handle está focado e o usuário pressiona as setas
-- **THEN** o alvo é ajustado em incrementos previsíveis, com a soma mantida em 100%
+- **WHEN** o handle de uma classe está focado e o usuário pressiona as setas
+- **THEN** o alvo daquela classe é ajustado em incrementos previsíveis
 
 ### Requirement: Cores e moldura consistentes com o tema
 

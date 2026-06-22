@@ -33,37 +33,48 @@
       [title]="s.label + ' ' + (s.pct | number: '1.0-1') + '%'"
     ></span>
 
-    <!-- Alvo (display): ticks finos -->
-    <ng-container *ngIf="!editing()">
-      <span class="comp-tick" *ngFor="let b of boundaries()" [style.left.%]="clamp(b.pos)"></span>
-    </ng-container>
-
-    <!-- Alvo (edição): handles arrastáveis -->
-    <ng-container *ngIf="editing()">
-      <span
-        class="comp-handle"
-        *ngFor="let b of boundaries()"
-        role="slider"
-        tabindex="0"
-        [attr.aria-label]="'Alvo entre ' + b.between[0] + ' e ' + b.between[1]"
-        [attr.aria-valuemin]="0"
-        [attr.aria-valuemax]="100"
-        [attr.aria-valuenow]="ariaValue(b.index)"
-        [style.left.%]="clamp(b.pos)"
-        (pointerdown)="onHandleDown(b.index, $event)"
-        (pointermove)="onHandleMove($event)"
-        (pointerup)="onHandleUp($event)"
-        (keydown)="onHandleKey(b.index, $event)"
-      ></span>
-    </ng-container>
+    <!-- Alvo: ticks finos nas fronteiras acumuladas -->
+    <span class="comp-tick" *ngFor="let b of boundaries()" [style.left.%]="clamp(b)"></span>
   </div>
 
   <!-- Legenda de classes -->
-  <ul class="comp-legend">
+  <ul class="comp-legend" *ngIf="!editing()">
     <li *ngFor="let s of segments()">
       <span class="lg-dot" [style.background]="s.color"></span>{{ s.label }}
     </li>
   </ul>
+
+  <!-- Edição: um slider por classe (Ações, FIIs, ETFs) -->
+  <div class="cls-sliders" *ngIf="editing()">
+    <div class="cls-row" *ngFor="let s of segments()">
+      <span class="cls-label">
+        <span class="lg-dot" [style.background]="s.color"></span>{{ s.label }}
+      </span>
+      <div class="cls-track">
+        <span
+          class="cls-fill"
+          [style.width.%]="targetOf(s.classe)"
+          [style.background]="s.color"
+        ></span>
+        <span class="cls-cur" [style.left.%]="clamp(s.pct)" title="Atual"></span>
+        <span
+          class="cls-handle"
+          role="slider"
+          tabindex="0"
+          [attr.aria-label]="'Alvo de ' + s.label"
+          [attr.aria-valuemin]="0"
+          [attr.aria-valuemax]="100"
+          [attr.aria-valuenow]="targetOf(s.classe)"
+          [style.left.%]="targetOf(s.classe)"
+          (pointerdown)="onHandleDown(s.classe, $event)"
+          (pointermove)="onHandleMove($event)"
+          (pointerup)="onHandleUp($event)"
+          (keydown)="onHandleKey(s.classe, $event)"
+        ></span>
+      </div>
+      <span class="cls-val">{{ targetOf(s.classe) }}%</span>
+    </div>
+  </div>
 
   <!-- Ledger: classe · atual · alvo · ação -->
   <div class="ledger" role="table">

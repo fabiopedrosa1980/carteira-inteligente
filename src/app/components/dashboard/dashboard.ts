@@ -282,6 +282,19 @@ export class DashboardComponent {
     return `${emoji} ${pct >= 0 ? '+' : '−'}${Math.abs(pct)}%`;
   }
 
+  // Veredito da zona (semáforo) por extenso, espelhando a tela de detalhe —
+  // usado no topo do tooltip de oportunidade.
+  private static readonly ZONA_LABEL: Record<Zona, string> = {
+    compra: '🟢 Zona de compra',
+    justo: '🟡 Preço justo / perto',
+    caro: '🔴 Caro',
+    'sem-dados': '⚪ Sem dados',
+    na: 'n/a (ETF)',
+  };
+  zonaLabel(z: Zona): string {
+    return DashboardComponent.ZONA_LABEL[z];
+  }
+
   // Desconto/ágio vs teto formatado (ex.: "−18%" / "+10%"), espelhando o
   // helper da tela de detalhe — usado no tooltip de oportunidade.
   descontoLabel(pct: number | null): string {

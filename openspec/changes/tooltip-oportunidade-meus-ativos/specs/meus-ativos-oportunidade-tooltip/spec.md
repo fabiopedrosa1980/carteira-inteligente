@@ -16,7 +16,7 @@ Na tabela de Meus Ativos, ao passar o mouse sobre o indicador da coluna "Oportun
 
 ### Requirement: Conteúdo do tooltip espelha a tela de detalhe
 
-Quando o ativo possui veredito de preço-teto (zona `compra`, `justo` ou `caro`), o tooltip SHALL apresentar exatamente cinco campos, cada um com seu rótulo de texto ao lado do valor, com os mesmos rótulos, valores e formatação da seção "Preço-teto" da tela de detalhe do ativo:
+Quando o ativo possui veredito de preço-teto (zona `compra`, `justo` ou `caro`), o tooltip SHALL apresentar, no topo, o veredito da zona por extenso (ex.: "🟢 Zona de compra", "🟡 Preço justo / perto", "🔴 Caro") e, abaixo, exatamente cinco campos, cada um com seu rótulo de texto ao lado do valor, com os mesmos rótulos, valores e formatação da seção "Preço-teto" da tela de detalhe do ativo:
 
 - "Yield-alvo"
 - "Preço-teto"
@@ -24,12 +24,12 @@ Quando o ativo possui veredito de preço-teto (zona `compra`, `justo` ou `caro`)
 - "DPA (12m)" (rotulado "Rendimento (12m)" para FIIs)
 - "Preço atual vs teto"
 
-Os valores SHALL usar a mesma formatação da tela de detalhe (moeda em R$, percentuais e sinal de desconto/ágio). O tooltip NÃO SHALL incluir o veredito da zona nem o P/VP.
+Os valores SHALL usar a mesma formatação da tela de detalhe (moeda em R$, percentuais e sinal de desconto/ágio). O tooltip NÃO SHALL incluir o P/VP.
 
 #### Scenario: Ativo com veredito numérico
 
 - **WHEN** o tooltip é exibido para uma ação na zona de compra
-- **THEN** ele mostra os cinco campos, cada um com o rótulo de texto ("Yield-alvo", "Preço-teto", "Preço justo", "DPA (12m)", "Preço atual vs teto") seguido do valor formatado como na tela de detalhe, e não exibe veredito de zona nem P/VP
+- **THEN** ele mostra no topo o veredito "🟢 Zona de compra" e, abaixo, os cinco campos, cada um com o rótulo de texto ("Yield-alvo", "Preço-teto", "Preço justo", "DPA (12m)", "Preço atual vs teto") seguido do valor formatado como na tela de detalhe, sem exibir P/VP
 
 #### Scenario: FII reusa o rótulo de rendimento
 

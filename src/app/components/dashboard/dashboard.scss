@@ -403,6 +403,13 @@
     color: var(--text-secondary);
     margin-bottom: 8px;
   }
+  .ot-verdict {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
   .ot-grid {
     display: grid;
     grid-template-columns: 1fr auto;

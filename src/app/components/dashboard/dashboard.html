@@ -463,6 +463,9 @@
                                     (click)="$event.stopPropagation()"
                                   >
                                     <span class="ot-title">Preço-teto</span>
+                                    <span class="ot-verdict" [attr.data-zona]="teto.zona">{{
+                                      zonaLabel(teto.zona)
+                                    }}</span>
                                     @if (teto.zona === 'na') {
                                       <span class="ot-msg">Não se aplica a este ativo.</span>
                                     } @else if (teto.zona === 'sem-dados') {

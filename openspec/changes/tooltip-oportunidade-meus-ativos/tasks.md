@@ -7,7 +7,7 @@
 
 - [x] 2.1 Em `dashboard.html`, na célula `cell-oportunidade`, computar `@let t = precoTetoOf(stock)` e envolver o badge num contêiner com o tooltip
 - [x] 2.2 Renderizar a grade com exatamente cinco campos (rótulo + valor), na formatação da tela de detalhe: "Yield-alvo", "Preço-teto", "Preço justo", "DPA (12m)" (→ "Rendimento (12m)" para FIIs) e "Preço atual vs teto" (via `descontoLabel`)
-- [x] 2.3 Não exibir veredito de zona nem P/VP no tooltip
+- [x] 2.3 Exibir o veredito da zona no topo (🟢/🟡/🔴 via `zonaLabel`); não exibir P/VP
 - [x] 2.4 Tratar estados sem veredito: mensagem de histórico insuficiente em `sem-dados` e indicação de "não se aplica" em `na`, omitindo a grade
 - [x] 2.5 Garantir que o clique na linha continue abrindo o detalhe (não interceptar o evento no tooltip)
 

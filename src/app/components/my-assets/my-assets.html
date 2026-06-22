@@ -37,10 +37,13 @@
             {{ sectionData()[sec.id].length }}
           </span>
         </div>
-        <span class="sec-total" *ngIf="totalFor(sec.id) > 0">
-          {{ totalFor(sec.id) | currency: 'BRL' : 'symbol' : '1.2-2' }}
-        </span>
         <div class="ah-right">
+          <span class="sec-metric" *ngIf="totalFor(sec.id) > 0">
+            <span class="sec-cap">Total</span>
+            <span class="sec-total">
+              {{ totalFor(sec.id) | currency: 'BRL' : 'symbol' : '1.2-2' }}
+            </span>
+          </span>
           <span class="chevron" [class.collapsed]="isCollapsed(sec.id)">›</span>
         </div>
       </button>

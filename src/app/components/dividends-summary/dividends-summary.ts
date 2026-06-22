@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiAcaoItem, ApiDividend } from '../../services/backend-api.service';
 import { TransactionService } from '../../services/transaction.service';
-import { receivedByMonth } from '../../models/dividends-received.util';
+import { receivedByMonth, projectedByMonth } from '../../models/dividends-received.util';
 
 export type SummaryMode = 'received' | 'projected';
 
@@ -205,14 +205,18 @@ export class DividendsSummaryComponent implements OnChanges {
   // hoje em diante), por mês, soma amount × total de cotas atuais.
   // Complementa Recebidos (pay_date < hoje) sem lacuna nem sobreposição.
   private computeProjected(dividends: ApiDividend[], currentShares: number): MonthValue[] {
-    const byMonth = new Map<number, number>();
-    for (const d of dividends) {
-      if (this.yearOf(d) !== this.currentYear) continue;
-      // Só conta o que ainda será pago: pay_date existente e >= hoje.
-      if (!d.pay_date || d.pay_date < this.todayStr) continue;
-      const month = this.monthOf(d);
-      byMonth.set(month, (byMonth.get(month) ?? 0) + d.amount * currentShares);
-    }
+    const byMonth = projectedByMonth(
+      dividends.map((d) => ({
+        year: d.year,
+        month: d.month,
+        amount: d.amount,
+        exDate: d.ex_date,
+        payDate: d.pay_date,
+      })),
+      currentShares,
+      this.todayStr,
+      this.currentYear,
+    );
     return this.toMonthList(byMonth);
   }
 }

@@ -16,9 +16,21 @@ import { DividendsComponent } from '../dividends/dividends';
 import { Stock } from '../../models/stock.model';
 import { AssetType } from '../../models/transaction.model';
 import { saldo, custo, variacaoPosicao, rentabilidade } from '../../models/position.util';
-import { receivedForTicker, localDateStr } from '../../models/dividends-received.util';
+import {
+  receivedForTicker,
+  projectedForTicker,
+  localDateStr,
+} from '../../models/dividends-received.util';
 
-type SortField = 'name' | 'price' | 'change' | 'qty' | 'saldo' | 'variacao' | 'rentabilidade';
+type SortField =
+  | 'name'
+  | 'price'
+  | 'precoAtual'
+  | 'change'
+  | 'qty'
+  | 'saldo'
+  | 'variacao'
+  | 'rentabilidade';
 
 const THEME_KEY = 'ci-theme';
 const PAGE_SIZE = 10;
@@ -264,6 +276,38 @@ export class DashboardComponent {
     }, 0);
   });
 
+  // Dividendos a receber: mesma lógica/util da tela Dividendos → Projetados
+  // (projectedForTicker) — proventos do ano corrente ainda a pagar (pay_date >=
+  // hoje) × cotas atuais. Mesmo escopo do card de Recebidos (Ações + FIIs).
+  readonly dividendosAReceber = computed(() => {
+    const todayStr = localDateStr();
+    const currentYear = new Date().getFullYear();
+    const norm = (t: string) => (t ?? '').toUpperCase().trim();
+
+    // Cotas atuais por ticker (Ações + FIIs), a partir das posições agregadas.
+    const sharesByTicker = new Map<string, number>();
+    for (const s of this.acoes()) {
+      if (s.sector !== 'Ações' && s.sector !== 'FII') continue;
+      sharesByTicker.set(norm(s.ticker), s.quantity ?? 0);
+    }
+
+    return this.svc.stocks().reduce((total, stk) => {
+      const ticker = norm(stk.ticker);
+      const shares = sharesByTicker.get(ticker);
+      if (!shares) return total;
+
+      const dividends = stk.dividends.map((d) => ({
+        year: d.year,
+        month: d.month,
+        amount: d.value,
+        exDate: d.exDate,
+        payDate: d.payDate,
+      }));
+
+      return total + projectedForTicker(dividends, shares, todayStr, currentYear);
+    }, 0);
+  });
+
   sortedStocks = computed(() => {
     const list = [...this.acoes()];
     const field = this.sortField();
@@ -272,6 +316,7 @@ export class DashboardComponent {
       let cmp = 0;
       if (field === 'name') cmp = a.name.localeCompare(b.name, 'pt-BR');
       else if (field === 'price') cmp = (a.avgPrice ?? 0) - (b.avgPrice ?? 0);
+      else if (field === 'precoAtual') cmp = (a.price ?? 0) - (b.price ?? 0);
       else if (field === 'change') cmp = a.changePercent - b.changePercent;
       else if (field === 'qty') cmp = (a.quantity ?? 0) - (b.quantity ?? 0);
       else if (field === 'saldo') cmp = (saldo(a) ?? 0) - (saldo(b) ?? 0);

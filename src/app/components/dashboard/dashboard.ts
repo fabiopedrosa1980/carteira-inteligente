@@ -44,6 +44,7 @@ type SortField =
   | 'zona';
 
 const THEME_KEY = 'ci-theme';
+const HIDE_VALUES_KEY = 'ci-hide-values';
 const PAGE_SIZE = 10;
 
 @Component({
@@ -119,6 +120,14 @@ export class DashboardComponent {
   }
 
   isDark = signal(localStorage.getItem(THEME_KEY) !== 'light');
+
+  // Privacidade: oculta os valores em R$ dos cards de resumo. Padrão: visível.
+  valoresOcultos = signal(localStorage.getItem(HIDE_VALUES_KEY) === '1');
+
+  toggleValores(): void {
+    this.valoresOcultos.update((v) => !v);
+    localStorage.setItem(HIDE_VALUES_KEY, this.valoresOcultos() ? '1' : '0');
+  }
 
   readonly acoes = signal<Stock[]>([]);
   readonly acoesLoading = signal(false);

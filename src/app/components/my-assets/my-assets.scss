@@ -97,7 +97,38 @@
   align-items: center;
   gap: 12px;
   @media (max-width: 600px) {
-    gap: 8px;
+    gap: 6px;
+  }
+}
+
+/* Botão "+" no cabeçalho da seção — adiciona lançamento do tipo, acessível
+   mesmo com a seção recolhida. Mesma linguagem do .btn-add-inline do rodapé. */
+.btn-add-sec {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
+  .btn-plus {
+    width: 16px;
+    height: 16px;
+  }
+  &:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
 }
 // Métrica do cabeçalho: rótulo (caption) sobre o valor, alinhados à direita

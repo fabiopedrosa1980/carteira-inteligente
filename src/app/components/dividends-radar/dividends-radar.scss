@@ -215,6 +215,18 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   color: var(--color-warning);
   background: color-mix(in srgb, var(--color-warning) 12%, transparent);
 }
+
+/* Mobile: tags de destaque exibem somente o ícone (texto via title/aria-label),
+   economizando espaço no cabeçalho estreito do card. */
+@media (max-width: 600px) {
+  .rc-tag {
+    gap: 0;
+    padding: 3px 5px;
+  }
+  .rc-tag-text {
+    display: none;
+  }
+}
 .rc-month {
   display: inline-flex;
   align-items: center;

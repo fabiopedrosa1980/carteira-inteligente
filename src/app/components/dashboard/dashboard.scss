@@ -247,15 +247,10 @@
 .section-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 20px;
-  @media (max-width: 640px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
 }
 
 .acoes-list {
@@ -988,6 +983,15 @@
   font-size: 22px;
   font-weight: 700;
   line-height: 1.1;
+}
+
+/* Privacidade: oculta os valores em R$ dos cards de resumo mantendo rótulos,
+   ícones e layout intactos. Mesmo padrão de "shoulder-surfing" de apps
+   financeiros — máscara reversível pelo botão olho. */
+.portfolio-summary.values-hidden .ps-card-value {
+  filter: blur(8px);
+  user-select: none;
+  pointer-events: none;
 }
 
 @media (max-width: 640px) {

@@ -97,38 +97,7 @@
   align-items: center;
   gap: 12px;
   @media (max-width: 600px) {
-    gap: 6px;
-  }
-}
-
-/* Botão "+" no cabeçalho da seção — adiciona lançamento do tipo, acessível
-   mesmo com a seção recolhida. Mesma linguagem do .btn-add-inline do rodapé. */
-.btn-add-sec {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-secondary);
-  background: transparent;
-  cursor: pointer;
-  transition:
-    border-color 0.2s,
-    color 0.2s;
-  .btn-plus {
-    width: 16px;
-    height: 16px;
-  }
-  &:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+    gap: 8px;
   }
 }
 // Métrica do cabeçalho: rótulo (caption) sobre o valor, alinhados à direita
@@ -271,11 +240,13 @@
     // Mobile: a linha vira CARD em grid de áreas, exibindo todos os campos
     // com rótulos próprios. Mesmo idioma dos cards de "Meus Ativos".
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    // Ações (Editar/Excluir) migram para a mesma linha do Total: 3 colunas,
+    // com a 3ª (auto) recebendo Qtd e Ações encostados à direita.
+    grid-template-columns: 1fr 1fr auto;
     grid-template-areas:
-      'ticker actions'
-      'data   qtd'
-      'preco  total';
+      'ticker ticker ticker'
+      'data   data   qtd'
+      'preco  total  actions';
     column-gap: 12px;
     row-gap: 10px;
     align-items: end;
@@ -369,6 +340,7 @@
   @media (max-width: 600px) {
     grid-area: actions;
     justify-content: flex-end;
+    justify-self: end;
     align-self: center;
   }
 }

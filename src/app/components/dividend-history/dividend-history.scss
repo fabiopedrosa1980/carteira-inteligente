@@ -275,10 +275,34 @@
     font-size: 0.78rem;
 
     th {
-      padding: 0.5rem 0.35rem;
+      padding: 0.5rem 0.25rem;
     }
     td {
-      padding: 0.5rem 0.35rem;
+      padding: 0.5rem 0.25rem;
+    }
+
+    // Rebalanceia as colunas para o Valor caber por inteiro: Tipo encolhe e o
+    // Valor ganha largura.
+    .col-tipo {
+      width: 20%;
+    }
+    .col-data-com {
+      width: 27%;
+    }
+    .col-pagamento {
+      width: 27%;
+    }
+    .col-valor {
+      width: 26%;
+    }
+
+    // Coluna "Valor" (4ª): alinhada à direita e sem corte (ellipsis), exibindo
+    // o valor monetário completo em uma única linha.
+    th:nth-child(4),
+    td:nth-child(4) {
+      text-align: right;
+      overflow: visible;
+      text-overflow: clip;
     }
   }
 }

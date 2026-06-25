@@ -1,4 +1,4 @@
-<section class="alloc-card" *ngIf="hasData(); else vazio">
+<section class="alloc-card" [class.values-hidden]="hideValues" *ngIf="hasData(); else vazio">
   <header class="alloc-head">
     <div class="alloc-title">
       <h3>Alocação</h3>

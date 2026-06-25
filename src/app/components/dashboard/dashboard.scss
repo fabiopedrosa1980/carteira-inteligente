@@ -967,7 +967,7 @@
 }
 
 .ps-card-value {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
@@ -980,7 +980,7 @@
 }
 
 .ps-card-hero .ps-card-value {
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 700;
   line-height: 1.1;
 }
@@ -1003,6 +1003,6 @@
   // Valor do Patrimônio normalizado para caber no card em coluna única,
   // sem destoar dos demais nem quebrar o layout.
   .ps-card-hero .ps-card-value {
-    font-size: 17px;
+    font-size: 16px;
   }
 }

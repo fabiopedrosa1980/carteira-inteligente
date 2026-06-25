@@ -29,6 +29,10 @@ export class AllocationCardComponent {
     this._stocks.set(value ?? []);
   }
 
+  // Oculta os valores em R$ (patrimônio e montantes do ledger), acompanhando o
+  // botão olho da aba "Meus Ativos". Percentuais permanecem visíveis.
+  @Input() hideValues = false;
+
   readonly classLabels: Record<AllocClasse, string> = {
     Acoes: 'Ações',
     FIIs: 'FIIs',

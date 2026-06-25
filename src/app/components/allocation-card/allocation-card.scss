@@ -259,6 +259,19 @@
   }
 }
 
+/* Privacidade: quando o olho de "Meus Ativos" oculta valores, mascara apenas
+   os valores em R$ (patrimônio do cabeçalho e montantes de aportar/reduzir do
+   ledger). Percentuais e "✓ no alvo" permanecem visíveis. */
+.alloc-card.values-hidden {
+  .alloc-total,
+  .act.st-abaixo,
+  .act.st-acima {
+    filter: blur(7px);
+    user-select: none;
+    pointer-events: none;
+  }
+}
+
 // ---- Edição: limite ----
 .alloc-limit {
   margin-top: 0.9rem;

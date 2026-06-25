@@ -99,7 +99,7 @@
 
   <main class="content">
     <div *ngIf="activeTab === 'meus-ativos'">
-      <app-my-assets></app-my-assets>
+      <app-my-assets [hideValues]="valoresOcultos()"></app-my-assets>
     </div>
 
     <div *ngIf="activeTab === 'portfolio'">

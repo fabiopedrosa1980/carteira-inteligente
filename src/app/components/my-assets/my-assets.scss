@@ -6,6 +6,18 @@ $pad-x: 20px;
   padding: 0;
 }
 
+/* Privacidade: quando o olho de "ocultar valores" está ligado, mascara os
+   totais monetários da tela — total investido do cabeçalho e total de cada
+   seção. Mesmo tratamento (blur) usado no card de alocação. */
+.meus-ativos.values-hidden {
+  .ma-summary-val,
+  .sec-total {
+    filter: blur(7px);
+    user-select: none;
+    pointer-events: none;
+  }
+}
+
 .btn-plus {
   width: 16px;
   height: 16px;

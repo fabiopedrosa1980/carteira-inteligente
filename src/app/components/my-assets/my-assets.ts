@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, Input, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../../services/transaction.service';
 import { StockDataService } from '../../services/stock-data.service';
@@ -18,6 +18,10 @@ const PAGE_SIZE = 10;
   styleUrls: ['./my-assets.scss'],
 })
 export class MyAssetsComponent {
+  // Espelha o olho de "ocultar valores" do dashboard: quando ligado, mascara
+  // os totais monetários desta tela (total do cabeçalho e totais por seção).
+  @Input() hideValues = false;
+
   showModal = false;
   editing = signal<Transaction | null>(null);
   presetType = signal<AssetType | null>(null);

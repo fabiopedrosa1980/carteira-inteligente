@@ -149,32 +149,35 @@
   border-top: 1px solid var(--border);
 }
 
+/* Botão primário "Adicionar" — ação principal da tela de Lançamentos.
+   Segue o padrão do CTA do app (.btn-save do modal): accent sólido com texto
+   de contraste, em vez do antigo botão fantasma de baixa ênfase. */
 .btn-add-inline {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 5px 12px;
-  border-radius: 8px;
+  justify-content: center;
+  gap: 6px;
+  background: var(--accent);
+  border: none;
+  color: var(--btn-accent-text);
+  padding: 9px 18px;
+  border-radius: 9px;
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   font-family: inherit;
-  transition: all 0.2s;
+  transition: background 0.2s;
   white-space: nowrap;
   &:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+    background: var(--btn-accent-hover);
   }
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
   .btn-plus {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
   }
 }
 
@@ -193,6 +196,11 @@
   padding: 14px 20px;
   @media (max-width: 600px) {
     padding: 12px;
+    // No mobile a ação principal ocupa a largura toda: alvo de toque maior e
+    // mais fácil de alcançar com o polegar ao final de cada seção.
+    .btn-add-inline {
+      width: 100%;
+    }
   }
 }
 

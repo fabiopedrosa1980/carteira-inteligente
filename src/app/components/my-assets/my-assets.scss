@@ -1,3 +1,7 @@
+// Passo horizontal partilhado pelos blocos da seção (cabeçalho da tabela,
+// linhas, rodapé "Adicionar" e paginação), alinhado às bordas do card.
+$pad-x: 20px;
+
 .meus-ativos {
   padding: 0;
 }
@@ -8,25 +12,26 @@
   flex-shrink: 0;
 }
 
-/* Botão "Limpar tudo" no header — ação destrutiva, estilo discreto. */
+/* Botão "Limpar tudo" no header — ação destrutiva, ênfase reduzida para não
+   competir com o título nem com o Total em destaque. */
 .btn-clear-all {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: transparent;
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  padding: 7px 14px;
+  padding: 6px 12px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   font-family: inherit;
   white-space: nowrap;
   transition: all 0.2s;
   svg {
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
   }
   &:hover {
     border-color: var(--color-neg);
@@ -39,6 +44,47 @@
   }
   @media (max-width: 600px) {
     justify-content: center;
+  }
+}
+
+/* ---- Faixa de resumo do cabeçalho ---- */
+// Contagem de lançamentos: meta discreta abaixo do título.
+.ma-count {
+  margin: 0;
+}
+// Bloco à direita: Total em destaque + ação discreta.
+.ma-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  @media (max-width: 600px) {
+    justify-content: space-between;
+    gap: 12px;
+  }
+}
+.ma-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.1;
+  @media (max-width: 600px) {
+    align-items: flex-start;
+  }
+}
+.ma-summary-cap {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.ma-summary-val {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  @media (max-width: 600px) {
+    font-size: 20px;
   }
 }
 
@@ -64,7 +110,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 16px 20px;
+  padding: 16px $pad-x;
   background: none;
   border: none;
   cursor: pointer;
@@ -111,7 +157,7 @@
 .sec-cap {
   font-size: 9.5px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em; // rima com a legenda da faixa de resumo (.ma-summary-cap)
   text-transform: uppercase;
   color: var(--text-secondary);
 }
@@ -181,10 +227,24 @@
   }
 }
 
-/* Mensagem de estado vazio */
-.empty-msg {
+/* Estado vazio da seção: ícone + mensagem + CTA "Adicionar", centrado —
+   mesmo idioma dos estados vazios do app (ex.: histórico de dividendos). */
+.ma-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 32px 20px;
+}
+.ma-empty-icon {
+  width: 34px;
+  height: 34px;
+  color: var(--accent);
+  opacity: 0.85;
+}
+.ma-empty-title {
   margin: 0;
-  padding: 16px 20px 0;
   font-size: 13px;
   color: var(--text-secondary);
 }
@@ -193,7 +253,7 @@
 .add-row {
   display: flex;
   justify-content: flex-end;
-  padding: 14px 20px;
+  padding: 14px $pad-x;
   @media (max-width: 600px) {
     padding: 12px;
     // No mobile a ação principal ocupa a largura toda: alvo de toque maior e
@@ -210,7 +270,7 @@
   // minmax(0, 1fr): permite a coluna encolher abaixo do conteúdo, evitando
   // que valores/nomes longos estourem a largura no mobile.
   grid-template-columns: repeat(5, minmax(0, 1fr)) 72px;
-  padding: 9px 20px;
+  padding: 9px $pad-x;
   background: rgba(128, 128, 128, 0.05);
   border-bottom: 1px solid var(--border);
   font-size: 11px;
@@ -228,7 +288,7 @@
 .table-row {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr)) 72px;
-  padding: 12px 20px;
+  padding: 12px $pad-x;
   border-bottom: 1px solid var(--border);
   font-size: 13px;
   color: var(--text-primary);
@@ -283,6 +343,28 @@
 }
 .align-right {
   text-align: right;
+}
+
+// Desktop: colunas numéricas (Qtd., Preço Unit., Total) e Operação alinhadas à
+// direita para leitura em coluna; Ativo e Data permanecem à esquerda. Escopo
+// acima do breakpoint do card para não afetar o layout mobile.
+@media (min-width: 601px) {
+  .table-header > span:nth-child(3),
+  .table-header > span:nth-child(4),
+  .table-header > span:nth-child(5),
+  .table-header > span:nth-child(6) {
+    justify-content: flex-end;
+    text-align: right;
+  }
+  .table-row > .qty-cell,
+  .table-row > .price-cell,
+  .table-row > .total-cell {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .table-row > .action-cell {
+    justify-content: flex-end;
+  }
 }
 
 /* Sortable column headers */
@@ -441,7 +523,7 @@
   align-items: center;
   justify-content: center;
   gap: 14px;
-  padding: 12px 20px;
+  padding: 12px $pad-x;
   border-top: 1px solid var(--border);
   @media (max-width: 600px) {
     padding: 12px;

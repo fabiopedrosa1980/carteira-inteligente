@@ -1,30 +1,31 @@
 <div class="meus-ativos">
-  <!-- Header -->
+  <!-- Header: título + contagem à esquerda; faixa de resumo (Total em
+       destaque) e ação discreta "Limpar tudo" à direita. -->
   <div class="page-header">
     <div class="ma-header-left">
       <h2 class="page-title">Lançamentos</h2>
-      <p class="page-subtitle">
-        {{ svc.transactions().length }} lançamento{{ svc.transactions().length !== 1 ? 's' : '' }} ·
-        Total: {{ totalAll() | currency: 'BRL' : 'symbol' : '1.2-2' }}
+      <p class="page-subtitle ma-count" *ngIf="svc.transactions().length > 0">
+        {{ svc.transactions().length }} lançamento{{ svc.transactions().length !== 1 ? 's' : '' }}
       </p>
     </div>
-    <button
-      class="btn-clear-all"
-      *ngIf="svc.transactions().length > 0"
-      (click)="clearAll()"
-      title="Remover todos os lançamentos"
-    >
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-      Limpar tudo
-    </button>
+    <div class="ma-header-right" *ngIf="svc.transactions().length > 0">
+      <div class="ma-summary">
+        <span class="ma-summary-cap">Total investido</span>
+        <span class="ma-summary-val">{{ totalAll() | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
+      </div>
+      <button class="btn-clear-all" (click)="clearAll()" title="Remover todos os lançamentos">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        Limpar tudo
+      </button>
+    </div>
   </div>
 
   <!-- Accordion sections -->
@@ -181,13 +182,34 @@
             </button>
           </div>
 
-          <!-- Estado vazio: mensagem -->
-          <p class="empty-msg" *ngIf="!svc.loading() && sectionData()[sec.id].length === 0">
-            Nenhum lançamento cadastrado
-          </p>
+          <!-- Estado vazio da seção: ícone + mensagem + CTA "Adicionar". -->
+          <div class="ma-empty" *ngIf="!svc.loading() && sectionData()[sec.id].length === 0">
+            <svg class="ma-empty-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 12h6M9 16h6"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <p class="ma-empty-title">Nenhum lançamento em {{ sec.label }}</p>
+            <button class="btn-add-inline" (click)="openAdd(sec.id)">
+              <svg class="btn-plus" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M12 5v14M5 12h14"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              Adicionar
+            </button>
+          </div>
 
-          <!-- Botão único de adicionar, ao final -->
-          <div class="add-row">
+          <!-- Rodapé "Adicionar" — apenas quando a seção tem lançamentos
+               (na seção vazia, o CTA do estado vazio assume). -->
+          <div class="add-row" *ngIf="sectionData()[sec.id].length > 0">
             <button class="btn-add-inline" (click)="openAdd(sec.id)">
               <svg class="btn-plus" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path

@@ -248,13 +248,14 @@
     // Mobile: a linha vira CARD em grid de áreas, exibindo todos os campos
     // com rótulos próprios. Mesmo idioma dos cards de "Meus Ativos".
     display: grid;
-    // Ações (Editar/Excluir) migram para a mesma linha do Total: 3 colunas,
-    // com a 3ª (auto) recebendo Qtd e Ações encostados à direita.
-    grid-template-columns: 1fr 1fr auto;
+    // Linha 1: Ticker + Qtd (à direita). Linha 2: Data · Preço · Total (Total
+    // sobe para junto dos demais campos). Linha 3: ações (Editar/Excluir) num
+    // rodapé próprio, alinhadas à direita — mesmo idioma da coluna da web.
+    grid-template-columns: 1fr 1fr 1.15fr;
     grid-template-areas:
-      'ticker ticker ticker'
-      'data   data   qtd'
-      'preco  total  actions';
+      'ticker ticker qtd'
+      'data   preco  total'
+      'actions actions actions';
     column-gap: 12px;
     row-gap: 10px;
     align-items: end;
@@ -346,10 +347,14 @@
   justify-content: flex-start;
   gap: 2px;
   @media (max-width: 600px) {
+    // Rodapé do card: ações ocupam a largura toda (para a divisória cruzar o
+    // card) e ficam encostadas à direita.
     grid-area: actions;
     justify-content: flex-end;
-    justify-self: end;
-    align-self: center;
+    gap: 4px;
+    margin-top: 4px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
   }
 }
 
@@ -390,6 +395,10 @@
   .total-cell {
     justify-self: end;
     text-align: right;
+  }
+  // Qtd vive na linha do ticker: centraliza verticalmente com o badge.
+  .qty-cell {
+    align-self: center;
   }
 }
 .btn-edit,

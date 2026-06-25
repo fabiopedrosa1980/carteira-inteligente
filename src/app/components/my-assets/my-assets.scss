@@ -254,13 +254,10 @@ $pad-x: 20px;
   display: flex;
   justify-content: flex-end;
   padding: 14px $pad-x;
+  // No mobile cada card já traz o botão "+" no rodapé; o "Adicionar" da seção
+  // fica redundante e é ocultado (permanece no desktop).
   @media (max-width: 600px) {
-    padding: 12px;
-    // No mobile a ação principal ocupa a largura toda: alvo de toque maior e
-    // mais fácil de alcançar com o polegar ao final de cada seção.
-    .btn-add-inline {
-      width: 100%;
-    }
+    display: none;
   }
 }
 

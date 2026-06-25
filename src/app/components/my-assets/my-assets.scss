@@ -484,7 +484,8 @@ $pad-x: 20px;
   }
 }
 .btn-edit,
-.btn-remove {
+.btn-remove,
+.btn-add-card {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -506,6 +507,19 @@ $pad-x: 20px;
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 1px;
+  }
+}
+// Botão "+" de adicionar no rodapé do card (mobile): atalho para um novo
+// lançamento do tipo da seção. Oculto no desktop — a coluna Operação mantém
+// apenas Editar/Excluir nos seus 72px.
+.btn-add-card {
+  display: none;
+  @media (max-width: 600px) {
+    display: inline-flex;
+  }
+  &:hover {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    color: var(--accent);
   }
 }
 .btn-edit:hover {

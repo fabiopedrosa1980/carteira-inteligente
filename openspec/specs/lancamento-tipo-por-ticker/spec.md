@@ -5,31 +5,36 @@ TBD - created by archiving change lancamento-tipo-por-ticker. Update Purpose aft
 ## Requirements
 ### Requirement: Detecção do tipo de ativo a partir do ticker
 
-A aplicação SHALL detectar o tipo de ativo a partir do ticker: sufixo **3, 4, 5, 6, 7 ou 8** → **Ações**; sufixo **11** → **ETF** quando o ticker pertencer a uma **lista de ETFs conhecidos da B3**, caso contrário → **FII**. Quando o sufixo não for reconhecido, o tipo é **indeterminado**. Essa detecção MUST ser a base tanto da sugestão de tipo quanto da validação.
+A aplicação SHALL determinar o tipo de ativo preferencialmente a partir do **catálogo da B3** informado pelo backend (campo `assetType` da cotação ou endpoint `/assets/:ticker`). A heurística por sufixo do ticker (sufixo **3, 4, 5, 6, 7 ou 8** → **Ações**; sufixo **11** → **ETF** quando o ticker pertencer à lista de ETFs conhecidos, caso contrário **indeterminado**) MUST ser usada apenas como **fallback offline**, quando o catálogo não respondeu ou não conhece o ticker. Quando nenhuma fonte determinar o tipo, ele é **indeterminado**.
 
-#### Scenario: Ação detectada
+#### Scenario: Tipo do catálogo tem prioridade
 
-- **WHEN** o ticker termina em 3/4/5/6/7/8 (ex.: PETR4, VALE3)
-- **THEN** o tipo detectado é "Ações"
+- **WHEN** o backend informa `assetType` para o ticker (ex.: TAEE11 → "Acoes")
+- **THEN** esse tipo é usado, ignorando a heurística por sufixo
 
-#### Scenario: ETF detectado por lista
+#### Scenario: Fallback usa a heurística por sufixo
 
-- **WHEN** o ticker termina em 11 e está na lista de ETFs conhecidos (ex.: BOVA11, IVVB11)
-- **THEN** o tipo detectado é "ETFs"
+- **WHEN** o catálogo não respondeu e o ticker termina em 3/4/5/6/7/8 (ex.: PETR4)
+- **THEN** o tipo detectado pelo fallback é "Ações"
 
-#### Scenario: FII detectado
+#### Scenario: Indeterminado sem catálogo nem sufixo conhecido
 
-- **WHEN** o ticker termina em 11 e não está na lista de ETFs (ex.: MXRF11, HGLG11)
-- **THEN** o tipo detectado é "FIIs"
+- **WHEN** o catálogo não conhece o ticker e o sufixo não é reconhecido pela heurística
+- **THEN** o tipo é indeterminado
 
 ### Requirement: Campo Tipo sugere o tipo detectado
 
-No modal de lançamento, quando o tipo **não está travado** pela seção de origem, ao informar/resolver o ticker a aplicação SHALL **preencher o campo "Tipo de Ativo" com o tipo detectado**, em vez do valor genérico "Selecione...". O usuário MUST poder alterar manualmente o tipo sugerido.
+No modal de lançamento, quando o tipo **não está travado** pela seção de origem, ao informar/resolver o ticker a aplicação SHALL **preencher o campo "Tipo de Ativo"** com o tipo vindo do catálogo (`assetType`) quando presente, recorrendo à heurística por sufixo apenas como fallback. O usuário MUST poder alterar manualmente o tipo sugerido.
 
-#### Scenario: Sugestão preenchida ao digitar o ticker
+#### Scenario: Sugestão preenchida com o tipo do catálogo
 
-- **WHEN** o usuário informa um ticker reconhecido e o tipo não está travado
-- **THEN** o campo "Tipo de Ativo" é preenchido com o tipo detectado
+- **WHEN** o usuário informa um ticker e o catálogo retorna seu tipo
+- **THEN** o campo "Tipo de Ativo" é preenchido com o tipo do catálogo
+
+#### Scenario: Sugestão por fallback quando catálogo ausente
+
+- **WHEN** o catálogo não respondeu e o sufixo do ticker é reconhecido
+- **THEN** o campo "Tipo de Ativo" é preenchido com o tipo do fallback
 
 #### Scenario: Tipo travado pela seção não é sobrescrito
 

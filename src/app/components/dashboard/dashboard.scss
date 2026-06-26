@@ -380,6 +380,15 @@
     visibility: visible;
     transform: translateX(-50%) translateY(0);
   }
+  // Mobile: o tooltip é afordância de hover (desktop). No touch não é usável e,
+  // mesmo oculto, sua caixa absoluta de 220px ocupa layout e vaza à direita nas
+  // linhas próximas da borda — criando rolagem horizontal. Removido do layout
+  // (o detalhe de preço-teto continua acessível no modal de detalhe ao tocar).
+  @media (max-width: 640px) {
+    .oport-tooltip {
+      display: none;
+    }
+  }
   // Seta apontando para o badge.
   .oport-tooltip::before {
     content: '';
@@ -890,7 +899,9 @@
 // Resumo quebrado em cards individuais. Desktop: todos em uma única linha.
 .ps-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  // minmax(0, 1fr) (em vez de 1fr): as colunas encolhem abaixo do conteúdo, para
+  // um valor monetário longo nunca empurrar a largura e gerar rolagem horizontal.
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -902,6 +913,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  // Item do grid pode encolher; o valor longo trunca/quebra em vez de estourar.
+  min-width: 0;
 }
 
 // Cards acionáveis (atalho para a tela de Dividendos): afordância de clique.
@@ -973,6 +986,8 @@
   font-weight: 600;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
+  // Rede de segurança: um valor muito longo quebra em vez de estourar o card.
+  overflow-wrap: anywhere;
   &.pos {
     color: var(--color-pos);
   }
@@ -1008,7 +1023,7 @@
   // Mobile: todos os cards 2 por linha, inclusive o Patrimônio (hero), que
   // ocupa uma única coluna como os demais (sem ocupar a linha inteira).
   .ps-cards {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   // Valor do Patrimônio normalizado para caber no card em coluna única,
   // sem destoar dos demais nem quebrar o layout.

@@ -550,10 +550,11 @@
       color: var(--color-neg);
     }
 
-    // 3) Saldo — número-herói do card.
+    // 3) Saldo — mesmo tamanho de fonte do ticker (.cell-ativo), mantendo o
+    // negrito; hierarquia equilibrada entre ticker e Saldo.
     td:nth-child(6) {
       grid-area: saldo;
-      font-size: 23px;
+      font-size: 16px;
       font-weight: 700;
       line-height: 1.1;
     }

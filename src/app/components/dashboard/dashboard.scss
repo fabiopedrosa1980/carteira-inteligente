@@ -994,6 +994,14 @@
   pointer-events: none;
 }
 
+/* Privacidade: ao ocultar valores, mascara também os totais por grupo dos
+   acordeões da visão em lista (rótulo, contagem e chevron seguem visíveis). */
+.sections-list.values-hidden .sec-total {
+  filter: blur(7px);
+  user-select: none;
+  pointer-events: none;
+}
+
 @media (max-width: 640px) {
   // Mobile: todos os cards 2 por linha, inclusive o Patrimônio (hero), que
   // ocupa uma única coluna como os demais (sem ocupar a linha inteira).

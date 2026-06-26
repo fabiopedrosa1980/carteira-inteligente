@@ -362,7 +362,7 @@
           ></app-allocation-card>
 
           <!-- ── Visão em lista ── -->
-          <div class="sections-list">
+          <div class="sections-list" [class.values-hidden]="valoresOcultos()">
             @for (group of groups; track group) {
               @if (stocksForGroup(group).length > 0) {
                 <div class="accordion">

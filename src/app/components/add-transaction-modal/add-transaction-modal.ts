@@ -344,11 +344,17 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
       this.saving.set(false);
       this.close.emit();
     };
+    // Erro da API (ex.: 422 de tipo incompatível com o catálogo): para o
+    // spinner, mostra a mensagem no campo de ticker e mantém o modal aberto.
+    const onError = (msg: string) => {
+      this.saving.set(false);
+      this.errors = { ...this.errors, ticker: msg };
+    };
 
     if (this.transaction) {
-      this.svc.update(this.transaction.id, payload, onDone);
+      this.svc.update(this.transaction.id, payload, onDone, onError);
     } else {
-      this.svc.add(payload, onDone);
+      this.svc.add(payload, onDone, onError);
     }
   }
 }

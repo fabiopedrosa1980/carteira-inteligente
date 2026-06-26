@@ -1,7 +1,25 @@
 import { Injectable, signal, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Transaction, AssetType } from '../models/transaction.model';
 import { BackendApiService } from './backend-api.service';
 import { NotificationService } from './notification.service';
+
+// Extrai a mensagem de erro da API, tentando o corpo `{"error": "..."}` do
+// backend, depois `message`, e por fim um texto genérico de falha.
+function extractApiError(err: unknown): string {
+  const fallback = 'Não foi possível salvar o lançamento.';
+  if (err instanceof HttpErrorResponse) {
+    const body = err.error;
+    if (body && typeof body === 'object') {
+      if (typeof body.error === 'string' && body.error.trim()) return body.error;
+      if (typeof body.message === 'string' && body.message.trim()) return body.message;
+    }
+    if (typeof err.message === 'string' && err.message.trim() && err.status === 0) {
+      return 'Sem conexão com o servidor. Tente novamente.';
+    }
+  }
+  return fallback;
+}
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
@@ -41,7 +59,7 @@ export class TransactionService {
     });
   }
 
-  add(t: Omit<Transaction, 'id'>, onDone?: () => void): void {
+  add(t: Omit<Transaction, 'id'>, onDone?: () => void, onError?: (msg: string) => void): void {
     this.api
       .createTransaction({
         ticker: t.ticker,
@@ -66,10 +84,16 @@ export class TransactionService {
           this.notifications.show(`${created.ticker} adicionado com sucesso`);
           onDone?.();
         },
+        error: (err) => onError?.(extractApiError(err)),
       });
   }
 
-  update(id: number, t: Omit<Transaction, 'id'>, onDone?: () => void): void {
+  update(
+    id: number,
+    t: Omit<Transaction, 'id'>,
+    onDone?: () => void,
+    onError?: (msg: string) => void,
+  ): void {
     this.api
       .updateTransaction(id, {
         asset_type: t.assetType,
@@ -95,6 +119,7 @@ export class TransactionService {
           this.notifications.show(`${t.ticker} atualizado com sucesso`);
           onDone?.();
         },
+        error: (err) => onError?.(extractApiError(err)),
       });
   }
 

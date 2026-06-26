@@ -187,6 +187,12 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
             this.priceDisplay = this.formatPrice(quote.price);
             this.quoteAsOf.set(date < this.todayStr() ? date : '');
           }
+          // Catálogo B3 da API é a fonte de verdade do tipo: quando a cotação
+          // traz assetType e o tipo não está travado, ele corrige/confirma a
+          // sugestão imediata feita pela heurística por sufixo (fallback offline).
+          if (!this.isAssetTypeLocked && quote.assetType) {
+            this.form.assetType = quote.assetType;
+          }
           this.quoteName.set(quote.name || quote.ticker);
           this.quoteNotFound.set(false);
         } else {
@@ -227,7 +233,9 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     this.quoteNotFound.set(false);
     // Novo ticker reabre o auto-preenchimento do preço.
     this.priceManuallyEdited = false;
-    // Sugere o tipo detectado pelo ticker (quando não travado pela seção).
+    // Sugestão imediata por heurística de sufixo (fallback offline). É só um
+    // palpite enquanto a cotação não resolve: quando ela chega, o assetType do
+    // catálogo B3 da API tem prioridade e corrige esta sugestão (ver subscribe).
     if (!this.isAssetTypeLocked) {
       const detected = detectAssetType(this.form.ticker);
       if (detected) this.form.assetType = detected;

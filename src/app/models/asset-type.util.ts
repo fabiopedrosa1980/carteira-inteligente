@@ -1,11 +1,13 @@
 import { AssetType } from './transaction.model';
 
-// Detecção do tipo de ativo a partir do ticker da B3. Como as APIs (quote/search)
-// não retornam a categoria, ETFs são reconhecidos por uma lista de tickers conhecidos.
+// FALLBACK OFFLINE. A fonte de verdade do tipo de ativo é o catálogo B3 da API
+// (tabela b3_assets), exposto via `assetType` da cotação e do endpoint
+// `/assets/:ticker`. Esta heurística por sufixo só é usada quando o catálogo não
+// respondeu ou não conhece o ticker (offline/erro/papel recém-listado).
 // O sufixo 11 é ambíguo (FIIs, ETFs e units de ações o usam), então um ticker
-// terminado em 11 fora da lista de ETFs fica indeterminado (null) — não é mais
+// terminado em 11 fora da lista de ETFs fica indeterminado (null) — não é
 // chutado como FII, o que travava o registro de units como Ações.
-// Novos ETFs precisam ser adicionados aqui.
+// Novos ETFs podem ser adicionados aqui, mas o catálogo da API os cobre.
 export const ETF_TICKERS = new Set<string>([
   'BOVA11',
   'BOVV11',

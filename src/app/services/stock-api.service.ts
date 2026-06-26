@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, of } from 'rxjs';
+import { AssetType } from '../models/transaction.model';
 
 export interface StockQuote {
   ticker: string;
@@ -11,11 +12,24 @@ export interface StockQuote {
   changePercent: number;
   dividendYield: number;
   found: boolean;
+  // Tipo do ativo classificado pelo catálogo B3 da API (b3_assets). Vazio/ausente
+  // quando o ticker não está no catálogo — nesse caso o front usa fallback offline.
+  assetType?: AssetType | '';
 }
 
 export interface TickerSuggestion {
   ticker: string;
   name: string;
+}
+
+// Ativo resolvido pelo catálogo local da API (tabela b3_assets), sem consulta
+// externa. `found: false` quando o ticker não existe no catálogo.
+export interface CatalogAsset {
+  ticker: string;
+  name: string;
+  type: AssetType | '';
+  sector: string;
+  found: boolean;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -42,12 +56,22 @@ export class StockApiService {
     return `${d.getFullYear()}-${m}-${day}`;
   }
 
-  // Busca de tickers para o autocomplete do lançamento. Consome o endpoint de
-  // busca do backend (ver contrato em design.md). Defensivo: lista vazia em erro.
+  // Resolve um ticker pelo catálogo local da API (b3_assets), sem consulta
+  // externa: nome, setor e tipo autoritativo. Defensivo: retorna não-encontrado
+  // em erro/ausência (ex.: catálogo ainda não populado), e o front faz fallback.
+  getAsset(ticker: string): Observable<CatalogAsset> {
+    const t = ticker.trim().toUpperCase();
+    return this.http
+      .get<CatalogAsset>(`${this.proxyUrl}/assets/${t}`)
+      .pipe(catchError(() => of(this.emptyAsset(t))));
+  }
+
+  // Busca de tickers para o autocomplete do lançamento. Consome o endpoint do
+  // catálogo local (b3_assets) — sem site externo. Defensivo: lista vazia em erro.
   searchTickers(query: string): Observable<TickerSuggestion[]> {
     const q = query.trim().toUpperCase();
     return this.http
-      .get<TickerSuggestion[]>(`${this.proxyUrl}/search?q=${encodeURIComponent(q)}`)
+      .get<TickerSuggestion[]>(`${this.proxyUrl}/assets/search?q=${encodeURIComponent(q)}`)
       .pipe(catchError(() => of([])));
   }
 
@@ -69,5 +93,9 @@ export class StockApiService {
       dividendYield: 0,
       found: false,
     };
+  }
+
+  private emptyAsset(ticker: string): CatalogAsset {
+    return { ticker, name: '', type: '', sector: '', found: false };
   }
 }

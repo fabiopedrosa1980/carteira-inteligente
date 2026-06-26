@@ -239,8 +239,9 @@
   }
   @media (max-width: 600px) {
     padding: 12px;
-    // Reserva espaço para a barra inferior fixa (altura ~56px + safe-area).
-    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+    // Reserva espaço para a barra inferior fixa (~50px) + folga, para o último
+    // card/acordeão rolar livre acima da barra em vez de ficar colado nela.
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
   }
 }
 

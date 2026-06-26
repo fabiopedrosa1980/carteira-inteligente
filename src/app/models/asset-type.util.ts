@@ -55,6 +55,42 @@ export function detectAssetType(ticker: string): AssetType | null {
   return null;
 }
 
+// Normaliza para comparação: minúsculas e sem acentos.
+function normalizeName(s: string): string {
+  return (s ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+}
+
+// Classifica um ticker terminado em 11 pelo NOME do ativo (cotação). Usado como
+// fallback quando o catálogo da API não conhece o ticker: FIIs trazem
+// "imobiliário"/"FII"; ETFs trazem "índice"/"index"/"ishares"/"ETF"; o restante
+// é unit de ação (TAEE11/SANB11). Retorna null quando não há sinal utilizável
+// (ticker não termina em 11 ou nome vazio).
+export function detectAssetTypeByName(ticker: string, name: string): AssetType | null {
+  const t = (ticker ?? '').toUpperCase().trim();
+  if (!/11$/.test(t)) return null;
+  const n = normalizeName(name);
+  if (!n) return null;
+  if (/imobiliari|\bfii\b/.test(n)) return 'FIIs';
+  if (/indice|index|ishares|\betf\b/.test(n)) return 'ETFs';
+  return 'Acoes';
+}
+
+// Resolve o tipo do ativo em tiers, do sinal mais confiável ao menos:
+//  1. catálogo da API Go (assetType da cotação) — fonte de verdade;
+//  2. nome do ativo (desambigua tickers 11 fora do catálogo);
+//  3. heurística por sufixo (só 3–8 é confiável; 11 → null/indeterminado).
+// Retorna null = indeterminado (a validação NÃO deve bloquear).
+export function resolveAssetType(
+  ticker: string,
+  catalogType?: AssetType | '' | null,
+  name?: string,
+): AssetType | null {
+  if (catalogType) return catalogType;
+  const byName = detectAssetTypeByName(ticker, name ?? '');
+  if (byName) return byName;
+  return detectAssetType(ticker);
+}
+
 // Rótulo legível do tipo (para mensagens).
 export function assetTypeLabel(type: AssetType): string {
   return type === 'Acoes' ? 'Ações' : type;

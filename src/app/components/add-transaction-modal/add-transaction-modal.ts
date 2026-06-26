@@ -14,9 +14,9 @@ import { FormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
 import { TransactionService } from '../../services/transaction.service';
-import { StockApiService, TickerSuggestion } from '../../services/stock-api.service';
+import { StockApiService, StockQuote, TickerSuggestion } from '../../services/stock-api.service';
 import { AssetType, Transaction } from '../../models/transaction.model';
-import { detectAssetType, assetTypeLabel } from '../../models/asset-type.util';
+import { detectAssetType, resolveAssetType, assetTypeLabel } from '../../models/asset-type.util';
 
 @Component({
   selector: 'app-add-transaction-modal',
@@ -68,17 +68,26 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
   }
 
   // Mensagem em tempo real quando o ticker digitado não condiz com o tipo
-  // selecionado. Usa a mesma heurística por sufixo do salvamento: tolera a
-  // ambiguidade FII × ETF e ignora sufixos não reconhecidos (retorna '').
+  // selecionado. Usa a resolução em tiers (catálogo da API → nome → sufixo):
+  // tolera o indeterminado (null, ex.: sufixo 11 sem catálogo nem nome) e só
+  // alerta quando o tipo resolvido com confiança diverge do escolhido.
   get tickerTypeMismatch(): string {
     if (this.isEdit || !this.form.assetType) return '';
-    const detected = detectAssetType(this.form.ticker);
-    if (detected && detected !== this.form.assetType) {
-      return `Ticker é de ${assetTypeLabel(detected)}, não condiz com ${assetTypeLabel(
+    const resolved = this.resolvedType();
+    if (resolved && resolved !== this.form.assetType) {
+      return `Ticker é de ${assetTypeLabel(resolved)}, não condiz com ${assetTypeLabel(
         this.form.assetType as AssetType,
       )}`;
     }
     return '';
+  }
+
+  // Tipo resolvido para o ticker atual em tiers (catálogo da última cotação →
+  // nome → sufixo). Só considera a cotação quando ela é do ticker em edição.
+  private resolvedType(): AssetType | null {
+    const t = (this.form.ticker || '').toUpperCase().trim();
+    const q = this.lastQuote && this.lastQuote.ticker === t ? this.lastQuote : null;
+    return resolveAssetType(t, q?.assetType, q?.name);
   }
 
   private readonly svc = inject(TransactionService);
@@ -90,6 +99,10 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
 
   // True quando o usuário editou o preço à mão — impede sobrescrever pela cotação.
   private priceManuallyEdited = false;
+
+  // Última cotação resolvida (traz assetType do catálogo e name) usada pela
+  // validação de tipo. Reiniciada a cada novo ticker para não usar dado velho.
+  private lastQuote: StockQuote | null = null;
 
   suggestions = signal<TickerSuggestion[]>([]);
 
@@ -180,6 +193,9 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ quote, date }) => {
         this.quoteLoading.set(false);
+        // Guarda a cotação (assetType do catálogo + name) para a validação de
+        // tipo, mesmo quando o preço não veio — o tipo independe do preço.
+        this.lastQuote = quote;
         if (quote.found && quote.price > 0) {
           // Não sobrescreve um preço editado à mão.
           if (!this.priceManuallyEdited) {
@@ -231,6 +247,8 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
     delete this.errors.ticker;
     this.quoteName.set('');
     this.quoteNotFound.set(false);
+    // Novo ticker invalida a cotação anterior (tipo/nome) até resolver de novo.
+    this.lastQuote = null;
     // Novo ticker reabre o auto-preenchimento do preço.
     this.priceManuallyEdited = false;
     // Sugestão imediata por heurística de sufixo (fallback offline). É só um
@@ -299,12 +317,13 @@ export class AddTransactionModalComponent implements OnInit, OnDestroy {
       this.errors.quantity = 'Quantidade inválida';
     if (!this.form.price || this.form.price <= 0) this.errors.price = 'Preço inválido';
 
-    // Valida se o ticker condiz com o tipo escolhido (detecção por ticker;
-    // distingue FII de ETF pela lista de ETFs conhecidos).
+    // Valida se o ticker condiz com o tipo escolhido pela resolução em tiers
+    // (catálogo da API → nome → sufixo). Só bloqueia quando o tipo resolvido com
+    // confiança diverge; indeterminado (null, ex.: 11 sem catálogo) não bloqueia.
     if (!this.errors.ticker && this.form.assetType) {
-      const detected = detectAssetType(this.form.ticker);
-      if (detected && detected !== this.form.assetType) {
-        this.errors.ticker = `Ticker é de ${assetTypeLabel(detected)}, não condiz com ${assetTypeLabel(
+      const resolved = this.resolvedType();
+      if (resolved && resolved !== this.form.assetType) {
+        this.errors.ticker = `Ticker é de ${assetTypeLabel(resolved)}, não condiz com ${assetTypeLabel(
           this.form.assetType as AssetType,
         )}`;
       }

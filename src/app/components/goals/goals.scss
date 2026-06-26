@@ -10,6 +10,10 @@
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+  // Alinha o título "Minhas Metas" (e o botão à direita) ao conteúdo interno do
+  // card da tabela, cujas células recuam 16px.
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .btn-nova {

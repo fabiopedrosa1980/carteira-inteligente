@@ -6,6 +6,13 @@ $pad-x: 20px;
   padding: 0;
 }
 
+// Alinha o cabeçalho (título "Lançamentos" à esquerda e "Total investido" à
+// direita) ao conteúdo interno dos cards, que é recuado por $pad-x.
+.page-header {
+  padding-left: $pad-x;
+  padding-right: $pad-x;
+}
+
 /* Privacidade: quando o olho de "ocultar valores" está ligado, mascara os
    totais monetários da tela — total investido do cabeçalho e total de cada
    seção. Mesmo tratamento (blur) usado no card de alocação. */

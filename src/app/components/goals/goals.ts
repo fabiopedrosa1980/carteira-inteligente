@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MetasService } from '../../services/metas.service';
 import { ConfirmService } from '../../services/confirm.service';
+import { ValueVisibilityService } from '../../services/value-visibility.service';
 import { Meta } from '../../models/meta.model';
 
 @Component({
@@ -15,6 +16,7 @@ import { Meta } from '../../models/meta.model';
 export class GoalsComponent {
   private readonly metasService = inject(MetasService);
   private readonly confirmService = inject(ConfirmService);
+  readonly visibility = inject(ValueVisibilityService);
 
   @Input() isDark = true;
 

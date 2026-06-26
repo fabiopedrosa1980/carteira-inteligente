@@ -45,7 +45,9 @@
           </svg>
         </span>
       </div>
-      <span class="ds-total-value">{{ total() | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
+      <span class="ds-total-value" [class.value-blurred]="visibility.hidden()">{{
+        total() | currency: 'BRL' : 'symbol' : '1.2-2'
+      }}</span>
     </div>
 
     <!-- Vazio: mesmo padrão visual do estado vazio do Histórico de dividendos -->
@@ -85,7 +87,9 @@
         >
           <span class="col-ativo">{{ row.ticker }}</span>
           <span class="col-cotas">{{ row.shares | number: '1.0-0' }}</span>
-          <span class="col-valor">{{ row.value | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
+          <span class="col-valor" [class.value-blurred]="visibility.hidden()">{{
+            row.value | currency: 'BRL' : 'symbol' : '1.2-2'
+          }}</span>
           <span class="col-chevron" *ngIf="row.months.length > 0">
             <span class="chevron" [class.expanded]="isExpanded(row.ticker)">›</span>
           </span>

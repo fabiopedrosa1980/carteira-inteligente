@@ -31,6 +31,7 @@ import {
   Zona,
 } from '../../models/preco-teto.util';
 import { PrecoTetoConfigService } from '../../services/preco-teto-config.service';
+import { ValueVisibilityService } from '../../services/value-visibility.service';
 
 type SortField =
   | 'name'
@@ -44,7 +45,6 @@ type SortField =
   | 'zona';
 
 const THEME_KEY = 'ci-theme';
-const HIDE_VALUES_KEY = 'ci-hide-values';
 const PAGE_SIZE = 10;
 
 @Component({
@@ -70,6 +70,7 @@ export class DashboardComponent {
   private readonly transactionSvc = inject(TransactionService);
   private readonly metasSvc = inject(MetasService);
   private readonly tetoConfig = inject(PrecoTetoConfigService);
+  private readonly visibility = inject(ValueVisibilityService);
 
   readonly user = this.auth.user;
 
@@ -121,12 +122,12 @@ export class DashboardComponent {
 
   isDark = signal(localStorage.getItem(THEME_KEY) !== 'light');
 
-  // Privacidade: oculta os valores em R$ dos cards de resumo. Padrão: visível.
-  valoresOcultos = signal(localStorage.getItem(HIDE_VALUES_KEY) === '1');
+  // Privacidade: estado global compartilhado (serviço). O controle agora vive no
+  // menu superior e mascara os totais em R$ de todas as telas.
+  readonly valoresOcultos = this.visibility.hidden;
 
   toggleValores(): void {
-    this.valoresOcultos.update((v) => !v);
-    localStorage.setItem(HIDE_VALUES_KEY, this.valoresOcultos() ? '1' : '0');
+    this.visibility.toggle();
   }
 
   readonly acoes = signal<Stock[]>([]);

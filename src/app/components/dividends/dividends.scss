@@ -1,9 +1,26 @@
+// Recuo padronizado do bloco do topo (título + controles) para alinhar o título
+// "Dividendos" com os títulos das demais telas (Meus Ativos/Lançamentos: 20px;
+// 16px no mobile).
+$dv-pad-x: 20px;
+.page-header {
+  padding-left: $dv-pad-x;
+  padding-right: $dv-pad-x;
+  @media (max-width: 768px) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
 .dv-asset-toggle {
   // Pílula com 2 itens; cabe sem rolagem.
   display: inline-flex;
   gap: 3px;
   margin-top: 1rem;
+  margin-left: $dv-pad-x;
   padding: 3px;
+  @media (max-width: 768px) {
+    margin-left: 16px;
+  }
   background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -35,6 +52,12 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 1rem;
+  margin-left: $dv-pad-x;
+  margin-right: $dv-pad-x;
+  @media (max-width: 768px) {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
 }
 
 .dv-tab {

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { BackendApiService, ApiAcaoItem, ApiDividend } from '../../services/backend-api.service';
 import { TransactionService } from '../../services/transaction.service';
+import { ValueVisibilityService } from '../../services/value-visibility.service';
 import { receivedByMonth, projectedByMonth } from '../../models/dividends-received.util';
 
 export type SummaryMode = 'received' | 'projected';
@@ -48,6 +49,7 @@ export class DividendsSummaryComponent implements OnChanges {
 
   private readonly api = inject(BackendApiService);
   private readonly txService = inject(TransactionService);
+  readonly visibility = inject(ValueVisibilityService);
 
   readonly loading = signal(true);
   readonly error = signal(false);

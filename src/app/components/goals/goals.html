@@ -95,9 +95,15 @@
             </span>
           </td>
           <td>
-            {{ getCurrentValue(meta) | currency: 'BRL' : 'symbol' : '1.2-2' }}
+            <span [class.value-blurred]="visibility.hidden()">{{
+              getCurrentValue(meta) | currency: 'BRL' : 'symbol' : '1.2-2'
+            }}</span>
           </td>
-          <td>{{ meta.targetValue | currency: 'BRL' : 'symbol' : '1.2-2' }}</td>
+          <td>
+            <span [class.value-blurred]="visibility.hidden()">{{
+              meta.targetValue | currency: 'BRL' : 'symbol' : '1.2-2'
+            }}</span>
+          </td>
           <td>
             <span
               class="progress-pct"

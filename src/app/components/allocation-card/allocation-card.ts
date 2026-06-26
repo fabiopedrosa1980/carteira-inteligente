@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Stock } from '../../models/stock.model';
 import { AllocationService } from '../../services/allocation.service';
+import { NotificationService } from '../../services/notification.service';
 import {
   AllocClasse,
   AllocationTargets,
@@ -20,6 +21,7 @@ import {
 })
 export class AllocationCardComponent {
   private readonly alloc = inject(AllocationService);
+  private readonly notifications = inject(NotificationService);
 
   @ViewChild('compBar') compBar?: ElementRef<HTMLElement>;
 
@@ -113,6 +115,7 @@ export class AllocationCardComponent {
       this.formLimit(),
     );
     this.editing.set(false);
+    this.notifications.show('Distribuição alterada com sucesso');
   }
 
   // Alvo de uma classe (inteiro), para ARIA/exibição.

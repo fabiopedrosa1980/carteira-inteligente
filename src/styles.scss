@@ -180,3 +180,12 @@ button {
   color: var(--text-secondary);
   margin: 0;
 }
+
+// Utilitário de privacidade: borra um valor em R$ quando "ocultar valores" está
+// ativo. Mesmo tratamento do .values-hidden por componente, mas aplicável a
+// qualquer elemento de total nas telas que não têm o wrapper.
+.value-blurred {
+  filter: blur(7px);
+  user-select: none;
+  pointer-events: none;
+}

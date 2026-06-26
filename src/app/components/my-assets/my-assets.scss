@@ -404,6 +404,19 @@ $pad-x: 20px;
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent);
   letter-spacing: 0.5px;
+  @media (max-width: 600px) {
+    // Identidade do card: o ticker ancora a 1ª linha com um pouco mais de presença.
+    font-size: 13px;
+  }
+}
+
+// "Money setting": o símbolo R$ recua (menor e esmaecido) e os dígitos lideram —
+// tipografia de produto financeiro, aplicada a Preço e Total.
+.cur {
+  font-size: 0.72em;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-right: 1px;
 }
 .date-cell {
   color: var(--text-secondary);
@@ -428,7 +441,10 @@ $pad-x: 20px;
   font-weight: 700;
   color: var(--accent);
   @media (max-width: 600px) {
+    // Herói do card: o custo da compra é o fato mais importante do lançamento.
     grid-area: total;
+    font-size: 18px;
+    line-height: 1.05;
   }
 }
 
@@ -461,13 +477,15 @@ $pad-x: 20px;
   .price-cell::before,
   .total-cell::before {
     display: block;
-    margin-bottom: 2px;
+    margin-bottom: 3px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 9.5px;
+    // Rótulos recuam: menores e com mais tracking, deixando os valores liderarem.
+    font-size: 9px;
     font-weight: 600;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--text-secondary);
+    opacity: 0.85;
   }
   .date-cell::before {
     content: 'Data';

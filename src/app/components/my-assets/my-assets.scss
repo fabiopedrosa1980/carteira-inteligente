@@ -404,19 +404,16 @@ $pad-x: 20px;
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent);
   letter-spacing: 0.5px;
+  // No card mobile, o ticker segue o padrão de Meus Ativos (.cell-ativo): texto
+  // simples 16px/700 na cor primária, sem badge. No desktop a tabela mantém o badge.
   @media (max-width: 600px) {
-    // Identidade do card: o ticker ancora a 1ª linha com um pouco mais de presença.
-    font-size: 13px;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--text-primary);
+    font-size: 16px;
+    letter-spacing: 0.02em;
   }
-}
-
-// "Money setting": o símbolo R$ recua (menor e esmaecido) e os dígitos lideram —
-// tipografia de produto financeiro, aplicada a Preço e Total.
-.cur {
-  font-size: 0.72em;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-right: 1px;
 }
 .date-cell {
   color: var(--text-secondary);
@@ -441,10 +438,12 @@ $pad-x: 20px;
   font-weight: 700;
   color: var(--accent);
   @media (max-width: 600px) {
-    // Herói do card: o custo da compra é o fato mais importante do lançamento.
+    // Mesmo padrão do Saldo no card de Meus Ativos: 16px/700 na cor primária
+    // (o acento permanece só no desktop/tabela).
     grid-area: total;
-    font-size: 18px;
-    line-height: 1.05;
+    font-size: 16px;
+    line-height: 1.1;
+    color: var(--text-primary);
   }
 }
 
@@ -466,7 +465,7 @@ $pad-x: 20px;
 }
 
 // Mobile: rótulos próprios em cada célula do card (sans, caixa-alta), já que o
-// cabeçalho da tabela some. Números seguem em mono (definido na .table-row).
+// cabeçalho da tabela some. Tipografia sans, no mesmo padrão de Meus Ativos.
 @media (max-width: 600px) {
   .ticker-cell {
     grid-area: ticker;
@@ -477,15 +476,14 @@ $pad-x: 20px;
   .price-cell::before,
   .total-cell::before {
     display: block;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    // Rótulos recuam: menores e com mais tracking, deixando os valores liderarem.
-    font-size: 9px;
+    // Mesmo micro-rótulo do card de Meus Ativos.
+    font-size: 9.5px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text-secondary);
-    opacity: 0.85;
   }
   .date-cell::before {
     content: 'Data';
@@ -504,6 +502,15 @@ $pad-x: 20px;
   .total-cell {
     justify-self: end;
     text-align: right;
+  }
+  // Campos de contexto (Data, Qtd, Preço) no mesmo tom de Meus Ativos: 13px,
+  // peso normal, cor secundária. Ticker e Total carregam o destaque (16px/700).
+  .date-cell,
+  .qty-cell,
+  .price-cell {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-secondary);
   }
 }
 .btn-edit,

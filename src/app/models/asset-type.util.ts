@@ -1,9 +1,11 @@
 import { AssetType } from './transaction.model';
 
 // Detecção do tipo de ativo a partir do ticker da B3. Como as APIs (quote/search)
-// não retornam a categoria, FII e ETF (ambos terminam em 11) são separados por
-// uma lista de ETFs conhecidos: o que termina em 11 e não está na lista é tratado
-// como FII. Novos ETFs precisam ser adicionados aqui.
+// não retornam a categoria, ETFs são reconhecidos por uma lista de tickers conhecidos.
+// O sufixo 11 é ambíguo (FIIs, ETFs e units de ações o usam), então um ticker
+// terminado em 11 fora da lista de ETFs fica indeterminado (null) — não é mais
+// chutado como FII, o que travava o registro de units como Ações.
+// Novos ETFs precisam ser adicionados aqui.
 export const ETF_TICKERS = new Set<string>([
   'BOVA11',
   'BOVV11',
@@ -46,7 +48,7 @@ export const ETF_TICKERS = new Set<string>([
 // Retorna o tipo detectado pelo sufixo do ticker, ou null se indeterminado.
 export function detectAssetType(ticker: string): AssetType | null {
   const t = (ticker ?? '').toUpperCase().trim();
-  if (/11$/.test(t)) return ETF_TICKERS.has(t) ? 'ETFs' : 'FIIs';
+  if (/11$/.test(t)) return ETF_TICKERS.has(t) ? 'ETFs' : null;
   if (/[345678]$/.test(t)) return 'Acoes';
   return null;
 }

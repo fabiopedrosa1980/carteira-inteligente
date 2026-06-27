@@ -206,7 +206,11 @@ $pad-x: 20px;
 
 /* Collapsible body */
 .accordion-body {
-  max-height: 2000px;
+  // Teto alto o suficiente para comportar uma página cheia (10 lançamentos) como
+  // cards no mobile (cada ~200-250px) + paginação + rodapé "Adicionar", sem
+  // cortar o conteúdo. Antes era 2000px, o que cortava o botão "Adicionar" em
+  // seções altas (ex.: Ações com a página cheia). A paginação limita a 10/página.
+  max-height: 6000px;
   overflow: hidden;
   transition: max-height 0.35s ease;
   &.collapsed {

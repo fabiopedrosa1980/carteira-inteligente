@@ -14,6 +14,7 @@ import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
 import { DividendsComponent } from '../dividends/dividends';
 import { AllocationCardComponent } from '../allocation-card/allocation-card';
+import { ImportComponent } from '../import/import';
 import { Stock } from '../../models/stock.model';
 import { AssetType } from '../../models/transaction.model';
 import { saldo, custo, variacaoPosicao, rentabilidade } from '../../models/position.util';
@@ -59,6 +60,7 @@ const PAGE_SIZE = 10;
     GoalsComponent,
     DividendsComponent,
     AllocationCardComponent,
+    ImportComponent,
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
@@ -465,6 +467,11 @@ export class DashboardComponent {
       label: 'Metas',
       iconPath:
         'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z',
+    },
+    {
+      id: 'import',
+      label: 'Importar',
+      iconPath: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3',
     },
   ];
 

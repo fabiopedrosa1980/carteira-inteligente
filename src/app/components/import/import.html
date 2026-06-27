@@ -1,0 +1,89 @@
+<div class="import-screen">
+  <div class="import-header">
+    <h2 class="page-title">Importar da B3</h2>
+    <p class="page-subtitle">
+      Importe a planilha de <strong>Posição</strong> exportada da área do investidor da B3 (arquivo
+      <code>.xlsx</code>) para popular seus lançamentos automaticamente.
+    </p>
+  </div>
+
+  <div class="import-card">
+    <!-- Aviso de sobreposição -->
+    <div class="warn-box" role="note">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path d="M12 9v4M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <span>
+        A importação <strong>sobrepõe</strong> todos os lançamentos atuais. Os lançamentos manuais
+        existentes serão substituídos pelas posições da planilha.
+      </span>
+    </div>
+
+    <!-- Seleção de arquivo -->
+    <label class="file-picker">
+      <input
+        type="file"
+        accept=".xlsx"
+        (change)="onFileSelected($event)"
+        [disabled]="state() === 'loading'"
+      />
+      <svg class="file-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path d="M14 2v6h6" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+      </svg>
+      <span class="file-name" *ngIf="fileName(); else noFile">{{ fileName() }}</span>
+      <ng-template #noFile
+        ><span class="file-name placeholder">Escolher arquivo .xlsx</span></ng-template
+      >
+    </label>
+
+    <button class="import-btn" [disabled]="!canImport()" (click)="onImport()">
+      <span *ngIf="state() !== 'loading'">Importar e sobrepor</span>
+      <span *ngIf="state() === 'loading'">Importando…</span>
+    </button>
+
+    <!-- Erro -->
+    <div class="result-box error" *ngIf="state() === 'error' && errorMsg()" role="alert">
+      {{ errorMsg() }}
+    </div>
+
+    <!-- Sucesso -->
+    <div class="result-box success" *ngIf="state() === 'success' && result() as r">
+      <p class="result-title">
+        Importação concluída: <strong>{{ totalCreated() }}</strong> lançamento(s) criado(s).
+      </p>
+      <ul class="result-counts">
+        <li>
+          <span>Ações</span><strong>{{ r.created.Acoes }}</strong>
+        </li>
+        <li>
+          <span>FIIs</span><strong>{{ r.created.FIIs }}</strong>
+        </li>
+        <li>
+          <span>ETFs</span><strong>{{ r.created.ETFs }}</strong>
+        </li>
+      </ul>
+      <div class="ignored" *ngIf="r.ignored.length > 0">
+        <p>Tickers ignorados:</p>
+        <ul>
+          <li *ngFor="let item of r.ignored">
+            {{ item.ticker }}<span *ngIf="item.reason"> — {{ item.reason }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

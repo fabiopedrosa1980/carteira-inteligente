@@ -105,6 +105,16 @@ export class BackendApiService {
     return this.http.delete<void>(`${this.baseUrl}/transactions`);
   }
 
+  // Importa a planilha de Posição da B3 (.xlsx) por upload multipart. A API Go
+  // parseia, classifica os tickers e SOBREPÕE os lançamentos existentes,
+  // devolvendo um resumo. Sem catchError aqui: a tela precisa distinguir
+  // sucesso de erro (endpoint é dependência externa do repo Go).
+  importTransactions(file: File): Observable<ImportResult> {
+    const form = new FormData();
+    form.append('file', file, file.name);
+    return this.http.post<ImportResult>(`${this.baseUrl}/transactions/import`, form);
+  }
+
   getAcoes(): Observable<ApiAcaoItem[]> {
     return this.http
       .get<ApiAcaoItem[]>(`${this.baseUrl}/transactions/acoes`)
@@ -158,6 +168,13 @@ export class BackendApiService {
 export interface ApiAllocation {
   targets: { Acoes: number; FIIs: number; ETFs: number };
   concentrationLimit: number;
+}
+
+// Resumo devolvido pela importação da planilha de Posição da B3: quantos
+// lançamentos foram criados por classe e quais tickers foram ignorados.
+export interface ImportResult {
+  created: { Acoes: number; FIIs: number; ETFs: number };
+  ignored: { ticker: string; reason?: string }[];
 }
 
 export interface ApiAcaoItem {

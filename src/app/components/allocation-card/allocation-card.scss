@@ -242,6 +242,12 @@
   text-align: right;
   color: var(--text-secondary);
 }
+// Valores de Atual e Alvo na cor primária (branco no tema escuro), padronizando
+// com os demais valores do app. Os rótulos de cabeçalho (.ledger-head .num)
+// continuam em --text-secondary.
+.ledger-row .num {
+  color: var(--text-primary);
+}
 .act {
   font-variant-numeric: tabular-nums;
   font-weight: 600;

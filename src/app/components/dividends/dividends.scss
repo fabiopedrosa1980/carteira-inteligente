@@ -1,7 +1,7 @@
 // Recuo padronizado do bloco do topo (título + controles) para alinhar o título
-// "Dividendos" com os títulos das demais telas (Meus Ativos/Lançamentos: 20px;
-// 16px no mobile).
-$dv-pad-x: 20px;
+// "Dividendos" com os títulos das demais telas. Recuo padrão de 16px em todos os
+// breakpoints.
+$dv-pad-x: 16px;
 .page-header {
   padding-left: $dv-pad-x;
   padding-right: $dv-pad-x;

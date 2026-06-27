@@ -1,6 +1,7 @@
 // Passo horizontal partilhado pelos blocos da seção (cabeçalho da tabela,
 // linhas, rodapé "Adicionar" e paginação), alinhado às bordas do card.
-$pad-x: 20px;
+// Recuo padrão de 16px, consistente entre todas as telas e breakpoints.
+$pad-x: 16px;
 
 .meus-ativos {
   padding: 0;
@@ -619,7 +620,7 @@ $pad-x: 20px;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 14px 20px;
+  padding: 14px $pad-x;
   border-bottom: 1px solid var(--border);
   &:last-child {
     border-bottom: none;

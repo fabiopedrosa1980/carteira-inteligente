@@ -1,6 +1,8 @@
 .import-screen {
-  max-width: 640px;
-  margin: 0 auto;
+  // Alinhado à esquerda, com o recuo horizontal padrão de 16px (igual às demais
+  // telas), em vez de centralizado.
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .import-header {

@@ -19,4 +19,4 @@
 ## 3. Entrega
 
 - [x] 3.1 Rodar `npx prettier --write` nos arquivos SCSS alterados.
-- [ ] 3.2 Commitar com prefixo `style:` e fazer push para `main` (stage apenas dos arquivos alterados).
+- [x] 3.2 Commitar com prefixo `style:` e fazer push para `main` (stage apenas dos arquivos alterados).

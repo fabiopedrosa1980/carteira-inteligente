@@ -14,10 +14,15 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   display: flex;
 }
 .btn-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px 14px;
+  border-radius: var(--icon-btn-radius);
+  min-height: var(--icon-btn-size);
+  padding: 0 16px;
   cursor: pointer;
   font-family: inherit;
   font-size: 13px;

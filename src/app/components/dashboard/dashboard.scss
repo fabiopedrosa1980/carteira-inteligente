@@ -142,12 +142,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  // Tamanho padrão dos botões de ícone (token global; encolhe no mobile).
+  width: var(--icon-btn-size);
+  height: var(--icon-btn-size);
   flex-shrink: 0;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 9px;
+  border-radius: var(--icon-btn-radius);
   color: var(--text-secondary);
   cursor: pointer;
   transition:
@@ -155,19 +156,9 @@
     border-color 0.18s,
     background 0.18s;
 
-  // Mobile: encolhe para caber em uma linha, mantendo alvo de toque ≥30px.
-  @media (max-width: 600px) {
-    width: 32px;
-    height: 32px;
-  }
-  @media (max-width: 480px) {
-    width: 30px;
-    height: 30px;
-  }
-
   svg {
-    width: 18px;
-    height: 18px;
+    width: var(--icon-btn-icon);
+    height: var(--icon-btn-icon);
   }
 
   &:hover {

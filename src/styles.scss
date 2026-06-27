@@ -28,6 +28,19 @@
   --class-acoes: #2ea043;
   --class-fii: #3b82f6;
   --class-etf: #a855f7;
+
+  /* Tamanho padrão dos botões de ícone (web). A redução mobile fica num único
+     ponto na media query abaixo. */
+  --icon-btn-size: 34px;
+  --icon-btn-radius: 8px;
+  --icon-btn-icon: 18px;
+}
+
+/* Botões de ícone um pouco menores no mobile — aplicado a todos via token. */
+@media (max-width: 600px) {
+  :root {
+    --icon-btn-size: 32px;
+  }
 }
 
 body.light-theme {

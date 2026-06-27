@@ -358,20 +358,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  // Tamanho padrão dos botões de ícone (token global; encolhe no mobile).
+  width: var(--icon-btn-size);
+  height: var(--icon-btn-size);
   background: none;
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: var(--icon-btn-radius);
   transition:
     background 0.15s,
     color 0.15s;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: var(--icon-btn-icon);
+    height: var(--icon-btn-icon);
   }
   &:hover {
     background: color-mix(in srgb, var(--accent) 12%, transparent);
@@ -384,11 +385,6 @@
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 1px;
-  }
-
-  @media (max-width: 480px) {
-    width: 28px;
-    height: 28px;
   }
 }
 

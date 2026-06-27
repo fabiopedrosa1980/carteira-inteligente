@@ -19,12 +19,29 @@ A aplicação SHALL exibir o controle de **ocultar valores** (ícone de olho) no
 
 ### Requirement: Ocultar valores aplica-se a todas as telas
 
-Quando a privacidade estiver ativa, a aplicação SHALL mascarar **todos os totais monetários (R$) de todas as telas** — patrimônio e saldos em Meus Ativos, total investido e totais por seção em Lançamentos, totais de Dividendos (recebidos/projetados/mensais) e quaisquer totais em R$ em Metas. Percentuais, contagens e demais dados não-monetários MUST permanecer visíveis. O estado MUST ser compartilhado entre as telas e persistido entre sessões.
+Quando a privacidade estiver ativa, a aplicação SHALL mascarar **todos os totais e valores monetários (R$) de todas as telas**. Isso inclui, explicitamente e por linha:
+
+- **Meus Ativos** (Dashboard): patrimônio, totais por seção e o **Saldo de cada ativo** na tabela/cards.
+- **Lançamentos**: total investido (cabeçalho), totais por seção e o **Total de cada lançamento** (total da operação = qtd × preço) na tabela/cards.
+- **Dividendos**: totais (recebidos/projetados/mensais).
+- **Metas**: quaisquer totais em R$.
+
+Percentuais, contagens, datas e demais dados não-monetários MUST permanecer visíveis. O mascaramento MUST preservar o layout (sem mudança de tamanho nem rolagem) e valer tanto no desktop quanto no mobile (cards). O estado MUST ser compartilhado entre as telas e persistido entre sessões.
 
 #### Scenario: Totais ocultos em todas as telas
 
 - **WHEN** a privacidade está ativa
 - **THEN** os totais em R$ de Meus Ativos, Lançamentos, Dividendos e Metas aparecem mascarados
+
+#### Scenario: Saldo por ativo mascarado em Meus Ativos
+
+- **WHEN** a privacidade está ativa e a tabela "Meus Ativos" do Dashboard é exibida
+- **THEN** a coluna/célula **Saldo** de cada ativo aparece mascarada (incluindo o card mobile)
+
+#### Scenario: Total da operação mascarado em Lançamentos
+
+- **WHEN** a privacidade está ativa e a tela "Lançamentos" é exibida
+- **THEN** a coluna/célula **Total** de cada lançamento aparece mascarada (incluindo o card mobile)
 
 #### Scenario: Percentuais permanecem visíveis
 
@@ -39,5 +56,5 @@ Quando a privacidade estiver ativa, a aplicação SHALL mascarar **todos os tota
 #### Scenario: Exibir volta a mostrar os totais
 
 - **WHEN** a privacidade é desativada
-- **THEN** todos os totais em R$ voltam a ser exibidos em todas as telas
+- **THEN** todos os totais e valores em R$ (incluindo Saldo por ativo e Total por lançamento) voltam a ser exibidos
 

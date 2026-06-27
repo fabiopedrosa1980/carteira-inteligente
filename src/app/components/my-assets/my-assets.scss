@@ -39,28 +39,29 @@ $pad-x: 16px;
 /* Botão "Limpar tudo" no header — ação destrutiva, ênfase reduzida para não
    competir com o título nem com o Total em destaque. */
 .btn-clear-all {
+  // Ação destrutiva: vermelho. Mesmo tamanho/raio padrão dos demais botões.
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--icon-btn-size);
+  padding: 0 16px;
+  border-radius: var(--icon-btn-radius);
   background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 6px 12px;
-  border-radius: 8px;
+  border: 1px solid var(--color-neg);
+  color: var(--color-neg);
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   font-family: inherit;
   white-space: nowrap;
   transition: all 0.2s;
   svg {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
   }
   &:hover {
-    border-color: var(--color-neg);
-    color: var(--color-neg);
-    background: color-mix(in srgb, var(--color-neg) 8%, transparent);
+    background: color-mix(in srgb, var(--color-neg) 12%, transparent);
   }
   &:focus-visible {
     outline: 2px solid var(--color-neg);
@@ -234,8 +235,9 @@ $pad-x: 16px;
   background: var(--accent);
   border: none;
   color: var(--btn-accent-text);
-  padding: 9px 18px;
-  border-radius: 9px;
+  min-height: var(--icon-btn-size);
+  padding: 0 16px;
+  border-radius: var(--icon-btn-radius);
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;

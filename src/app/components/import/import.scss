@@ -88,15 +88,29 @@
 
 .import-btn {
   align-self: flex-start;
-  padding: 0.7rem 1.4rem;
+  // Padrão de botão (token global): altura, raio e tipografia uniformes.
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--icon-btn-size);
+  padding: 0 16px;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--icon-btn-radius);
   background: var(--accent);
   color: var(--btn-accent-text);
-  font-size: 0.92rem;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  white-space: nowrap;
   cursor: pointer;
   transition: background 0.15s ease;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
 
   &:hover:not(:disabled) {
     background: var(--btn-accent-hover);

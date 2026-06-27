@@ -863,8 +863,10 @@
   background: var(--accent);
   border: none;
   color: var(--btn-accent-text);
-  padding: 9px 18px;
-  border-radius: 9px;
+  // Altura/raio padrão de botões (token global).
+  min-height: var(--icon-btn-size);
+  padding: 0 16px;
+  border-radius: var(--icon-btn-radius);
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;

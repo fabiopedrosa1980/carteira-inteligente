@@ -1,23 +1,37 @@
 ## ADDED Requirements
 
-### Requirement: Tamanho único dos botões de ícone
+### Requirement: Altura única de todos os botões (ícone e texto)
 
-Todos os botões só de ícone do app (ações de cabeçalho, fechar modal e ações em linha como editar/excluir) SHALL usar o **mesmo tamanho**: **34×34px no desktop** e **32×32px no mobile (≤600px)**, com **raio 8px** e **ícone (SVG) de 18px**. O tamanho MUST ser idêntico entre os contextos; apenas o estilo de fundo/borda permanece contextual (botão com chip de borda no cabeçalho vs. botão sem fundo nas linhas).
+Todos os botões do app — só de ícone (cabeçalho, fechar modal, editar/excluir em linha) **e** de texto (Adicionar, Salvar, Cancelar, Editar, Limpar tudo, Importar, Nova meta, etc.) — SHALL ter a **mesma altura**: **36px no desktop** e **34px no mobile (≤600px)**, com **raio 8px** e **fonte 13px/700**. Botões de ícone são quadrados (36×36 / 34×34) com ícone de 18px; botões de texto usam a mesma altura com padding horizontal de 16px. Apenas o estilo de cor/fundo/borda permanece contextual (primário verde, secundário contorno, destrutivo vermelho).
 
-#### Scenario: Mesmo tamanho no desktop
+#### Scenario: Mesma altura no desktop
 
-- **WHEN** qualquer botão de ícone é exibido no desktop
-- **THEN** ele mede 34×34px, com raio 8px e ícone de 18px
+- **WHEN** qualquer botão (ícone ou texto) é exibido no desktop
+- **THEN** ele tem 36px de altura, raio 8px e fonte 13px/700; ícones medem 18px
 
 #### Scenario: Mesmo tamanho no mobile
 
-- **WHEN** qualquer botão de ícone é exibido em mobile (≤600px)
-- **THEN** ele mede 32×32px, mantendo raio 8px e ícone de 18px
+- **WHEN** qualquer botão é exibido em mobile (≤600px)
+- **THEN** ele tem 34px de altura, mantendo raio 8px (ícones 34×34, 18px)
 
 #### Scenario: Consistência entre telas
 
-- **WHEN** o usuário compara o botão de cabeçalho, o de fechar modal e os de editar/excluir em linha
-- **THEN** todos têm o mesmo tamanho, raio e tamanho de ícone
+- **WHEN** o usuário compara botões de ícone (cabeçalho, fechar modal, editar/excluir) e de texto (Adicionar, Salvar, Cancelar, Importar)
+- **THEN** todos têm a mesma altura e raio
+
+### Requirement: Estilo contextual por tipo de ação
+
+A altura/raio/tipografia SHALL ser uniformes, mas a cor MUST refletir o tipo de ação: **primário** verde (`--accent`), **secundário** contorno, **destrutivo** vermelho. O botão **Limpar tudo** MUST ser destrutivo (vermelho). O botão **Importar** MUST exibir um ícone (o mesmo do menu Importar) à esquerda do texto.
+
+#### Scenario: Limpar tudo vermelho
+
+- **WHEN** o botão "Limpar tudo" é exibido em Meus Ativos
+- **THEN** ele aparece em vermelho (estilo destrutivo), com a altura/raio padrão
+
+#### Scenario: Importar com ícone
+
+- **WHEN** o botão "Importar e sobrepor" é exibido
+- **THEN** ele mostra um ícone (igual ao do menu Importar) seguido do texto
 
 ### Requirement: Tamanho dos botões de ícone centralizado em tokens
 

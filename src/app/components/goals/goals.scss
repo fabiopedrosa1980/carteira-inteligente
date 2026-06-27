@@ -20,14 +20,17 @@
 .btn-nova {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   background: var(--accent);
   border: none;
   color: var(--btn-accent-text);
   font-weight: 700;
-  font-size: 14px;
-  padding: 10px 18px;
-  border-radius: 8px;
+  font-size: 13px;
+  min-height: var(--icon-btn-size);
+  padding: 0 16px;
+  border-radius: var(--icon-btn-radius);
+  font-family: inherit;
   cursor: pointer;
   transition: background 0.15s;
   white-space: nowrap;
@@ -108,12 +111,18 @@
 }
 
 .btn-cancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: transparent;
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  font-size: 14px;
-  padding: 9px 16px;
-  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  min-height: var(--icon-btn-size);
+  padding: 0 16px;
+  border-radius: var(--icon-btn-radius);
   cursor: pointer;
   transition: all 0.15s;
 
@@ -124,13 +133,18 @@
 }
 
 .btn-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--accent);
   border: none;
   color: var(--btn-accent-text);
-  font-weight: 600;
-  font-size: 14px;
-  padding: 9px 18px;
-  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  font-family: inherit;
+  min-height: var(--icon-btn-size);
+  padding: 0 16px;
+  border-radius: var(--icon-btn-radius);
   cursor: pointer;
   transition: background 0.15s;
 

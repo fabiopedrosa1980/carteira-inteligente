@@ -41,11 +41,15 @@
 }
 // Botão verde padrão do app (igual .btn-add-inline). Usado por Editar e Salvar.
 .alloc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: var(--accent);
   border: none;
   color: var(--btn-accent-text);
-  border-radius: 9px;
-  padding: 9px 18px;
+  min-height: var(--icon-btn-size);
+  border-radius: var(--icon-btn-radius);
+  padding: 0 16px;
   font-size: 13px;
   font-weight: 700;
   font-family: inherit;

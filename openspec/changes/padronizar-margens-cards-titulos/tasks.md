@@ -15,4 +15,4 @@
 - [x] 3.1 `npx prettier --write` nos SCSS alterados e `ng build` sem erros
 - [ ] 3.2 Validar visualmente as 5 abas em desktop: título e cards na mesma coluna ao alternar
 - [ ] 3.3 Validar visualmente em mobile (≤600px): recuo 16px consistente em todas as telas
-- [ ] 3.4 Commit e push em `carteira-inteligente`
+- [x] 3.4 Commit e push em `carteira-inteligente`

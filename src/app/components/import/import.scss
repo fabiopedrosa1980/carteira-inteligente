@@ -9,22 +9,10 @@
   margin-bottom: 1.25rem;
 }
 
-.page-title {
-  margin: 0 0 0.35rem;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.page-subtitle {
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.45;
-
-  code {
-    font-size: 0.85em;
-  }
+// O título e o subtítulo herdam o estilo global (.page-title / .page-subtitle de
+// styles.scss), igual às demais telas — sem overrides locais de tamanho/margem.
+.page-subtitle code {
+  font-size: 0.85em;
 }
 
 .import-card {

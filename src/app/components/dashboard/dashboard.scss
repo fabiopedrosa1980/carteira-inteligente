@@ -275,7 +275,11 @@
     padding: 16px;
   }
   @media (max-width: 600px) {
-    padding: 12px;
+    // Recuo horizontal de 16px (paridade com o breakpoint tablet) para os
+    // títulos e cards não ficarem colados na borda esquerda da tela no mobile.
+    padding-top: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
     // Reserva espaço para a barra inferior fixa (~50px) + folga, para o último
     // card/acordeão rolar livre acima da barra em vez de ficar colado nela.
     padding-bottom: calc(84px + env(safe-area-inset-bottom));

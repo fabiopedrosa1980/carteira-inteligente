@@ -538,7 +538,11 @@
                                   </span>
                                 </td>
                               }
-                              <td>{{ sld === null ? '—' : 'R$ ' + (sld | number: '1.2-2') }}</td>
+                              <td class="cell-saldo">
+                                <span class="val">{{
+                                  sld === null ? '—' : 'R$ ' + (sld | number: '1.2-2')
+                                }}</span>
+                              </td>
                               <td
                                 [class.pos]="v !== null && v >= 0"
                                 [class.neg]="v !== null && v < 0"

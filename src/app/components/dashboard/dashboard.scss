@@ -1027,6 +1027,15 @@
   pointer-events: none;
 }
 
+/* Privacidade: o Saldo por ativo também é mascarado, no desktop e no card
+   mobile — é um valor monetário em R$. Mascara apenas o valor (.val); o
+   micro-rótulo "Saldo" do card mobile (::before) permanece visível. */
+.sections-list.values-hidden .cell-saldo .val {
+  filter: blur(7px);
+  user-select: none;
+  pointer-events: none;
+}
+
 @media (max-width: 640px) {
   // Mobile: todos os cards 2 por linha, inclusive o Patrimônio (hero), que
   // ocupa uma única coluna como os demais (sem ocupar a linha inteira).

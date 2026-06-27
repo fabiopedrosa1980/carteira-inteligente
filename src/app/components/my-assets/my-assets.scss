@@ -18,7 +18,10 @@ $pad-x: 20px;
    seção. Mesmo tratamento (blur) usado no card de alocação. */
 .meus-ativos.values-hidden {
   .ma-summary-val,
-  .sec-total {
+  .sec-total,
+  // Total da operação por lançamento (.val mantém o micro-rótulo "Total"
+  // do card mobile, via ::before, visível).
+  .total-cell .val {
     filter: blur(7px);
     user-select: none;
     pointer-events: none;
@@ -273,10 +276,10 @@ $pad-x: 20px;
   display: flex;
   justify-content: flex-end;
   padding: 14px $pad-x;
-  // No mobile cada card já traz o botão "+" no rodapé; o "Adicionar" da seção
-  // fica redundante e é ocultado (permanece no desktop).
+  // No mobile o "Adicionar" da seção é o único ponto de adição (os cards não
+  // têm mais o botão "+"); fica em largura cheia para um alvo de toque amplo.
   @media (max-width: 600px) {
-    display: none;
+    justify-content: stretch;
   }
 }
 
@@ -521,8 +524,7 @@ $pad-x: 20px;
   }
 }
 .btn-edit,
-.btn-remove,
-.btn-add-card {
+.btn-remove {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -544,19 +546,6 @@ $pad-x: 20px;
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 1px;
-  }
-}
-// Botão "+" de adicionar no rodapé do card (mobile): atalho para um novo
-// lançamento do tipo da seção. Oculto no desktop — a coluna Operação mantém
-// apenas Editar/Excluir nos seus 72px.
-.btn-add-card {
-  display: none;
-  @media (max-width: 600px) {
-    display: inline-flex;
-  }
-  &:hover {
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
-    color: var(--accent);
   }
 }
 .btn-edit:hover {

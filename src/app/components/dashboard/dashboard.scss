@@ -576,6 +576,8 @@
       font-weight: 700;
       letter-spacing: 0.02em;
       box-shadow: none;
+      // Tema escuro: ticker verde para destaque (override de tema claro abaixo).
+      color: var(--accent);
     }
     .ca-sub {
       font-size: 11px;
@@ -589,7 +591,9 @@
       justify-self: end;
       text-align: right;
       font-size: 13px;
-      color: var(--text-secondary);
+      // Valor em destaque (cor primária / branca no escuro); rótulo segue
+      // secundário via ::before. Campo sem regra de cor por variação.
+      color: var(--text-primary);
     }
     td:nth-child(4)::before {
       content: 'Preço atual';
@@ -650,11 +654,12 @@
       content: 'Variação';
     }
 
-    // 5) Qtd e Preço médio — contexto discreto.
+    // 5) Qtd e Preço médio — valor em destaque (cor primária / branca no escuro);
+    // o rótulo (::before) permanece secundário. Sem regra de cor por variação.
     td:nth-child(2),
     td:nth-child(3) {
       font-size: 13px;
-      color: var(--text-secondary);
+      color: var(--text-primary);
     }
     td:nth-child(2) {
       grid-area: qtd;
@@ -672,6 +677,14 @@
     }
   }
 }
+// Tema claro: ticker do card mobile de Meus Ativos volta à cor primária
+// (o verde do ticker aplica-se apenas ao tema escuro).
+:host-context(body.light-theme) .acoes-list .cell-ativo {
+  @media (max-width: 640px) {
+    color: var(--text-primary);
+  }
+}
+
 .th-arrow {
   margin-left: 4px;
   font-size: 11px;

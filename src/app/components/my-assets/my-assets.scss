@@ -414,15 +414,22 @@ $pad-x: 20px;
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   color: var(--accent);
   letter-spacing: 0.5px;
-  // No card mobile, o ticker segue o padrão de Meus Ativos (.cell-ativo): texto
-  // simples 16px/700 na cor primária, sem badge. No desktop a tabela mantém o badge.
+  // No card mobile, o ticker é texto simples 16px/700, sem badge. No tema
+  // escuro fica verde (--accent) para destaque; no tema claro volta à cor
+  // primária (ver override abaixo). No desktop a tabela mantém o badge.
   @media (max-width: 600px) {
     padding: 0;
     border-radius: 0;
     background: none;
-    color: var(--text-primary);
+    color: var(--accent);
     font-size: 16px;
     letter-spacing: 0.02em;
+  }
+}
+// Tema claro: ticker do card mobile volta à cor primária (verde só no escuro).
+:host-context(body.light-theme) .ticker-badge {
+  @media (max-width: 600px) {
+    color: var(--text-primary);
   }
 }
 .date-cell {
@@ -513,14 +520,15 @@ $pad-x: 20px;
     justify-self: end;
     text-align: right;
   }
-  // Campos de contexto (Data, Qtd, Preço) no mesmo tom de Meus Ativos: 13px,
-  // peso normal, cor secundária. Ticker e Total carregam o destaque (16px/700).
+  // Campos de contexto (Data, Qtd, Preço): 13px, peso normal. O VALOR usa a cor
+  // primária (branca no tema escuro) para destacar o dado; o rótulo (::before)
+  // permanece em --text-secondary, criando a hierarquia rótulo × valor.
   .date-cell,
   .qty-cell,
   .price-cell {
     font-size: 13px;
     font-weight: 400;
-    color: var(--text-secondary);
+    color: var(--text-primary);
   }
 }
 .btn-edit,

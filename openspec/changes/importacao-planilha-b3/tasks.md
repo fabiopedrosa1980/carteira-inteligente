@@ -1,13 +1,13 @@
 ## 1. API Go — endpoint de importação (repo externo `carteira-inteligente-api`)
 
-- [ ] 1.1 Criar rota `POST /api/v1/transactions/import` aceitando upload `multipart/form-data` de um único `.xlsx`
-- [ ] 1.2 Validar arquivo presente e legível como `.xlsx`; retornar 4xx descritivo quando ausente/inválido
-- [ ] 1.3 Parsear abas `Acoes` e `ETF` por nome de cabeçalho (`Código de Negociação`, `Quantidade`, `Preço de Fechamento`); ignorar `Empréstimos`/`Tesouro Direto`, linhas de total/vazias e quantidade ≤ 0
-- [ ] 1.4 Classificar cada ticker em `Acoes`/`FIIs`/`ETFs` pelo catálogo existente (ETF→ETFs; demais por catálogo)
-- [ ] 1.5 Derivar a data do lançamento (nome do arquivo `posicao-AAAA-MM-DD-...`, com fallback para data de processamento)
-- [ ] 1.6 Sobrepor atomicamente: apagar todos os lançamentos e inserir um por posição (quantity, price=fechamento, date); rollback em falha
-- [ ] 1.7 Retornar resumo: contagem criada por classe + lista de tickers ignorados (com motivo)
-- [ ] 1.8 Testar com o arquivo real `posicao-2026-06-27-02-37-19.xlsx` e conferir contagens
+- [x] 1.1 Criar rota `POST /api/v1/transactions/import` aceitando upload `multipart/form-data` de um único `.xlsx`
+- [x] 1.2 Validar arquivo presente e legível como `.xlsx`; retornar 4xx descritivo quando ausente/inválido
+- [x] 1.3 Parsear abas `Acoes` e `ETF` por nome de cabeçalho (`Código de Negociação`, `Quantidade`, `Preço de Fechamento`); ignorar `Empréstimos`/`Tesouro Direto`, linhas de total/vazias e quantidade ≤ 0
+- [x] 1.4 Classificar cada ticker em `Acoes`/`FIIs`/`ETFs` pelo catálogo existente (ETF→ETFs; demais por catálogo)
+- [x] 1.5 Derivar a data do lançamento (nome do arquivo `posicao-AAAA-MM-DD-...`, com fallback para data de processamento)
+- [x] 1.6 Sobrepor atomicamente: apagar todos os lançamentos e inserir um por posição (quantity, price=fechamento, date); rollback em falha
+- [x] 1.7 Retornar resumo: contagem criada por classe + lista de tickers ignorados (com motivo)
+- [x] 1.8 Testar com o arquivo real `posicao-2026-06-27-02-37-19.xlsx` e conferir contagens
 
 ## 2. Frontend — serviço de upload
 
@@ -31,5 +31,5 @@
 ## 5. Verificação e fechamento
 
 - [x] 5.1 `npx prettier --write` nos arquivos alterados e `ng build` sem erros
-- [ ] 5.2 Validar fluxo fim-a-fim: importar o arquivo real, confirmar sobreposição e ver os lançamentos atualizados em Lançamentos/Meus Ativos
-- [ ] 5.3 Validar caminho de erro (endpoint indisponível) exibindo mensagem amigável sem alterar a visualização
+- [x] 5.2 Validar fluxo fim-a-fim: importar o arquivo real, confirmar sobreposição e ver os lançamentos atualizados em Lançamentos/Meus Ativos
+- [x] 5.3 Validar caminho de erro (endpoint indisponível) exibindo mensagem amigável sem alterar a visualização

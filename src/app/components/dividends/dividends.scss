@@ -1,14 +1,10 @@
-// Recuo padronizado do bloco do topo (título + controles) para alinhar o título
-// "Dividendos" com os títulos das demais telas. Recuo padrão de 16px em todos os
-// breakpoints.
-$dv-pad-x: 16px;
+// Título "Dividendos" e controles alinhados à BORDA esquerda dos cards (flush,
+// sem recuo), igual à tela de Importar e às demais telas. Os cards de dividendos
+// já ficam na borda do container.
+$dv-pad-x: 0;
 .page-header {
   padding-left: $dv-pad-x;
   padding-right: $dv-pad-x;
-  @media (max-width: 768px) {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
 }
 
 .dv-asset-toggle {
@@ -18,9 +14,6 @@ $dv-pad-x: 16px;
   margin-top: 1rem;
   margin-left: $dv-pad-x;
   padding: 3px;
-  @media (max-width: 768px) {
-    margin-left: 16px;
-  }
   background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: 999px;
@@ -54,10 +47,6 @@ $dv-pad-x: 16px;
   margin-top: 1rem;
   margin-left: $dv-pad-x;
   margin-right: $dv-pad-x;
-  @media (max-width: 768px) {
-    margin-left: 16px;
-    margin-right: 16px;
-  }
 }
 
 .dv-tab {

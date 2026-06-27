@@ -10,9 +10,10 @@
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  // Alinha o título "Minhas Metas" (e o botão à direita) ao conteúdo interno do
-  // card da tabela, cujas células recuam 16px.
-  padding-left: 16px;
+  // Título "Minhas Metas" alinhado à BORDA esquerda do card da tabela (flush,
+  // sem recuo), igual à tela de Importar. O botão à direita mantém o recuo de
+  // 16px para alinhar ao conteúdo interno do card.
+  padding-left: 0;
   padding-right: 16px;
 }
 

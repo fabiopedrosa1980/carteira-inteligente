@@ -1,8 +1,8 @@
 .import-screen {
-  // Alinhado à esquerda, com o recuo horizontal padrão de 16px (igual às demais
-  // telas), em vez de centralizado.
-  padding-left: 16px;
-  padding-right: 16px;
+  // Alinhado à esquerda, na borda do container (sem recuo extra), igual às
+  // demais telas: título e card compartilham a mesma borda esquerda.
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .import-header {

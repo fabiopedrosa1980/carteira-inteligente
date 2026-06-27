@@ -298,9 +298,10 @@
   flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 20px;
-  // Alinha o título "Meus Ativos" (e a ação à direita) ao conteúdo interno dos
-  // cards. Recuo padrão de 16px, consistente entre todas as telas e breakpoints.
-  padding-left: 16px;
+  // Título "Meus Ativos" alinhado à BORDA esquerda dos cards (flush, sem recuo),
+  // igual à tela de Importar. A ação à direita mantém o recuo de 16px para
+  // alinhar ao conteúdo interno dos cards.
+  padding-left: 0;
   padding-right: 16px;
 }
 

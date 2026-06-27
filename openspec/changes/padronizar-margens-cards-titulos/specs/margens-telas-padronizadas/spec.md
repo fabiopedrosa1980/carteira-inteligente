@@ -1,42 +1,34 @@
 ## ADDED Requirements
 
-### Requirement: Recuo horizontal padrão das telas
+### Requirement: Título alinhado à borda esquerda dos cards
 
-Todas as telas principais do app (Meus Ativos, Lançamentos, Dividendos, Metas e Importar) SHALL usar o **mesmo recuo horizontal de 16px** para o cabeçalho/título e para a coluna dos cards, em **todos os breakpoints** (desktop e mobile). O recuo MUST ser idêntico entre as telas, de modo que o conteúdo não se desloque horizontalmente ao alternar de aba.
+Em todas as telas principais (Meus Ativos, Lançamentos, Dividendos, Metas e Importar), a **borda esquerda do título** SHALL coincidir com a **borda esquerda (externa) dos cards/componentes exibidos abaixo dele**, sem recuo extra — o título e o card compartilham a mesma coluna, como na tela de Importar. O conteúdo interno do card permanece com seu próprio espaçamento (padding) e não é alterado.
 
-#### Scenario: Mesma coluna ao trocar de aba (desktop)
+#### Scenario: Título encostado na borda do card
 
-- **WHEN** o usuário alterna entre as telas em desktop
-- **THEN** a borda esquerda do título e dos cards permanece na mesma posição horizontal (recuo 16px) em todas as telas
+- **WHEN** uma tela com título e cards é exibida
+- **THEN** a borda esquerda do título está alinhada com a borda esquerda do card abaixo dele
+- **AND** o conteúdo dentro do card mantém seu espaçamento interno
 
-#### Scenario: Mesma coluna ao trocar de aba (mobile)
+#### Scenario: Mesmo comportamento da tela Importar
 
-- **WHEN** o usuário alterna entre as telas em mobile (≤ 600px)
-- **THEN** o recuo horizontal é 16px e idêntico em todas as telas
+- **WHEN** o usuário compara qualquer tela com a tela de Importar
+- **THEN** o alinhamento título × borda do card é o mesmo em todas
 
-### Requirement: Telas que usavam 20px alinhadas ao padrão
+### Requirement: Consistência entre telas ao trocar de aba
 
-As telas que usavam 20px de recuo no desktop (Meus Ativos via `$pad-x`, Dividendos via `$dv-pad-x`, Portfolio via `.section-header`/cards do acordeão) SHALL passar a usar 16px, igualando-se a Metas (que já usa 16px). O recuo do cabeçalho/título MUST continuar coincidindo com a margem dos cards na mesma tela.
+A coluna onde título e cards começam SHALL ser a mesma em todas as telas (a borda do container de conteúdo), em desktop e mobile, de modo que o conteúdo não se desloque horizontalmente ao alternar de aba.
 
-#### Scenario: Telas de 20px convergem para 16px
+#### Scenario: Sem deslocamento ao navegar
 
-- **WHEN** Meus Ativos, Dividendos ou Portfolio são exibidos
-- **THEN** o recuo horizontal do título e dos cards é 16px, igual ao de Metas
+- **WHEN** o usuário alterna entre Meus Ativos, Lançamentos, Dividendos, Metas e Importar
+- **THEN** a borda esquerda do título e dos cards permanece na mesma posição horizontal em todas as telas, em desktop e mobile
 
 ### Requirement: Importar alinhada à esquerda como as demais
 
-A tela de **Importar** SHALL ser exibida alinhada à esquerda com o recuo horizontal padrão, sem centralização. O `max-width` fixo com `margin: 0 auto` MUST ser removido para que título e card sigam a mesma coluna das outras telas.
+A tela de **Importar** SHALL ser exibida alinhada à esquerda, sem centralização. O `max-width` fixo com `margin: 0 auto` MUST ser removido para que título e card sigam a mesma coluna (borda do container) das outras telas.
 
 #### Scenario: Importar não centralizada
 
 - **WHEN** a tela de Importar é exibida
-- **THEN** o título e o card de importação iniciam na mesma coluna das demais telas (recuo padrão), e não centralizados
-
-### Requirement: Título e cards compartilham o recuo na mesma tela
-
-Em cada tela, o início horizontal do título SHALL coincidir com a margem esquerda dos cards exibidos na mesma tela, em desktop e mobile. A padronização MUST NOT alterar tamanho, peso ou tipografia do título — apenas o recuo horizontal.
-
-#### Scenario: Título encostado na coluna dos cards
-
-- **WHEN** uma tela com título e cards é exibida
-- **THEN** a borda esquerda do título está alinhada com a borda esquerda dos cards, no mesmo recuo padrão
+- **THEN** o título e o card de importação iniciam na mesma coluna das demais telas, e não centralizados

@@ -7,10 +7,11 @@ $pad-x: 16px;
   padding: 0;
 }
 
-// Alinha o cabeçalho (título "Lançamentos" à esquerda e "Total investido" à
-// direita) ao conteúdo interno dos cards, que é recuado por $pad-x.
+// Título "Lançamentos" alinhado à BORDA esquerda do card (flush, sem recuo),
+// igual à tela de Importar. O "Total investido" à direita segue recuado por
+// $pad-x para alinhar ao conteúdo interno dos cards.
 .page-header {
-  padding-left: $pad-x;
+  padding-left: 0;
   padding-right: $pad-x;
 }
 

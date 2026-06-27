@@ -277,9 +277,11 @@ $pad-x: 20px;
   justify-content: flex-end;
   padding: 14px $pad-x;
   // No mobile o "Adicionar" da seção é o único ponto de adição (os cards não
-  // têm mais o botão "+"); fica em largura cheia para um alvo de toque amplo.
+  // têm mais o botão "+"); ocupa a largura inteira do card como alvo de toque.
   @media (max-width: 600px) {
-    justify-content: stretch;
+    .btn-add-inline {
+      width: 100%;
+    }
   }
 }
 

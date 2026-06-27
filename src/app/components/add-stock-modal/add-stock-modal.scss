@@ -245,6 +245,12 @@ select option {
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;
+  font-family: inherit;
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
   &:hover {
     border-color: var(--text-secondary);
     color: var(--text-primary);

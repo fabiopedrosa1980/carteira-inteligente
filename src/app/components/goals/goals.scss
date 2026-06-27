@@ -114,6 +114,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   background: transparent;
   border: 1px solid var(--border);
   color: var(--text-secondary);
@@ -125,6 +126,12 @@
   border-radius: var(--icon-btn-radius);
   cursor: pointer;
   transition: all 0.15s;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
 
   &:hover {
     border-color: var(--accent);

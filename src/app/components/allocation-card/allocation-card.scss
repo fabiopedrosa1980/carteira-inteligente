@@ -19,15 +19,19 @@
   gap: 0.75rem;
   min-width: 0;
 
+  // Igual aos títulos de seção de Meus Ativos (.sec-label).
   h3 {
     margin: 0;
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
   }
 }
+// Igual aos totais de seção de Meus Ativos (.sec-total).
 .alloc-total {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
 .alloc-actions {
@@ -35,28 +39,36 @@
   gap: 0.5rem;
   flex-shrink: 0;
 }
+// Botão verde padrão do app (igual .btn-add-inline). Usado por Editar e Salvar.
 .alloc-btn {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  border-radius: 8px;
-  padding: 0.3rem 0.8rem;
-  font-size: 0.8rem;
-  font-weight: 600;
+  background: var(--accent);
+  border: none;
+  color: var(--btn-accent-text);
+  border-radius: 9px;
+  padding: 9px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
   transition:
-    color 0.15s,
+    background 0.2s,
     border-color 0.15s,
-    background 0.15s;
+    color 0.15s;
 
   &:hover {
-    color: var(--text-primary);
-    border-color: var(--accent);
+    background: var(--btn-accent-hover);
   }
-  &.solid {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--btn-accent-text);
+  // Cancelar: contorno discreto (secundário).
+  &.ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+
+    &:hover {
+      background: transparent;
+      color: var(--text-primary);
+      border-color: var(--accent);
+    }
   }
   &:focus-visible {
     outline: 2px solid var(--accent);

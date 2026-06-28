@@ -27,4 +27,4 @@
 ## 5. Entrega
 
 - [x] 5.1 `npx prettier --write` nos arquivos alterados.
-- [ ] 5.2 Commit com prefixos adequados (`style:`/`fix:`) e push para `main` (stage apenas dos arquivos alterados).
+- [x] 5.2 Commit com prefixos adequados (`style:`/`fix:`) e push para `main` (stage apenas dos arquivos alterados).

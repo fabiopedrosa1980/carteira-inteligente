@@ -844,7 +844,9 @@
 /* Botão único de adicionar, ao final do acordeão (padrão de Lançamentos) */
 .add-row {
   display: flex;
-  justify-content: flex-end;
+  // "Adicionar" no final do acordeão, alinhado à esquerda (consistente com a
+  // visão de tabela de Meus Ativos).
+  justify-content: flex-start;
   padding: 14px 16px;
   @media (max-width: 600px) {
     padding: 12px 16px;
@@ -888,9 +890,6 @@
   .btn-plus {
     width: 14px;
     height: 14px;
-  }
-  @media (max-width: 600px) {
-    width: 100%;
   }
 }
 

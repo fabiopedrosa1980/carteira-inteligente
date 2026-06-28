@@ -282,15 +282,10 @@ $pad-x: 16px;
 /* Botão único de adicionar, ao final do acordeão */
 .add-row {
   display: flex;
-  justify-content: flex-end;
+  // "Adicionar" no final da seção, alinhado à esquerda, com largura automática
+  // (mesmo tamanho no mobile e no desktop).
+  justify-content: flex-start;
   padding: 14px $pad-x;
-  // No mobile o "Adicionar" da seção é o único ponto de adição (os cards não
-  // têm mais o botão "+"); ocupa a largura inteira do card como alvo de toque.
-  @media (max-width: 600px) {
-    .btn-add-inline {
-      width: 100%;
-    }
-  }
 }
 
 /* Table — colunas de tamanho igual (5 colunas de dados + ações) */

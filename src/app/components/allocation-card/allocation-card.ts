@@ -115,7 +115,7 @@ export class AllocationCardComponent {
       this.formLimit(),
     );
     this.editing.set(false);
-    this.notifications.show('Distribuição alterada com sucesso');
+    this.notifications.show('Alocação alterada com sucesso');
   }
 
   // Alvo de uma classe (inteiro), para ARIA/exibição.

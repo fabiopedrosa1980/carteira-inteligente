@@ -34,10 +34,13 @@
   color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
+// Ações no final do card: separadas do conteúdo acima.
 .alloc-actions {
   display: flex;
   gap: 0.5rem;
   flex-shrink: 0;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
 }
 // Botão verde padrão do app (igual .btn-add-inline). Usado por Editar e Salvar.
 .alloc-btn {

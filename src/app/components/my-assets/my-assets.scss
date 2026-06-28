@@ -189,8 +189,10 @@ $pad-x: 16px;
 .sec-total {
   font-size: 14px;
   font-weight: 700;
-  // Cor neutra (primária), sem verde — padroniza com os valores da tabela.
-  color: var(--text-primary);
+  // Verde (accent) no Total da seção do acordeão, igual a Meus Ativos. A
+  // padronização neutra vale para os valores das colunas da tabela, não para
+  // este total de cabeçalho.
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   @media (max-width: 600px) {

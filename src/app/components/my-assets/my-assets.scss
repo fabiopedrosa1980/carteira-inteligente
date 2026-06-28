@@ -349,6 +349,19 @@ $pad-x: 16px;
     border: 1px solid var(--border);
     border-radius: 14px;
     font-size: 14px;
+    // Faixa lateral verde à esquerda, no mesmo idioma da perf-bar dos cards de
+    // Meus Ativos. Recortada pelos cantos arredondados do card.
+    position: relative;
+    overflow: hidden;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+    }
     &:last-child {
       border-bottom: 1px solid var(--border);
       margin-bottom: 0;

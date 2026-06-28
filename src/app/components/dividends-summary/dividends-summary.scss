@@ -1,16 +1,17 @@
 .ds-section {
   margin-top: 2rem;
-  padding: 1.5rem;
+  padding: var(--space-6);
   background: var(--card-bg);
-  border-radius: 12px;
+  border-radius: var(--radius-card);
   border: 1px solid var(--border);
 }
 
 .ds-title {
-  font-size: 1.1rem;
-  font-weight: 600;
+  // Padrão de título de seção do app (igual .section-title/.page-title).
+  font-size: 20px;
+  font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 0.35rem;
+  margin: 0 0 4px;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -87,7 +88,7 @@
   gap: 8px;
   padding: 16px 18px;
   margin-bottom: 1.25rem;
-  border-radius: 10px;
+  border-radius: var(--radius-chip);
   background: var(--card-bg);
   border: 1px solid var(--border);
 }

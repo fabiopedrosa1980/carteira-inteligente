@@ -42,7 +42,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 .details-panel {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--radius-card);
   overflow: hidden;
 }
 

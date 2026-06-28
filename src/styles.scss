@@ -34,6 +34,22 @@
   --icon-btn-size: 36px;
   --icon-btn-radius: 8px;
   --icon-btn-icon: 18px;
+
+  /* Raio de canto dos cards, em 3 tiers que refletem o uso de fato:
+     --radius-card: contêiner de seção/tela;
+     --radius-item: card de item de lista/grid (stock-card, linhas-card);
+     --radius-chip: card interno de stat/resumo/chip. */
+  --radius-card: 12px;
+  --radius-item: 14px;
+  --radius-chip: 10px;
+
+  /* Escala de espaçamento (paddings/margens de card). */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
 }
 
 /* Botões um pouco menores no mobile — aplicado a todos via token. */

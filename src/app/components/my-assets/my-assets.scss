@@ -417,14 +417,15 @@ $pad-x: 16px;
   line-height: 1;
 }
 
-// Ticker como texto simples neutro (sem pílula/verde), padronizando com o ticker
-// da lista de Meus Ativos. Cor primária em ambos os temas, desktop e mobile.
+// Ticker como texto simples neutro (sem pílula/verde). Na tabela desktop tem o
+// mesmo peso das demais colunas (sem destaque); no card mobile mantém o negrito
+// por ser o título do card.
 .ticker-badge {
   font-size: 13px;
-  font-weight: 700;
   color: var(--text-primary);
   letter-spacing: 0.3px;
   @media (max-width: 600px) {
+    font-weight: 700;
     font-size: 16px;
     letter-spacing: 0.02em;
   }
@@ -438,7 +439,6 @@ $pad-x: 16px;
   }
 }
 .qty-cell {
-  font-weight: 600;
   @media (max-width: 600px) {
     grid-area: qtd;
   }
@@ -451,13 +451,10 @@ $pad-x: 16px;
   }
 }
 .total-cell {
-  // Cor neutra (primária), sem verde — padroniza com as demais colunas e com a
-  // lista de Meus Ativos. Peso 700 mantém o Total legível como total da linha.
-  font-weight: 700;
+  // Cor e peso neutros — mesma aparência das demais colunas, sem destaque.
   color: var(--text-primary);
   @media (max-width: 600px) {
-    // Total no mesmo tamanho dos demais campos do card (13px); peso 700 mantém
-    // o leve destaque.
+    // Total no mesmo tamanho dos demais campos do card (13px).
     grid-area: total;
     font-size: 13px;
     line-height: 1.1;

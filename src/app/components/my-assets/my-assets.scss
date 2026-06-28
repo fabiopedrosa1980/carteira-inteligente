@@ -189,7 +189,8 @@ $pad-x: 16px;
 .sec-total {
   font-size: 14px;
   font-weight: 700;
-  color: var(--accent);
+  // Cor neutra (primária), sem verde — padroniza com os valores da tabela.
+  color: var(--text-primary);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
   @media (max-width: 600px) {

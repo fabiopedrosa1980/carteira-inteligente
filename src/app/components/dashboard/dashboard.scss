@@ -358,6 +358,13 @@
   tbody tr.acoes-row.zona-caro {
     --zona-color: var(--color-neg);
   }
+  // Estado neutro (sem dados / ETF sem preço atual): faixa transparente para não
+  // herdar a cor da borda (var(--border)), que criava uma "borda dupla" cinza
+  // colada na borda do card/linha.
+  tbody tr.acoes-row.zona-na,
+  tbody tr.acoes-row.zona-sem-dados {
+    --zona-color: transparent;
+  }
 
   .cell-ativo {
     font-weight: 700;

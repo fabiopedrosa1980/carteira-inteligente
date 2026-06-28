@@ -278,8 +278,31 @@ export class DashboardComponent {
     return this.precoTetoOf(s).zona;
   }
 
-  // Classe CSS da faixa lateral (cor do semáforo) conforme a zona.
+  // Limiares da posição do preço na faixa de 52 semanas para o veredito de
+  // oportunidade do ETF: abaixo de 30% da faixa = oportunidade (perto do fundo);
+  // acima de 70% = caro (perto do topo); no meio = justo.
+  private static readonly ETF_POS_LOW = 0.3;
+  private static readonly ETF_POS_HIGH = 0.7;
+
+  // Faixa lateral do ETF = oportunidade de compra pela posição do preço atual na
+  // faixa de 52 semanas (ETF não tem preço-teto). pos = (atual − mín) / (máx − mín).
+  // pos < 0,30 → verde (oportunidade); 0,30–0,70 → amarelo (justo); > 0,70 → vermelho
+  // (caro). Sem faixa válida (máx/mín ausentes, máx == mín, ou preço ≤ 0) → neutro.
+  private etfZonaClass(s: Stock): string {
+    const price = s.price ?? 0;
+    const high = s.high52 ?? 0;
+    const low = s.low52 ?? 0;
+    if (!(price > 0) || !(high > 0) || !(low > 0) || high <= low) return 'zona-na';
+    const pos = (price - low) / (high - low);
+    if (pos < DashboardComponent.ETF_POS_LOW) return 'zona-compra';
+    if (pos > DashboardComponent.ETF_POS_HIGH) return 'zona-caro';
+    return 'zona-justo';
+  }
+
+  // Classe CSS da faixa lateral (cor do semáforo). ETF usa desempenho vs médio;
+  // demais classes seguem a zona de preço-teto.
   zonaClass(s: Stock): string {
+    if (s.sector === 'ETF') return this.etfZonaClass(s);
     return 'zona-' + this.zonaOf(s);
   }
 
@@ -537,6 +560,8 @@ export class DashboardComponent {
           avgPrice: item.avg_price,
           indicators: item.indicators,
           companyInfo: item.company_info,
+          high52: item.fifty_two_week_high,
+          low52: item.fifty_two_week_low,
         });
 
         // Se o backend não tem /transactions/etfs, deriva posições das transações.

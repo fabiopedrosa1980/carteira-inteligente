@@ -26,6 +26,10 @@ export interface Stock {
   avgPrice?: number;
   indicators?: IndicatorItem[];
   companyInfo?: IndicatorItem[];
+  // Faixa de 52 semanas (máxima/mínima). Usada no veredito de oportunidade dos
+  // ETFs pela posição do preço atual na faixa. Opcionais: ausência → faixa neutra.
+  high52?: number;
+  low52?: number;
 }
 
 export interface MonthSummary {

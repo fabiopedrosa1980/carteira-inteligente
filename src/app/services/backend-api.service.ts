@@ -193,6 +193,11 @@ export interface ApiAcaoItem {
   indicators?: { label: string; value: string }[];
   // Informações sobre a empresa (Investidor10) como lista rótulo/valor.
   company_info?: { label: string; value: string }[];
+  // Faixa de 52 semanas (origem Yahoo Finance). Usada para o veredito de
+  // oportunidade dos ETFs (posição na faixa). Opcionais: o sinal degrada para
+  // neutro enquanto o backend não as fornece.
+  fifty_two_week_high?: number;
+  fifty_two_week_low?: number;
 }
 
 export interface ApiGoal {

@@ -372,7 +372,8 @@
     margin-top: 2px;
     font-size: 11px;
     font-weight: 400;
-    color: var(--text-secondary);
+    // DY em branco (mesmo padrão dos demais campos da linha).
+    color: var(--text-primary);
     letter-spacing: 0;
   }
   .pos {

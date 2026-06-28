@@ -473,10 +473,10 @@ $pad-x: 16px;
   font-weight: 700;
   color: var(--accent);
   @media (max-width: 600px) {
-    // Mesmo padrão do Saldo no card de Meus Ativos: 16px/700 na cor primária
-    // (o acento permanece só no desktop/tabela).
+    // Total no mesmo tamanho dos demais campos do card (13px); peso 700 mantém
+    // o leve destaque. Cor primária; o acento permanece só no desktop/tabela.
     grid-area: total;
-    font-size: 16px;
+    font-size: 13px;
     line-height: 1.1;
     color: var(--text-primary);
   }

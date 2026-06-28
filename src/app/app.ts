@@ -6,7 +6,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, ToastComponent, ConfirmDialogComponent],
-  template: `<router-outlet></router-outlet><app-toast></app-toast
-    ><app-confirm-dialog></app-confirm-dialog>`,
+  template: `<main><router-outlet></router-outlet></main>
+    <app-toast></app-toast><app-confirm-dialog></app-confirm-dialog>`,
 })
 export class App {}

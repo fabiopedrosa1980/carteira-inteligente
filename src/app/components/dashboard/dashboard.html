@@ -393,9 +393,7 @@
                           <col class="cl-qtd" />
                           <col class="cl-preco" />
                           <col class="cl-preco-atual" />
-                          @if (group !== 'ETF') {
-                            <col class="cl-hoje" />
-                          }
+                          <col class="cl-hoje" />
                           <col class="cl-saldo" />
                           <col class="cl-var" />
                           <col class="cl-rent" />
@@ -424,17 +422,15 @@
                                 >{{ sortAsc() ? '↑' : '↓' }}</span
                               >
                             </th>
-                            @if (group !== 'ETF') {
-                              <th
-                                class="th-sortable"
-                                (click)="setSort('zona')"
-                                title="Ordena por desconto vs preço-teto (mais barato primeiro)"
-                              >
-                                Oportunidade<span class="th-arrow" *ngIf="sortField() === 'zona'">{{
-                                  sortAsc() ? '↑' : '↓'
-                                }}</span>
-                              </th>
-                            }
+                            <th
+                              class="th-sortable"
+                              (click)="setSort('zona')"
+                              title="Ordena por oportunidade (mais barato primeiro)"
+                            >
+                              Oportunidade<span class="th-arrow" *ngIf="sortField() === 'zona'">{{
+                                sortAsc() ? '↑' : '↓'
+                              }}</span>
+                            </th>
                             <th class="th-sortable" (click)="setSort('saldo')">
                               Saldo<span class="th-arrow" *ngIf="sortField() === 'saldo'">{{
                                 sortAsc() ? '↑' : '↓'
@@ -487,15 +483,44 @@
                                     : '—'
                                 }}
                               </td>
-                              @if (group !== 'ETF') {
-                                <td class="cell-oportunidade">
-                                  <span class="oport-anchor">
-                                    <span class="oport-badge">{{ oportunidadeBadge(stock) }}</span>
-                                    <span
-                                      class="oport-tooltip"
-                                      role="tooltip"
-                                      (click)="$event.stopPropagation()"
-                                    >
+                              <td class="cell-oportunidade">
+                                <span class="oport-anchor">
+                                  <span class="oport-badge">{{ oportunidadeBadge(stock) }}</span>
+                                  <span
+                                    class="oport-tooltip"
+                                    role="tooltip"
+                                    (click)="$event.stopPropagation()"
+                                  >
+                                    @if (stock.sector === 'ETF') {
+                                      @let o = etfOportunidade(stock);
+                                      <span class="ot-verdict" [attr.data-zona]="o.zona">{{
+                                        etfVeredicto(stock)
+                                      }}</span>
+                                      @if (!o.available) {
+                                        <span class="ot-msg"
+                                          >Sem máxima de 52 semanas disponível para este ETF.</span
+                                        >
+                                      } @else {
+                                        <span class="ot-grid">
+                                          <span class="ot-label">Mínima 52 sem</span>
+                                          <span class="ot-value">{{
+                                            o.low52 > 0 ? 'R$ ' + (o.low52 | number: '1.2-2') : '—'
+                                          }}</span>
+                                          <span class="ot-label">Máxima 52 sem</span>
+                                          <span class="ot-value"
+                                            >R$ {{ o.high52 | number: '1.2-2' }}</span
+                                          >
+                                          <span class="ot-label">Preço atual</span>
+                                          <span class="ot-value"
+                                            >R$ {{ o.price | number: '1.2-2' }}</span
+                                          >
+                                          <span class="ot-label">Distância do topo</span>
+                                          <span class="ot-value">{{
+                                            descontoLabel(o.desvioTopo)
+                                          }}</span>
+                                        </span>
+                                      }
+                                    } @else {
                                       <span class="ot-verdict" [attr.data-zona]="teto.zona">{{
                                         zonaLabel(teto.zona)
                                       }}</span>
@@ -534,10 +559,10 @@
                                           }}</span>
                                         </span>
                                       }
-                                    </span>
+                                    }
                                   </span>
-                                </td>
-                              }
+                                </span>
+                              </td>
                               <td class="cell-saldo">
                                 <span class="val">{{
                                   sld === null ? '—' : 'R$ ' + (sld | number: '1.2-2')

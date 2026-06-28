@@ -278,43 +278,81 @@ export class DashboardComponent {
     return this.precoTetoOf(s).zona;
   }
 
-  // Limiares da posição do preço na faixa de 52 semanas para o veredito de
-  // oportunidade do ETF: abaixo de 30% da faixa = oportunidade (perto do fundo);
-  // acima de 70% = caro (perto do topo); no meio = justo.
-  private static readonly ETF_POS_LOW = 0.3;
-  private static readonly ETF_POS_HIGH = 0.7;
+  // Limiares da distância do preço até a máxima de 52 semanas (o "teto" do ETF),
+  // em fração negativa (preço abaixo do topo): a menos de 7% abaixo = caro; entre
+  // 7% e 15% abaixo = justo; mais de 15% abaixo = oportunidade.
+  private static readonly ETF_TOP_NEAR = -0.07;
+  private static readonly ETF_TOP_FAR = -0.15;
 
-  // Faixa lateral do ETF = oportunidade de compra pela posição do preço atual na
-  // faixa de 52 semanas (ETF não tem preço-teto). pos = (atual − mín) / (máx − mín).
-  // pos < 0,30 → verde (oportunidade); 0,30–0,70 → amarelo (justo); > 0,70 → vermelho
-  // (caro). Sem faixa válida (máx/mín ausentes, máx == mín, ou preço ≤ 0) → neutro.
-  private etfZonaClass(s: Stock): string {
+  // Oportunidade do ETF: usa a máxima de 52 semanas como referência de "caro"
+  // (paralelo ao preço-teto das ações). desvioTopo = (atual − máx) / máx
+  // (negativo quando abaixo do topo). available=false sem máxima válida/preço ≤ 0.
+  etfOportunidade(s: Stock): {
+    available: boolean;
+    zona: Zona;
+    high52: number;
+    low52: number;
+    price: number;
+    desvioTopo: number;
+  } {
     const price = s.price ?? 0;
     const high = s.high52 ?? 0;
     const low = s.low52 ?? 0;
-    if (!(price > 0) || !(high > 0) || !(low > 0) || high <= low) return 'zona-na';
-    const pos = (price - low) / (high - low);
-    if (pos < DashboardComponent.ETF_POS_LOW) return 'zona-compra';
-    if (pos > DashboardComponent.ETF_POS_HIGH) return 'zona-caro';
-    return 'zona-justo';
+    if (!(price > 0) || !(high > 0)) {
+      return { available: false, zona: 'na', high52: high, low52: low, price, desvioTopo: 0 };
+    }
+    const desvioTopo = (price - high) / high;
+    let zona: Zona;
+    if (desvioTopo > DashboardComponent.ETF_TOP_NEAR) zona = 'caro';
+    else if (desvioTopo < DashboardComponent.ETF_TOP_FAR) zona = 'compra';
+    else zona = 'justo';
+    return { available: true, zona, high52: high, low52: low, price, desvioTopo };
   }
 
-  // Classe CSS da faixa lateral (cor do semáforo). ETF usa desempenho vs médio;
-  // demais classes seguem a zona de preço-teto.
+  // Faixa lateral do ETF = oportunidade pela distância até a máxima de 52 semanas.
+  private etfZonaClass(s: Stock): string {
+    return 'zona-' + this.etfOportunidade(s).zona;
+  }
+
+  // Classe CSS da faixa lateral (cor do semáforo). ETF usa distância da máxima de
+  // 52 semanas; demais classes seguem a zona de preço-teto.
   zonaClass(s: Stock): string {
     if (s.sector === 'ETF') return this.etfZonaClass(s);
     return 'zona-' + this.zonaOf(s);
   }
 
   // Badge da coluna "Oportunidade": semáforo + desconto/ágio vs teto
-  // (ex.: "🟢 −18%"). Estados sem número: ⚪ (sem dados) e "n/a" (ETF).
+  // (ex.: "🟢 −18%"). ETF usa a distância da máxima de 52 semanas.
   oportunidadeBadge(s: Stock): string {
+    if (s.sector === 'ETF') return this.etfBadge(s);
     const r = this.precoTetoOf(s);
     if (r.zona === 'na') return 'n/a';
     if (r.zona === 'sem-dados' || r.descontoPct === null) return '⚪ —';
     const emoji = r.zona === 'compra' ? '🟢' : r.zona === 'justo' ? '🟡' : '🔴';
     const pct = Math.round(r.descontoPct * 100);
     return `${emoji} ${pct >= 0 ? '+' : '−'}${Math.abs(pct)}%`;
+  }
+
+  // Badge do ETF: emoji da zona + distância do topo (ex.: "🟢 −22%"). "n/a" quando
+  // não há máxima de 52 semanas válida.
+  private etfBadge(s: Stock): string {
+    const o = this.etfOportunidade(s);
+    if (!o.available) return 'n/a';
+    const emoji = o.zona === 'compra' ? '🟢' : o.zona === 'justo' ? '🟡' : '🔴';
+    const pct = Math.round(o.desvioTopo * 100);
+    return `${emoji} ${pct >= 0 ? '+' : '−'}${Math.abs(pct)}%`;
+  }
+
+  // Veredito do ETF por extenso, para o topo do tooltip de oportunidade.
+  private static readonly ETF_VEREDICTO: Record<Zona, string> = {
+    compra: '🟢 Oportunidade — longe do topo',
+    justo: '🟡 Preço justo / perto',
+    caro: '🔴 Caro — perto do topo',
+    'sem-dados': '⚪ Sem dados de 52 semanas',
+    na: '⚪ Sem dados de 52 semanas',
+  };
+  etfVeredicto(s: Stock): string {
+    return DashboardComponent.ETF_VEREDICTO[this.etfOportunidade(s).zona];
   }
 
   // Veredito da zona (semáforo) por extenso, espelhando a tela de detalhe —
@@ -458,11 +496,17 @@ export class DashboardComponent {
       else if (field === 'saldo') cmp = (saldo(a) ?? 0) - (saldo(b) ?? 0);
       else if (field === 'variacao') cmp = (variacaoPosicao(a) ?? 0) - (variacaoPosicao(b) ?? 0);
       else if (field === 'rentabilidade') cmp = (rentabilidade(a) ?? 0) - (rentabilidade(b) ?? 0);
-      // Zona: ordena por desconto vs teto (mais barato primeiro); sem-dados/ETF ao fim.
+      // Zona: ordena por oportunidade (mais barato primeiro). Não-ETF usa desconto
+      // vs teto; ETF usa a distância da máxima de 52 sem. Sem dados ao fim.
       else if (field === 'zona') {
-        const da = this.precoTetoOf(a).descontoPct ?? Number.POSITIVE_INFINITY;
-        const db = this.precoTetoOf(b).descontoPct ?? Number.POSITIVE_INFINITY;
-        cmp = da - db;
+        const key = (s: Stock) => {
+          if (s.sector === 'ETF') {
+            const o = this.etfOportunidade(s);
+            return o.available ? o.desvioTopo : Number.POSITIVE_INFINITY;
+          }
+          return this.precoTetoOf(s).descontoPct ?? Number.POSITIVE_INFINITY;
+        };
+        cmp = key(a) - key(b);
       }
       return asc ? cmp : -cmp;
     });

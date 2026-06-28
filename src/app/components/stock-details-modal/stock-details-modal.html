@@ -62,10 +62,18 @@
       <section class="section" *ngIf="hasIndicators">
         <h3 class="section-title">Indicadores fundamentalistas</h3>
         <div class="indicators-grid">
-          <div class="indicator" *ngFor="let ind of stock.indicators">
+          <div class="indicator" *ngFor="let ind of stock.indicators; let i = index">
             <span class="i-label">
               {{ ind.label }}
-              <span class="i-info" *ngIf="describe(ind.label)" [title]="describe(ind.label)">
+              <button
+                *ngIf="describe(ind.label)"
+                type="button"
+                class="i-info"
+                [title]="describe(ind.label)"
+                [attr.aria-label]="'Descrição: ' + ind.label"
+                [attr.aria-expanded]="openInfo() === i"
+                (click)="toggleInfo(i, $event)"
+              >
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" />
                   <path
@@ -76,9 +84,12 @@
                   />
                   <circle cx="12" cy="8" r="1" fill="currentColor" />
                 </svg>
-              </span>
+              </button>
             </span>
             <span class="i-value">{{ formatValue(ind.value) }}</span>
+            <p class="i-desc" *ngIf="describe(ind.label) && openInfo() === i">
+              {{ describe(ind.label) }}
+            </p>
           </div>
         </div>
       </section>

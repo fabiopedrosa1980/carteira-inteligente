@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stock } from '../../models/stock.model';
 import { PrecoTetoResult, Zona } from '../../models/preco-teto.util';
@@ -50,9 +50,29 @@ export class StockDetailsModalComponent {
     return (v >= 0 ? '+' : '−') + Math.abs(v) + '%';
   }
 
-  // Fecha o detalhe ao pressionar Esc.
+  // Índice do indicador cuja descrição está aberta (tap no ícone "i"); null = nenhuma.
+  readonly openInfo = signal<number | null>(null);
+
+  // Alterna a descrição do indicador no toque (mobile). stopPropagation evita que
+  // o clique no botão dispare o fechamento global (document:click).
+  toggleInfo(index: number, ev: Event): void {
+    ev.stopPropagation();
+    this.openInfo.set(this.openInfo() === index ? null : index);
+  }
+
+  // Clique fora fecha a descrição aberta.
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.openInfo.set(null);
+  }
+
+  // Esc: fecha a descrição aberta primeiro; se não houver, fecha o detalhe.
   @HostListener('document:keydown.escape')
   onEscape(): void {
+    if (this.openInfo() !== null) {
+      this.openInfo.set(null);
+      return;
+    }
     this.close.emit();
   }
 

@@ -17,16 +17,21 @@ Na tabela de lançamentos (desktop), **todas** as colunas SHALL ser alinhadas **
 
 ## ADDED Requirements
 
-### Requirement: Cor neutra do Total e do ticker na tabela
+### Requirement: Cores neutras na tabela (sem verde de destaque)
 
-Na tabela de lançamentos, o **valor da coluna Total** e o **ticker** (coluna Ativo) SHALL usar cor neutra (cor primária do texto), **sem destaque verde** (`--accent`), padronizando com a lista de Meus Ativos. O ticker SHALL ser exibido como texto simples, **sem badge/pílula** colorida.
+Na tabela de lançamentos, **todos os valores das colunas** (Ativo, Data, Qtd., Preço Unit., Total) SHALL usar **cor primária do texto** (branco no tema escuro), **sem destaque verde** (`--accent`). O ticker SHALL ser exibido como texto simples, **sem badge/pílula** colorida. O cabeçalho de coluna **ativo na ordenação** SHALL usar destaque **neutro** (cor primária), **sem verde** — a direção da ordenação é indicada pela seta (↑/↓).
 
-#### Scenario: Total sem verde
+#### Scenario: Valores em cor primária
 
 - **WHEN** uma linha de lançamento é exibida
-- **THEN** o valor da coluna Total aparece em cor primária (neutra), sem o verde de destaque
+- **THEN** Ativo, Data, Qtd., Preço Unit. e Total aparecem em cor primária (neutra), sem verde
 
 #### Scenario: Ticker neutro sem badge
 
 - **WHEN** uma linha de lançamento é exibida no desktop
 - **THEN** o ticker aparece como texto simples em cor primária, sem fundo/pílula verde
+
+#### Scenario: Coluna ordenada sem verde
+
+- **WHEN** o investidor clica num cabeçalho de coluna para ordenar
+- **THEN** o cabeçalho ativo fica em cor primária (neutra), sem verde, e a seta indica a direção

@@ -383,24 +383,14 @@ $pad-x: 16px;
 }
 
 // Desktop: colunas numéricas (Qtd., Preço Unit., Total) e Operação alinhadas à
-// direita para leitura em coluna; Ativo e Data permanecem à esquerda. Escopo
-// acima do breakpoint do card para não afetar o layout mobile.
+// Todas as colunas alinhadas à esquerda, padronizando com a lista de Meus Ativos.
+// Mantém numerais tabulares para preservar a leitura das casas mesmo à esquerda.
+// Escopo acima do breakpoint do card para não afetar o layout mobile.
 @media (min-width: 601px) {
-  .table-header > span:nth-child(3),
-  .table-header > span:nth-child(4),
-  .table-header > span:nth-child(5),
-  .table-header > span:nth-child(6) {
-    justify-content: flex-end;
-    text-align: right;
-  }
   .table-row > .qty-cell,
   .table-row > .price-cell,
   .table-row > .total-cell {
-    text-align: right;
     font-variant-numeric: tabular-nums;
-  }
-  .table-row > .action-cell {
-    justify-content: flex-end;
   }
 }
 
@@ -415,8 +405,10 @@ $pad-x: 16px;
   &:hover {
     color: var(--text-primary);
   }
+  // Coluna ordenada (ativa): destaque neutro em branco (sem verde). A direção
+  // fica indicada pela seta (↑/↓).
   &.active {
-    color: var(--accent);
+    color: var(--text-primary);
   }
 }
 .sort-ind {
@@ -424,34 +416,21 @@ $pad-x: 16px;
   line-height: 1;
 }
 
+// Ticker como texto simples neutro (sem pílula/verde), padronizando com o ticker
+// da lista de Meus Ativos. Cor primária em ambos os temas, desktop e mobile.
 .ticker-badge {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  color: var(--accent);
-  letter-spacing: 0.5px;
-  // No card mobile, o ticker é texto simples 16px/700, sem badge. No tema
-  // escuro fica verde (--accent) para destaque; no tema claro volta à cor
-  // primária (ver override abaixo). No desktop a tabela mantém o badge.
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
   @media (max-width: 600px) {
-    padding: 0;
-    border-radius: 0;
-    background: none;
-    color: var(--accent);
     font-size: 16px;
     letter-spacing: 0.02em;
   }
 }
-// Tema claro: ticker do card mobile volta à cor primária (verde só no escuro).
-:host-context(body.light-theme) .ticker-badge {
-  @media (max-width: 600px) {
-    color: var(--text-primary);
-  }
-}
 .date-cell {
-  color: var(--text-secondary);
+  // Valores em branco (cor primária), padronizando todas as colunas.
+  color: var(--text-primary);
   font-size: 13px;
   @media (max-width: 600px) {
     grid-area: data;
@@ -464,17 +443,20 @@ $pad-x: 16px;
   }
 }
 .price-cell {
-  color: var(--text-secondary);
+  // Valores em branco (cor primária), padronizando todas as colunas.
+  color: var(--text-primary);
   @media (max-width: 600px) {
     grid-area: preco;
   }
 }
 .total-cell {
+  // Cor neutra (primária), sem verde — padroniza com as demais colunas e com a
+  // lista de Meus Ativos. Peso 700 mantém o Total legível como total da linha.
   font-weight: 700;
-  color: var(--accent);
+  color: var(--text-primary);
   @media (max-width: 600px) {
     // Total no mesmo tamanho dos demais campos do card (13px); peso 700 mantém
-    // o leve destaque. Cor primária; o acento permanece só no desktop/tabela.
+    // o leve destaque.
     grid-area: total;
     font-size: 13px;
     line-height: 1.1;

@@ -1,40 +1,45 @@
-<!-- DESCOBERTA durante o apply: o raio é, de fato, um sistema de 3 tiers
-     (12 seção / 14 item / 10 chip), não 2. O "card 20px" do calendário era um
-     botão-pílula; o único outlier real de card é o details-panel (16px). Tokens
-     ajustados para 3 tiers (--radius-card/--radius-item/--radius-chip). A
-     normalização ampla de raio e a convergência de breakpoint foram PAUSADAS
-     para redecisão (specs precisam refletir os 3 tiers). -->
+<!-- DESCOBERTA no apply: raio é um sistema de 3 tiers (12 seção / 14 item / 10 chip),
+     não 2. O "card 20px" do calendário era pílula; único outlier real = details-panel
+     (16px). Tokens e specs ajustados para 3 tiers. Breakpoint canônico = 600px (literal;
+     parcial SCSS descartado). Decisões confirmadas pelo usuário: convergir 640→600 e
+     tokenizar amplamente + atualizar specs. -->
 
 ## 1. Tokens (styles.scss)
 
-- [x] 1.1 Adicionar custom properties de raio (3 tiers): `--radius-card: 12px`, `--radius-item: 14px`, `--radius-chip: 10px` no `:root`.
-- [ ] 1.2 Adicionar variáveis SCSS de breakpoint (`$mobile/$sm/$lg`) num parcial importável. (parcial `src/_breakpoints.scss` criado; aplicação PAUSADA)
-- [x] 1.3 Adicionar tokens de escala de espaçamento (`--space-1:4px … --space-6:24px`).
+- [x] 1.1 Custom properties de raio (3 tiers): `--radius-card: 12px`, `--radius-item: 14px`, `--radius-chip: 10px`.
+- [x] 1.2 Breakpoint canônico = `max-width: 600px` (literal; sem parcial SCSS — ver design).
+- [x] 1.3 Escala de espaçamento `--space-1: 4px … --space-6: 24px`.
 
-## 2. Normalizar raios de card
+## 2. Normalizar/tokenizar raios de card
 
-- [x] 2.1 Outlier real de card → `var(--radius-card)`: detalhe do ativo `.details-panel` (16px). (calendário/stock-card NÃO eram outliers)
-- [~] 2.2 Tokenizar por tier nas telas tocadas (Dividendos): radar-card → `var(--radius-item)`, ds-total-card → `var(--radius-chip)`. Demais telas: PENDENTE.
-- [ ] 2.3 Trocar literais 12/14/10 restantes pelos tokens nas demais telas (sem mudança visual). PENDENTE.
+- [x] 2.1 Outlier real → `var(--radius-card)`: `.details-panel` (16px).
+- [x] 2.2 Tokenizar por tier: `--radius-card` (alloc-card, import-card, meta-form, acordeões my-assets/dashboard, seções de Dividendos); `--radius-item` (stock-card desktop+mobile, acoes-row, table-row, radar-card); `--radius-chip` (ps-card, ds-total-card, indicador, month-card).
+- [x] 2.3 Não-cards preservados (pílulas/tags 20px/999px, tooltips, botões, caixa dashed, skeletons).
 
 ## 3. Unificar tipografia de Dividendos
 
-- [x] 3.1 Radar/Resumo/Histórico: títulos de seção (`.radar-title`/`.ds-title`/`.dh-title`) agora usam 20px/700 (padrão do app).
-- [x] 3.2 Padding dos contêineres dessas telas migrado para `var(--space-6)`.
-- [ ] 3.3 Conferir os títulos "sem dados" (`0.98rem`) para coerência (rótulo secundário em px). PENDENTE.
+- [x] 3.1 Radar/Resumo/Histórico: títulos de seção agora 20px/700 (padrão do app).
+- [x] 3.2 Padding dos contêineres → `var(--space-6)`.
+- [ ] 3.3 Títulos "sem dados" (`0.98rem`) — mantidos por ora (rótulo secundário; baixo impacto). PENDENTE opcional.
 
 ## 4. Unificar breakpoint mobile
 
-- [ ] 4.1 Substituir os literais de "vira card" pelo `$bp-mobile` nas telas (incluindo migrar os grids de 640px de Minhas Ações e Radar para o canônico).
-- [ ] 4.2 Nomear os cortes secundários com `$bp-sm`/`$bp-lg` onde aplicável.
+- [x] 4.1 Convergir media queries 640→600 em `dashboard.scss` (5×) e `stock-card.scss` (1×). (add-stock-modal 640 é max-width de modal, não media query — mantido.)
+- [x] 4.2 Comentários "≤640px" atualizados.
 
-## 5. Verificação
+## 5. Specs/artefatos
 
-- [ ] 5.1 Build: `npx ng build` compila sem erros.
-- [ ] 5.2 Revisão visual por tela (desktop e mobile): alocação, lançamentos, Meus Ativos, Dividendos (Radar/Resumo/Histórico/Calendário), Metas, Importar, detalhe do ativo.
-- [ ] 5.3 Confirmar transição mobile na mesma largura entre telas e ausência de regressões de raio/título.
+- [x] 5.1 `design-tokens-layout` reescrito para 3 tiers + 600px.
+- [x] 5.2 `mobile-view-fit` ajustado para 600px (sem `$bp-*`).
+- [x] 5.3 `proposal.md`/`design.md` alinhados à descoberta dos 3 tiers e ao 600 literal.
 
-## 6. Entrega
+## 6. Verificação
 
-- [ ] 6.1 `npx prettier --write` nos `.scss` alterados.
-- [ ] 6.2 Commits por fase (prefixo `style:`/`refactor:`) e push para `main` (stage apenas dos arquivos alterados).
+- [x] 6.1 Build: `npx ng build` compila sem erros.
+- [ ] 6.2 Revisão visual por tela (desktop e mobile) — requer login; PENDENTE de conferência manual.
+- [ ] 6.3 Confirmar transição mobile na mesma largura entre telas e ausência de regressões de raio/título — PENDENTE manual.
+
+## 7. Entrega
+
+- [x] 7.1 `npx prettier --write` nos `.scss` alterados.
+- [ ] 7.2 Commit(s) e push para `main`.

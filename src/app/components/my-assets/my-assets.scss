@@ -123,7 +123,7 @@ $pad-x: 16px;
 .accordion {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-card);
   overflow: hidden;
 }
 
@@ -347,7 +347,7 @@ $pad-x: 16px;
     padding: 14px 16px;
     margin-bottom: 10px;
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: var(--radius-item);
     font-size: 14px;
     // Faixa lateral verde à esquerda, no mesmo idioma da perf-bar dos cards de
     // Meus Ativos. Recortada pelos cantos arredondados do card.

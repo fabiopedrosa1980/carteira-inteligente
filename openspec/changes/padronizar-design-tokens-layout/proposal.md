@@ -10,15 +10,17 @@ Padronizar reduz divergência visual, facilita mudanças futuras (um valor num p
 
 ## What Changes
 
-- **Tokens novos** em `styles.scss`: `--radius-card` (card de tela) e `--radius-chip` (card interno/stat/chip); escala de espaçamento; variáveis SCSS de breakpoint (`$bp-mobile`, `$bp-sm`, `$bp-lg`).
-- **Normalizar raios** dos outliers para os tokens: calendário 20→`--radius-card`, stock-card 14→`--radius-card`, detalhe do ativo 16→`--radius-card`; internos 14→`--radius-chip`.
-- **Unificar tipografia de Dividendos**: títulos de seção de Radar/Resumo/Histórico passam a usar o padrão do app (20px/700, via `.section-title`/`.page-title`) em vez de `1.1rem`; medidas em `rem` migram para a escala em `px`.
-- **Unificar breakpoint mobile** num valor canônico (`$bp-mobile`), convergindo os grids hoje em 640px para o mesmo corte das demais telas.
+- **Tokens novos** em `styles.scss`: raio em 3 tiers (`--radius-card` seção, `--radius-item` card de item, `--radius-chip` interno/stat) e escala de espaçamento `--space-1..6`.
+- **Tokenizar raios por tier** em todas as telas (substituir literais 12/14/10 pelos tokens, sem mudança visual) e **corrigir o único outlier real**: detalhe do ativo `.details-panel` 16→`--radius-card`.
+- **Unificar tipografia de Dividendos**: títulos de seção de Radar/Resumo/Histórico passam a usar o padrão do app (20px/700) em vez de `1.1rem`; padding dos contêineres migra para `var(--space-6)`.
+- **Unificar breakpoint mobile** em **600px**, convergindo os grids hoje em 640px (Minhas Ações/Radar) para o mesmo corte das demais telas.
+
+> Nota (descoberta no apply): a análise inicial superdimensionou o problema de raio — 14px é um tier coerente ("card de item"), não outlier, e o "card 20px" do calendário era uma pílula. Specs/decisões abaixo já refletem os 3 tiers reais.
 
 ## Capabilities
 
 ### New Capabilities
-- `design-tokens-layout`: tokens compartilhados de raio de card, escala de espaçamento e breakpoints, usados por todas as telas.
+- `design-tokens-layout`: tokens compartilhados de raio de card (3 tiers), escala de espaçamento e breakpoint mobile canônico (600px), usados por todas as telas.
 
 ### Modified Capabilities
 - `dividendos-telas-padrao-visual`: o padrão de título das telas de Dividendos passa a ser o padrão global do app (20px/700), e o raio do card passa a vir de `--radius-card`.

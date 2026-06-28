@@ -20,21 +20,21 @@ Tokens existentes em `styles.scss` cobrem só botões (`--icon-btn-size/-radius/
 
 ## Decisions
 
-### Decisão: raios `--radius-card: 12px` e `--radius-chip: 10px`
+### Decisão: raios em 3 tiers (`--radius-card: 12px` / `--radius-item: 14px` / `--radius-chip: 10px`)
 
-12px é a maioria dos cards de tela; 10px é o mais comum nos internos. Migrar outliers (14/16/20 → 12; 14 interno → 10). Mantém o visual atual da maioria e só corrige os destoantes.
+Descoberta no apply: o app já tem, de fato, três famílias coerentes — seção (12), card de item de lista/grid (14) e stat/chip (10). O "card 20px" do calendário era pílula; o único outlier real é o `.details-panel` (16px). Então os tokens **codificam os 3 tiers existentes** sem mudar valores, e só o `.details-panel` migra (16→`--radius-card`).
 
-**Alternativa — adotar 14/16 (mais arredondado):** rejeitada por enquanto; exigiria mexer na maioria dos cards (mais risco) para seguir a minoria. (Decisão reversível: é um token só.)
+**Alternativa — forçar 2 tiers (12/10) e mexer nos 14px:** rejeitada; reduziria a consistência do tier "card de item" e geraria churn para seguir a minoria.
 
-### Decisão: breakpoint canônico `$bp-mobile: 600px`
+### Decisão: breakpoint canônico **600px** (literal)
 
-600px é o corte mais frequente e o usado por `styles.scss`, dashboard, my-assets, dividends, import, detalhe. Convergir os grids de 640px (Minhas Ações, Radar) para 600px alinha a transição mobile em todo o app. `$bp-sm: 480px` e `$bp-lg: 900px` nomeiam os secundários existentes.
+600px é o corte mais frequente (`styles.scss`, dashboard, my-assets, dividends, import, detalhe). Convergir os grids de 640px (Minhas Ações, Radar — em `dashboard.scss` e `stock-card.scss`) para 600px alinha a transição mobile em todo o app.
+
+**Decisão de mecanismo:** usar o literal `max-width: 600px` em vez de uma variável SCSS compartilhada. Um parcial `@use` exigiria importar em ~todos os componentes (Angular compila cada `.scss` isolado) — muito churn para ganho marginal sobre um literal legível. (O parcial `src/_breakpoints.scss` chegou a ser criado e foi removido.)
 
 **Trade-off:** os grids de 2 colunas passam a colapsar em 600 em vez de 640 (40px a menos de folga). Impacto visual pequeno; ganho de consistência alto.
 
-**Alternativa — canônico 640px:** possível, mas exigiria mudar mais telas (as muitas em 600) do que manter 600 e migrar as poucas em 640.
-
-> Observação: variáveis de breakpoint são SCSS (`$bp-*`), pois `@media` não aceita custom properties CSS. Raio e spacing são custom properties CSS (`--radius-*`), por serem usados em propriedades comuns e variarem por tema/responsivo.
+> Observação: raio e spacing são custom properties CSS (`--radius-*`/`--space-*`), usáveis em qualquer componente sem import e variáveis por tema. Breakpoints ficam como literais (CSS `@media` não aceita custom properties).
 
 ### Decisão: Dividendos adota o título padrão do app
 

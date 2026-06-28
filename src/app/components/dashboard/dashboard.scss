@@ -431,7 +431,7 @@
   // mesmo oculto, sua caixa absoluta de 220px ocupa layout e vaza à direita nas
   // linhas próximas da borda — criando rolagem horizontal. Removido do layout
   // (o detalhe de preço-teto continua acessível no modal de detalhe ao tocar).
-  @media (max-width: 640px) {
+  @media (max-width: 600px) {
     .oport-tooltip {
       display: none;
     }
@@ -475,11 +475,11 @@
     line-height: 1.4;
   }
 
-  // Mobile (≤640px): cada ativo vira um CARD no mesmo idioma visual dos cards
+  // Mobile (≤600px): cada ativo vira um CARD no mesmo idioma visual dos cards
   // de ação — perf-bar à esquerda (cor do dia), números em mono e Saldo como
   // número-herói. Sem <table>/<col>, evitando a armadilha de tracks ao ocultar
   // colunas. DOM: Ativo(1) Qtd(2) Preço(3) Hoje(4) Saldo(5) Variação(6) Rent(7).
-  @media (max-width: 640px) {
+  @media (max-width: 600px) {
     display: block;
     font-family: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', monospace;
 
@@ -507,7 +507,7 @@
       padding: 14px 16px 14px 18px;
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: var(--radius-item);
       margin-bottom: 10px;
       transition: border-color 0.2s ease;
     }
@@ -673,7 +673,7 @@
 // Tema claro: ticker do card mobile de Meus Ativos volta à cor primária
 // (o verde do ticker aplica-se apenas ao tema escuro).
 :host-context(body.light-theme) .acoes-list .cell-ativo {
-  @media (max-width: 640px) {
+  @media (max-width: 600px) {
     color: var(--text-primary);
   }
 }
@@ -690,7 +690,7 @@
   gap: 14px;
   margin-bottom: 32px;
 
-  @media (max-width: 640px) {
+  @media (max-width: 600px) {
     // minmax(0, 1fr): 2 colunas que encolhem; o conteúdo do card nunca empurra a largura.
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
@@ -710,7 +710,7 @@
 .accordion {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-card);
   // overflow visível para o tooltip de oportunidade poder escapar do card; o
   // recorte da animação de colapso fica por conta de .accordion-body.collapsed.
   overflow: visible;
@@ -974,7 +974,7 @@
 .ps-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-chip);
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
@@ -1094,7 +1094,7 @@
   pointer-events: none;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 600px) {
   // Mobile: todos os cards 2 por linha, inclusive o Patrimônio (hero), que
   // ocupa uma única coluna como os demais (sem ocupar a linha inteira).
   .ps-cards {

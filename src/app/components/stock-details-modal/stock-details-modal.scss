@@ -110,7 +110,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   padding: 12px 14px;
   background: rgba(128, 128, 128, 0.05);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-chip);
 }
 /* Indicadores mais usados pelo mercado para análise — destacados. */
 /* Ícone "i": botão que mostra a descrição no hover (desktop) e no toque (mobile). */

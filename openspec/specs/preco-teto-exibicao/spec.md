@@ -7,13 +7,13 @@ TBD - created by archiving change preco-teto-zona-de-compra. Update Purpose afte
 
 O sistema SHALL indicar o **veredito de zona** (🟢 Compra · 🟡 Justo/Perto · 🔴 Caro · ⚪ Sem dados) em cada linha/card da **lista de Meus Ativos** por meio de uma **faixa colorida** (a borda lateral que hoje sinaliza variação do dia passa a refletir a zona) acompanhada de um **caption** com o percentual de desconto/ágio vs teto sob o ticker, sem adicionar coluna nova. A lista MUST permitir **ordenar por desconto vs teto** (ativos mais "baratos" frente ao teto primeiro) a partir de um handle de ordenação existente.
 
-Para **ETFs** — que não têm preço-teto — a faixa lateral MUST refletir a **oportunidade de compra de mercado** pela **posição do preço atual na faixa de 52 semanas**: seja `pos = (preço atual − mínima 52 sem) / (máxima 52 sem − mínima 52 sem)`; `pos < 0,30` (perto do fundo do ano) → faixa **verde** (oportunidade); `0,30 ≤ pos ≤ 0,70` → faixa **amarela** (justo); `pos > 0,70` (perto do topo) → faixa **vermelha** (caro). Para ETF o caption permanece oculto.
+Para **ETFs** — que não têm preço-teto — o veredito de oportunidade MUST usar a **máxima de 52 semanas como referência de "caro"**, medindo a **distância do preço atual até essa máxima**: seja `desvioTopo = (preço atual − máxima 52 sem) / máxima 52 sem` (negativo quando abaixo do topo); `desvioTopo > −0,07` (colado no topo) → **vermelho** (caro); `−0,15 ≤ desvioTopo ≤ −0,07` → **amarelo** (justo); `desvioTopo < −0,15` (longe do topo) → **verde** (oportunidade).
 
-Quando os dados de 52 semanas estiverem **indisponíveis ou inválidos** para o ETF (máxima/mínima ausentes, `máxima == mínima`, ou preço atual ausente/`≤ 0`), a faixa do ETF MUST ficar **neutra** (sem sinal enganoso). O sistema MUST degradar para o estado neutro do ETF enquanto o backend ainda não fornecer a faixa de 52 semanas.
+A coluna **"Oportunidade"** (badge + tooltip), antes oculta para ETF, MUST ser exibida também para ETFs, mantendo o ETF com o mesmo número de colunas de Ações/FIIs. Para ETF o badge MUST mostrar o emoji da zona seguido da **distância do topo** (ex.: `🟢 −22%`), no mesmo formato do badge de Ações. O tooltip do ETF MUST mostrar o **racional**: mínima de 52 semanas, máxima de 52 semanas, preço atual, distância do topo e o veredito por extenso, com o aviso de que não é recomendação.
 
-Ativos **sem dados** (não-ETF sem histórico suficiente) MUST exibir o estado neutro com caption "teto n/d" (⚪), sem teto numérico.
+Quando os dados de 52 semanas estiverem **indisponíveis ou inválidos** para o ETF (máxima ausente/`≤ 0`, ou preço atual ausente/`≤ 0`), a faixa do ETF MUST ficar **neutra** e o badge MUST mostrar `n/a` com tooltip "Sem dados de 52 semanas", sem número enganoso.
 
-A faixa do estado **neutro** (sem dados / ETF sem faixa de 52 sem válida) MUST usar uma cor que **não coincida** com a borda do card/linha, para não parecer uma borda dupla.
+Ativos **sem dados** (não-ETF sem histórico suficiente) MUST exibir o estado neutro com caption "teto n/d" (⚪), sem teto numérico. A faixa do estado **neutro** MUST usar uma cor que **não coincida** com a borda do card/linha.
 
 #### Scenario: Faixa e caption no ativo
 
@@ -25,25 +25,30 @@ A faixa do estado **neutro** (sem dados / ETF sem faixa de 52 sem válida) MUST 
 - **WHEN** o investidor ordena a lista por desconto vs teto
 - **THEN** os ativos mais abaixo do teto aparecem primeiro
 
-#### Scenario: ETF perto do fundo da faixa de 52 semanas
+#### Scenario: ETF longe do topo de 52 semanas
 
-- **WHEN** um ETF tem máxima e mínima de 52 semanas válidas e o preço atual está abaixo de 30% da faixa (`pos < 0,30`)
-- **THEN** a faixa lateral fica **verde** (oportunidade de compra)
+- **WHEN** um ETF tem máxima de 52 semanas válida e o preço atual está mais de 15% abaixo dela (`desvioTopo < −0,15`)
+- **THEN** a faixa fica **verde** e o badge mostra `🟢` com a distância do topo (ex.: `−22%`)
 
-#### Scenario: ETF no meio da faixa de 52 semanas
+#### Scenario: ETF a meio caminho do topo
 
-- **WHEN** um ETF tem preço atual entre 30% e 70% da faixa de 52 semanas
-- **THEN** a faixa lateral fica **amarela** (justo)
+- **WHEN** um ETF tem preço atual entre 7% e 15% abaixo da máxima de 52 semanas
+- **THEN** a faixa fica **amarela** (justo) e o badge mostra a distância do topo
 
-#### Scenario: ETF perto do topo da faixa de 52 semanas
+#### Scenario: ETF colado no topo de 52 semanas
 
-- **WHEN** um ETF tem preço atual acima de 70% da faixa de 52 semanas (`pos > 0,70`)
-- **THEN** a faixa lateral fica **vermelha** (caro)
+- **WHEN** um ETF tem preço atual a menos de 7% abaixo da máxima de 52 semanas (`desvioTopo > −0,07`)
+- **THEN** a faixa fica **vermelha** (caro) e o badge mostra a distância do topo
 
-#### Scenario: ETF sem faixa de 52 semanas válida
+#### Scenario: Tooltip de oportunidade do ETF
 
-- **WHEN** um ETF é exibido mas faltam máxima/mínima de 52 semanas, `máxima == mínima`, ou o preço atual é ausente/`≤ 0`
-- **THEN** a faixa fica neutra (sem cor coincidente com a borda) e nenhum sinal de oportunidade é mostrado
+- **WHEN** o investidor passa o mouse sobre o badge de oportunidade de um ETF com 52 semanas válidas
+- **THEN** o tooltip mostra mínima, máxima, preço atual, distância do topo, o veredito e o aviso de que não é recomendação
+
+#### Scenario: ETF sem máxima de 52 semanas
+
+- **WHEN** um ETF é exibido mas falta a máxima de 52 semanas ou o preço atual é ausente/`≤ 0`
+- **THEN** a faixa fica neutra e o badge mostra `n/a` com tooltip "Sem dados de 52 semanas"
 
 #### Scenario: Não-ETF sem dados na lista
 

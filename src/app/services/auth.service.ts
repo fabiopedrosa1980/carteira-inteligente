@@ -18,7 +18,7 @@ export class AuthService {
   readonly token = this._token.asReadonly();
   readonly isAuthenticated = computed(() => this._user() !== null);
 
-  readonly clientId = '217072116416-ippggfugojfj5fiqk6oe0oiujjueak3m.apps.googleusercontent.com';
+  readonly clientId =  import.meta.env.NG_APP_OAUTH_KEY;
 
   setUser(user: GoogleUser): void {
     this._user.set(user);

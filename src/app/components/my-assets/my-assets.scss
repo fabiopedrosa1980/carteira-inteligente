@@ -262,13 +262,12 @@ $pad-x: 16px;
 
   @media (max-width: 600px) {
     // Mobile: cada lançamento vira card com rótulos próprios, mas o cabeçalho
-    // não some — vira uma barra de CHIPS de ordenação rolável, para não perder
-    // a navegação (ordenar por Ativo/Data/Qtd/Preço/Total) no celular.
+    // não some — vira uma barra de CHIPS de ordenação à direita. Nunca rola:
+    // os chips quebram para a linha de baixo quando não cabem.
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: 8px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     padding: 8px 12px;
     background: transparent;
     border-bottom: none;

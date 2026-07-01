@@ -398,16 +398,12 @@
 }
 @media (max-width: 600px) {
   .pt-sortbar {
+    // Nunca rola: os chips quebram para a linha de baixo quando não cabem.
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: 8px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     padding: 10px 12px 4px;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
 }
 .sort-chip {

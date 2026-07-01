@@ -428,29 +428,14 @@
     font-size: var(--fs-md);
   }
 
-  // Rodapé: Editar e Excluir full-width com rótulo (idem Lançamentos).
+  // Rodapé: Editar e Excluir apenas ícones (tamanho fixo do token — nunca
+  // estouram a largura do card), um ao lado do outro à direita.
   .meta-actions {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    justify-content: flex-end;
     gap: 8px;
     margin-top: 2px;
     padding-top: 12px;
     border-top: 1px solid var(--border);
-
-    .icon-btn {
-      width: 100%;
-      height: auto;
-      min-height: var(--icon-btn-size);
-      gap: 6px;
-      // Preenchimento sólido — sem borda visível.
-      border: 1px solid transparent;
-      font-size: var(--fs-sm);
-      font-weight: 600;
-    }
-    .btn-label {
-      display: inline;
-    }
   }
 }
 

@@ -437,37 +437,21 @@ $pad-x: 16px;
   justify-content: flex-start;
   gap: 2px;
   @media (max-width: 600px) {
-    // Rodapé do card: Editar e Excluir empilhados, cada um FULL-WIDTH, com
-    // ícone + rótulo — Editar (ação principal) em cima, Excluir embaixo.
+    // Rodapé do card: Editar e Excluir apenas ícones (tamanho fixo do token —
+    // nunca estouram a largura do card), um ao lado do outro à direita.
     grid-area: actions;
-    flex-direction: column;
-    align-items: stretch;
+    justify-content: flex-end;
     gap: 8px;
     margin-top: 4px;
     padding-top: 10px;
     border-top: 1px solid var(--border);
-    .btn-edit,
-    .btn-remove {
-      width: 100%;
-      height: auto;
-      min-height: var(--icon-btn-size);
-      gap: 6px;
-      // Preenchimento sólido (azul/vermelho) — sem borda visível.
-      border: 1px solid transparent;
-      font-size: var(--fs-sm);
-      font-weight: 600;
-    }
   }
 }
 
-// Rótulo das ações do card: só no mobile (no desktop ficam ícones-only).
+// Rótulo textual das ações: nunca exibido — Editar/Excluir ficam só com o
+// ícone em todas as telas (padronizado com Metas).
 .act-label {
   display: none;
-}
-@media (max-width: 600px) {
-  .act-label {
-    display: inline;
-  }
 }
 
 // Mobile: rótulos próprios em cada célula do card (sans, caixa-alta), já que o

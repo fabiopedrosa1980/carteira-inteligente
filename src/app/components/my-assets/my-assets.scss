@@ -262,11 +262,9 @@ $pad-x: 16px;
 
   @media (max-width: 600px) {
     // Mobile: cada lançamento vira card com rótulos próprios, mas o cabeçalho
-    // não some — vira uma barra de CHIPS de ordenação à direita. Nunca rola:
-    // os chips quebram para a linha de baixo quando não cabem.
+    // não some — vira uma barra de CHIPS de ordenação que ocupa o card inteiro,
+    // cada chip com largura igual (proporcional). Nunca rola.
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
     gap: 8px;
     padding: 8px 12px;
     background: transparent;
@@ -282,8 +280,10 @@ $pad-x: 16px;
       display: none;
     }
     .th-sort {
-      flex: 0 0 auto;
-      padding: 5px 12px;
+      flex: 1 1 0;
+      min-width: 0;
+      justify-content: center;
+      padding: 5px 8px;
       border: 1px solid var(--border);
       border-radius: var(--radius-pill);
       font-size: var(--fs-2xs);

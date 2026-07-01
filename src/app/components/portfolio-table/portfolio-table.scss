@@ -398,12 +398,17 @@
 }
 @media (max-width: 600px) {
   .pt-sortbar {
-    // Nunca rola: os chips quebram para a linha de baixo quando não cabem.
+    // Chips ocupam o card inteiro, cada um com largura igual (proporcional).
+    // Nunca rola.
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
     gap: 8px;
     padding: 10px 12px 4px;
+    .sort-chip {
+      flex: 1 1 0;
+      min-width: 0;
+      justify-content: center;
+      padding: 5px 8px;
+    }
   }
 }
 .sort-chip {

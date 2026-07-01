@@ -68,7 +68,7 @@ export class OnboardingTourService {
       tabStep(
         'import',
         '📥 Importar',
-        'Suba o extrato da sua corretora para lançar várias operações de uma vez, sem digitação manual.',
+        'Importe a planilha de Posição da B3 (.xlsx) com os seus ativos para lançar toda a carteira de uma vez, sem digitação.',
       ),
     ];
 

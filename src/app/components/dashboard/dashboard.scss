@@ -94,6 +94,11 @@
   }
 }
 
+// Menu do usuário: avatar clicável + dropdown com as ações do app.
+.user-menu {
+  position: relative;
+  flex-shrink: 0;
+}
 .user-chip {
   display: flex;
   align-items: center;
@@ -101,13 +106,103 @@
   padding: 4px 12px 4px 4px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 20px;
-  max-width: 200px;
-  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  max-width: 220px;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+  &:hover {
+    border-color: var(--text-secondary);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
   // Em ≤600px o nome some (resta o avatar); reduz o padding para ocupar menos.
   @media (max-width: 600px) {
     padding: 3px;
   }
+}
+.chevron-down {
+  width: 14px;
+  height: 14px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+// Backdrop invisível que fecha o menu ao clicar fora.
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+.user-menu-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  min-width: 208px;
+  padding: 6px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: menu-in 0.14s ease;
+}
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border: none;
+  background: none;
+  border-radius: var(--icon-btn-radius);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s;
+  svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+  }
+  &:hover {
+    background: color-mix(in srgb, var(--text-secondary) 12%, transparent);
+  }
+  &.danger {
+    color: var(--color-neg);
+    svg {
+      color: var(--color-neg);
+    }
+  }
+}
+.menu-sep {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 2px;
 }
 .user-avatar {
   width: 28px;
@@ -133,59 +228,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  @media (max-width: 600px) {
-    display: none;
-  }
-}
-
-/* Botões-ícone consistentes (tema, sair) */
-.icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  // Tamanho padrão dos botões de ícone (token global; encolhe no mobile).
-  width: var(--icon-btn-size);
-  height: var(--icon-btn-size);
-  flex-shrink: 0;
-  // No toque (mobile), alvo mínimo de 44px conforme Apple HIG — o ícone segue
-  // no mesmo tamanho, só a área tocável cresce.
-  @media (max-width: 600px) {
-    min-width: 44px;
-    min-height: 44px;
-  }
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--icon-btn-radius);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition:
-    color 0.18s,
-    border-color 0.18s,
-    background 0.18s;
-
-  svg {
-    width: var(--icon-btn-icon);
-    height: var(--icon-btn-icon);
-  }
-
-  &:hover {
-    color: var(--text-primary);
-    border-color: var(--accent);
-  }
-  &.danger:hover {
-    color: var(--color-neg);
-    border-color: var(--color-neg);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-}
-
-// O botão "?" (reabrir tour) é escondido no mobile: o header fica apertado e ele
-// quebra o layout. O tour ainda aparece no primeiro acesso; no desktop o botão
-// segue disponível para reabrir.
-.tour-btn {
   @media (max-width: 600px) {
     display: none;
   }

@@ -28,97 +28,131 @@
       </div>
     </div>
     <div class="header-actions">
-      <div class="user-chip" *ngIf="user() as u" [title]="u.email">
-        <img
-          class="user-avatar"
-          *ngIf="u.picture"
-          [src]="u.picture"
-          [alt]="u.name"
-          referrerpolicy="no-referrer"
-        />
-        <span class="user-avatar fallback" *ngIf="!u.picture">{{ u.name.charAt(0) }}</span>
-        <span class="user-name">{{ u.name }}</span>
+      <div class="user-menu" *ngIf="user() as u">
+        <button
+          class="user-chip"
+          (click)="toggleMenu()"
+          [attr.aria-expanded]="menuOpen()"
+          aria-haspopup="menu"
+          [title]="u.email"
+        >
+          <img
+            class="user-avatar"
+            *ngIf="u.picture"
+            [src]="u.picture"
+            [alt]="u.name"
+            referrerpolicy="no-referrer"
+          />
+          <span class="user-avatar fallback" *ngIf="!u.picture">{{ u.name.charAt(0) }}</span>
+          <span class="user-name">{{ u.name }}</span>
+          <svg class="chevron-down" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M6 9l6 6 6-6"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        <div class="menu-backdrop" *ngIf="menuOpen()" (click)="closeMenu()"></div>
+
+        <div class="user-menu-dropdown" *ngIf="menuOpen()" role="menu">
+          <button class="menu-item" role="menuitem" (click)="toggleValores(); closeMenu()">
+            <svg *ngIf="!valoresOcultos()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
+            </svg>
+            <svg *ngIf="valoresOcultos()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M9.88 9.88a3 3 0 1 0 4.24 4.24M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61M2 2l20 20"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            {{ valoresOcultos() ? 'Exibir valores' : 'Ocultar valores' }}
+          </button>
+
+          <button class="menu-item" role="menuitem" (click)="toggleTheme(); closeMenu()">
+            <svg *ngIf="isDark()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" />
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+            <svg *ngIf="!isDark()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            {{ isDark() ? 'Tema claro' : 'Tema escuro' }}
+          </button>
+
+          <button class="menu-item" role="menuitem" (click)="openImport()">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Importar da B3
+          </button>
+
+          <button class="menu-item" role="menuitem" (click)="startTour(); closeMenu()">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+              <path
+                d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M12 17h.01"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            Ver tour
+          </button>
+
+          <div class="menu-sep"></div>
+
+          <button class="menu-item danger" role="menuitem" (click)="logout()">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M16 17l5-5-5-5M21 12H9M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Sair
+          </button>
+        </div>
       </div>
-      <button
-        class="icon-btn"
-        (click)="toggleValores()"
-        [title]="valoresOcultos() ? 'Exibir valores' : 'Ocultar valores'"
-        [attr.aria-label]="valoresOcultos() ? 'Exibir valores' : 'Ocultar valores'"
-      >
-        <svg *ngIf="!valoresOcultos()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" />
-        </svg>
-        <svg *ngIf="valoresOcultos()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M9.88 9.88a3 3 0 1 0 4.24 4.24M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61M2 2l20 20"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
-      <button
-        class="icon-btn tour-btn"
-        (click)="startTour()"
-        title="Ver o tour guiado"
-        aria-label="Ver o tour guiado"
-      >
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
-          <path
-            d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-          <path d="M12 17h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
-        </svg>
-      </button>
-      <button
-        class="icon-btn"
-        (click)="toggleTheme()"
-        [title]="isDark() ? 'Ativar tema claro' : 'Ativar tema escuro'"
-        [attr.aria-label]="isDark() ? 'Ativar tema claro' : 'Ativar tema escuro'"
-      >
-        <svg *ngIf="isDark()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" />
-          <path
-            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
-        </svg>
-        <svg *ngIf="!isDark()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
-      <button class="icon-btn danger" (click)="logout()" title="Sair" aria-label="Sair">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M16 17l5-5-5-5M21 12H9M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </button>
     </div>
   </header>
 

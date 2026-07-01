@@ -168,12 +168,22 @@ export class DashboardComponent implements AfterViewInit {
       iconPath:
         'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z',
     },
-    {
-      id: 'import',
-      label: 'Importar',
-      iconPath: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3',
-    },
   ];
+
+  // Menu do avatar (agrupa ocultar valores, tema, importar, tour e sair).
+  readonly menuOpen = signal(false);
+
+  toggleMenu(): void {
+    this.menuOpen.update((v) => !v);
+  }
+  closeMenu(): void {
+    this.menuOpen.set(false);
+  }
+  // "Importar" saiu das abas: agora é uma ação do menu que abre a tela de import.
+  openImport(): void {
+    this.setActiveTab('import');
+    this.closeMenu();
+  }
 
   loading: Signal<boolean> = signal(true);
 

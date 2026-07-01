@@ -542,6 +542,10 @@
   padding: 14px 16px;
   @media (max-width: 600px) {
     padding: 12px 16px;
+    // Botão de ação full-width no mobile (CTA mais fácil de tocar).
+    .btn {
+      width: 100%;
+    }
   }
 }
 

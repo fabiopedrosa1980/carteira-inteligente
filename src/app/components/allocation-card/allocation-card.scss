@@ -40,6 +40,10 @@
   gap: 0.5rem;
   flex-shrink: 0;
   justify-content: flex-end;
+  // Em larguras intermediárias (tablet), se Cancelar + Salvar não couberem na
+  // linha, os botões inteiros quebram para a linha de baixo — em vez de o rótulo
+  // "Cancelar" partir em duas linhas dentro do botão.
+  flex-wrap: wrap;
   margin-top: 1.25rem;
   // Mobile: ações full-width (Editar sozinho ocupa a linha; ao editar,
   // Cancelar/Salvar empilham full) — padronizado com as demais telas.
@@ -68,6 +72,8 @@
   font-weight: 700;
   font-family: inherit;
   cursor: pointer;
+  // Rótulo (ex.: "Cancelar") nunca parte em duas linhas dentro do botão.
+  white-space: nowrap;
 
   svg {
     width: 16px;

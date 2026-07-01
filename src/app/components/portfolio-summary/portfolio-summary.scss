@@ -103,7 +103,8 @@
 }
 
 .ps-card-hero .ps-card-value {
-  font-size: 19px;
+  // Padronizado com o "Total recebido/projetado" da tela de Dividendos.
+  font-size: 22px;
   font-weight: 700;
   line-height: 1.1;
 }
@@ -123,9 +124,9 @@
   .ps-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  // Valor do Patrimônio normalizado para caber no card em coluna única,
-  // sem destoar dos demais nem quebrar o layout.
-  .ps-card-hero .ps-card-value {
-    font-size: 16px;
+  // Patrimônio como card-herói full-width (igual ao total de Dividendos), o que
+  // permite manter a mesma fonte (22px) sem apertar o valor.
+  .ps-card-hero {
+    grid-column: 1 / -1;
   }
 }

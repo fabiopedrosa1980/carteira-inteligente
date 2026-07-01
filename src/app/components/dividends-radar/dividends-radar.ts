@@ -45,12 +45,18 @@ export class DividendsRadarComponent implements OnChanges {
   readonly skelCols = Array.from({ length: 13 });
   readonly skelCards = Array.from({ length: 12 });
 
-  // Visualização: matriz (padrão) ou cards; lembrada entre sessões.
-  readonly view = signal<RadarView>(this.readView());
+  // Escolha explícita do usuário (persistida). `null` = sem preferência, aí o
+  // padrão depende do viewport.
+  readonly view = signal<RadarView | null>(this.readView());
 
-  // Respeita a escolha do usuário em qualquer largura, inclusive no mobile
-  // (visão em matriz / "batalha naval" disponível também em telas estreitas).
-  readonly effectiveView = computed<RadarView>(() => this.view());
+  // Sem preferência salva: cards no mobile (a matriz de 12 meses fica apertada
+  // em telas estreitas) e matriz no desktop. Uma escolha explícita é respeitada
+  // em qualquer largura. Reativo ao viewport (responde a rotação/resize).
+  readonly effectiveView = computed<RadarView>(() => {
+    const chosen = this.view();
+    if (chosen) return chosen;
+    return this.isMobile() ? 'cards' : 'matrix';
+  });
 
   setView(v: RadarView): void {
     this.view.set(v);
@@ -63,11 +69,12 @@ export class DividendsRadarComponent implements OnChanges {
   isView(v: RadarView): boolean {
     return this.effectiveView() === v;
   }
-  private readView(): RadarView {
+  private readView(): RadarView | null {
     try {
-      return localStorage.getItem(VIEW_KEY) === 'cards' ? 'cards' : 'matrix';
+      const s = localStorage.getItem(VIEW_KEY);
+      return s === 'cards' || s === 'matrix' ? s : null;
     } catch {
-      return 'matrix';
+      return null;
     }
   }
 

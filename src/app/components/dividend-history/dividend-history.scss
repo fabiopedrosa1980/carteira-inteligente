@@ -296,6 +296,9 @@
       margin-bottom: 8px;
       border: 1px solid var(--border);
       border-radius: var(--radius-item);
+      // Trilho verde (accent) à esquerda do card — inset box-shadow para não
+      // deslocar o conteúdo nem brigar com o raio de canto.
+      box-shadow: inset 3px 0 0 var(--accent);
     }
     tr:hover td {
       background: none;

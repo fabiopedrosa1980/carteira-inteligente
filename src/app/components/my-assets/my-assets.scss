@@ -277,6 +277,10 @@ $pad-x: 16px;
     > span:last-child {
       display: none;
     }
+    // Ordenação por Qtd não é oferecida no mobile — chip escondido.
+    .th-sort--qty {
+      display: none;
+    }
     .th-sort {
       flex: 0 0 auto;
       padding: 5px 12px;

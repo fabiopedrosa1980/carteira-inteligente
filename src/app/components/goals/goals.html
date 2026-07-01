@@ -3,10 +3,6 @@
     <div>
       <h2 class="page-title">Minhas Metas</h2>
     </div>
-    <button class="btn btn--primary" (click)="openForm()" *ngIf="!showForm()">
-      <app-icon name="plus"></app-icon>
-      Nova Meta
-    </button>
   </div>
 
   <!-- Formulário inline -->
@@ -68,94 +64,104 @@
   </div>
 
   <!-- Lista de metas -->
-  <div class="metas-table-wrap fade-in" *ngIf="!loading() && metas().length > 0">
-    <table class="metas-table">
-      <colgroup>
-        <col class="col-nome" />
-        <col class="col-atual" />
-        <col class="col-alvo" />
-        <col class="col-progresso" />
-        <col class="col-acoes" />
-      </colgroup>
-      <thead>
-        <tr>
-          <th>Meta</th>
-          <th>Valor Atual</th>
-          <th>Valor Alvo</th>
-          <th>Progresso</th>
-          <th>Operação</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let meta of metas()"
-          class="meta-row"
-          (click)="openForm(meta)"
-          title="Editar meta"
-        >
-          <td>
-            <span class="meta-name-cell" [title]="meta.name">
-              <span class="meta-name-text">{{ meta.name }}</span>
-            </span>
-          </td>
-          <td>
-            <span [class.value-blurred]="visibility.hidden()">{{
-              getCurrentValue(meta) | currency: 'BRL' : 'symbol' : '1.2-2'
-            }}</span>
-          </td>
-          <td>
-            <span [class.value-blurred]="visibility.hidden()">{{
-              meta.targetValue | currency: 'BRL' : 'symbol' : '1.2-2'
-            }}</span>
-          </td>
-          <td>
-            <span
-              class="progress-pct"
-              [class.high]="progressClass(meta) === 'high'"
-              [class.mid]="progressClass(meta) === 'mid'"
-              [class.low]="progressClass(meta) === 'low'"
-            >
-              {{ getProgress(meta) | number: '1.0-1' }}%
-            </span>
-          </td>
-          <td>
-            <div class="meta-actions">
-              <button
-                class="icon-btn"
-                title="Editar"
-                aria-label="Editar"
-                (click)="openForm(meta); $event.stopPropagation()"
+  <ng-container *ngIf="!loading() && metas().length > 0">
+    <div class="metas-table-wrap fade-in">
+      <table class="metas-table">
+        <colgroup>
+          <col class="col-nome" />
+          <col class="col-atual" />
+          <col class="col-alvo" />
+          <col class="col-progresso" />
+          <col class="col-acoes" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Meta</th>
+            <th>Valor Atual</th>
+            <th>Valor Alvo</th>
+            <th>Progresso</th>
+            <th>Operação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let meta of metas()"
+            class="meta-row"
+            (click)="openForm(meta)"
+            title="Editar meta"
+          >
+            <td>
+              <span class="meta-name-cell" [title]="meta.name">
+                <span class="meta-name-text">{{ meta.name }}</span>
+              </span>
+            </td>
+            <td>
+              <span [class.value-blurred]="visibility.hidden()">{{
+                getCurrentValue(meta) | currency: 'BRL' : 'symbol' : '1.2-2'
+              }}</span>
+            </td>
+            <td>
+              <span [class.value-blurred]="visibility.hidden()">{{
+                meta.targetValue | currency: 'BRL' : 'symbol' : '1.2-2'
+              }}</span>
+            </td>
+            <td>
+              <span
+                class="progress-pct"
+                [class.high]="progressClass(meta) === 'high'"
+                [class.mid]="progressClass(meta) === 'mid'"
+                [class.low]="progressClass(meta) === 'low'"
               >
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-              <button
-                class="icon-btn danger"
-                title="Excluir"
-                aria-label="Excluir"
-                (click)="deleteMeta(meta.id); $event.stopPropagation()"
-              >
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+                {{ getProgress(meta) | number: '1.0-1' }}%
+              </span>
+            </td>
+            <td>
+              <div class="meta-actions">
+                <button
+                  class="icon-btn"
+                  title="Editar"
+                  aria-label="Editar"
+                  (click)="openForm(meta); $event.stopPropagation()"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+                <button
+                  class="icon-btn danger"
+                  title="Excluir"
+                  aria-label="Excluir"
+                  (click)="deleteMeta(meta.id); $event.stopPropagation()"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Ação abaixo da listagem (padrão do app: botão ao final da lista). -->
+    <div class="metas-add-row" *ngIf="!showForm()">
+      <button class="btn btn--primary" (click)="openForm()">
+        <app-icon name="plus"></app-icon>
+        Nova Meta
+      </button>
+    </div>
+  </ng-container>
 </div>

@@ -79,6 +79,19 @@
   margin-top: 18px;
 }
 
+/* Ação ao final da listagem (padrão do app: botão abaixo da lista, à direita
+   no desktop; full-width no mobile para toque confortável). */
+.metas-add-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  @media (max-width: 600px) {
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
 /* ---------- Loading ---------- */
 .loading-bar {
   position: relative;

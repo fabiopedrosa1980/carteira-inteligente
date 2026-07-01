@@ -1,4 +1,14 @@
-import { Component, signal, Signal, inject, effect, untracked, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  signal,
+  Signal,
+  computed,
+  inject,
+  effect,
+  untracked,
+  HostListener,
+  AfterViewInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
@@ -18,6 +28,7 @@ import { Stock } from '../../models/stock.model';
 import { AssetType } from '../../models/transaction.model';
 import { ValueVisibilityService } from '../../services/value-visibility.service';
 import { OnboardingTourService } from '../../services/onboarding-tour.service';
+import { ConfirmService } from '../../services/confirm.service';
 
 const THEME_KEY = 'ci-theme';
 
@@ -45,6 +56,33 @@ export class DashboardComponent implements AfterViewInit {
   private readonly metasSvc = inject(MetasService);
   private readonly visibility = inject(ValueVisibilityService);
   private readonly tour = inject(OnboardingTourService);
+  private readonly confirmService = inject(ConfirmService);
+
+  // "Limpar tudo" dos lançamentos vive agora no menu do avatar. Só faz sentido
+  // (e só aparece) quando há lançamentos a remover.
+  readonly hasLancamentos = computed(() => this.transactionSvc.transactions().length > 0);
+
+  // Remove TODOS os lançamentos (ação destrutiva do menu). Fecha o menu, pede
+  // confirmação e recarrega carteira + lançamentos, como fazia a tela de
+  // Lançamentos antes de a ação migrar para cá.
+  clearAllTransactions(): void {
+    this.closeMenu();
+    this.confirmService
+      .confirm({
+        title: 'Limpar tudo',
+        message: 'Deseja realmente excluir TODOS os lançamentos? Esta ação não pode ser desfeita.',
+        confirmLabel: 'Limpar tudo',
+      })
+      .then((ok) => {
+        if (ok) {
+          this.transactionSvc.clearAll(() => {
+            this.transactionSvc.reload();
+            this.svc.reload();
+            this.loadAtivos();
+          });
+        }
+      });
+  }
 
   // Exibe o tour guiado apenas no primeiro acesso (flag em localStorage). O
   // pequeno atraso garante que a nav de abas já esteja no DOM para o spotlight.
@@ -178,6 +216,26 @@ export class DashboardComponent implements AfterViewInit {
   }
   closeMenu(): void {
     this.menuOpen.set(false);
+  }
+
+  // Fecha o menu ao clicar fora dele. Listener no documento (em vez de um
+  // backdrop com position:fixed) porque o header tem backdrop-filter, o que o
+  // torna o bloco de contenção de descendentes fixed — o backdrop ficava preso
+  // à faixa do header e não cobria o resto da tela. O clique no próprio chip/menu
+  // é ignorado (closest('.user-menu')); ali as ações já fecham por conta própria.
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.menuOpen()) return;
+    const target = event.target as HTMLElement | null;
+    if (!target?.closest('.user-menu')) {
+      this.closeMenu();
+    }
+  }
+
+  // Esc também fecha o menu (acessibilidade / teclado).
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.menuOpen()) this.closeMenu();
   }
   // "Importar" saiu das abas: agora é uma ação do menu que abre a tela de import.
   openImport(): void {

@@ -380,6 +380,11 @@
 
 // ---- Mobile: ação desce para a própria linha, sem colidir ----
 @media (max-width: 600px) {
+  // Padding lateral menor no mobile — mais largura útil para o conteúdo, o que
+  // evita que linhas apertadas empurrem o card além da viewport.
+  .alloc-card {
+    padding: 1.25rem 1rem;
+  }
   .ledger-head {
     grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem;
 
@@ -394,7 +399,17 @@
     .act {
       grid-column: 1 / -1;
       text-align: left;
+      // Deixa o montante ("▲ aportar R$ …") quebrar em vez de forçar a largura
+      // do card além da tela — era o que fazia os botões full-width (Cancelar/
+      // Salvar) estourarem a borda no mobile.
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
+  }
+  // Cinto e suspensório: os botões nunca ultrapassam o container.
+  .alloc-actions .alloc-btn {
+    max-width: 100%;
+    min-width: 0;
   }
 }
 

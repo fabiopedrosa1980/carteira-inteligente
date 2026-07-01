@@ -1,6 +1,5 @@
 import { Component, ElementRef, Input, ViewChild, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IconComponent } from '../icon/icon';
 import { FormsModule } from '@angular/forms';
 import { Stock } from '../../models/stock.model';
 import { AllocationService } from '../../services/allocation.service';
@@ -16,7 +15,7 @@ import {
 @Component({
   selector: 'app-allocation-card',
   standalone: true,
-  imports: [CommonModule, IconComponent, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './allocation-card.html',
   styleUrls: ['./allocation-card.scss'],
 })

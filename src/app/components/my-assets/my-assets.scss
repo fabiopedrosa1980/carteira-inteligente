@@ -200,6 +200,12 @@ $pad-x: 16px;
   text-align: center;
   gap: 10px;
   padding: 32px 20px;
+  // Mobile: CTA "Adicionar" full-width, padronizado com as demais ações.
+  @media (max-width: 600px) {
+    .btn {
+      width: 100%;
+    }
+  }
 }
 .ma-empty-icon {
   width: 34px;
@@ -432,14 +438,35 @@ $pad-x: 16px;
   justify-content: flex-start;
   gap: 2px;
   @media (max-width: 600px) {
-    // Rodapé do card: ações ocupam a largura toda (para a divisória cruzar o
-    // card) e ficam encostadas à direita.
+    // Rodapé do card: Editar e Excluir como DOIS botões de largura igual, com
+    // ícone + rótulo — alvo de toque maior e ação clara (melhor que 2 ícones
+    // minúsculos no canto).
     grid-area: actions;
-    justify-content: flex-end;
-    gap: 4px;
+    gap: 8px;
     margin-top: 4px;
     padding-top: 10px;
     border-top: 1px solid var(--border);
+    .btn-edit,
+    .btn-remove {
+      flex: 1 1 0;
+      width: auto;
+      height: auto;
+      min-height: var(--icon-btn-size);
+      gap: 6px;
+      border: 1px solid var(--border);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+    }
+  }
+}
+
+// Rótulo das ações do card: só no mobile (no desktop ficam ícones-only).
+.act-label {
+  display: none;
+}
+@media (max-width: 600px) {
+  .act-label {
+    display: inline;
   }
 }
 

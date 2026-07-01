@@ -270,10 +270,8 @@ export class PortfolioTableComponent {
   readonly mobileSortOptions: { field: SortField; label: string }[] = [
     { field: 'name', label: 'Ativo' },
     { field: 'saldo', label: 'Saldo' },
-    { field: 'variacao', label: 'Variação' },
-    { field: 'rentabilidade', label: 'Rent.' },
-    { field: 'precoAtual', label: 'Preço' },
     { field: 'zona', label: 'Oportunidade' },
+    { field: 'rentabilidade', label: 'Rentabilidade' },
   ];
 
   setSort(field: SortField) {

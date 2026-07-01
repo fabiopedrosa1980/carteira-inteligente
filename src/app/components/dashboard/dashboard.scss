@@ -147,6 +147,12 @@
   width: var(--icon-btn-size);
   height: var(--icon-btn-size);
   flex-shrink: 0;
+  // No toque (mobile), alvo mínimo de 44px conforme Apple HIG — o ícone segue
+  // no mesmo tamanho, só a área tocável cresce.
+  @media (max-width: 600px) {
+    min-width: 44px;
+    min-height: 44px;
+  }
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--icon-btn-radius);

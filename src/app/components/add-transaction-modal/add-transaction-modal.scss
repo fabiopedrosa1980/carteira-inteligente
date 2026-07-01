@@ -208,6 +208,8 @@ h2 {
   list-style: none;
   max-height: 220px;
   overflow-y: auto;
+  // Rolar a lista de sugestões não arrasta a página atrás (scroll chaining).
+  overscroll-behavior: contain;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 8px;

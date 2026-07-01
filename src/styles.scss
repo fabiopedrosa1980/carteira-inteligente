@@ -97,6 +97,10 @@ body {
   font-size: 15px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  // Remove o flash azul padrão ao tocar em elementos no iOS/Android (a
+  // propriedade é herdada, então cobre toda a árvore). O feedback fica por
+  // conta dos estados :hover/:active/:focus já definidos nos componentes.
+  -webkit-tap-highlight-color: transparent;
   // Rede de segurança: nenhum estouro de largura gera rolagem horizontal da página.
   // `clip` (em vez de `hidden`) não cria contexto de rolagem nem quebra position: sticky.
   max-width: 100%;

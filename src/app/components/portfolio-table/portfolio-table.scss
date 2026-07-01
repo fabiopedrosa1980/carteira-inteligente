@@ -1,0 +1,641 @@
+.acoes-list {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 14px;
+
+  th {
+    text-align: left;
+    padding: 12px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+
+    &.th-sortable {
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+  }
+  td {
+    padding: 12px 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  tbody tr {
+    cursor: pointer;
+  }
+  tbody tr:hover td {
+    background: var(--row-hover, rgba(255, 255, 255, 0.03));
+  }
+  // Faixa lateral = zona de preço-teto (semáforo). Cor resolvida por classe na
+  // <tr> e consumida no desktop (acento no .cell-ativo) e no mobile (::before).
+  tbody tr.acoes-row {
+    --zona-color: var(--border);
+  }
+  tbody tr.acoes-row.zona-compra {
+    --zona-color: var(--color-pos);
+  }
+  tbody tr.acoes-row.zona-justo {
+    --zona-color: #e0a82e;
+  }
+  tbody tr.acoes-row.zona-caro {
+    --zona-color: var(--color-neg);
+  }
+  // Estado neutro (sem dados / ETF sem preço atual): faixa transparente para não
+  // herdar a cor da borda (var(--border)), que criava uma "borda dupla" cinza
+  // colada na borda do card/linha.
+  tbody tr.acoes-row.zona-na,
+  tbody tr.acoes-row.zona-sem-dados {
+    --zona-color: transparent;
+  }
+
+  .cell-ativo {
+    font-weight: 700;
+    box-shadow: inset 3px 0 0 0 var(--zona-color);
+  }
+  .ca-ticker {
+    font-weight: 700;
+  }
+  // Sub-rótulo sob o ticker: DY atual + desconto vs teto (estados "n/a"/"teto n/d").
+  .ca-sub {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    font-weight: 400;
+    // DY em branco (mesmo padrão dos demais campos da linha).
+    color: var(--text-primary);
+    letter-spacing: 0;
+  }
+  .pos {
+    color: var(--color-pos);
+  }
+  .neg {
+    color: var(--color-neg);
+  }
+
+  // Indicador de oportunidade + tooltip (alt janela) no hover. Espelha a seção
+  // "Preço-teto" da tela de detalhe (5 campos com rótulo). O td tem
+  // overflow:hidden, então liberamos o overflow só nesta célula para o tooltip
+  // poder escapar; os ancestrais .accordion/.accordion-body fazem o mesmo abaixo.
+  td.cell-oportunidade {
+    overflow: visible;
+    position: relative;
+  }
+  .oport-anchor {
+    position: relative;
+    display: inline-flex;
+  }
+  .oport-badge {
+    cursor: help;
+  }
+  .oport-tooltip {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-4px);
+    z-index: 50;
+    min-width: 220px;
+    padding: 12px 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-chip);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
+    white-space: normal;
+    text-align: left;
+    font-weight: 400;
+    cursor: default;
+  }
+  .oport-anchor:hover .oport-tooltip,
+  .oport-anchor:focus-within .oport-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+  // Mobile: o tooltip é afordância de hover (desktop). No touch não é usável e,
+  // mesmo oculto, sua caixa absoluta de 220px ocupa layout e vaza à direita nas
+  // linhas próximas da borda — criando rolagem horizontal. Removido do layout
+  // (o detalhe de preço-teto continua acessível no modal de detalhe ao tocar).
+  @media (max-width: 600px) {
+    .oport-tooltip {
+      display: none;
+    }
+  }
+  // Seta apontando para o badge.
+  .oport-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-bottom-color: var(--border);
+  }
+  .ot-verdict {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+  .ot-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 16px;
+    font-size: 13px;
+  }
+  .ot-label {
+    color: var(--text-secondary);
+  }
+  .ot-value {
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .ot-msg {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  // Mobile (≤600px): cada ativo vira um CARD no mesmo idioma visual dos cards
+  // de ação — perf-bar à esquerda (cor do dia), números em mono e Saldo como
+  // número-herói. Sem <table>/<col>, evitando a armadilha de tracks ao ocultar
+  // colunas. DOM: Ativo(1) Qtd(2) Preço(3) Hoje(4) Saldo(5) Variação(6) Rent(7).
+  @media (max-width: 600px) {
+    display: block;
+    font-family: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', monospace;
+
+    thead {
+      display: none;
+    }
+    tbody {
+      display: block;
+      padding: 10px 12px;
+    }
+
+    tr.acoes-row {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'ticker rent'
+        'saldo  qtd'
+        'preco  patual'
+        'hoje   var';
+      column-gap: 12px;
+      row-gap: 10px;
+      align-items: end;
+      padding: 14px 16px 14px 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-item);
+      margin-bottom: 10px;
+      transition: border-color 0.2s ease;
+    }
+    tr.acoes-row:last-child {
+      margin-bottom: 0;
+    }
+    tr.acoes-row:active {
+      border-color: var(--accent);
+    }
+
+    // Faixa lateral = zona de preço-teto (semáforo), à esquerda do card.
+    tr.acoes-row::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--zona-color);
+    }
+    // Glow só para zonas com sinal (compra/justo/caro), não para neutro/sem-dados.
+    tr.acoes-row.zona-compra::before,
+    tr.acoes-row.zona-justo::before,
+    tr.acoes-row.zona-caro::before {
+      box-shadow: 0 0 14px -2px var(--zona-color);
+    }
+
+    // Hover de célula não faz sentido no card.
+    tbody tr:hover td {
+      background: transparent;
+    }
+
+    td {
+      display: block;
+      padding: 0;
+      border: none;
+      white-space: nowrap;
+    }
+
+    // Micro-rótulo (o thead some no mobile): sans em caixa-alta, contrastando
+    // com os números em mono. Só é gerado quando há `content`.
+    td:not(.cell-ativo)::before {
+      display: block;
+      margin-bottom: 2px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: var(--fs-2xs);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    // 1) Ticker (+ sub-rótulo DY · teto). A faixa de zona vem do ::before da linha,
+    // então o acento inset do .cell-ativo (usado no desktop) é desligado aqui.
+    .cell-ativo {
+      grid-area: ticker;
+      align-self: center;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      box-shadow: none;
+      // Tema escuro: ticker verde para destaque (override de tema claro abaixo).
+      color: var(--accent);
+    }
+    .ca-sub {
+      font-size: 11px;
+      font-weight: 400;
+    }
+
+    // Preço atual (cotação corrente): pareado com o Preço médio para comparar
+    // custo × mercado. Alinhado à direita, no mesmo idioma dos demais campos.
+    td:nth-child(4) {
+      grid-area: patual;
+      justify-self: end;
+      text-align: right;
+      font-size: 13px;
+      // Valor em destaque (cor primária / branca no escuro); rótulo segue
+      // secundário via ::before. Campo sem regra de cor por variação.
+      color: var(--text-primary);
+    }
+    td:nth-child(4)::before {
+      content: 'Preço atual';
+    }
+
+    // 2) Oportunidade — semáforo + desconto vs preço-teto no rodapé esquerdo.
+    td:nth-child(5) {
+      grid-area: hoje;
+      justify-self: start;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      // Valor em branco (cor primária); o sinal de oportunidade já é dado pelo
+      // emoji do badge (🟢/🟡/🔴), então o texto não precisa de cor pos/neg.
+      color: var(--text-primary);
+    }
+    td:nth-child(5)::before {
+      content: 'Oportunidade';
+    }
+    td:nth-child(5).pos,
+    td:nth-child(5).neg {
+      color: var(--text-primary);
+    }
+
+    // 3) Saldo — mesmo tamanho de fonte do ticker (.cell-ativo), mantendo o
+    // negrito; hierarquia equilibrada entre ticker e Saldo.
+    td:nth-child(6) {
+      grid-area: saldo;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    td:nth-child(6)::before {
+      content: 'Saldo';
+    }
+
+    // 4) Rentabilidade e Variação — desempenho da posição. A rentabilidade fica
+    // no topo direito (ao lado do ticker); a variação no rodapé direito.
+    td:nth-child(8) {
+      grid-area: rent;
+      justify-self: end;
+      align-self: center;
+      text-align: right;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    td:nth-child(8)::before {
+      content: 'Rentabilidade';
+    }
+    td:nth-child(7) {
+      grid-area: var;
+      justify-self: end;
+      text-align: right;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    td:nth-child(7)::before {
+      content: 'Variação';
+    }
+
+    // 5) Qtd e Preço médio — valor em destaque (cor primária / branca no escuro);
+    // o rótulo (::before) permanece secundário. Sem regra de cor por variação.
+    td:nth-child(2),
+    td:nth-child(3) {
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+    td:nth-child(2) {
+      grid-area: qtd;
+      justify-self: end;
+      text-align: right;
+    }
+    td:nth-child(3) {
+      grid-area: preco;
+    }
+    td:nth-child(2)::before {
+      content: 'Qtd';
+    }
+    td:nth-child(3)::before {
+      content: 'Preço médio';
+    }
+  }
+}
+// Tema claro: ticker do card mobile de Meus Ativos volta à cor primária
+// (o verde do ticker aplica-se apenas ao tema escuro).
+:host-context(body.light-theme) .acoes-list .cell-ativo {
+  @media (max-width: 600px) {
+    color: var(--text-primary);
+  }
+}
+
+.th-arrow {
+  margin-left: 4px;
+  font-size: 11px;
+  color: var(--accent);
+}
+
+/* Acordeão de grupos de ativos — padrão unificado com Lançamentos */
+.sections-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.accordion {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  // overflow visível para o tooltip de oportunidade poder escapar do card; o
+  // recorte da animação de colapso fica por conta de .accordion-body.collapsed.
+  overflow: visible;
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+
+  &:hover {
+    background: rgba(128, 128, 128, 0.04);
+  }
+}
+
+.ah-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  @media (max-width: 600px) {
+    gap: 8px;
+  }
+}
+
+.sec-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sec-count {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-chip);
+}
+
+.ah-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  @media (max-width: 600px) {
+    gap: 8px;
+  }
+}
+
+// Métrica do cabeçalho: rótulo descritivo (caption) sobre o valor, alinhados
+// à direita para que os números fiquem encostados na borda do cabeçalho.
+.sec-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.15;
+}
+
+.sec-cap {
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+// Total do tipo no cabeçalho do acordeão (padrão de Lançamentos: accent).
+.sec-total {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  @media (max-width: 600px) {
+    font-size: 13px;
+  }
+}
+
+// Rentabilidade agregada do tipo, com cor por sinal.
+.sec-rent {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  &.pos {
+    color: var(--color-pos);
+  }
+  &.neg {
+    color: var(--color-neg);
+  }
+  @media (max-width: 600px) {
+    font-size: 12px;
+  }
+}
+
+.chevron {
+  font-size: 18px;
+  color: var(--text-secondary);
+  display: inline-block;
+  transform: rotate(90deg);
+  transition: transform 0.25s ease;
+
+  &.collapsed {
+    transform: rotate(0deg);
+  }
+}
+
+.accordion-body {
+  max-height: 4000px;
+  // Expandido: overflow visível para não cortar o tooltip de oportunidade.
+  // Colapsado: volta a overflow:hidden para recortar o conteúdo em max-height:0.
+  overflow: visible;
+  transition: max-height 0.35s ease;
+
+  &.collapsed {
+    max-height: 0;
+    overflow: hidden;
+  }
+}
+
+.accordion-inner {
+  border-top: 1px solid var(--border);
+}
+
+/* Botão único de adicionar, ao final do acordeão (padrão de Lançamentos) */
+.add-row {
+  display: flex;
+  // "Adicionar" no final do acordeão, alinhado à direita (consistente com a
+  // visão de tabela de Meus Ativos).
+  justify-content: flex-end;
+  padding: 14px 16px;
+  @media (max-width: 600px) {
+    padding: 12px 16px;
+  }
+}
+
+.btn-plus {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+// Botão "Adicionar" no padrão do CTA do app (igual ao de Lançamentos): accent
+// sólido com texto de contraste. No mobile ocupa a largura inteira do card.
+.btn-add-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--accent);
+  border: none;
+  color: var(--btn-accent-text);
+  // Altura/raio padrão de botões (token global).
+  min-height: var(--icon-btn-size);
+  padding: 0 16px;
+  border-radius: var(--icon-btn-radius);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  transition: background 0.2s;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--btn-accent-hover);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .btn-plus {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Paginador por grupo */
+.ma-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.pag-btn {
+  padding: 5px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  &:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+  }
+}
+
+.pag-info {
+  font-size: 13px;
+  color: var(--text-secondary);
+  min-width: 56px;
+  text-align: center;
+}
+
+/* Privacidade: ao ocultar valores, mascara também os totais por grupo dos
+   acordeões da visão em lista (rótulo, contagem e chevron seguem visíveis). */
+.sections-list.values-hidden .sec-total {
+  filter: blur(7px);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Privacidade: o Saldo por ativo também é mascarado, no desktop e no card
+   mobile — é um valor monetário em R$. Mascara apenas o valor (.val); o
+   micro-rótulo "Saldo" do card mobile (::before) permanece visível. */
+.sections-list.values-hidden .cell-saldo .val {
+  filter: blur(7px);
+  user-select: none;
+  pointer-events: none;
+}

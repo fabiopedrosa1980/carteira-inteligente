@@ -1,0 +1,239 @@
+<div class="sections-list" [class.values-hidden]="hideValues">
+  @for (group of groups; track group) {
+    @if (stocksForGroup(group).length > 0) {
+      <div class="accordion">
+        <button
+          class="accordion-header"
+          (click)="toggle(group)"
+          [attr.aria-expanded]="!isCollapsed(group)"
+        >
+          <div class="ah-left">
+            <span class="sec-label">{{ groupLabels[group] }}</span>
+            <span class="sec-count">{{ stocksForGroup(group).length }}</span>
+          </div>
+          <div class="ah-right">
+            <span class="sec-metric" *ngIf="groupSaldo(group) > 0">
+              <span class="sec-cap">Total</span>
+              <span class="sec-total">
+                {{ groupSaldo(group) | currency: 'BRL' : 'symbol' : '1.2-2' }}
+              </span>
+            </span>
+            <span class="chevron" [class.collapsed]="isCollapsed(group)">›</span>
+          </div>
+        </button>
+        <div class="accordion-body" [class.collapsed]="isCollapsed(group)">
+          <div class="accordion-inner">
+            <table class="acoes-list">
+              <colgroup>
+                <col class="cl-ativo" />
+                <col class="cl-qtd" />
+                <col class="cl-preco" />
+                <col class="cl-preco-atual" />
+                <col class="cl-hoje" />
+                <col class="cl-saldo" />
+                <col class="cl-var" />
+                <col class="cl-rent" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="th-sortable" (click)="setSort('name')">
+                    Ativo<span class="th-arrow" *ngIf="sortField() === 'name'">{{
+                      sortAsc() ? '↑' : '↓'
+                    }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('qty')">
+                    Qtd<span class="th-arrow" *ngIf="sortField() === 'qty'">{{
+                      sortAsc() ? '↑' : '↓'
+                    }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('price')">
+                    Preço Médio<span class="th-arrow" *ngIf="sortField() === 'price'">{{
+                      sortAsc() ? '↑' : '↓'
+                    }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('precoAtual')">
+                    Preço Atual<span class="th-arrow" *ngIf="sortField() === 'precoAtual'">{{
+                      sortAsc() ? '↑' : '↓'
+                    }}</span>
+                  </th>
+                  <th
+                    class="th-sortable"
+                    (click)="setSort('zona')"
+                    title="Ordena por oportunidade (mais barato primeiro)"
+                  >
+                    Oportunidade<span class="th-arrow" *ngIf="sortField() === 'zona'">{{
+                      sortAsc() ? '↑' : '↓'
+                    }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('saldo')">
+                    Saldo<span class="th-arrow" *ngIf="sortField() === 'saldo'">{{
+                      sortAsc() ? '↑' : '↓'
+                    }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('variacao')">
+                    Variação<span class="th-arrow" *ngIf="sortField() === 'variacao'">{{
+                      sortAsc() ? '↑' : '↓'
+                    }}</span>
+                  </th>
+                  <th class="th-sortable" (click)="setSort('rentabilidade')">
+                    Rent.<span class="th-arrow" *ngIf="sortField() === 'rentabilidade'">{{
+                      sortAsc() ? '↑' : '↓'
+                    }}</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (stock of pagedFor(group); track stock.ticker) {
+                  @let v = variacaoOf(stock);
+                  @let r = rentabilidadeOf(stock);
+                  @let sld = saldoOf(stock);
+                  @let teto = precoTetoOf(stock);
+                  <tr
+                    class="acoes-row"
+                    [ngClass]="zonaClass(stock)"
+                    (click)="selectStock.emit(stock)"
+                    title="Ver detalhes"
+                  >
+                    <td class="cell-ativo">
+                      <span class="ca-ticker">{{ stock.ticker }}</span>
+                      <span class="ca-sub" *ngIf="stock.sector !== 'ETF'"
+                        >DY {{ dyLabel(stock) }}</span
+                      >
+                    </td>
+                    <td>
+                      {{ stock.quantity ? (stock.quantity | number: '1.0-0') : '—' }}
+                    </td>
+                    <td>
+                      {{
+                        stock.avgPrice && stock.avgPrice > 0
+                          ? 'R$ ' + (stock.avgPrice | number: '1.2-2')
+                          : '—'
+                      }}
+                    </td>
+                    <td class="cell-preco-atual">
+                      {{
+                        stock.price && stock.price > 0
+                          ? 'R$ ' + (stock.price | number: '1.2-2')
+                          : '—'
+                      }}
+                    </td>
+                    <td class="cell-oportunidade">
+                      <span class="oport-anchor">
+                        <span class="oport-badge">{{ oportunidadeBadge(stock) }}</span>
+                        <span
+                          class="oport-tooltip"
+                          role="tooltip"
+                          (click)="$event.stopPropagation()"
+                        >
+                          @if (stock.sector === 'ETF') {
+                            @let o = etfOportunidade(stock);
+                            <span class="ot-verdict" [attr.data-zona]="o.zona">{{
+                              etfVeredicto(stock)
+                            }}</span>
+                            @if (!o.available) {
+                              <span class="ot-msg"
+                                >Sem máxima de 52 semanas disponível para este ETF.</span
+                              >
+                            } @else {
+                              <span class="ot-grid">
+                                <span class="ot-label">Mínima 52 sem</span>
+                                <span class="ot-value">{{
+                                  o.low52 > 0 ? 'R$ ' + (o.low52 | number: '1.2-2') : '—'
+                                }}</span>
+                                <span class="ot-label">Máxima 52 sem</span>
+                                <span class="ot-value">R$ {{ o.high52 | number: '1.2-2' }}</span>
+                                <span class="ot-label">Preço atual</span>
+                                <span class="ot-value">R$ {{ o.price | number: '1.2-2' }}</span>
+                                <span class="ot-label">Distância do topo</span>
+                                <span class="ot-value">{{ descontoLabel(o.desvioTopo) }}</span>
+                              </span>
+                            }
+                          } @else {
+                            <span class="ot-verdict" [attr.data-zona]="teto.zona">{{
+                              zonaLabel(teto.zona)
+                            }}</span>
+                            @if (teto.zona === 'na') {
+                              <span class="ot-msg">Não se aplica a este ativo.</span>
+                            } @else if (teto.zona === 'sem-dados') {
+                              <span class="ot-msg"
+                                >Histórico de proventos insuficiente para calcular o
+                                preço-teto.</span
+                              >
+                            } @else {
+                              <span class="ot-grid">
+                                <span class="ot-label">Yield-alvo</span>
+                                <span class="ot-value"
+                                  >{{ teto.yieldAlvo * 100 | number: '1.0-1' }}%</span
+                                >
+                                <span class="ot-label">Preço-teto</span>
+                                <span class="ot-value">R$ {{ teto.teto | number: '1.2-2' }}</span>
+                                <span class="ot-label">Preço justo</span>
+                                <span class="ot-value"
+                                  >R$ {{ teto.precoJusto | number: '1.2-2' }}</span
+                                >
+                                <span class="ot-label">{{
+                                  stock.sector === 'FII' ? 'Rendimento (12m)' : 'DPA (12m)'
+                                }}</span>
+                                <span class="ot-value">R$ {{ teto.dpa12m | number: '1.2-2' }}</span>
+                                <span class="ot-label">Preço atual vs teto</span>
+                                <span class="ot-value">{{ descontoLabel(teto.descontoPct) }}</span>
+                              </span>
+                            }
+                          }
+                        </span>
+                      </span>
+                    </td>
+                    <td class="cell-saldo">
+                      <span class="val">{{
+                        sld === null ? '—' : 'R$ ' + (sld | number: '1.2-2')
+                      }}</span>
+                    </td>
+                    <td [class.pos]="v !== null && v >= 0" [class.neg]="v !== null && v < 0">
+                      {{
+                        v === null ? '—' : (v >= 0 ? '+' : '−') + 'R$ ' + (abs(v) | number: '1.2-2')
+                      }}
+                    </td>
+                    <td [class.pos]="r !== null && r >= 0" [class.neg]="r !== null && r < 0">
+                      {{
+                        r === null ? '—' : (r >= 0 ? '+' : '−') + (abs(r) | number: '1.1-1') + '%'
+                      }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+            @if (showPager(group)) {
+              <div class="ma-pagination">
+                <button class="pag-btn" (click)="prevPage(group)" [disabled]="pageOf(group) === 0">
+                  ‹ Anterior
+                </button>
+                <span class="pag-info">{{ pageOf(group) + 1 }} / {{ totalPages(group) }}</span>
+                <button
+                  class="pag-btn"
+                  (click)="nextPage(group)"
+                  [disabled]="pageOf(group) >= totalPages(group) - 1"
+                >
+                  Próxima ›
+                </button>
+              </div>
+            }
+            <!-- Botão único de adicionar, ao final do acordeão -->
+            <div class="add-row">
+              <button class="btn-add-inline" (click)="addTransaction.emit(group)">
+                <svg class="btn-plus" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M12 5v14M5 12h14"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

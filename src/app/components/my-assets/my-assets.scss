@@ -426,18 +426,18 @@ $pad-x: 16px;
   justify-content: flex-start;
   gap: 2px;
   @media (max-width: 600px) {
-    // Rodapé do card: Editar e Excluir como DOIS botões de largura igual, com
-    // ícone + rótulo — alvo de toque maior e ação clara (melhor que 2 ícones
-    // minúsculos no canto).
+    // Rodapé do card: Editar e Excluir empilhados, cada um FULL-WIDTH, com
+    // ícone + rótulo — Editar (ação principal) em cima, Excluir embaixo.
     grid-area: actions;
+    flex-direction: column;
+    align-items: stretch;
     gap: 8px;
     margin-top: 4px;
     padding-top: 10px;
     border-top: 1px solid var(--border);
     .btn-edit,
     .btn-remove {
-      flex: 1 1 0;
-      width: auto;
+      width: 100%;
       height: auto;
       min-height: var(--icon-btn-size);
       gap: 6px;

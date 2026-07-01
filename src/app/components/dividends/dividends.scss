@@ -16,7 +16,7 @@ $dv-pad-x: 0;
   padding: 3px;
   background: var(--input-bg);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 .dv-asset-btn {
   border: none;
@@ -27,7 +27,7 @@ $dv-pad-x: 0;
   font-weight: 700;
   color: var(--text-secondary);
   padding: 0.4rem 1.1rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   transition:
     background 0.15s,
     color 0.15s;
@@ -56,7 +56,7 @@ $dv-pad-x: 0;
   background: var(--input-bg);
   color: var(--text-secondary);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   padding: 0.4rem 0.9rem;
   font-size: 0.85rem;
   font-weight: 600;

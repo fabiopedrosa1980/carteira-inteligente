@@ -97,7 +97,7 @@ $pad-x: 16px;
   }
 }
 .ma-summary-cap {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -161,7 +161,7 @@ $pad-x: 16px;
   font-size: 11px;
   font-weight: 700;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: var(--radius-chip);
 }
 .ah-right {
   display: flex;
@@ -180,7 +180,7 @@ $pad-x: 16px;
   line-height: 1.15;
 }
 .sec-cap {
-  font-size: 9.5px;
+  font-size: var(--fs-2xs);
   font-weight: 600;
   letter-spacing: 0.07em; // rima com a legenda da faixa de resumo (.ma-summary-cap)
   text-transform: uppercase;
@@ -415,7 +415,7 @@ $pad-x: 16px;
   }
 }
 .sort-ind {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   line-height: 1;
 }
 
@@ -496,7 +496,7 @@ $pad-x: 16px;
     margin-bottom: 2px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     // Mesmo micro-rótulo do card de Meus Ativos.
-    font-size: 9.5px;
+    font-size: var(--fs-2xs);
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;

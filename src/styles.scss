@@ -42,6 +42,7 @@
   --radius-card: 12px;
   --radius-item: 14px;
   --radius-chip: 10px;
+  --radius-pill: 999px;
 
   /* Escala de espaçamento (paddings/margens de card). */
   --space-1: 4px;
@@ -50,6 +51,17 @@
   --space-4: 16px;
   --space-5: 20px;
   --space-6: 24px;
+
+  /* Escala tipográfica — referência única de tamanhos. Mínimo 11px por
+     legibilidade no mobile. Usar via var(--fs-*) nos componentes. */
+  --fs-2xs: 11px;
+  --fs-xs: 12px;
+  --fs-sm: 13px;
+  --fs-base: 15px;
+  --fs-md: 16px;
+  --fs-lg: 18px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
 }
 
 /* Botões um pouco menores no mobile — aplicado a todos via token. */

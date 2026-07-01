@@ -97,7 +97,7 @@
 .month-count {
   font-size: 11px;
   padding: 2px 7px;
-  border-radius: 10px;
+  border-radius: var(--radius-chip);
   background: rgba(26, 127, 75, 0.15);
   color: var(--accent);
 }
@@ -109,7 +109,7 @@
   margin-bottom: 10px;
 }
 .ticker-chip {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   font-weight: 600;
   padding: 2px 6px;
   border-radius: 4px;
@@ -134,7 +134,7 @@
   gap: 1px;
 }
 .stat-label {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   color: var(--text-secondary);
 }
 .stat-value {
@@ -147,7 +147,7 @@
 }
 
 .top-badge {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   background: rgba(246, 173, 85, 0.2);
   color: #f6ad55;
   padding: 2px 6px;

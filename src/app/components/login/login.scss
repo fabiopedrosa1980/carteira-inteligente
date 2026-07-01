@@ -86,7 +86,7 @@ $red: #E07878;
 .ticker {
   position: absolute;
   font-family: 'DM Mono', monospace;
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   font-weight: 300;
   letter-spacing: 0.12em;
   color: $gold;
@@ -167,7 +167,7 @@ $red: #E07878;
 
 .brand-tagline {
   font-family: 'DM Mono', monospace;
-  font-size: 9px;
+  font-size: var(--fs-2xs);
   font-weight: 300;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -197,7 +197,7 @@ $red: #E07878;
 
   span:nth-child(2) {
     font-family: 'DM Mono', monospace;
-    font-size: 9px;
+    font-size: var(--fs-2xs);
     font-weight: 300;
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -277,7 +277,7 @@ $red: #E07878;
 
 .footer-text {
   font-family: 'DM Mono', monospace;
-  font-size: 9px;
+  font-size: var(--fs-2xs);
   font-weight: 300;
   letter-spacing: 0.18em;
   text-transform: uppercase;

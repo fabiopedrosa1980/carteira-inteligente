@@ -107,7 +107,7 @@
   }
 }
 .auto-badge {
-  font-size: 10px;
+  font-size: var(--fs-2xs);
   background: rgba(104, 211, 145, 0.15);
   color: var(--color-pos);
   padding: 1px 5px;

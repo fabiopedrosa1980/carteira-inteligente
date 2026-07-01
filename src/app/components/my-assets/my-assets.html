@@ -13,7 +13,11 @@
         <span class="ma-summary-cap">Total investido</span>
         <span class="ma-summary-val">{{ totalAll() | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
       </div>
-      <button class="btn-clear-all" (click)="clearAll()" title="Remover todos os lançamentos">
+      <button
+        class="btn btn--danger-ghost"
+        (click)="clearAll()"
+        title="Remover todos os lançamentos"
+      >
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
             d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"
@@ -127,9 +131,11 @@
               <span class="date-cell">{{ t.date | date: 'dd/MM/yyyy' }}</span>
               <span class="qty-cell">{{ t.quantity | number: '1.0-0' }}</span>
               <span class="price-cell">{{ t.price | currency: 'BRL' : 'symbol' : '1.2-2' }}</span>
-              <span class="total-cell"><span class="val">{{
-                t.quantity * t.price | currency: 'BRL' : 'symbol' : '1.2-2'
-              }}</span></span>
+              <span class="total-cell"
+                ><span class="val">{{
+                  t.quantity * t.price | currency: 'BRL' : 'symbol' : '1.2-2'
+                }}</span></span
+              >
               <span class="action-cell">
                 <button
                   class="btn-edit"
@@ -194,7 +200,7 @@
               />
             </svg>
             <p class="ma-empty-title">Nenhum lançamento em {{ sec.label }}</p>
-            <button class="btn-add-inline" (click)="openAdd(sec.id)">
+            <button class="btn btn--primary" (click)="openAdd(sec.id)">
               <svg class="btn-plus" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path
                   d="M12 5v14M5 12h14"
@@ -210,7 +216,7 @@
           <!-- Rodapé "Adicionar" — apenas quando a seção tem lançamentos
                (na seção vazia, o CTA do estado vazio assume). -->
           <div class="add-row" *ngIf="sectionData()[sec.id].length > 0">
-            <button class="btn-add-inline" (click)="openAdd(sec.id)">
+            <button class="btn btn--primary" (click)="openAdd(sec.id)">
               <svg class="btn-plus" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path
                   d="M12 5v14M5 12h14"

@@ -142,6 +142,19 @@
   }
 }
 
+/* Destrutivo discreto: borda vermelha (ex.: "remover todos"). */
+.btn--danger-ghost {
+  background: transparent;
+  border-color: var(--color-neg);
+  color: var(--color-neg);
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-neg) 12%, transparent);
+  }
+  &:focus-visible {
+    outline-color: var(--color-neg);
+  }
+}
+
 /* Largura total (rodapés de modal no mobile). */
 .btn--block {
   width: 100%;

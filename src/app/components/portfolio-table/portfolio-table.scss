@@ -551,37 +551,6 @@
 
 // Botão "Adicionar" no padrão do CTA do app (igual ao de Lançamentos): accent
 // sólido com texto de contraste. No mobile ocupa a largura inteira do card.
-.btn-add-inline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background: var(--accent);
-  border: none;
-  color: var(--btn-accent-text);
-  // Altura/raio padrão de botões (token global).
-  min-height: var(--icon-btn-size);
-  padding: 0 16px;
-  border-radius: var(--icon-btn-radius);
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 700;
-  font-family: inherit;
-  transition: background 0.2s;
-  white-space: nowrap;
-
-  &:hover {
-    background: var(--btn-accent-hover);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-  .btn-plus {
-    width: 14px;
-    height: 14px;
-  }
-}
 
 /* Paginador por grupo */
 .ma-pagination {

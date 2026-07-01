@@ -329,16 +329,16 @@
 .progress-pct {
   font-size: 14px;
   font-weight: 800;
-  color: var(--text-primary, #e2e8f0);
+  color: var(--text-primary);
 
   &.high {
-    color: var(--color-pos, #4ade80);
+    color: var(--color-pos);
   }
   &.mid {
-    color: var(--color-warning, #facc15);
+    color: var(--color-warning);
   }
   &.low {
-    color: var(--color-neg, #f87171);
+    color: var(--color-neg);
   }
 }
 

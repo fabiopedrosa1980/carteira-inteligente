@@ -245,7 +245,7 @@ h2 {
   font-size: 11px;
   margin-top: 2px;
   &.found {
-    color: var(--color-pos, #3fb950);
+    color: var(--color-pos);
   }
   &.not-found {
     color: var(--color-neg);

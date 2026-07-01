@@ -391,6 +391,58 @@
   color: var(--accent);
 }
 
+/* Barra de ordenação (chips) — só no mobile, onde a tabela vira cards e o
+   cabeçalho ordenável some. Mesmo idioma dos chips de ordenação de Lançamentos. */
+.pt-sortbar {
+  display: none;
+}
+@media (max-width: 600px) {
+  .pt-sortbar {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 12px 4px;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+.sort-chip {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+
+  // Ativo: destaque neutro no accent (é um filtro/ordenação, não ação CRUD).
+  &.active {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .sort-ind {
+    font-size: var(--fs-2xs);
+    line-height: 1;
+  }
+}
+
 /* Acordeão de grupos de ativos — padrão unificado com Lançamentos */
 .sections-list {
   display: flex;

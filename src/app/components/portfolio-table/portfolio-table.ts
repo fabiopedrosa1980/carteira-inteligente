@@ -265,6 +265,17 @@ export class PortfolioTableComponent {
   sortField = signal<SortField>('name');
   sortAsc = signal(true);
 
+  // Campos principais expostos como chips de ordenação no mobile (onde a tabela
+  // vira cards e o cabeçalho ordenável some). Mesma lógica de setSort/sortAsc.
+  readonly mobileSortOptions: { field: SortField; label: string }[] = [
+    { field: 'name', label: 'Ativo' },
+    { field: 'saldo', label: 'Saldo' },
+    { field: 'variacao', label: 'Variação' },
+    { field: 'rentabilidade', label: 'Rent.' },
+    { field: 'precoAtual', label: 'Preço' },
+    { field: 'zona', label: 'Oportunidade' },
+  ];
+
   setSort(field: SortField) {
     if (this.sortField() === field) {
       this.sortAsc.update((v) => !v);

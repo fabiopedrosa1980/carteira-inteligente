@@ -23,6 +23,22 @@
         </button>
         <div class="accordion-body" [class.collapsed]="isCollapsed(group)">
           <div class="accordion-inner">
+            <!-- Ordenação no mobile (a tabela vira cards e o cabeçalho some) -->
+            <div class="pt-sortbar" role="tablist" aria-label="Ordenar ativos">
+              <button
+                type="button"
+                class="sort-chip"
+                *ngFor="let opt of mobileSortOptions"
+                [class.active]="sortField() === opt.field"
+                [attr.aria-pressed]="sortField() === opt.field"
+                (click)="setSort(opt.field)"
+              >
+                {{ opt.label }}
+                <span class="sort-ind" *ngIf="sortField() === opt.field">{{
+                  sortAsc() ? '↑' : '↓'
+                }}</span>
+              </button>
+            </div>
             <table class="acoes-list">
               <colgroup>
                 <col class="cl-ativo" />

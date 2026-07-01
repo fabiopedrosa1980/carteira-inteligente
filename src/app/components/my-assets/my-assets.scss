@@ -529,7 +529,6 @@ $pad-x: 16px;
   height: var(--icon-btn-size);
   background: none;
   border: none;
-  color: var(--text-secondary);
   cursor: pointer;
   border-radius: var(--icon-btn-radius);
   transition: all 0.15s;
@@ -540,18 +539,25 @@ $pad-x: 16px;
     width: var(--icon-btn-icon);
     height: var(--icon-btn-icon);
   }
+  // Anel de foco na cor do próprio botão (azul editar · vermelho excluir).
   &:focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid currentColor;
     outline-offset: 1px;
   }
 }
-.btn-edit:hover {
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  color: var(--accent);
+// Padrão do app: Editar = azul, Excluir = vermelho. Tinta sutil no hover para
+// manter os cards calmos (a identidade verde segue nas ações primárias/CTAs).
+.btn-edit {
+  color: var(--color-edit);
+  &:hover {
+    background: color-mix(in srgb, var(--color-edit) 14%, transparent);
+  }
 }
-.btn-remove:hover {
-  background: color-mix(in srgb, var(--color-neg) 12%, transparent);
+.btn-remove {
   color: var(--color-neg);
+  &:hover {
+    background: color-mix(in srgb, var(--color-neg) 14%, transparent);
+  }
 }
 
 /* Paginação por seção (10 por página). */

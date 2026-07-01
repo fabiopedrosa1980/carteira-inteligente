@@ -281,7 +281,8 @@
   height: var(--icon-btn-size);
   background: none;
   border: none;
-  color: var(--text-secondary);
+  // Padrão do app: Editar = azul, Excluir (.danger) = vermelho.
+  color: var(--color-edit);
   cursor: pointer;
   border-radius: var(--icon-btn-radius);
   transition:
@@ -293,15 +294,17 @@
     height: var(--icon-btn-icon);
   }
   &:hover {
-    background: color-mix(in srgb, var(--accent) 12%, transparent);
-    color: var(--accent);
+    background: color-mix(in srgb, var(--color-edit) 14%, transparent);
   }
-  &.danger:hover {
-    background: color-mix(in srgb, var(--color-neg) 12%, transparent);
+  &.danger {
     color: var(--color-neg);
   }
+  &.danger:hover {
+    background: color-mix(in srgb, var(--color-neg) 14%, transparent);
+  }
+  // Anel de foco na cor do próprio botão.
   &:focus-visible {
-    outline: 2px solid var(--accent);
+    outline: 2px solid currentColor;
     outline-offset: 1px;
   }
 }

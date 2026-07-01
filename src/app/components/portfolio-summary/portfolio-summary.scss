@@ -13,7 +13,10 @@
 
 .ps-card {
   background: var(--card-bg);
+  // Borda verde (accent) à esquerda — mesmo idioma de "borda verde" dos demais
+  // cards do app (Dividendos, Metas), padronizando os indicadores de Meus Ativos.
   border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
   border-radius: var(--radius-chip);
   padding: 16px 18px;
   display: flex;

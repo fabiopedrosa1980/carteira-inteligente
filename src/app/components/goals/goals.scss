@@ -365,11 +365,12 @@
       padding: 14px 16px;
       margin-bottom: 10px;
       background: var(--card-bg);
+      // Borda verde (accent) à esquerda + borda neutra nos demais lados —
+      // borda real (segue o raio dos cantos, sempre visível), padronizando os
+      // "cards de registro" no mobile com Dividendos Histórico.
       border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
       border-radius: var(--radius-item);
-      // Trilho verde (accent) à esquerda — mesmo idioma dos cards de Dividendos
-      // Histórico, padronizando os "cards de registro" no mobile.
-      box-shadow: inset 3px 0 0 var(--accent);
     }
     tbody tr:hover td {
       background: none;

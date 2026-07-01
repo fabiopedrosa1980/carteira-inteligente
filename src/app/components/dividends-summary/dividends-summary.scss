@@ -90,7 +90,10 @@
   margin-bottom: 1.25rem;
   border-radius: var(--radius-chip);
   background: var(--card-bg);
+  // Borda verde (accent) à esquerda — mesmo idioma de "borda verde" dos cards
+  // de Dividendos Histórico e Metas, dando identidade a Recebidos/Projetados.
   border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
 }
 
 .ds-total-top {

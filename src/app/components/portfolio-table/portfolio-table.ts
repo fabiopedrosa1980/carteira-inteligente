@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, Output, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  computed,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon';
 import { Stock } from '../../models/stock.model';
@@ -28,6 +37,7 @@ const PAGE_SIZE = 10;
 @Component({
   selector: 'app-portfolio-table',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent],
   templateUrl: './portfolio-table.html',
   styleUrls: ['./portfolio-table.scss'],

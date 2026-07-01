@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stock } from '../../models/stock.model';
 import { saldo, variacaoPosicao, rentabilidade } from '../../models/position.util';
@@ -6,6 +6,7 @@ import { saldo, variacaoPosicao, rentabilidade } from '../../models/position.uti
 @Component({
   selector: 'app-stock-card',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   templateUrl: './stock-card.html',
   styleUrls: ['./stock-card.scss'],

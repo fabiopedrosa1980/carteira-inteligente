@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 
 /**
  * Casca de rolagem horizontal reutilizável para barras de menu.
@@ -10,6 +18,7 @@ import { AfterViewInit, Component, ElementRef, Input, OnChanges, ViewChild } fro
 @Component({
   selector: 'app-scroll-bar',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './scroll-bar.html',
   styleUrls: ['./scroll-bar.scss'],
 })

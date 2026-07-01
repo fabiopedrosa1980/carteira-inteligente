@@ -1,4 +1,4 @@
-import { Component, Input, inject, signal } from '@angular/core';
+import { Component, Input, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconComponent } from '../icon/icon';
 import { FormsModule } from '@angular/forms';
@@ -10,6 +10,7 @@ import { Meta } from '../../models/meta.model';
 @Component({
   selector: 'app-goals',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent, FormsModule],
   templateUrl: './goals.html',
   styleUrls: ['./goals.scss'],

@@ -1,4 +1,12 @@
-import { Component, EventEmitter, HostListener, Input, Output, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stock } from '../../models/stock.model';
 import { PrecoTetoResult, Zona } from '../../models/preco-teto.util';
@@ -6,6 +14,7 @@ import { PrecoTetoResult, Zona } from '../../models/preco-teto.util';
 @Component({
   selector: 'app-stock-details-modal',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   templateUrl: './stock-details-modal.html',
   styleUrls: ['./stock-details-modal.scss'],

@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, Output, computed, inject, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  computed,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Stock } from '../../models/stock.model';
 import { StockDataService } from '../../services/stock-data.service';
@@ -18,6 +27,7 @@ import {
 @Component({
   selector: 'app-portfolio-summary',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
   templateUrl: './portfolio-summary.html',
   styleUrls: ['./portfolio-summary.scss'],

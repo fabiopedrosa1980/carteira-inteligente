@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 /**
  * Registro central de ícones SVG (24×24, traço, `currentColor`). Antes eram
@@ -23,6 +23,7 @@ const ICONS: Record<string, IconDef> = {
 @Component({
   selector: 'app-icon',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <path
       [attr.d]="d"

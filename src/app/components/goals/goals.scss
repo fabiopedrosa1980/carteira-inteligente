@@ -166,8 +166,13 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-item);
 
-  @media (max-width: 480px) {
-    overflow-x: hidden;
+  // Mobile: a tabela vira uma lista de cards, então o contêiner deixa de ser o
+  // "card" — cada linha (.meta-row) passa a ter a própria moldura.
+  @media (max-width: 600px) {
+    overflow-x: visible;
+    background: transparent;
+    border: none;
+    border-radius: 0;
   }
 }
 
@@ -226,44 +231,6 @@
   td.align-right {
     text-align: right;
   }
-
-  @media (max-width: 480px) {
-    font-size: var(--fs-sm);
-
-    th {
-      padding: 10px 6px;
-      font-size: var(--fs-2xs);
-    }
-    td {
-      padding: 10px 6px;
-      // Permite quebra de linha nas células para não cortar texto em telas estreitas.
-      white-space: normal;
-      overflow-wrap: anywhere;
-      vertical-align: top;
-    }
-
-    // Oculta "Valor Atual" (2ª) e "Valor Alvo" (3ª) para caber sem estourar.
-    // Mantém Meta, Progresso e Operação (editar/excluir).
-    col:nth-child(2),
-    th:nth-child(2),
-    td:nth-child(2),
-    col:nth-child(3),
-    th:nth-child(3),
-    td:nth-child(3) {
-      display: none;
-    }
-
-    // Reproporciona as 3 colunas visíveis para preencher 100% da largura
-    .col-nome {
-      width: 52%;
-    }
-    .col-progresso {
-      width: 24%;
-    }
-    .col-acoes {
-      width: 24%;
-    }
-  }
 }
 
 .meta-name-cell {
@@ -284,8 +251,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
-  // No mobile, deixa o nome quebrar em linhas em vez de cortar com reticências.
-  @media (max-width: 480px) {
+  // No card mobile, deixa o nome quebrar em linhas em vez de cortar com reticências.
+  @media (max-width: 600px) {
     white-space: normal;
     overflow: visible;
     text-overflow: clip;
@@ -297,10 +264,12 @@
   display: inline-flex;
   gap: 4px;
   justify-content: flex-start;
+}
 
-  @media (max-width: 480px) {
-    gap: 2px;
-  }
+// Rótulo textual dos botões de ação: só aparece no card mobile (no desktop os
+// botões da tabela ficam apenas com ícone), igual a Lançamentos.
+.btn-label {
+  display: none;
 }
 
 .icon-btn {
@@ -357,6 +326,123 @@
 @media (max-width: 600px) {
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  // Ações do formulário empilhadas full-width (Salvar em cima), padronizado com
+  // Lançamentos e Alocação no mobile.
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+    .btn {
+      width: 100%;
+    }
+  }
+
+  /* ---- Tabela de metas → lista de CARDS (idioma de Lançamentos/Meus Ativos) ---- */
+  .metas-table {
+    display: block;
+    font-size: var(--fs-sm);
+
+    thead {
+      display: none;
+    }
+    tbody {
+      display: block;
+    }
+
+    tr.meta-row {
+      display: grid;
+      // Título; Atual·Alvo; Progresso; rodapé de ações.
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'nome  nome'
+        'atual alvo'
+        'prog  prog'
+        'acoes acoes';
+      column-gap: 12px;
+      row-gap: 12px;
+      align-items: end;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-item);
+    }
+    tbody tr:hover td {
+      background: none;
+    }
+
+    td {
+      display: block;
+      padding: 0;
+      border: none;
+      min-width: 0;
+    }
+    td:nth-child(1) {
+      grid-area: nome;
+    }
+    td:nth-child(2) {
+      grid-area: atual;
+    }
+    td:nth-child(3) {
+      grid-area: alvo;
+      justify-self: end;
+      text-align: right;
+    }
+    td:nth-child(4) {
+      grid-area: prog;
+    }
+    td:nth-child(5) {
+      grid-area: acoes;
+    }
+
+    // Micro-rótulo (::before) sobre cada valor, igual aos cards das outras telas.
+    td[data-label]::before {
+      content: attr(data-label);
+      display: block;
+      margin-bottom: 3px;
+      font-size: var(--fs-2xs);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    // Valores (Atual/Alvo) em cor primária e numerais tabulares.
+    td:nth-child(2) span,
+    td:nth-child(3) span {
+      font-variant-numeric: tabular-nums;
+      color: var(--text-primary);
+    }
+  }
+
+  // Nome como título do card.
+  .meta-name-cell {
+    font-size: var(--fs-md);
+  }
+
+  // Rodapé: Editar e Excluir full-width com rótulo (idem Lançamentos).
+  .meta-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 2px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+
+    .icon-btn {
+      width: 100%;
+      height: auto;
+      min-height: var(--icon-btn-size);
+      gap: 6px;
+      border: 1px solid var(--border);
+      font-size: var(--fs-sm);
+      font-weight: 600;
+    }
+    .btn-label {
+      display: inline;
+    }
   }
 }
 

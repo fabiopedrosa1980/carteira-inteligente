@@ -95,17 +95,17 @@
                 <span class="meta-name-text">{{ meta.name }}</span>
               </span>
             </td>
-            <td>
+            <td data-label="Valor Atual">
               <span [class.value-blurred]="visibility.hidden()">{{
                 getCurrentValue(meta) | currency: 'BRL' : 'symbol' : '1.2-2'
               }}</span>
             </td>
-            <td>
+            <td data-label="Valor Alvo">
               <span [class.value-blurred]="visibility.hidden()">{{
                 meta.targetValue | currency: 'BRL' : 'symbol' : '1.2-2'
               }}</span>
             </td>
-            <td>
+            <td data-label="Progresso">
               <span
                 class="progress-pct"
                 [class.high]="progressClass(meta) === 'high'"
@@ -132,6 +132,7 @@
                       stroke-linejoin="round"
                     />
                   </svg>
+                  <span class="btn-label">Editar</span>
                 </button>
                 <button
                   class="icon-btn danger"
@@ -148,6 +149,7 @@
                       stroke-linejoin="round"
                     />
                   </svg>
+                  <span class="btn-label">Excluir</span>
                 </button>
               </div>
             </td>

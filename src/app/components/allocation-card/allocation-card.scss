@@ -41,6 +41,15 @@
   flex-shrink: 0;
   justify-content: flex-end;
   margin-top: 1.25rem;
+  // Mobile: ações full-width (Editar sozinho ocupa a linha; ao editar,
+  // Cancelar/Salvar empilham full) — padronizado com as demais telas.
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+    .alloc-btn {
+      width: 100%;
+    }
+  }
 }
 // Botão verde padrão do app (igual .btn-add-inline). Usado por Editar e Salvar.
 .alloc-btn {

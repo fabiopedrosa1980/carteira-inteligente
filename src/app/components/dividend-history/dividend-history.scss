@@ -272,38 +272,81 @@
     background: var(--row-hover, rgba(255, 255, 255, 0.03));
   }
 
+  // Mobile: cada dividendo vira um CARD com os 4 campos em grid 2×2
+  // (Tipo · Valor em cima, Data Com · Pagamento embaixo), no mesmo idioma dos
+  // cards de Lançamentos e Metas. O rótulo de cada campo vem de data-label.
   @media (max-width: 480px) {
-    font-size: var(--fs-xs);
+    display: block;
 
-    th {
-      padding: 0.5rem 0.25rem;
+    thead {
+      display: none;
     }
+    tbody {
+      display: block;
+    }
+
+    tr {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        'tipo    valor'
+        'datacom datapgto';
+      gap: 10px 12px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-item);
+    }
+    tr:hover td {
+      background: none;
+    }
+
     td {
-      padding: 0.5rem 0.25rem;
-    }
-
-    // Rebalanceia as colunas para o Valor caber por inteiro: Tipo encolhe e o
-    // Valor ganha largura.
-    .col-tipo {
-      width: 20%;
-    }
-    .col-data-com {
-      width: 27%;
-    }
-    .col-pagamento {
-      width: 27%;
-    }
-    .col-valor {
-      width: 26%;
-    }
-
-    // Coluna "Valor" (4ª): alinhada à direita e sem corte (ellipsis), exibindo
-    // o valor monetário completo em uma única linha.
-    th:nth-child(4),
-    td:nth-child(4) {
-      text-align: right;
+      display: block;
+      padding: 0;
+      border: none;
+      min-width: 0;
+      white-space: normal;
       overflow: visible;
       text-overflow: clip;
+      font-size: var(--fs-sm);
+      font-variant-numeric: tabular-nums;
+
+      &::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 2px;
+        font-size: var(--fs-2xs);
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+      }
+    }
+
+    td:nth-child(1) {
+      grid-area: tipo;
+    }
+    td:nth-child(2) {
+      grid-area: datacom;
+    }
+    // Pagamento e Valor à direita das suas áreas (rótulo incluso).
+    td:nth-child(3) {
+      grid-area: datapgto;
+      justify-self: end;
+      text-align: right;
+      &::before {
+        text-align: right;
+      }
+    }
+    td:nth-child(4) {
+      grid-area: valor;
+      justify-self: end;
+      text-align: right;
+      font-weight: 700;
+      &::before {
+        text-align: right;
+      }
     }
   }
 }

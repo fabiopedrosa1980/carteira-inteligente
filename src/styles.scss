@@ -24,10 +24,14 @@
   --shadow-hover: rgba(26, 127, 75, 0.15);
   --input-bg: #0d1117;
 
-  /* Cores de classe (faixa de composição da carteira) */
+  /* Cores de classe (faixa de composição da carteira).
+     Trio propositalmente afastado no círculo de matiz para leitura clara mesmo
+     nos pontos de 9px: verde (ações) · dourado (FIIs = renda imobiliária) ·
+     violeta (ETFs = cesta diversificada). O antigo azul de FII ficava perto
+     demais do violeta de ETF. */
   --class-acoes: #2ea043;
-  --class-fii: #3b82f6;
-  --class-etf: #a855f7;
+  --class-fii: #e6a93b;
+  --class-etf: #b26bf6;
 
   /* Altura/tamanho padrão dos botões (ícone e texto). A redução mobile fica num
      único ponto na media query abaixo. */
@@ -206,10 +210,10 @@ body.light-theme {
   --shadow-hover: rgba(26, 127, 75, 0.15);
   --input-bg: #f6f8fa;
 
-  /* Cores de classe (faixa de composição da carteira) */
+  /* Cores de classe — variantes mais escuras para contraste no tema claro. */
   --class-acoes: #1a7f4b;
-  --class-fii: #2563eb;
-  --class-etf: #9333ea;
+  --class-fii: #b7791f;
+  --class-etf: #8b2fd6;
 }
 
 html,

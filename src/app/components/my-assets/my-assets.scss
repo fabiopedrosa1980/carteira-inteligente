@@ -85,6 +85,10 @@ $pad-x: 16px;
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   overflow: hidden;
+  // Trilho de cor da classe à esquerda (mesma paleta da Alocação em Meus
+  // Ativos). inset box-shadow em vez de border-left para não deslocar o
+  // conteúdo nem brigar com o raio do card. --sec-color vem do template.
+  box-shadow: inset 3px 0 0 var(--sec-color, transparent);
 }
 
 .accordion-header {
@@ -110,14 +114,23 @@ $pad-x: 16px;
   align-items: center;
   gap: 10px;
 }
+// Ponto de cor da classe — mesmo formato (9px, cantos 3px) da legenda da
+// Alocação (.lg-dot), amarrando as duas telas visualmente.
+.sec-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
 .sec-label {
   font-size: var(--fs-base);
   font-weight: 700;
   color: var(--text-primary);
 }
 .sec-count {
-  background: color-mix(in srgb, var(--accent) 16%, transparent);
-  color: var(--accent);
+  // Chip contado na cor da própria classe (fallback: accent).
+  background: color-mix(in srgb, var(--sec-color, var(--accent)) 16%, transparent);
+  color: var(--sec-color, var(--accent));
   font-size: var(--fs-2xs);
   font-weight: 700;
   padding: 2px 8px;

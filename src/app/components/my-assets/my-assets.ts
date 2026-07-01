@@ -27,10 +27,12 @@ export class MyAssetsComponent {
   editing = signal<Transaction | null>(null);
   presetType = signal<AssetType | null>(null);
 
-  sections: { id: AssetType; label: string; short: string }[] = [
-    { id: 'Acoes', label: 'Ações', short: 'Ações' },
-    { id: 'FIIs', label: 'FIIs', short: 'FIIs' },
-    { id: 'ETFs', label: 'ETFs', short: 'ETFs' },
+  // `color` reusa os tokens de classe do tema (mesma paleta da faixa de
+  // Alocação em "Meus Ativos"), dando identidade visual a cada seção.
+  sections: { id: AssetType; label: string; short: string; color: string }[] = [
+    { id: 'Acoes', label: 'Ações', short: 'Ações', color: 'var(--class-acoes)' },
+    { id: 'FIIs', label: 'FIIs', short: 'FIIs', color: 'var(--class-fii)' },
+    { id: 'ETFs', label: 'ETFs', short: 'ETFs', color: 'var(--class-etf)' },
   ];
 
   collapsed = signal<Set<AssetType>>(new Set());

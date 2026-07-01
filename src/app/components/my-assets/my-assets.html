@@ -34,9 +34,10 @@
 
   <!-- Accordion sections -->
   <div class="sections-list">
-    <div class="accordion" *ngFor="let sec of sections">
+    <div class="accordion" *ngFor="let sec of sections" [style.--sec-color]="sec.color">
       <button class="accordion-header" (click)="toggle(sec.id)">
         <div class="ah-left">
+          <span class="sec-dot" [style.background]="sec.color"></span>
           <span class="sec-label">{{ sec.label }}</span>
           <span class="sec-count" *ngIf="sectionData()[sec.id].length > 0">
             {{ sectionData()[sec.id].length }}

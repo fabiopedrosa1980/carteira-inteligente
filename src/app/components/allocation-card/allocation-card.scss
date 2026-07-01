@@ -405,6 +405,11 @@
   // evita que linhas apertadas empurrem o card além da viewport.
   .alloc-card {
     padding: 1.25rem 1rem;
+    // Rede de segurança: nada escapa horizontalmente do card no mobile — garante
+    // que um botão full-width (Cancelar/Salvar) nunca estoure a borda, mesmo que
+    // algum conteúdo interno tente empurrar a largura. (clip não afeta o
+    // transbordo VERTICAL dos ticks da barra de composição.)
+    overflow-x: clip;
   }
   .ledger-head {
     grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem;

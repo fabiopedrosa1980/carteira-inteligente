@@ -182,6 +182,15 @@
   }
 }
 
+// O botão "?" (reabrir tour) é escondido no mobile: o header fica apertado e ele
+// quebra o layout. O tour ainda aparece no primeiro acesso; no desktop o botão
+// segue disponível para reabrir.
+.tour-btn {
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
 .tab-nav {
   // Desktop: abas horizontais no topo.
   display: flex;

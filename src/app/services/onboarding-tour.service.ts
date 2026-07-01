@@ -30,10 +30,32 @@ export class OnboardingTourService {
    * Inicia o tour. `onGoToTab` é chamado antes de destacar cada aba, para que o
    * dashboard ative a aba correspondente. Ao concluir/fechar, marca como visto.
    */
+  // Mesmos ícones (SVG) das abas do menu, para o tour espelhar a navegação.
+  private static readonly TAB_ICONS: Record<string, string> = {
+    portfolio: 'M3 17l6-6 4 4 7-8M21 7v5M21 7h-5',
+    'meus-ativos': 'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01',
+    calendar:
+      'M7 3v3M17 3v3M4 8h16M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z',
+    metas:
+      'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10ZM12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z',
+    import: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3',
+  };
+
+  // Título do passo com o mesmo ícone da aba correspondente.
+  private iconTitle(tabId: string, label: string): string {
+    const path = OnboardingTourService.TAB_ICONS[tabId] ?? '';
+    return (
+      '<span style="display:inline-flex;align-items:center;gap:8px">' +
+      '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true">' +
+      `<path d="${path}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>` +
+      `</svg>${label}</span>`
+    );
+  }
+
   start(onGoToTab: (tabId: string) => void): void {
-    const tabStep = (tabId: string, title: string, description: string): DriveStep => ({
+    const tabStep = (tabId: string, label: string, description: string): DriveStep => ({
       element: `[data-tour="tab-${tabId}"]`,
-      popover: { title, description, side: 'bottom', align: 'start' },
+      popover: { title: this.iconTitle(tabId, label), description, side: 'bottom', align: 'start' },
       onHighlightStarted: () => onGoToTab(tabId),
     });
 
@@ -47,27 +69,27 @@ export class OnboardingTourService {
       },
       tabStep(
         'portfolio',
-        '📊 Meus Ativos',
+        'Meus Ativos',
         'Sua carteira consolidada: preço atual, zona de compra (preço-teto), rentabilidade e a alocação por classe.',
       ),
       tabStep(
         'meus-ativos',
-        '📝 Lançamentos',
+        'Lançamentos',
         'Registre e acompanhe suas compras e vendas. É a partir daqui que as posições e os custos são calculados.',
       ),
       tabStep(
         'calendar',
-        '📅 Dividendos',
+        'Dividendos',
         'Calendário e histórico de proventos: o que já recebeu, o que está projetado e um radar dos próximos pagamentos.',
       ),
       tabStep(
         'metas',
-        '🎯 Metas',
+        'Metas',
         'Defina objetivos de patrimônio ou renda passiva e acompanhe o progresso ao longo do tempo.',
       ),
       tabStep(
         'import',
-        '📥 Importar',
+        'Importar',
         'Importe a planilha de Posição da B3 (.xlsx) com os seus ativos para lançar toda a carteira de uma vez, sem digitação.',
       ),
     ];

@@ -7,21 +7,17 @@ import { BackendApiService, ApiAcaoItem, ApiTransaction } from '../../services/b
 import { AuthService } from '../../services/auth.service';
 import { TransactionService } from '../../services/transaction.service';
 import { MetasService } from '../../services/metas.service';
-import { StockDetailsModalComponent } from '../stock-details-modal/stock-details-modal';
 import { AddStockModalComponent } from '../add-stock-modal/add-stock-modal';
 import { AddTransactionModalComponent } from '../add-transaction-modal/add-transaction-modal';
 import { MyAssetsComponent } from '../my-assets/my-assets';
 import { GoalsComponent } from '../goals/goals';
 import { DividendsComponent } from '../dividends/dividends';
-import { AllocationCardComponent } from '../allocation-card/allocation-card';
 import { ImportComponent } from '../import/import';
-import { PortfolioSummaryComponent } from '../portfolio-summary/portfolio-summary';
-import { PortfolioTableComponent } from '../portfolio-table/portfolio-table';
+import { PortfolioComponent } from '../portfolio/portfolio';
 import { Stock } from '../../models/stock.model';
 import { AssetType } from '../../models/transaction.model';
 import { ValueVisibilityService } from '../../services/value-visibility.service';
 import { OnboardingTourService } from '../../services/onboarding-tour.service';
-import { PrecoTetoService } from '../../services/preco-teto.service';
 
 const THEME_KEY = 'ci-theme';
 
@@ -30,16 +26,13 @@ const THEME_KEY = 'ci-theme';
   standalone: true,
   imports: [
     CommonModule,
-    StockDetailsModalComponent,
     AddStockModalComponent,
     AddTransactionModalComponent,
     MyAssetsComponent,
     GoalsComponent,
     DividendsComponent,
-    AllocationCardComponent,
     ImportComponent,
-    PortfolioSummaryComponent,
-    PortfolioTableComponent,
+    PortfolioComponent,
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
@@ -51,8 +44,6 @@ export class DashboardComponent implements AfterViewInit {
   private readonly transactionSvc = inject(TransactionService);
   private readonly metasSvc = inject(MetasService);
   private readonly visibility = inject(ValueVisibilityService);
-  // Público: usado no template para o [precoTeto] do modal de detalhe.
-  readonly precoTetoSvc = inject(PrecoTetoService);
   private readonly tour = inject(OnboardingTourService);
 
   // Exibe o tour guiado apenas no primeiro acesso (flag em localStorage). O
@@ -82,7 +73,6 @@ export class DashboardComponent implements AfterViewInit {
 
   setActiveTab(id: string): void {
     this.activeTab = id;
-    this.selectedStock.set(null);
     this.refreshActiveTab();
   }
 
@@ -128,8 +118,6 @@ export class DashboardComponent implements AfterViewInit {
 
   readonly acoes = signal<Stock[]>([]);
   readonly acoesLoading = signal(false);
-  readonly skelCards = Array.from({ length: 6 });
-  readonly selectedStock = signal<Stock | null>(null);
 
   private readonly groupToAssetType: Record<string, AssetType> = {
     Ações: 'Acoes',

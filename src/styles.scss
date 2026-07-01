@@ -369,3 +369,26 @@ button {
   border-color: var(--btn-accent-hover);
   color: var(--btn-accent-text);
 }
+
+/* Estado vazio compartilhado (aba Meus Ativos e Dividendos). */
+.empty-portfolio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  background: var(--card-bg);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-card);
+  color: var(--text-secondary);
+  font-size: 13px;
+  p {
+    margin: 0;
+  }
+}
+.empty-portfolio .empty-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  flex-shrink: 0;
+}

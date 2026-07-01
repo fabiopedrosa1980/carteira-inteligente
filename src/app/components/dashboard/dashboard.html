@@ -148,62 +148,13 @@
     </div>
 
     <div *ngIf="activeTab === 'portfolio'">
-      <ng-container *ngIf="!selectedStock()">
-        <div class="section-header">
-          <div>
-            <h2 class="page-title">Meus Ativos</h2>
-          </div>
-        </div>
-
-        <div class="stocks-grid" *ngIf="acoesLoading()" aria-hidden="true">
-          <div class="skeleton skeleton-card" *ngFor="let c of skelCards"></div>
-        </div>
-
-        <div class="empty-portfolio" *ngIf="!acoesLoading() && acoes().length === 0">
-          <svg class="empty-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M22 12h-6l-2 3h-4l-2-3H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          <p>
-            Nenhum ativo encontrado. Adicione <strong>Ações, FIIs ou ETFs</strong> na aba
-            Lançamentos.
-          </p>
-        </div>
-
-        <ng-container *ngIf="!acoesLoading() && acoes().length > 0">
-          <app-portfolio-summary
-            [stocks]="acoes()"
-            [hideValues]="valoresOcultos()"
-            (openDividends)="openDividends($event)"
-          ></app-portfolio-summary>
-
-          <!-- Alocação da carteira (alvos por classe + concentração) -->
-          <app-allocation-card
-            [stocks]="acoes()"
-            [hideValues]="valoresOcultos()"
-          ></app-allocation-card>
-
-          <!-- ── Visão em lista ── -->
-          <app-portfolio-table
-            [stocks]="acoes()"
-            [hideValues]="valoresOcultos()"
-            (selectStock)="selectedStock.set($event)"
-            (addTransaction)="openAddTx($event)"
-          ></app-portfolio-table>
-        </ng-container>
-      </ng-container>
-
-      <app-stock-details-modal
-        *ngIf="selectedStock() as s"
-        [stock]="s"
-        [precoTeto]="precoTetoSvc.of(s)"
-        (close)="selectedStock.set(null)"
-      ></app-stock-details-modal>
+      <app-portfolio
+        [stocks]="acoes()"
+        [loading]="acoesLoading()"
+        [hideValues]="valoresOcultos()"
+        (openDividends)="openDividends($event)"
+        (addTransaction)="openAddTx($event)"
+      ></app-portfolio>
     </div>
 
     <div *ngIf="activeTab === 'calendar'">

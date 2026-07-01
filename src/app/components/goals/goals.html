@@ -4,9 +4,7 @@
       <h2 class="page-title">Minhas Metas</h2>
     </div>
     <button class="btn btn--primary" (click)="openForm()" *ngIf="!showForm()">
-      <svg class="btn-plus" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-      </svg>
+      <app-icon name="plus"></app-icon>
       Nova Meta
     </button>
   </div>
@@ -64,9 +62,7 @@
     <h3>Nenhuma meta cadastrada</h3>
     <p>Defina um valor alvo de patrimônio e acompanhe seu progresso.</p>
     <button class="btn btn--primary" (click)="openForm()">
-      <svg class="btn-plus" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-      </svg>
+      <app-icon name="plus"></app-icon>
       Criar primeira meta
     </button>
   </div>

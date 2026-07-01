@@ -127,15 +127,7 @@
         Cancelar
       </button>
       <button class="btn btn--primary" (click)="save()" [disabled]="saving() || isTickerInvalid">
-        <svg *ngIf="!saving()" class="btn-check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M20 6 9 17l-5-5"
-            stroke="currentColor"
-            stroke-width="2.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+        <app-icon *ngIf="!saving()" name="check" [strokeWidth]="2.4"></app-icon>
         {{ saving() ? 'Salvando...' : isEdit ? 'Salvar Alterações' : 'Salvar Lançamento' }}
       </button>
     </div>

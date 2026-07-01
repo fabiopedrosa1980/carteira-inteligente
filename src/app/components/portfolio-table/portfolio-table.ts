@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconComponent } from '../icon/icon';
 import { Stock } from '../../models/stock.model';
 import { saldo, custo, variacaoPosicao, rentabilidade } from '../../models/position.util';
 import { PrecoTetoResult, Zona } from '../../models/preco-teto.util';
@@ -27,7 +28,7 @@ const PAGE_SIZE = 10;
 @Component({
   selector: 'app-portfolio-table',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './portfolio-table.html',
   styleUrls: ['./portfolio-table.scss'],
 })

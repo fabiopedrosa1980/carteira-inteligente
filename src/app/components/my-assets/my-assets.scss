@@ -265,6 +265,7 @@ $pad-x: 16px;
     // não some — vira uma barra de CHIPS de ordenação rolável, para não perder
     // a navegação (ordenar por Ativo/Data/Qtd/Preço/Total) no celular.
     display: flex;
+    justify-content: flex-end;
     gap: 8px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;

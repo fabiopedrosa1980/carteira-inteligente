@@ -399,6 +399,7 @@
 @media (max-width: 600px) {
   .pt-sortbar {
     display: flex;
+    justify-content: flex-end;
     gap: 8px;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;

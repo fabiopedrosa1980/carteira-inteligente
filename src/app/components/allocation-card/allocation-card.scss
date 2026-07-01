@@ -99,6 +99,20 @@
   }
 }
 
+// "Editar" = fora do modo edição (sem .solid nem .ghost): azul, seguindo o
+// padrão de ação de edição do app. "Salvar" (.solid) segue verde (ação primária)
+// e "Cancelar" (.ghost) segue neutro.
+.alloc-btn:not(.solid):not(.ghost) {
+  background: var(--btn-edit-bg);
+
+  &:hover {
+    background: var(--btn-edit-bg-hover);
+  }
+  &:focus-visible {
+    outline-color: var(--btn-edit-bg);
+  }
+}
+
 .alloc-eyebrow {
   margin: 0 0 0.55rem;
   font-size: var(--fs-2xs);

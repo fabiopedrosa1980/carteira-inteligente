@@ -4,35 +4,37 @@
   </div>
 </div>
 
-<div class="dv-asset-toggle" role="tablist">
-  <button
-    *ngFor="let ac of assetClasses"
-    class="dv-asset-btn"
-    [class.active]="assetType() === ac.id"
-    (click)="setAssetType(ac.id)"
-  >
-    {{ ac.label }}
-  </button>
-</div>
+<div class="dv-controls">
+  <div class="dv-asset-toggle" role="tablist">
+    <button
+      *ngFor="let ac of assetClasses"
+      class="dv-asset-btn"
+      [class.active]="assetType() === ac.id"
+      (click)="setAssetType(ac.id)"
+    >
+      {{ ac.label }}
+    </button>
+  </div>
 
-<div class="dv-tabs">
-  <button
-    *ngFor="let tab of tabs"
-    class="dv-tab"
-    [class.active]="activeTab() === tab.id"
-    (click)="setTab(tab.id)"
-  >
-    <svg class="dv-tab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path
-        [attr.d]="tab.iconPath"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-    <span class="dv-tab-label">{{ tab.label }}</span>
-  </button>
+  <div class="dv-tabs">
+    <button
+      *ngFor="let tab of tabs"
+      class="dv-tab"
+      [class.active]="activeTab() === tab.id"
+      (click)="setTab(tab.id)"
+    >
+      <svg class="dv-tab-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          [attr.d]="tab.iconPath"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <span class="dv-tab-label">{{ tab.label }}</span>
+    </button>
+  </div>
 </div>
 
 <app-dividend-history

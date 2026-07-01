@@ -5,7 +5,7 @@
       class="radar-view-toggle"
       role="group"
       aria-label="Visualização do radar"
-      *ngIf="loading() || rows().length > 0"
+      *ngIf="!isMobile() && (loading() || rows().length > 0)"
     >
       <button
         type="button"

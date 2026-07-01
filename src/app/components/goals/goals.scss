@@ -367,6 +367,9 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-item);
+      // Trilho verde (accent) à esquerda — mesmo idioma dos cards de Dividendos
+      // Histórico, padronizando os "cards de registro" no mobile.
+      box-shadow: inset 3px 0 0 var(--accent);
     }
     tbody tr:hover td {
       background: none;

@@ -49,13 +49,12 @@ export class DividendsRadarComponent implements OnChanges {
   // padrão depende do viewport.
   readonly view = signal<RadarView | null>(this.readView());
 
-  // Sem preferência salva: cards no mobile (a matriz de 12 meses fica apertada
-  // em telas estreitas) e matriz no desktop. Uma escolha explícita é respeitada
-  // em qualquer largura. Reativo ao viewport (responde a rotação/resize).
+  // No mobile a matriz de 12 meses não cabe — força SEMPRE cards, mesmo com uma
+  // preferência salva de "matrix". No desktop respeita a escolha do usuário e,
+  // sem preferência, usa matriz. Reativo ao viewport (rotação/resize).
   readonly effectiveView = computed<RadarView>(() => {
-    const chosen = this.view();
-    if (chosen) return chosen;
-    return this.isMobile() ? 'cards' : 'matrix';
+    if (this.isMobile()) return 'cards';
+    return this.view() ?? 'matrix';
   });
 
   setView(v: RadarView): void {

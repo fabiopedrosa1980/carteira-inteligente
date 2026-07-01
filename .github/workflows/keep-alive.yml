@@ -6,9 +6,11 @@ name: Keep backend awake
 
 on:
   schedule:
-    # A cada 10 minutos (minimo do GitHub Actions e 5 min). Fica com folga
-    # confortavel abaixo dos 15 min de ociosidade que fazem o Render dormir.
-    - cron: '*/10 * * * *'
+    # A cada 10 min, apenas no horario de uso (07h-00h de Brasilia) para
+    # economizar horas de instancia do Render. GitHub Actions roda em UTC e
+    # Brasilia e UTC-3, entao 07h-00h BRT = 10h-02h59 UTC, cruzando a meia-noite:
+    - cron: '*/10 10-23 * * *' # 07:00-20:59 BRT
+    - cron: '*/10 0-2 * * *'   # 21:00-23:59 BRT
   workflow_dispatch: {} # permite disparar manualmente pela aba Actions
 
 jobs:

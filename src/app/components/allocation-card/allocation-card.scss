@@ -88,16 +88,19 @@
   &:hover {
     background: var(--btn-add-bg-hover);
   }
-  // Cancelar: contorno discreto (secundário).
+  // Cancelar: contorno vermelho (ação de descartar), no idioma ghost do app.
   &.ghost {
     background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
+    border: 1px solid var(--color-neg);
+    color: var(--color-neg);
 
     &:hover {
-      background: transparent;
-      color: var(--text-primary);
-      border-color: var(--accent);
+      background: color-mix(in srgb, var(--color-neg) 12%, transparent);
+      color: var(--color-neg);
+      border-color: var(--color-neg);
+    }
+    &:focus-visible {
+      outline-color: var(--color-neg);
     }
   }
   &:focus-visible {

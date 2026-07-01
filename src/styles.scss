@@ -22,6 +22,12 @@
   // Ação de edição = azul (par do vermelho de exclusão). Tom suave, na mesma
   // família dos demais tokens do tema escuro (pos/neg pastel).
   --color-edit: #81a8fc;
+  // Preenchimentos SÓLIDOS dos botões de ação (Editar/Excluir), iguais nos dois
+  // temas — azul/vermelho saturados, legíveis com ícone/texto branco.
+  --btn-edit-bg: #2563eb;
+  --btn-edit-bg-hover: #1d4ed8;
+  --btn-del-bg: #dc2626;
+  --btn-del-bg-hover: #b91c1c;
   --btn-accent-text: #ffffff;
   --btn-accent-hover: #1f9d5e;
   --shadow-hover: rgba(26, 127, 75, 0.15);

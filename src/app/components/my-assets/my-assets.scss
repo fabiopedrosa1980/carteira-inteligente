@@ -452,7 +452,8 @@ $pad-x: 16px;
       height: auto;
       min-height: var(--icon-btn-size);
       gap: 6px;
-      border: 1px solid var(--border);
+      // Preenchimento sólido (azul/vermelho) — sem borda visível.
+      border: 1px solid transparent;
       font-size: var(--fs-sm);
       font-weight: 600;
     }
@@ -548,15 +549,17 @@ $pad-x: 16px;
 // Padrão do app: Editar = azul, Excluir = vermelho. Tinta sutil no hover para
 // manter os cards calmos (a identidade verde segue nas ações primárias/CTAs).
 .btn-edit {
-  color: var(--color-edit);
+  background: var(--btn-edit-bg);
+  color: #fff;
   &:hover {
-    background: color-mix(in srgb, var(--color-edit) 14%, transparent);
+    background: var(--btn-edit-bg-hover);
   }
 }
 .btn-remove {
-  color: var(--color-neg);
+  background: var(--btn-del-bg);
+  color: #fff;
   &:hover {
-    background: color-mix(in srgb, var(--color-neg) 14%, transparent);
+    background: var(--btn-del-bg-hover);
   }
 }
 

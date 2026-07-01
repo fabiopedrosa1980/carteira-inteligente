@@ -279,10 +279,10 @@
   // Tamanho padrão dos botões de ícone (token global; encolhe no mobile).
   width: var(--icon-btn-size);
   height: var(--icon-btn-size);
-  background: none;
-  border: none;
-  // Padrão do app: Editar = azul, Excluir (.danger) = vermelho.
-  color: var(--color-edit);
+  border: 1px solid transparent;
+  // Padrão do app: Editar = azul sólido, Excluir (.danger) = vermelho sólido.
+  background: var(--btn-edit-bg);
+  color: #fff;
   cursor: pointer;
   border-radius: var(--icon-btn-radius);
   transition:
@@ -294,13 +294,13 @@
     height: var(--icon-btn-icon);
   }
   &:hover {
-    background: color-mix(in srgb, var(--color-edit) 14%, transparent);
+    background: var(--btn-edit-bg-hover);
   }
   &.danger {
-    color: var(--color-neg);
+    background: var(--btn-del-bg);
   }
   &.danger:hover {
-    background: color-mix(in srgb, var(--color-neg) 14%, transparent);
+    background: var(--btn-del-bg-hover);
   }
   // Anel de foco na cor do próprio botão.
   &:focus-visible {
@@ -443,7 +443,8 @@
       height: auto;
       min-height: var(--icon-btn-size);
       gap: 6px;
-      border: 1px solid var(--border);
+      // Preenchimento sólido — sem borda visível.
+      border: 1px solid transparent;
       font-size: var(--fs-sm);
       font-weight: 600;
     }

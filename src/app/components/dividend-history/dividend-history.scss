@@ -8,7 +8,7 @@
 
 .dh-title {
   // Padrão de título de seção do app (igual .section-title/.page-title).
-  font-size: 20px;
+  font-size: var(--fs-xl);
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 4px;
@@ -26,7 +26,7 @@
   border-radius: 8px;
   padding: 0.65rem 1rem;
   margin-bottom: 1.25rem;
-  font-size: 0.88rem;
+  font-size: var(--fs-sm);
   color: var(--color-warning);
 }
 
@@ -45,7 +45,7 @@
   border-radius: 8px;
   padding: 0.65rem 1rem;
   margin-bottom: 1.25rem;
-  font-size: 0.88rem;
+  font-size: var(--fs-sm);
   color: var(--color-neg);
   font-weight: 500;
 }
@@ -101,13 +101,13 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
   padding: 0.35rem 0.85rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   font-weight: 600;
   cursor: pointer;
   @media (max-width: 480px) {
     flex-shrink: 0;
     padding: 0.3rem 0.7rem;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
   }
   transition:
     background 0.15s,
@@ -126,7 +126,7 @@
 }
 
 .dh-label {
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   color: var(--text-secondary);
   white-space: nowrap;
 }
@@ -137,7 +137,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 0.4rem 0.75rem;
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
   cursor: pointer;
   outline: none;
 
@@ -149,7 +149,7 @@
 .dh-loading,
 .dh-empty {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
   padding: 1rem 0;
 }
 
@@ -172,14 +172,14 @@
 }
 .dh-no-data-title {
   margin: 0;
-  font-size: 0.98rem;
+  font-size: var(--fs-base);
   font-weight: 600;
   color: var(--text-primary);
 }
 .dh-no-data-text {
   margin: 0;
   max-width: 360px;
-  font-size: 0.86rem;
+  font-size: var(--fs-sm);
   line-height: 1.5;
 
   strong {
@@ -212,7 +212,7 @@
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
 
   // Colunas com a mesma largura (25% cada).
   .col-tipo {
@@ -273,7 +273,7 @@
   }
 
   @media (max-width: 480px) {
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
 
     th {
       padding: 0.5rem 0.25rem;
@@ -324,7 +324,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 0.35rem 0.85rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   cursor: pointer;
   transition: background 0.15s;
 
@@ -339,7 +339,7 @@
 }
 
 .pag-info {
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   color: var(--text-secondary);
   min-width: 50px;
   text-align: center;

@@ -12,7 +12,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 
 .radar-title {
   // Padrão de título de seção do app (igual .section-title/.page-title).
-  font-size: 20px;
+  font-size: var(--fs-xl);
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 4px;
@@ -21,7 +21,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   gap: 0.5rem;
 }
 .radar-loading {
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   color: var(--text-secondary);
 }
 
@@ -44,14 +44,14 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 }
 .radar-no-data-title {
   margin: 0;
-  font-size: 0.98rem;
+  font-size: var(--fs-base);
   font-weight: 600;
   color: var(--text-primary);
 }
 .radar-no-data-text {
   margin: 0;
   max-width: 360px;
-  font-size: 0.86rem;
+  font-size: var(--fs-sm);
   line-height: 1.5;
 
   strong {
@@ -112,7 +112,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   color: var(--text-secondary);
 }
 .rl-item {
@@ -240,7 +240,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   gap: 6px 8px;
 }
 .rc-month {
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -250,7 +250,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   // Empurra a contagem para a direita; mês e tag ficam juntos à esquerda.
   margin-left: auto;
   font-family: $mono;
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   min-width: 18px;
@@ -270,7 +270,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   gap: 6px;
 }
 .ticker-chip {
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 6px;
@@ -343,7 +343,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 /* Cabeçalho de meses. */
 .rm-month {
   gap: 3px;
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -374,7 +374,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 .rm-ticker {
   padding-left: 12px;
   padding-right: 12px;
-  font-size: 13px;
+  font-size: var(--fs-sm);
   font-weight: 700;
   letter-spacing: 0.4px;
   color: var(--text-primary);

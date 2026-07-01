@@ -23,7 +23,7 @@ $dv-pad-x: 0;
   background: none;
   cursor: pointer;
   font-family: inherit;
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   font-weight: 700;
   color: var(--text-secondary);
   padding: 0.4rem 1.1rem;
@@ -58,7 +58,7 @@ $dv-pad-x: 0;
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
   padding: 0.4rem 0.9rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   font-weight: 600;
   cursor: pointer;
   transition:
@@ -106,7 +106,7 @@ $dv-pad-x: 0;
     justify-content: center;
     gap: 0.2rem;
     padding: 0.4rem 0.3rem;
-    font-size: 0.72rem;
+    font-size: var(--fs-2xs);
     text-align: center;
   }
   .dv-tab-label {

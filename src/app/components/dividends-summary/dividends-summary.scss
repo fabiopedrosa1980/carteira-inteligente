@@ -8,7 +8,7 @@
 
 .ds-title {
   // Padrão de título de seção do app (igual .section-title/.page-title).
-  font-size: 20px;
+  font-size: var(--fs-xl);
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 4px;
@@ -19,7 +19,7 @@
 
 .ds-loading {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
   padding: 1rem 0;
 }
 
@@ -43,14 +43,14 @@
 }
 .ds-no-data-title {
   margin: 0;
-  font-size: 0.98rem;
+  font-size: var(--fs-base);
   font-weight: 600;
   color: var(--text-primary);
 }
 .ds-no-data-text {
   margin: 0;
   max-width: 360px;
-  font-size: 0.86rem;
+  font-size: var(--fs-sm);
   line-height: 1.5;
 
   strong {
@@ -68,7 +68,7 @@
   border-radius: 8px;
   padding: 0.65rem 1rem;
   margin-bottom: 1.25rem;
-  font-size: 0.88rem;
+  font-size: var(--fs-sm);
   color: #f87171;
   font-weight: 500;
 }
@@ -124,7 +124,7 @@
 }
 
 .ds-total-label {
-  font-size: 11px;
+  font-size: var(--fs-2xs);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -140,7 +140,7 @@
 }
 
 .ds-list {
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
 }
 
 // Grade compartilhada entre o cabeçalho e as linhas de ativo.
@@ -171,7 +171,7 @@
   }
   .chevron {
     display: inline-block;
-    font-size: 1.1rem;
+    font-size: var(--fs-md);
     line-height: 1;
     transition: transform 0.25s ease;
     &.expanded {
@@ -227,7 +227,7 @@ button.ds-row-head {
   justify-content: space-between;
   align-items: center;
   padding: 0.3rem 0.5rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.02);
   margin-bottom: 0.25rem;
@@ -251,7 +251,7 @@ button.ds-row-head {
     grid-template-columns: minmax(0, 1fr) 3.5rem 5.5rem 1.25rem;
     padding: 0.5rem 0.4rem;
     gap: 0.35rem;
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
   }
 }
 

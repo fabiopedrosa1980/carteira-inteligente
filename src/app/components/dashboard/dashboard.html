@@ -67,6 +67,24 @@
       </button>
       <button
         class="icon-btn"
+        (click)="startTour()"
+        title="Ver o tour guiado"
+        aria-label="Ver o tour guiado"
+      >
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+          <path
+            d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path d="M12 17h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+        </svg>
+      </button>
+      <button
+        class="icon-btn"
         (click)="toggleTheme()"
         [title]="isDark() ? 'Ativar tema claro' : 'Ativar tema escuro'"
         [attr.aria-label]="isDark() ? 'Ativar tema claro' : 'Ativar tema escuro'"
@@ -107,6 +125,7 @@
   <nav class="tab-nav">
     <button
       *ngFor="let tab of tabs"
+      [attr.data-tour]="'tab-' + tab.id"
       [class.active]="activeTab === tab.id"
       (click)="setActiveTab(tab.id)"
     >

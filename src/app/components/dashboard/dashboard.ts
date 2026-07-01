@@ -1,4 +1,13 @@
-import { Component, computed, signal, Signal, inject, effect, untracked } from '@angular/core';
+import {
+  Component,
+  computed,
+  signal,
+  Signal,
+  inject,
+  effect,
+  untracked,
+  AfterViewInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
@@ -33,6 +42,7 @@ import {
 } from '../../models/preco-teto.util';
 import { PrecoTetoConfigService } from '../../services/preco-teto-config.service';
 import { ValueVisibilityService } from '../../services/value-visibility.service';
+import { OnboardingTourService } from '../../services/onboarding-tour.service';
 
 type SortField =
   | 'name'
@@ -65,7 +75,7 @@ const PAGE_SIZE = 10;
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
 })
-export class DashboardComponent {
+export class DashboardComponent implements AfterViewInit {
   private readonly api = inject(BackendApiService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
@@ -73,6 +83,20 @@ export class DashboardComponent {
   private readonly metasSvc = inject(MetasService);
   private readonly tetoConfig = inject(PrecoTetoConfigService);
   private readonly visibility = inject(ValueVisibilityService);
+  private readonly tour = inject(OnboardingTourService);
+
+  // Exibe o tour guiado apenas no primeiro acesso (flag em localStorage). O
+  // pequeno atraso garante que a nav de abas já esteja no DOM para o spotlight.
+  ngAfterViewInit(): void {
+    if (!this.tour.hasSeen()) {
+      setTimeout(() => this.tour.start((tabId) => this.setActiveTab(tabId)), 400);
+    }
+  }
+
+  // Reabre o tour manualmente (botão "?" do header), independente do flag.
+  startTour(): void {
+    this.tour.start((tabId) => this.setActiveTab(tabId));
+  }
 
   readonly user = this.auth.user;
 

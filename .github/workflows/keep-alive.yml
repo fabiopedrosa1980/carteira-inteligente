@@ -1,0 +1,30 @@
+name: Keep backend awake
+
+# Pinga o endpoint /health do backend (Render free tier) para evitar que o
+# processo durma apos ~15 min de inatividade e cause cold start de 30-50s.
+# O frontend na Vercel e estatico e nao dorme; o alvo aqui e sempre o backend.
+
+on:
+  schedule:
+    # A cada 10 minutos (minimo do GitHub Actions e 5 min). Fica com folga
+    # confortavel abaixo dos 15 min de ociosidade que fazem o Render dormir.
+    - cron: '*/10 * * * *'
+  workflow_dispatch: {} # permite disparar manualmente pela aba Actions
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /health
+        run: |
+          echo "Pingando backend..."
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 \
+            https://carteira-inteligente-api.onrender.com/health)
+          echo "HTTP $code"
+          # 2xx/3xx = acordado. Nao falha o job em erro para nao poluir alertas;
+          # so registra no log.
+          if [ "$code" -ge 200 ] && [ "$code" -lt 400 ]; then
+            echo "Backend acordado."
+          else
+            echo "::warning::Backend respondeu $code"
+          fi

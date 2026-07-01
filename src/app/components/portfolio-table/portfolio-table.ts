@@ -271,7 +271,6 @@ export class PortfolioTableComponent {
     { field: 'name', label: 'Ativo' },
     { field: 'saldo', label: 'Saldo' },
     { field: 'zona', label: 'Oportunidade' },
-    { field: 'rentabilidade', label: 'Rentabilidade' },
   ];
 
   setSort(field: SortField) {

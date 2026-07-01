@@ -228,7 +228,7 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
 }
 
 /* Telas muito estreitas: baixa o preço hero mais um passo. */
-@media (max-width: 380px) {
+@media (max-width: 480px) {
   .price {
     font-size: 20px;
   }

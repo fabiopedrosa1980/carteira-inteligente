@@ -129,7 +129,7 @@
     </div>
 
     <div class="modal-footer">
-      <button class="btn-cancel" (click)="close.emit()">
+      <button class="btn btn--ghost" (click)="close.emit()">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
             d="M18 6 6 18M6 6l12 12"
@@ -141,7 +141,7 @@
         </svg>
         Cancelar
       </button>
-      <button class="btn-save" (click)="save()" [disabled]="saving() || isTickerInvalid">
+      <button class="btn btn--primary" (click)="save()" [disabled]="saving() || isTickerInvalid">
         <svg *ngIf="!saving()" class="btn-check" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
             d="M20 6 9 17l-5-5"

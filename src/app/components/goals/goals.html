@@ -3,7 +3,7 @@
     <div>
       <h2 class="page-title">Minhas Metas</h2>
     </div>
-    <button class="btn-nova" (click)="openForm()" *ngIf="!showForm()">
+    <button class="btn btn--primary" (click)="openForm()" *ngIf="!showForm()">
       <svg class="btn-plus" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
       </svg>
@@ -38,7 +38,7 @@
     </div>
 
     <div class="form-actions">
-      <button class="btn-cancel" (click)="closeForm()">
+      <button class="btn btn--ghost" (click)="closeForm()">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
             d="M18 6 6 18M6 6l12 12"
@@ -50,7 +50,7 @@
         </svg>
         Cancelar
       </button>
-      <button class="btn-save" (click)="saveMeta()" [disabled]="!formName().trim()">
+      <button class="btn btn--primary" (click)="saveMeta()" [disabled]="!formName().trim()">
         {{ editingId() ? 'Salvar alterações' : 'Criar meta' }}
       </button>
     </div>
@@ -71,7 +71,7 @@
     </svg>
     <h3>Nenhuma meta cadastrada</h3>
     <p>Defina um valor alvo de patrimônio e acompanhe seu progresso.</p>
-    <button class="btn-nova" (click)="openForm()">
+    <button class="btn btn--primary" (click)="openForm()">
       <svg class="btn-plus" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
       </svg>

@@ -71,9 +71,81 @@
   }
 }
 
-/* Padrão de botões de TEXTO nos componentes (referência): mesma altura dos
-   botões de ícone via --icon-btn-size, padding 0 16px, raio --icon-btn-radius,
-   fonte 13px/700, com display:inline-flex centralizado e gap 6px para ícone. */
+/* ─── Sistema de botões de TEXTO ──────────────────────────────────────────────
+   Base `.btn` + variantes `--primary` / `--ghost` / `--danger`. Altura, raio e
+   tipografia unificados via tokens. Ícones-only continuam em `.icon-btn`. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: var(--icon-btn-size);
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: var(--icon-btn-radius);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s,
+    opacity 0.2s;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* Primário: ação principal (salvar, adicionar, importar). */
+.btn--primary {
+  background: var(--accent);
+  color: var(--btn-accent-text);
+  &:hover:not(:disabled) {
+    background: var(--btn-accent-hover);
+  }
+}
+
+/* Secundário/ghost: cancelar, ações neutras. */
+.btn--ghost {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text-secondary);
+  &:hover:not(:disabled) {
+    border-color: var(--text-secondary);
+    color: var(--text-primary);
+  }
+}
+
+/* Destrutivo: excluir/confirmar remoção. */
+.btn--danger {
+  background: var(--color-neg);
+  color: var(--btn-accent-text);
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+  &:focus-visible {
+    outline-color: var(--color-neg);
+  }
+}
+
+/* Largura total (rodapés de modal no mobile). */
+.btn--block {
+  width: 100%;
+}
 
 body.light-theme {
   --bg: #f6f8fa;

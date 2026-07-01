@@ -370,7 +370,7 @@
 }
 
 // ---- Mobile: ação desce para a própria linha, sem colidir ----
-@media (max-width: 560px) {
+@media (max-width: 600px) {
   .ledger-head {
     grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem;
 

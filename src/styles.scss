@@ -19,15 +19,16 @@
   --color-pos: #68d391;
   --color-neg: #fc8181;
   --color-warning: #f6ad55;
-  // Ação de edição = azul (par do vermelho de exclusão). Tom suave, na mesma
-  // família dos demais tokens do tema escuro (pos/neg pastel).
-  --color-edit: #81a8fc;
-  // Preenchimentos SÓLIDOS dos botões de ação (Editar/Excluir), iguais nos dois
-  // temas — azul/vermelho saturados, legíveis com ícone/texto branco.
-  --btn-edit-bg: #2563eb;
-  --btn-edit-bg-hover: #1d4ed8;
-  --btn-del-bg: #dc2626;
-  --btn-del-bg-hover: #b91c1c;
+  // Preenchimentos SÓLIDOS dos botões de ação (CRUD) — paleta profissional,
+  // igual nos dois temas, legível com ícone/texto branco (contraste ≥ 4.5:1):
+  //   Incluir = verde profundo · Alterar = azul-aço · Excluir = vermelho-tijolo.
+  // Tons dessaturados/mais graves que os "azul/vermelho web" para um ar sóbrio.
+  --btn-add-bg: #2f855a;
+  --btn-add-bg-hover: #276749;
+  --btn-edit-bg: #2b6cb0;
+  --btn-edit-bg-hover: #2c5282;
+  --btn-del-bg: #c53030;
+  --btn-del-bg-hover: #9b2c2c;
   --btn-accent-text: #ffffff;
   --btn-accent-hover: #1f9d5e;
   --shadow-hover: rgba(26, 127, 75, 0.15);
@@ -125,10 +126,12 @@
 
 /* Primário: ação principal (salvar, adicionar, importar). */
 .btn--primary {
-  background: var(--accent);
+  // Incluir/confirmar = verde profundo da paleta de ações (o --accent segue
+  // reservado aos acentos: borda verde, links, valores positivos).
+  background: var(--btn-add-bg);
   color: var(--btn-accent-text);
   &:hover:not(:disabled) {
-    background: var(--btn-accent-hover);
+    background: var(--btn-add-bg-hover);
   }
 }
 
@@ -214,8 +217,6 @@ body.light-theme {
   --color-pos: #1a7f4b;
   --color-neg: #cf222e;
   --color-warning: #b45c0a;
-  // Azul saturado (par do vermelho) para contraste no tema claro.
-  --color-edit: #2563eb;
   --btn-accent-text: #ffffff;
   --btn-accent-hover: #1f9d5e;
   --shadow-hover: rgba(26, 127, 75, 0.15);

@@ -57,7 +57,8 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background: var(--accent);
+  // Salvar (.solid) = verde de "incluir/confirmar" da paleta de ações.
+  background: var(--btn-add-bg);
   border: none;
   color: var(--btn-accent-text);
   min-height: var(--icon-btn-size);
@@ -79,7 +80,7 @@
     color 0.15s;
 
   &:hover {
-    background: var(--btn-accent-hover);
+    background: var(--btn-add-bg-hover);
   }
   // Cancelar: contorno discreto (secundário).
   &.ghost {

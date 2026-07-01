@@ -54,7 +54,9 @@
     --zona-color: #e0a82e;
   }
   tbody tr.acoes-row.zona-caro {
-    --zona-color: var(--color-neg);
+    // Vermelho de semáforo dedicado (par do âmbar do "justo"): nítido e legível
+    // nos dois temas, sem o tom apagado do vermelho-de-prejuízo (--color-neg).
+    --zona-color: #e5484d;
   }
   // Estado neutro (sem dados / ETF sem preço atual): faixa transparente para não
   // herdar a cor da borda (var(--border)), que criava uma "borda dupla" cinza

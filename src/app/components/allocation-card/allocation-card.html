@@ -119,15 +119,7 @@
   <!-- Ações (Editar/Salvar/Cancelar) no final do card -->
   <div class="alloc-actions">
     <button *ngIf="editing()" type="button" class="alloc-btn ghost" (click)="cancelEdit()">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M18 6 6 18M6 6l12 12"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
+      <app-icon name="close"></app-icon>
       Cancelar
     </button>
     <button
@@ -136,15 +128,7 @@
       [class.solid]="editing()"
       (click)="editing() ? saveEdit() : openEdit()"
     >
-      <svg *ngIf="!editing()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
+      <app-icon name="edit"></app-icon>
       <svg *ngIf="editing()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path
           d="M20 6 9 17l-5-5"

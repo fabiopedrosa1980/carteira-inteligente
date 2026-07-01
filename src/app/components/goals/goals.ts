@@ -1,5 +1,6 @@
 import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconComponent } from '../icon/icon';
 import { FormsModule } from '@angular/forms';
 import { MetasService } from '../../services/metas.service';
 import { ConfirmService } from '../../services/confirm.service';
@@ -9,7 +10,7 @@ import { Meta } from '../../models/meta.model';
 @Component({
   selector: 'app-goals',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, IconComponent, FormsModule],
   templateUrl: './goals.html',
   styleUrls: ['./goals.scss'],
 })

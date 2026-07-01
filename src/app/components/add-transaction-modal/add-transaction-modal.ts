@@ -10,6 +10,7 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconComponent } from '../icon/icon';
 import { FormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
@@ -21,7 +22,7 @@ import { detectAssetType, resolveAssetType, assetTypeLabel } from '../../models/
 @Component({
   selector: 'app-add-transaction-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, IconComponent, FormsModule],
   templateUrl: './add-transaction-modal.html',
   styleUrls: ['./add-transaction-modal.scss'],
 })

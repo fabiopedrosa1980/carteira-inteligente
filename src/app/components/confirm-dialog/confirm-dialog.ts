@@ -1,11 +1,12 @@
 import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconComponent } from '../icon/icon';
 import { ConfirmService } from '../../services/confirm.service';
 
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconComponent],
   templateUrl: './confirm-dialog.html',
   styleUrls: ['./confirm-dialog.scss'],
 })

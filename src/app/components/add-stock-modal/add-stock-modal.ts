@@ -1,5 +1,6 @@
 import { Component, EventEmitter, HostListener, Output, signal, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconComponent } from '../icon/icon';
 import { FormsModule } from '@angular/forms';
 import { Subject, debounceTime, switchMap, distinctUntilChanged, takeUntil } from 'rxjs';
 import { StockDataService } from '../../services/stock-data.service';
@@ -24,7 +25,7 @@ const SECTORS = [
 @Component({
   selector: 'app-add-stock-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, IconComponent, FormsModule],
   templateUrl: './add-stock-modal.html',
   styleUrls: ['./add-stock-modal.scss'],
 })

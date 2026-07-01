@@ -3,14 +3,7 @@
     <div class="modal-header">
       <h2>Adicionar Lançamentos</h2>
       <button class="close-btn" (click)="close.emit()" aria-label="Fechar">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M18 6 6 18M6 6l12 12"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
-        </svg>
+        <app-icon name="close"></app-icon>
       </button>
     </div>
 
@@ -130,15 +123,7 @@
 
     <div class="modal-footer">
       <button class="btn btn--ghost" (click)="close.emit()">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M18 6 6 18M6 6l12 12"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+        <app-icon name="close"></app-icon>
         Cancelar
       </button>
       <button class="btn btn--primary" (click)="save()" [disabled]="saving() || fetching()">

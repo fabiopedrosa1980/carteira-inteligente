@@ -1,5 +1,6 @@
 import { Component, Input, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconComponent } from '../icon/icon';
 import { TransactionService } from '../../services/transaction.service';
 import { StockDataService } from '../../services/stock-data.service';
 import { ConfirmService } from '../../services/confirm.service';
@@ -13,7 +14,7 @@ const PAGE_SIZE = 10;
 @Component({
   selector: 'app-my-assets',
   standalone: true,
-  imports: [CommonModule, AddTransactionModalComponent],
+  imports: [CommonModule, IconComponent, AddTransactionModalComponent],
   templateUrl: './my-assets.html',
   styleUrls: ['./my-assets.scss'],
 })

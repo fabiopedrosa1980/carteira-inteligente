@@ -37,6 +37,7 @@
         Cancelar
       </button>
       <button class="btn btn--primary" (click)="saveMeta()" [disabled]="!formName().trim()">
+        <app-icon [name]="editingId() ? 'check' : 'plus'"></app-icon>
         {{ editingId() ? 'Salvar alterações' : 'Criar meta' }}
       </button>
     </div>

@@ -93,7 +93,8 @@
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 10px 12px;
-  font-size: 14px;
+  // 16px evita o zoom automático do Safari iOS ao focar o campo.
+  font-size: 16px;
   color: var(--text-primary);
   outline: none;
   transition: border-color 0.15s;

@@ -129,7 +129,8 @@ h2 {
   border-radius: 8px;
   padding: 9px 12px;
   color: var(--text-primary);
-  font-size: 14px;
+  // 16px evita o zoom automático do Safari iOS ao focar o campo.
+  font-size: 16px;
   outline: none;
   transition: border-color 0.2s;
   width: 100%;

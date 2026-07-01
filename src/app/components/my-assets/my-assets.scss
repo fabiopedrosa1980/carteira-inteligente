@@ -238,9 +238,34 @@ $pad-x: 16px;
   letter-spacing: 0.5px;
 
   @media (max-width: 600px) {
-    // Mobile: cada lançamento vira card; o cabeçalho da tabela é ocultado
-    // (cada card traz seus próprios rótulos).
-    display: none;
+    // Mobile: cada lançamento vira card com rótulos próprios, mas o cabeçalho
+    // não some — vira uma barra de CHIPS de ordenação rolável, para não perder
+    // a navegação (ordenar por Ativo/Data/Qtd/Preço/Total) no celular.
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px;
+    background: transparent;
+    border-bottom: none;
+    text-transform: none;
+    letter-spacing: 0;
+    // "Operação" (última coluna) não é ordenável — some no mobile.
+    > span:last-child {
+      display: none;
+    }
+    .th-sort {
+      flex: 0 0 auto;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      font-size: var(--fs-2xs);
+      white-space: nowrap;
+      &.active {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+    }
   }
 }
 .table-row {

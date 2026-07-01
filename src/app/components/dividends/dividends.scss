@@ -102,23 +102,26 @@ $dv-pad-x: 0;
     text-align: center;
   }
 
+  // Abas roláveis horizontalmente: largura natural e rótulo inteiro (sem
+  // espremer/cortar "Histórico/Recebidos/Projetados").
   .dv-tabs {
+    width: 100%;
     flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    // esconde a barra de rolagem (a rolagem por toque continua).
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   .dv-tab {
-    flex: 1 1 0;
-    min-width: 0;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.2rem;
-    padding: 0.4rem 0.3rem;
+    flex: 0 0 auto;
+    gap: 0.4rem;
+    padding: 0.45rem 0.8rem;
     font-size: var(--fs-2xs);
-    text-align: center;
   }
   .dv-tab-label {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
   }
   .dv-tab-icon {

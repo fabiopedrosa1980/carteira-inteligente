@@ -1,0 +1,131 @@
+.portfolio-summary {
+  margin-bottom: 12px;
+}
+
+// Resumo quebrado em cards individuais. Desktop: todos em uma única linha.
+.ps-cards {
+  display: grid;
+  // minmax(0, 1fr) (em vez de 1fr): as colunas encolhem abaixo do conteúdo, para
+  // um valor monetário longo nunca empurrar a largura e gerar rolagem horizontal.
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ps-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-chip);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  // Item do grid pode encolher; o valor longo trunca/quebra em vez de estourar.
+  min-width: 0;
+}
+
+// Cards acionáveis (atalho para a tela de Dividendos): afordância de clique.
+.ps-card.is-link {
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    transform 0.15s;
+
+  &:hover {
+    border-color: var(--accent);
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+// Cabeçalho do card: rótulo à esquerda, ícone à direita. O ícone fica numa
+// linha própria para nunca colidir com o valor, mesmo quando é longo.
+.ps-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 30px;
+
+  .ps-card-label {
+    min-width: 0;
+    align-self: center;
+  }
+}
+
+// Tile do ícone: quadrado arredondado, tinta sutil do accent. Glifo encode o
+// significado da métrica; o sinal (+/−) continua na cor do valor, não aqui.
+.ps-card-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+// Patrimônio Total em destaque (valor maior). No desktop ocupa 1 das colunas.
+// O ícone herda o tamanho padrão de .ps-card-icon, coerente com os demais cards.
+
+.ps-card-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ps-card-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  // Rede de segurança: um valor muito longo quebra em vez de estourar o card.
+  overflow-wrap: anywhere;
+  &.pos {
+    color: var(--color-pos);
+  }
+  &.neg {
+    color: var(--color-neg);
+  }
+}
+
+.ps-card-hero .ps-card-value {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* Privacidade: oculta os valores em R$ dos cards de resumo mantendo rótulos,
+   ícones e layout intactos. Mesmo padrão de "shoulder-surfing" de apps
+   financeiros — máscara reversível pelo botão olho. */
+.portfolio-summary.values-hidden .ps-card-value {
+  filter: blur(8px);
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  // Mobile: todos os cards 2 por linha, inclusive o Patrimônio (hero), que
+  // ocupa uma única coluna como os demais (sem ocupar a linha inteira).
+  .ps-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  // Valor do Patrimônio normalizado para caber no card em coluna única,
+  // sem destoar dos demais nem quebrar o layout.
+  .ps-card-hero .ps-card-value {
+    font-size: 16px;
+  }
+}

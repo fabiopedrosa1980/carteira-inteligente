@@ -24,14 +24,10 @@ import { GoalsComponent } from '../goals/goals';
 import { DividendsComponent } from '../dividends/dividends';
 import { AllocationCardComponent } from '../allocation-card/allocation-card';
 import { ImportComponent } from '../import/import';
+import { PortfolioSummaryComponent } from '../portfolio-summary/portfolio-summary';
 import { Stock } from '../../models/stock.model';
 import { AssetType } from '../../models/transaction.model';
 import { saldo, custo, variacaoPosicao, rentabilidade } from '../../models/position.util';
-import {
-  receivedForTicker,
-  projectedForTicker,
-  localDateStr,
-} from '../../models/dividends-received.util';
 import {
   classeFromSector,
   dpaTrailing12m,
@@ -71,6 +67,7 @@ const PAGE_SIZE = 10;
     DividendsComponent,
     AllocationCardComponent,
     ImportComponent,
+    PortfolioSummaryComponent,
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
@@ -427,84 +424,6 @@ export class DashboardComponent implements AfterViewInit {
     // Reinicia páginas ao mudar ordenação.
     this.groupPages.set({});
   }
-
-  readonly patrimonioTotal = computed(() =>
-    this.sortedStocks().reduce((sum, s) => sum + (saldo(s) ?? 0), 0),
-  );
-  readonly valorInvestido = computed(() =>
-    this.sortedStocks().reduce((sum, s) => sum + (custo(s) ?? 0), 0),
-  );
-  readonly lucroTotal = computed(() => this.patrimonioTotal() - this.valorInvestido());
-  readonly lucroPercent = computed(() => {
-    const inv = this.valorInvestido();
-    return inv > 0 ? (this.lucroTotal() / inv) * 100 : null;
-  });
-  // Dividendos Recebidos: mesma lógica/util da tela Dividendos → Recebidos
-  // (receivedForTicker), garantindo que o valor coincida. Escopo = Ações + FIIs
-  // (as duas classes da tela; ETFs ficam de fora). Proventos vêm de
-  // svc.stocks() (carregados via getStockDividends); as cotas elegíveis vêm dos
-  // lançamentos; a classe de cada ticker vem de acoes() (sector correto).
-  readonly dividendosRecebidos = computed(() => {
-    const transactions = this.transactionSvc.transactions();
-    const todayStr = localDateStr();
-    const currentYear = new Date().getFullYear();
-    const norm = (t: string) => (t ?? '').toUpperCase().trim();
-
-    // Tickers das classes que entram no total (Ações + FIIs).
-    const allowed = new Set(
-      this.acoes()
-        .filter((s) => s.sector === 'Ações' || s.sector === 'FII')
-        .map((s) => norm(s.ticker)),
-    );
-
-    return this.svc.stocks().reduce((total, stk) => {
-      const ticker = norm(stk.ticker);
-      if (!allowed.has(ticker)) return total;
-
-      const txOfTicker = transactions.filter((t) => norm(t.ticker) === ticker);
-      const dividends = stk.dividends.map((d) => ({
-        year: d.year,
-        month: d.month,
-        amount: d.value,
-        exDate: d.exDate,
-        payDate: d.payDate,
-      }));
-
-      return total + receivedForTicker(dividends, txOfTicker, todayStr, currentYear);
-    }, 0);
-  });
-
-  // Dividendos a receber: mesma lógica/util da tela Dividendos → Projetados
-  // (projectedForTicker) — proventos do ano corrente ainda a pagar (pay_date >=
-  // hoje) × cotas atuais. Mesmo escopo do card de Recebidos (Ações + FIIs).
-  readonly dividendosAReceber = computed(() => {
-    const todayStr = localDateStr();
-    const currentYear = new Date().getFullYear();
-    const norm = (t: string) => (t ?? '').toUpperCase().trim();
-
-    // Cotas atuais por ticker (Ações + FIIs), a partir das posições agregadas.
-    const sharesByTicker = new Map<string, number>();
-    for (const s of this.acoes()) {
-      if (s.sector !== 'Ações' && s.sector !== 'FII') continue;
-      sharesByTicker.set(norm(s.ticker), s.quantity ?? 0);
-    }
-
-    return this.svc.stocks().reduce((total, stk) => {
-      const ticker = norm(stk.ticker);
-      const shares = sharesByTicker.get(ticker);
-      if (!shares) return total;
-
-      const dividends = stk.dividends.map((d) => ({
-        year: d.year,
-        month: d.month,
-        amount: d.value,
-        exDate: d.exDate,
-        payDate: d.payDate,
-      }));
-
-      return total + projectedForTicker(dividends, shares, todayStr, currentYear);
-    }, 0);
-  });
 
   sortedStocks = computed(() => {
     const list = [...this.acoes()];

@@ -160,6 +160,34 @@
   width: 100%;
 }
 
+/* Botão de paginação (Anterior/Próxima) — mesma altura dos demais botões. */
+.pag-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--icon-btn-size);
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--icon-btn-radius);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s;
+  &:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
 body.light-theme {
   --bg: #f6f8fa;
   --header-bg: #ffffff;

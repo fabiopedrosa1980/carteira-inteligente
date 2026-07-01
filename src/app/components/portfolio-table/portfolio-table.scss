@@ -555,30 +555,6 @@
   padding: 12px 16px;
 }
 
-.pag-btn {
-  padding: 5px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--card-bg);
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-size: 13px;
-  font-family: inherit;
-  transition:
-    border-color 0.15s,
-    color 0.15s;
-
-  &:hover:not(:disabled) {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  &:disabled {
-    opacity: 0.38;
-    cursor: not-allowed;
-  }
-}
-
 .pag-info {
   font-size: 13px;
   color: var(--text-secondary);

@@ -86,8 +86,9 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   border: none;
   background: transparent;
   color: var(--text-secondary);
-  padding: 6px 10px;
-  border-radius: 7px;
+  min-height: var(--icon-btn-size);
+  padding: 0 10px;
+  border-radius: var(--icon-btn-radius);
   cursor: pointer;
   transition:
     background 0.18s ease,

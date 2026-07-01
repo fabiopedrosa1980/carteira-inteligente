@@ -509,27 +509,7 @@ $pad-x: 16px;
     padding: 12px;
   }
 }
-.pag-btn {
-  border: 1px solid var(--border);
-  background: var(--card-bg);
-  color: var(--text-primary);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition:
-    border-color 0.15s ease,
-    color 0.15s ease;
-}
-.pag-btn:hover:not(:disabled) {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.pag-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
+
 .pag-info {
   font-size: var(--fs-sm);
   font-variant-numeric: tabular-nums;

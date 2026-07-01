@@ -94,6 +94,40 @@
   }
 }
 
+// Botão de ícone standalone do header (ex.: ocultar valores).
+.header-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-btn-size);
+  height: var(--icon-btn-size);
+  flex-shrink: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--icon-btn-radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition:
+    color 0.18s,
+    border-color 0.18s;
+  svg {
+    width: var(--icon-btn-icon);
+    height: var(--icon-btn-icon);
+  }
+  &:hover {
+    color: var(--text-primary);
+    border-color: var(--accent);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  @media (max-width: 600px) {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
 // Menu do usuário: avatar clicável + dropdown com as ações do app.
 .user-menu {
   position: relative;

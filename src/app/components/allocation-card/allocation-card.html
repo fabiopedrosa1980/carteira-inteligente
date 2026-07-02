@@ -6,6 +6,26 @@
         result().patrimonio | currency: 'BRL' : 'symbol' : '1.2-2'
       }}</span>
     </div>
+    <!-- Gatilho de edição = botão-ícone no cabeçalho (idioma do lápis das listas).
+         SVG inline pelo mesmo motivo de escopo dos botões de ação abaixo. -->
+    <button
+      *ngIf="!editing()"
+      type="button"
+      class="alloc-edit-icon"
+      (click)="openEdit()"
+      aria-label="Editar alocação"
+      title="Editar"
+    >
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
   </header>
 
   <p class="alloc-eyebrow">Composição{{ editing() ? ' · arraste para definir o alvo' : '' }}</p>
@@ -116,9 +136,10 @@
     </span>
   </div>
 
-  <!-- Ações (Editar/Salvar/Cancelar) no final do card -->
-  <div class="alloc-actions">
-    <button *ngIf="editing()" type="button" class="alloc-btn ghost" (click)="cancelEdit()">
+  <!-- Ações Salvar/Cancelar no final do card, só durante a edição. O gatilho
+       "Editar" agora é o botão-ícone no cabeçalho. -->
+  <div class="alloc-actions" *ngIf="editing()">
+    <button type="button" class="alloc-btn ghost" (click)="cancelEdit()">
       <!-- SVG inline (não app-icon): a regra `.alloc-btn svg` é component-scoped
            e não alcança o svg do app-icon (outro escopo de encapsulação), o que
            deixava o ícone sem tamanho (300×150) e estourava o botão. -->
@@ -133,23 +154,8 @@
       </svg>
       Cancelar
     </button>
-    <button
-      type="button"
-      class="alloc-btn"
-      [class.solid]="editing()"
-      (click)="editing() ? saveEdit() : openEdit()"
-    >
-      <!-- Editar mostra o lápis; Salvar mostra o check — nunca os dois juntos. -->
-      <svg *ngIf="!editing()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path
-          d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-      <svg *ngIf="editing()" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <button type="button" class="alloc-btn solid" (click)="saveEdit()">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path
           d="M20 6 9 17l-5-5"
           stroke="currentColor"
@@ -158,7 +164,7 @@
           stroke-linejoin="round"
         />
       </svg>
-      {{ editing() ? 'Salvar' : 'Editar' }}
+      Salvar
     </button>
   </div>
 </section>

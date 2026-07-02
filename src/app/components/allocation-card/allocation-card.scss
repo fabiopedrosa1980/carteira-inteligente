@@ -37,6 +37,36 @@
   color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
+// Gatilho de edição = botão-ícone no cabeçalho, no mesmo idioma (tamanho + tint
+// azul suave + ícone colorido) dos lápis das linhas de lista.
+.alloc-edit-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--icon-btn-size);
+  height: var(--icon-btn-size);
+  border: none;
+  border-radius: var(--icon-btn-radius);
+  cursor: pointer;
+  background: color-mix(in srgb, var(--btn-edit-fg) 12%, transparent);
+  color: var(--btn-edit-fg);
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  svg {
+    width: var(--icon-btn-icon);
+    height: var(--icon-btn-icon);
+  }
+  &:hover {
+    background: color-mix(in srgb, var(--btn-edit-fg) 22%, transparent);
+  }
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 1px;
+  }
+}
 // Ações no final do card: separadas do conteúdo acima.
 .alloc-actions {
   display: flex;
@@ -48,13 +78,19 @@
   // "Cancelar" partir em duas linhas dentro do botão.
   flex-wrap: wrap;
   margin-top: 1.25rem;
-  // Mobile: ações full-width (Editar sozinho ocupa a linha; ao editar,
-  // Cancelar/Salvar empilham full) — padronizado com as demais telas.
+  // Mobile: Cancelar/Salvar lado a lado com hierarquia (Cancelar ghost estreito;
+  // Salvar primário domina a linha, à direita), em vez de empilhar full-width.
   @media (max-width: 600px) {
-    flex-direction: column;
-    align-items: stretch;
+    flex-wrap: nowrap;
+    gap: var(--space-2);
     .alloc-btn {
-      width: 100%;
+      min-height: 44px;
+    }
+    .alloc-btn.ghost {
+      flex: 0 0 auto;
+    }
+    .alloc-btn.solid {
+      flex: 1;
     }
   }
 }
@@ -112,19 +148,8 @@
   }
 }
 
-// "Editar" = fora do modo edição (sem .solid nem .ghost): azul, seguindo o
-// padrão de ação de edição do app. "Salvar" (.solid) segue verde (ação primária)
-// e "Cancelar" (.ghost) segue neutro.
-.alloc-btn:not(.solid):not(.ghost) {
-  background: var(--btn-edit-bg);
-
-  &:hover {
-    background: var(--btn-edit-bg-hover);
-  }
-  &:focus-visible {
-    outline-color: var(--btn-edit-bg);
-  }
-}
+// "Salvar" (.solid) segue verde (ação primária) e "Cancelar" (.ghost) segue
+// neutro. O gatilho "Editar" deixou de ser um .alloc-btn (virou ícone no header).
 
 .alloc-eyebrow {
   margin: 0 0 0.55rem;

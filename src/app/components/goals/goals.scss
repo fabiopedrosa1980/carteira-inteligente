@@ -351,13 +351,18 @@
     grid-template-columns: 1fr;
   }
 
-  // Ações do formulário empilhadas full-width (Salvar em cima), padronizado com
-  // Lançamentos e Alocação no mobile.
+  // Ações do formulário lado a lado com hierarquia: Cancelar (ghost) estreito e
+  // o primário (Criar/Salvar) dominando a linha, à direita. Sem empilhar.
   .form-actions {
-    flex-direction: column-reverse;
     gap: 8px;
     .btn {
-      width: 100%;
+      min-height: 44px;
+    }
+    .btn--ghost {
+      flex: 0 0 auto;
+    }
+    .btn--primary {
+      flex: 1;
     }
   }
 

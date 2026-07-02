@@ -303,9 +303,16 @@ h2 {
   border-top: 1px solid var(--border);
   @media (max-width: 480px) {
     padding: 12px 16px;
-    flex-direction: column-reverse;
+    // Cancelar (ghost) estreito + primário dominando a linha, à direita.
     .btn {
-      width: 100%;
+      min-height: 44px;
+    }
+    .btn--ghost {
+      flex: 0 0 auto;
+    }
+    .btn--primary {
+      flex: 1;
+      min-width: 0;
     }
   }
 }

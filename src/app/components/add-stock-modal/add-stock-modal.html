@@ -3,7 +3,18 @@
     <div class="modal-header">
       <h2>Adicionar Lançamentos</h2>
       <button class="close-btn" (click)="close.emit()" aria-label="Fechar">
-        <app-icon name="close"></app-icon>
+        <!-- SVG inline: `.close-btn` não é `.btn`, então o `svg` do app-icon
+             (encapsulado) não era alcançado pela regra de tamanho e renderizava
+             no tamanho intrínseco (24px), destoando dos demais ícones. -->
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M18 6 6 18M6 6l12 12"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
       </button>
     </div>
 

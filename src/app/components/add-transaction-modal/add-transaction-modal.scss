@@ -81,9 +81,10 @@ h2 {
   cursor: pointer;
   border-radius: var(--icon-btn-radius);
   transition: all 0.15s;
+  // Mesmo tamanho do ícone do título (.modal-icon = 20px), para não destoar.
   svg {
-    width: var(--icon-btn-icon);
-    height: var(--icon-btn-icon);
+    width: 20px;
+    height: 20px;
   }
   &:hover {
     background: var(--border);
@@ -303,16 +304,11 @@ h2 {
   border-top: 1px solid var(--border);
   @media (max-width: 480px) {
     padding: 12px 16px;
-    // Cancelar (ghost) estreito + primário dominando a linha, à direita.
+    // Cancelar e o primário com o MESMO tamanho (dividem a linha meio a meio).
     .btn {
-      min-height: 44px;
-    }
-    .btn--ghost {
-      flex: 0 0 auto;
-    }
-    .btn--primary {
       flex: 1;
       min-width: 0;
+      min-height: 44px;
     }
   }
 }

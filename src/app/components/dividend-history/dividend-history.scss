@@ -1,18 +1,9 @@
 .dh-section {
-  margin-top: 2rem;
-  padding: var(--space-6);
-  background: var(--card-bg);
-  border-radius: var(--radius-card);
-  border: 1px solid var(--border);
-
-  // Mobile: sem o box do card — conteúdo flush, alinhado com as abas/header
-  // (padronizado com as demais abas de Dividendos).
+  // Sem box de card — conteúdo flush, alinhado com o header/abas e com as
+  // demais telas do app (padronizado em web e mobile).
+  margin-top: 1.5rem;
   @media (max-width: 600px) {
     margin-top: 1rem;
-    padding: 0;
-    background: none;
-    border: none;
-    border-radius: 0;
   }
 }
 

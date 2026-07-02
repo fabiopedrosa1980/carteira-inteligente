@@ -333,19 +333,13 @@ $pad-x: 16px;
     // grade limpa mesmo com o Total em tamanho maior.
     align-items: start;
     padding: 14px 16px;
-    margin-bottom: 10px;
-    // Superfície de card (fundo distinto da página), não só uma borda.
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    // Faixa fina na cor da classe do ativo (herda --sec-color da seção),
-    // ancorando o card à sua categoria — mesmo idioma dos cards de Metas.
-    border-left: 3px solid var(--sec-color, var(--accent));
-    border-radius: var(--radius-item);
+    // Linhas como itens de lista dentro do card da seção (accordion), separadas
+    // por um divisor fino — sem virar cards aninhados (evita a borda dupla). O
+    // fundo e o trilho de cor da classe já vêm do próprio accordion.
+    border-bottom: 1px solid var(--border);
     font-size: var(--fs-sm);
-    overflow: hidden;
     &:last-child {
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 0;
+      border-bottom: none;
     }
   }
 }

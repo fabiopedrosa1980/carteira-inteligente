@@ -8,6 +8,16 @@ $mono: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, 'Menlo', mono
   background: var(--card-bg);
   border-radius: var(--radius-card);
   border: 1px solid var(--border);
+
+  // Mobile: sem o box do card — conteúdo flush, alinhado com as abas/header
+  // (padronizado com as demais abas de Dividendos).
+  @media (max-width: 600px) {
+    margin-top: 1rem;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+  }
 }
 
 .radar-title {

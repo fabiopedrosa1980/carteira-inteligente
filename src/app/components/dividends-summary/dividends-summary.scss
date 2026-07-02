@@ -145,6 +145,20 @@
 
 .ds-list {
   font-size: var(--fs-sm);
+  // Card da lista — mesmo idioma das demais telas (Metas/Lançamentos):
+  // borda + cantos arredondados com o conteúdo dentro.
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-item);
+  overflow: hidden;
+
+  // Mobile: lista flush, sem o box (padronizado com as abas no mobile).
+  @media (max-width: 600px) {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+  }
 }
 
 // Grade compartilhada entre o cabeçalho e as linhas de ativo.

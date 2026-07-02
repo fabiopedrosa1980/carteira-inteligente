@@ -214,6 +214,19 @@
 
 .dh-table-wrap {
   overflow-x: auto;
+  // Card da tabela — mesmo idioma das demais telas (Metas/Lançamentos):
+  // borda + cantos arredondados com o conteúdo dentro.
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-item);
+
+  // Mobile: cada dividendo vira card próprio, então o contêiner deixa de ser
+  // o "card" (igual Metas).
+  @media (max-width: 480px) {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+  }
 }
 
 // Alterna rótulos longo/curto dos cabeçalhos conforme a largura.
@@ -383,8 +396,8 @@
   align-items: center;
   gap: 0.75rem;
   justify-content: center;
-  margin-top: 1rem;
-  padding-top: 0.75rem;
+  // Rodapé dentro do card da tabela (igual à paginação de Lançamentos).
+  padding: 12px 16px;
   border-top: 1px solid var(--border);
 }
 

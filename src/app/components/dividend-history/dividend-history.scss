@@ -105,6 +105,29 @@
   }
 }
 
+// Mobile: Ativo e Ano lado a lado — cada par (rótulo + campo) ocupa 50%, com o
+// select preenchendo a sua metade.
+@media (max-width: 480px) {
+  .dh-controls {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 12px;
+  }
+  .dh-selector,
+  .dh-year-combo {
+    flex: 1 1 0;
+    min-width: 0;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+  }
+  .dh-selector .dh-select,
+  .dh-year-combo .dh-select {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+  }
+}
+
 .dh-year-chip {
   background: var(--input-bg);
   color: var(--text-secondary);

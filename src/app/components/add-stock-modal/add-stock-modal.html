@@ -139,7 +139,7 @@
       </button>
       <button class="btn btn--primary" (click)="save()" [disabled]="saving() || fetching()">
         <app-icon *ngIf="!saving()" name="plus" [strokeWidth]="2.2"></app-icon>
-        {{ saving() ? 'Salvando...' : 'Adicionar Lançamentos' }}
+        {{ saving() ? 'Salvando...' : 'Adicionar' }}
       </button>
     </div>
   </div>

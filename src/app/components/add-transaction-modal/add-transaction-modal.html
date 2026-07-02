@@ -139,7 +139,7 @@
       </button>
       <button class="btn btn--primary" (click)="save()" [disabled]="saving() || isTickerInvalid">
         <app-icon *ngIf="!saving()" name="check" [strokeWidth]="2.4"></app-icon>
-        {{ saving() ? 'Salvando...' : isEdit ? 'Salvar Alterações' : 'Salvar Lançamento' }}
+        {{ saving() ? 'Salvando...' : isEdit ? 'Salvar Alterações' : 'Salvar' }}
       </button>
     </div>
   </div>

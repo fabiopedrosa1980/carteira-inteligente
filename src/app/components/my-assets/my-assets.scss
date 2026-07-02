@@ -328,11 +328,18 @@ $pad-x: 16px;
       'preco  total'
       'actions actions';
     column-gap: 12px;
-    row-gap: 10px;
-    align-items: end;
+    row-gap: 12px;
+    // Rótulos (::before) alinhados no topo de cada linha; valores logo abaixo —
+    // grade limpa mesmo com o Total em tamanho maior.
+    align-items: start;
     padding: 14px 16px;
     margin-bottom: 10px;
+    // Superfície de card (fundo distinto da página), não só uma borda.
+    background: var(--card-bg);
     border: 1px solid var(--border);
+    // Faixa fina na cor da classe do ativo (herda --sec-color da seção),
+    // ancorando o card à sua categoria — mesmo idioma dos cards de Metas.
+    border-left: 3px solid var(--sec-color, var(--accent));
     border-radius: var(--radius-item);
     font-size: var(--fs-sm);
     overflow: hidden;
@@ -427,11 +434,16 @@ $pad-x: 16px;
   // Cor e peso neutros — mesma aparência das demais colunas, sem destaque.
   color: var(--text-primary);
   @media (max-width: 600px) {
-    // Total no mesmo tamanho dos demais campos do card (13px).
     grid-area: total;
-    font-size: var(--fs-sm);
     line-height: 1.1;
     color: var(--text-primary);
+    // Total da operação é a figura-síntese do card — leve destaque de peso e
+    // tamanho para criar hierarquia sobre os demais campos.
+    .val {
+      font-weight: 700;
+      font-size: var(--fs-md);
+      font-variant-numeric: tabular-nums;
+    }
   }
 }
 

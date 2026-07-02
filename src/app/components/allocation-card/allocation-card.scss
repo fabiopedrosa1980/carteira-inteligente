@@ -1,6 +1,9 @@
 .alloc-card {
   background: var(--card-bg);
-  border: 1px solid var(--accent);
+  // Mesmo padrão dos cards de Resumo (.ps-card): borda cinza com faixa verde
+  // (accent) à esquerda, padronizando os indicadores de Meus Ativos.
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
   border-radius: var(--radius-card);
   padding: 1.25rem 1.5rem;
   margin-bottom: 1.5rem;

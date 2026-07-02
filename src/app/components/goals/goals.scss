@@ -279,7 +279,8 @@
 
 .meta-actions {
   display: flex;
-  gap: 4px;
+  // Espaço confortável entre Editar e Excluir para não colarem.
+  gap: 8px;
   justify-content: flex-end;
 }
 

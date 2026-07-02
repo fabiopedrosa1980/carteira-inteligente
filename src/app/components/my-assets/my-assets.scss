@@ -445,7 +445,8 @@ $pad-x: 16px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 2px;
+  // Espaço confortável entre Editar e Excluir para não colarem.
+  gap: 8px;
   @media (max-width: 600px) {
     // Rodapé do card: Editar e Excluir apenas ícones (tamanho fixo do token —
     // nunca estouram a largura do card), um ao lado do outro à direita.

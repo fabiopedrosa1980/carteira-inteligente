@@ -29,6 +29,11 @@
   --btn-edit-bg-hover: #2c5282;
   --btn-del-bg: #c53030;
   --btn-del-bg-hover: #9b2c2c;
+  // Versão SUAVE das ações de lista (ícones Editar/Excluir): tinta translúcida
+  // + ícone colorido, no lugar do preenchimento sólido, para manter as linhas
+  // dos cards calmas. Ícone claro sobre o fundo escuro (contraste ≥ 4.5:1).
+  --btn-edit-fg: #6ea8e6;
+  --btn-del-fg: #fc8181;
   --btn-accent-text: #ffffff;
   --btn-accent-hover: #1f9d5e;
   --shadow-hover: rgba(26, 127, 75, 0.15);
@@ -217,6 +222,9 @@ body.light-theme {
   --color-pos: #1a7f4b;
   --color-neg: #cf222e;
   --color-warning: #b45c0a;
+  // Versão suave dos botões de lista — ícone escuro para contraste no branco.
+  --btn-edit-fg: #2b6cb0;
+  --btn-del-fg: #cf222e;
   --btn-accent-text: #ffffff;
   --btn-accent-hover: #1f9d5e;
   --shadow-hover: rgba(26, 127, 75, 0.15);

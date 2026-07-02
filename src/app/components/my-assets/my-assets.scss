@@ -541,20 +541,21 @@ $pad-x: 16px;
     outline-offset: 1px;
   }
 }
-// Padrão do app: Editar = azul, Excluir = vermelho. Tinta sutil no hover para
-// manter os cards calmos (a identidade verde segue nas ações primárias/CTAs).
+// Padrão do app: Editar = azul, Excluir = vermelho — em versão suave (tinta
+// translúcida + ícone colorido) para manter os cards calmos. A identidade verde
+// segue nas ações primárias/CTAs.
 .btn-edit {
-  background: var(--btn-edit-bg);
-  color: #fff;
+  background: color-mix(in srgb, var(--btn-edit-fg) 12%, transparent);
+  color: var(--btn-edit-fg);
   &:hover {
-    background: var(--btn-edit-bg-hover);
+    background: color-mix(in srgb, var(--btn-edit-fg) 22%, transparent);
   }
 }
 .btn-remove {
-  background: var(--btn-del-bg);
-  color: #fff;
+  background: color-mix(in srgb, var(--btn-del-fg) 12%, transparent);
+  color: var(--btn-del-fg);
   &:hover {
-    background: var(--btn-del-bg-hover);
+    background: color-mix(in srgb, var(--btn-del-fg) 22%, transparent);
   }
 }
 
